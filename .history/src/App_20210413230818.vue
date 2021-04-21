@@ -4,20 +4,11 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <router-view />
+    <router-view/>
   </div>
 </template>
 
 <style>
-* {
-  padding: 0;
-  margin: 0;
-}
-:root {
-  --color-title: #3d8af7;
-  --color-name: #929292;
-  --color-line: #c0c0c0;
-}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

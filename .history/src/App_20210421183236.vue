@@ -14,9 +14,7 @@
   margin: 0;
 }
 :root {
-  --color-title: #3d8af7;
-  --color-name: #929292;
-  --color-line: #c0c0c0;
+  --color-title: #42b983;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
