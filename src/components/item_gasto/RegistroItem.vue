@@ -118,6 +118,7 @@
               Crear
           </button>
       </form>
+      {{item}}
   </section>
 </template>
 
@@ -185,8 +186,8 @@ export default {
                 await this.$http.post("expenseItem", {
                     nombre_itemgasto: this.item.nombre_itemgasto,
                     categoria_especifica: this.item.categoria_especifica,
+                    descripcion_item: this.item.descripcion_item,
                     justificacion: this.item.justificacion,
-                    descripcion_item: this.item.descripcion_item
                 });
             } catch (error) {
                 throw new Error("Este ítem ya está registrado");
