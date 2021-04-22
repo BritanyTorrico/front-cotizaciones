@@ -8,7 +8,7 @@
       <option selected="true" disabled="disabled">Seleccione una opcion</option>
       <option
         class="container__list__option"
-        v-for="(item, index) in lista"
+        v-for="(item, index) in facultad"
         :key="index"
         :value="item"
       >
@@ -23,18 +23,13 @@ export default {
   name: "ListaDesplegable",
   data() {
     return {
-      facultad: [
-        "FACULTAD DE CIENCIAS Y TECNOLOGIA",
-        "Ingeniería Informática",
-        "Super Usuario",
-      ],
+      facultad: ["FACULTAD DE CIENCIAS Y TECNOLOGIA", "Economia", "Derecho"],
     };
   },
   props: {
     value: String,
     nombreLista: String,
     nombre: String,
-    lista: Array,
   },
 
   methods: {},

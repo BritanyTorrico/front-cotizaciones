@@ -2,17 +2,18 @@
   <div class="container">
     <div class="container__label">{{ nombreLista }}</div>
     <select
+      v-model="selected"
+      v-bind:value="value"
       v-on:input="$emit('input', $event.target.value)"
       class="container__list"
     >
-      <option selected="true" disabled="disabled">Seleccione una opcion</option>
       <option
         class="container__list__option"
-        v-for="(item, index) in lista"
+        v-for="(item, index) in facultad"
         :key="index"
-        :value="item"
+        value="FACULTAD DE CIENCIAS Y TECNOLOGIA"
       >
-        {{ item }}</option
+        {{ facultad[index] }}</option
       >
     </select>
   </div>
@@ -23,18 +24,13 @@ export default {
   name: "ListaDesplegable",
   data() {
     return {
-      facultad: [
-        "FACULTAD DE CIENCIAS Y TECNOLOGIA",
-        "Ingeniería Informática",
-        "Super Usuario",
-      ],
+      facultad: ["Tecnologia", "Economia", "Derecho"],
     };
   },
   props: {
     value: String,
     nombreLista: String,
     nombre: String,
-    lista: Array,
   },
 
   methods: {},
@@ -42,7 +38,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.container {
+.container__base {
   text-align: left;
   padding-top: 20px;
 }

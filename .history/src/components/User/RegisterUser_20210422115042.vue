@@ -155,7 +155,6 @@
             <button>CONFIRMAR</button>
           </div>
           {{ users }}
-          <Alert ref="alert"></Alert>
         </div>
       </div>
     </form>
@@ -165,9 +164,8 @@
 <script>
 import { required, maxLength } from "vuelidate/lib/validators";
 import ListaDesplegable from "./ListaDesplegable.vue";
-import Alert from "@/components/User/Alert.vue";
 export default {
-  components: { ListaDesplegable, Alert },
+  components: { ListaDesplegable },
   name: "RegisterUser",
   data() {
     return {
@@ -234,7 +232,7 @@ export default {
     async submitForm() {
       try {
         await this.sendDataUsers();
-        this.alert("success", "Usuario creado exitosamente");
+        console.log("segunda paarte");
         await this.sendUsernameRol();
         console.log("CORRECTO");
       } catch (error) {

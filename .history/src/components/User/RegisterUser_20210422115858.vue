@@ -155,7 +155,6 @@
             <button>CONFIRMAR</button>
           </div>
           {{ users }}
-          <Alert ref="alert"></Alert>
         </div>
       </div>
     </form>

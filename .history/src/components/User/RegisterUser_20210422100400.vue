@@ -129,33 +129,36 @@
             </div>
           </div>
           <div class="form__section3">
-            <div class="fomrm__section__item">
-              <lista-desplegable
-                v-model="users.facultad"
-                nombreLista="Facultad:"
-                :lista="listfacultad"
-              ></lista-desplegable>
+            <div class="container__base">
+              <div class="container__label">Facultad</div>
+              <select class="container__list" v-model="users.facultad">
+                <option
+                  class="container__list__option"
+                  v-for="(item, index) in listfacultad"
+                  :key="index"
+                  value="1"
+                >
+                  {{ listfacultad[index] }}</option
+                >
+              </select>
             </div>
-            <div class="fomrm__section__item">
-              <lista-desplegable
-                v-model="users.departamento"
-                nombreLista="Departamento:"
-                :lista="listDepartament"
-              ></lista-desplegable>
-            </div>
-            <div class="fomrm__section__item">
-              <lista-desplegable
-                v-model="users.nombre_rol"
-                nombreLista="Rol:"
-                :lista="listRoles"
-              ></lista-desplegable>
+            <div class="container__base">
+              <div class="container__label">Departamento</div>
+              <select class="container__list" v-model="users.departamento">
+                <option
+                  class="container__list__option"
+                  v-for="(item, index) in listfacultad"
+                  :key="index"
+                  value="1"
+                >
+                  {{ listfacultad[index] }}</option
+                >
+              </select>
             </div>
           </div>
           <div class="boton">
             <button>CONFIRMAR</button>
           </div>
-          {{ users }}
-          <Alert ref="alert"></Alert>
         </div>
       </div>
     </form>
@@ -164,10 +167,7 @@
 
 <script>
 import { required, maxLength } from "vuelidate/lib/validators";
-import ListaDesplegable from "./ListaDesplegable.vue";
-import Alert from "@/components/User/Alert.vue";
 export default {
-  components: { ListaDesplegable, Alert },
   name: "RegisterUser",
   data() {
     return {
@@ -180,26 +180,8 @@ export default {
         celular: null,
         facultad: null,
         departamento: null,
-        nombre_rol: null,
       },
-      listDepartament: [
-        "Ingeniería de Sistemas",
-        "Ingeniería Informática",
-        "Ingeniería Civil",
-        "Ingeniería Mecánica",
-        "Administración",
-      ],
-      listfacultad: [
-        "FACULTAD DE CIENCIAS Y TECNOLOGIA",
-        "FACULTAD DE CIENCIAS ECONÓMICAS",
-      ],
-      listRoles: [
-        "Super Usuario",
-        "Jefe de Departamento",
-        "Secretario",
-        "Cotizador",
-        "Responsable de Presupuestos",
-      ],
+      listfacultad: ["FACULTAD DE CIENCIAS Y TECNOLOGIA", "Economia", "Derecho"],
     };
   },
   validations: {
@@ -234,23 +216,9 @@ export default {
     async submitForm() {
       try {
         await this.sendDataUsers();
-        this.alert("success", "Usuario creado exitosamente");
-        await this.sendUsernameRol();
         console.log("CORRECTO");
       } catch (error) {
         console.log("ERROR");
-      }
-    },
-
-    async sendUsernameRol() {
-      try {
-        console.log("roles");
-        await this.$http.post("usersPerRole", {
-          nombre_rol: this.users.nombre_rol,
-          nombre_usuario: this.users.nombre_usuario,
-        });
-      } catch (error) {
-        throw new Error("ALGO SALIO MAL");
       }
     },
     async sendDataUsers() {
@@ -347,9 +315,6 @@ export default {
 .form__section3 {
   display: flex;
 }
-.fomrm__section__item {
-  width: 33%;
-}
 .formulario_label {
   padding-left: 6px;
   color: var(--color-name);
@@ -381,5 +346,22 @@ export default {
   font-size: 13px;
   text-align: left;
   margin-left: 20px;
+}
+.container__base {
+  text-align: left;
+  padding-top: 20px;
+  width: 33%;
+}
+.container__label {
+  color: var(--color-name);
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.container__list {
+  width: 90%;
+  color: #576574;
+  padding: 6px;
+}
+.container__list__option {
 }
 </style>

@@ -34,7 +34,7 @@ export default {
     value: String,
     nombreLista: String,
     nombre: String,
-    lista: Array,
+    lista,
   },
 
   methods: {},

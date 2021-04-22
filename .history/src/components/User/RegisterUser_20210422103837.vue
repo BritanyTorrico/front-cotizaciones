@@ -131,23 +131,8 @@
           <div class="form__section3">
             <div class="fomrm__section__item">
               <lista-desplegable
-                v-model="users.facultad"
-                nombreLista="Facultad:"
-                :lista="listfacultad"
-              ></lista-desplegable>
-            </div>
-            <div class="fomrm__section__item">
-              <lista-desplegable
                 v-model="users.departamento"
-                nombreLista="Departamento:"
-                :lista="listDepartament"
-              ></lista-desplegable>
-            </div>
-            <div class="fomrm__section__item">
-              <lista-desplegable
-                v-model="users.nombre_rol"
-                nombreLista="Rol:"
-                :lista="listRoles"
+                nombreLista="Departamento"
               ></lista-desplegable>
             </div>
           </div>
@@ -155,7 +140,6 @@
             <button>CONFIRMAR</button>
           </div>
           {{ users }}
-          <Alert ref="alert"></Alert>
         </div>
       </div>
     </form>
@@ -165,9 +149,8 @@
 <script>
 import { required, maxLength } from "vuelidate/lib/validators";
 import ListaDesplegable from "./ListaDesplegable.vue";
-import Alert from "@/components/User/Alert.vue";
 export default {
-  components: { ListaDesplegable, Alert },
+  components: { ListaDesplegable },
   name: "RegisterUser",
   data() {
     return {
@@ -180,25 +163,11 @@ export default {
         celular: null,
         facultad: null,
         departamento: null,
-        nombre_rol: null,
       },
-      listDepartament: [
-        "Ingeniería de Sistemas",
-        "Ingeniería Informática",
-        "Ingeniería Civil",
-        "Ingeniería Mecánica",
-        "Administración",
-      ],
       listfacultad: [
         "FACULTAD DE CIENCIAS Y TECNOLOGIA",
-        "FACULTAD DE CIENCIAS ECONÓMICAS",
-      ],
-      listRoles: [
-        "Super Usuario",
-        "Jefe de Departamento",
-        "Secretario",
-        "Cotizador",
-        "Responsable de Presupuestos",
+        "Economia",
+        "Derecho",
       ],
     };
   },
@@ -234,23 +203,9 @@ export default {
     async submitForm() {
       try {
         await this.sendDataUsers();
-        this.alert("success", "Usuario creado exitosamente");
-        await this.sendUsernameRol();
         console.log("CORRECTO");
       } catch (error) {
         console.log("ERROR");
-      }
-    },
-
-    async sendUsernameRol() {
-      try {
-        console.log("roles");
-        await this.$http.post("usersPerRole", {
-          nombre_rol: this.users.nombre_rol,
-          nombre_usuario: this.users.nombre_usuario,
-        });
-      } catch (error) {
-        throw new Error("ALGO SALIO MAL");
       }
     },
     async sendDataUsers() {
@@ -347,9 +302,6 @@ export default {
 .form__section3 {
   display: flex;
 }
-.fomrm__section__item {
-  width: 33%;
-}
 .formulario_label {
   padding-left: 6px;
   color: var(--color-name);
@@ -381,5 +333,8 @@ export default {
   font-size: 13px;
   text-align: left;
   margin-left: 20px;
+}
+.fomrm__section__item {
+  width: 33%;
 }
 </style>
