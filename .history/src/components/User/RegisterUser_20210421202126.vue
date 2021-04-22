@@ -185,7 +185,7 @@ export default {
 }
 .boton__input {
   width: 120px;
-  height: 35px;
+  height: 40px;
   border-radius: 30px;
   background: blue;
   color: white;

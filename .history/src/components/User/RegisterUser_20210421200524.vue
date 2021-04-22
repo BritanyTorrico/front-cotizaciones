@@ -87,9 +87,6 @@
               <lista-desplegable nombreLista="Rol:"></lista-desplegable>
             </div>
           </div>
-          <div class="boton">
-            <input class="boton__input" type="submit" value="Confirmar" />
-          </div>
         </div>
       </div>
     </form>
@@ -176,21 +173,5 @@ export default {
 .form__name {
   width: 100%;
   padding-right: 50px;
-}
-.boton {
-  display: flex;
-  justify-content: right;
-  align-items: right;
-  margin: 50px 15px;
-}
-.boton__input {
-  width: 120px;
-  height: 35px;
-  border-radius: 30px;
-  background: blue;
-  color: white;
-  font-weight: bold;
-  border-bottom: none;
-  border: none;
 }
 </style>

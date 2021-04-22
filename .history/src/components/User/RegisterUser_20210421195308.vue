@@ -75,20 +75,9 @@
             />
           </div>
           <div class="form__section3">
-            <div class="form__section3__item">
-              <lista-desplegable nombreLista="Facultad:"></lista-desplegable>
-            </div>
-            <div class="form__section3__item">
-              <lista-desplegable
-                nombreLista="Departamento:"
-              ></lista-desplegable>
-            </div>
-            <div class="form__section3__item">
-              <lista-desplegable nombreLista="Rol:"></lista-desplegable>
-            </div>
-          </div>
-          <div class="boton">
-            <input class="boton__input" type="submit" value="Confirmar" />
+            <lista-desplegable nombreLista="Facultad"></lista-desplegable>
+            <lista-desplegable nombreLista="Departamento"></lista-desplegable>
+            <lista-desplegable nombreLista="Rol"></lista-desplegable>
           </div>
         </div>
       </div>
@@ -162,10 +151,6 @@ export default {
   margin-right: 40px;
 }
 .form__section3 {
-  display: flex;
-}
-.form__section3__item {
-  width: 33%;
 }
 .formulario_label {
   padding-left: 6px;
@@ -176,21 +161,5 @@ export default {
 .form__name {
   width: 100%;
   padding-right: 50px;
-}
-.boton {
-  display: flex;
-  justify-content: right;
-  align-items: right;
-  margin: 50px 15px;
-}
-.boton__input {
-  width: 120px;
-  height: 35px;
-  border-radius: 30px;
-  background: blue;
-  color: white;
-  font-weight: bold;
-  border-bottom: none;
-  border: none;
 }
 </style>

@@ -88,7 +88,7 @@
             </div>
           </div>
           <div class="boton">
-            <input class="boton__input" type="submit" value="Confirmar" />
+            <input type="submit" value="Enviar" />
           </div>
         </div>
       </div>
@@ -178,19 +178,10 @@ export default {
   padding-right: 50px;
 }
 .boton {
+  border: 1px solid;
   display: flex;
   justify-content: right;
   align-items: right;
-  margin: 50px 15px;
-}
-.boton__input {
-  width: 120px;
-  height: 35px;
-  border-radius: 30px;
-  background: blue;
-  color: white;
-  font-weight: bold;
-  border-bottom: none;
-  border: none;
+  margin: 30px;
 }
 </style>

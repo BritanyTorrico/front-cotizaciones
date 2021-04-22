@@ -74,21 +74,15 @@
               placeholder="Ingrese su contraseña"
             />
           </div>
-          <div class="form__section3">
-            <div class="form__section3__item">
-              <lista-desplegable nombreLista="Facultad:"></lista-desplegable>
-            </div>
-            <div class="form__section3__item">
-              <lista-desplegable
-                nombreLista="Departamento:"
-              ></lista-desplegable>
-            </div>
-            <div class="form__section3__item">
-              <lista-desplegable nombreLista="Rol:"></lista-desplegable>
-            </div>
-          </div>
-          <div class="boton">
-            <input class="boton__input" type="submit" value="Confirmar" />
+          <div>
+            <select v-for="(item, index) in 3" :key="index" name="OS">
+              <option value="1">Windows Vista</option>
+              <option value="2">Windows 7</option>
+              <option value="3">Windows XP</option>
+              <option value="10">Fedora</option>
+              <option value="11">Debian</option>
+              <option value="12">Suse</option>
+            </select>
           </div>
         </div>
       </div>
@@ -97,9 +91,7 @@
 </template>
 
 <script>
-import ListaDesplegable from "./ListaDesplegable.vue";
 export default {
-  components: { ListaDesplegable },
   name: "RegisterUser",
 };
 </script>
@@ -161,12 +153,6 @@ export default {
   margin-top: 20px;
   margin-right: 40px;
 }
-.form__section3 {
-  display: flex;
-}
-.form__section3__item {
-  width: 33%;
-}
 .formulario_label {
   padding-left: 6px;
   color: var(--color-name);
@@ -176,21 +162,5 @@ export default {
 .form__name {
   width: 100%;
   padding-right: 50px;
-}
-.boton {
-  display: flex;
-  justify-content: right;
-  align-items: right;
-  margin: 50px 15px;
-}
-.boton__input {
-  width: 120px;
-  height: 35px;
-  border-radius: 30px;
-  background: blue;
-  color: white;
-  font-weight: bold;
-  border-bottom: none;
-  border: none;
 }
 </style>

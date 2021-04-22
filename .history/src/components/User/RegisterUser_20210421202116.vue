@@ -184,8 +184,8 @@ export default {
   margin: 50px 15px;
 }
 .boton__input {
-  width: 120px;
-  height: 35px;
+  width: 100px;
+  height: 40px;
   border-radius: 30px;
   background: blue;
   color: white;
