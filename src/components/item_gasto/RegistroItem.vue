@@ -119,6 +119,7 @@
           </button>
       </form>
       {{item}}
+      <Alert ref="alert"></Alert>
   </section>
 </template>
 
@@ -127,9 +128,11 @@ import {
     required,
     maxLength,
 } from "vuelidate/lib/validators";
+import Alert from "@/components/Alert.vue";
 
 export default {
     name: "RegistroItem",
+    components: { Alert },
     data(){
         return{
             disabled: false,
@@ -167,7 +170,6 @@ export default {
             e.preventDefault();
           }
         },
-
         async submitForm(){
             try {
                 if (!this.$v.item.$invalid){
@@ -180,7 +182,6 @@ export default {
                 this.alert("warning", error);
             }
         },
-
         async sendData(){
             try {
                 await this.$http.post("expenseItem", {
@@ -197,15 +198,13 @@ export default {
             this.$refs.alert.showAlert(alertType, alertMessage);
         },
     },
-    
-
 };
 </script>
 
 <style>
 .reg_item{
     background-color: #f1f2f6;
-    padding: 10px 20px 10px 20px;
+    padding: 20px 40px 20px 40px;
 }
 .item_title{
     text-align:left;
@@ -237,9 +236,9 @@ export default {
 .reg_item input,
 .reg_item textarea {
     background-color: #ffffff;
-    border: none;
-    border-bottom: 1px;
-    border-bottom-color: #999999;
+    border-style: none none solid none;
+    border: 0px 0px 5px 0px;
+    border-color: #3a3a3a;
     border-radius: 3px;
     padding: 8px;
     width: 500px;
