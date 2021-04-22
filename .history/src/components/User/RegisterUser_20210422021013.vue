@@ -161,6 +161,7 @@
           </div>
         </div>
       </div>
+      {{ users }}
     </form>
   </div>
 </template>
@@ -315,6 +316,9 @@ export default {
 .form__section3 {
   display: flex;
 }
+.form__section3__item {
+  width: 33%;
+}
 .formulario_label {
   padding-left: 6px;
   color: var(--color-name);
@@ -350,7 +354,6 @@ export default {
 .container__base {
   text-align: left;
   padding-top: 20px;
-  width: 33%;
 }
 .container__label {
   color: var(--color-name);

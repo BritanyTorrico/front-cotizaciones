@@ -16,7 +16,6 @@
               <label
                 ><div class="formulario_label">Nombre:</div>
                 <input
-                  v-on:keydown="keyhandler($event)"
                   :class="
                     $v.users.nombres.$invalid
                       ? 'form_check-input-error'
@@ -35,20 +34,13 @@
               <label
                 ><div class="formulario_label">Apellidos:</div>
                 <input
-                  :class="
-                    $v.users.apellidos.$invalid
-                      ? 'form_check-input-error'
-                      : 'form__input'
-                  "
+                  class="form__input"
                   type="text"
                   placeholder="Ingrese su apellido"
                   required
                   v-model="users.apellidos"
                 />
               </label>
-              <div class="form_check-error" v-if="!$v.users.apellidos.required">
-                Campo obligatorio.
-              </div>
             </div>
           </div>
           <div class="form__section">
@@ -56,104 +48,54 @@
               <label
                 ><div class="formulario_label">Nombre de usuario:</div>
                 <input
-                  :class="
-                    $v.users.nombre_usuario.$invalid
-                      ? 'form_check-input-error'
-                      : 'form__input'
-                  "
+                  class="form__input"
                   type="text"
                   placeholder="Ingrese su nombre de usuario"
                   v-model="users.nombre_usuario"
                   required
                 />
               </label>
-              <div
-                class="form_check-error"
-                v-if="!$v.users.nombre_usuario.required"
-              >
-                Campo obligatorio.
-              </div>
             </div>
             <div class="form__name">
               <label
                 ><div class="formulario_label">Celular:</div>
                 <input
-                  :class="
-                    $v.users.celular.$invalid
-                      ? 'form_check-input-error'
-                      : 'form__input'
-                  "
+                  class="form__input"
                   type="text"
                   placeholder="Ingrese su celular"
                   v-model="users.celular"
                 />
               </label>
-              <div class="form_check-error" v-if="!$v.users.celular.required">
-                Campo obligatorio.
-              </div>
             </div>
           </div>
           <div class="form__section2">
             <div class="formulario_label">Contraseña:</div>
             <input
               type="password"
-              :class="
-                $v.users.contrasena.$invalid
-                  ? 'form_check-input-error'
-                  : 'form__input'
-              "
+              class="form__input"
               placeholder="Ingrese su contraseña"
               v-model="users.contrasena"
             />
-            <div class="form_check-error" v-if="!$v.users.contrasena.required">
-              Campo obligatorio.
-            </div>
           </div>
           <div class="form__section2">
             <div class="formulario_label">Confirmar Contraseña:</div>
             <input
               type="password"
-              :class="
-                $v.users.confirmarContraseña.$invalid
-                  ? 'form_check-input-error'
-                  : 'form__input'
-              "
+              class="form__input"
               placeholder="Ingrese su contraseña"
-              v-model="users.confirmarContraseña"
             />
-            <div
-              class="form_check-error"
-              v-if="!$v.users.confirmarContraseña.required"
-            >
-              Campo obligatorio.
-            </div>
           </div>
           <div class="form__section3">
-            <div class="container__base">
-              <div class="container__label">Facultad</div>
-              <select class="container__list" v-model="users.facultad">
-                <option
-                  class="container__list__option"
-                  v-for="(item, index) in listfacultad"
-                  :key="index"
-                  value="1"
-                >
-                  {{ listfacultad[index] }}</option
-                >
-              </select>
+            <div class="form__section3__item">
+              <lista-desplegable nombreLista="Facultad:"></lista-desplegable>
             </div>
-            <div class="container__base">
-              <div class="container__label">Departamento</div>
-              <select class="container__list" v-model="users.departamento">
-                <option
-                  class="container__list__option"
-                  v-for="(item, index) in listfacultad"
-                  :key="index"
-                  value="1"
-                >
-                  {{ listfacultad[index] }}</option
-                >
-              </select>
+            <div class="form__section3__item">
+              <lista-desplegable
+                nombreLista="Departamento:"
+              ></lista-desplegable>
+            </div>
+            <div class="form__section3__item">
+              <lista-desplegable nombreLista="Rol:"></lista-desplegable>
             </div>
           </div>
           <div class="boton">
@@ -161,27 +103,26 @@
           </div>
         </div>
       </div>
+      {{ users }}
     </form>
   </div>
 </template>
 
 <script>
+import ListaDesplegable from "./ListaDesplegable.vue";
 import { required, maxLength } from "vuelidate/lib/validators";
 export default {
+  components: { ListaDesplegable },
   name: "RegisterUser",
   data() {
     return {
       users: {
         nombre_usuario: null,
         contrasena: null,
-        confirmarContraseña: null,
         nombres: null,
         apellidos: null,
         celular: null,
-        facultad: null,
-        departamento: null,
       },
-      listfacultad: ["Tecnologia", "Economia", "Derecho"],
     };
   },
   validations: {
@@ -190,29 +131,9 @@ export default {
         required,
         maxLength: maxLength(30),
       },
-      apellidos: {
-        required,
-      },
-      nombre_usuario: {
-        required,
-      },
-      contrasena: {
-        required,
-      },
-      confirmarContraseña: {
-        required,
-      },
-      celular: {
-        required,
-      },
     },
   },
   methods: {
-    keyhandler(e) {
-      if (!e.key.match(/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.\s]*$/)) {
-        e.preventDefault();
-      }
-    },
     async submitForm() {
       try {
         await this.sendDataUsers();
@@ -224,14 +145,12 @@ export default {
     async sendDataUsers() {
       try {
         console.log(this.users);
-        await this.$http.post("users", {
-          nombre_usuario: this.users.nombre_usuario,
-          contrasena: this.users.contrasena,
-          nombres: this.users.nombres,
-          apellidos: this.users.apellidos,
-          celular: this.users.celular,
-          facultad: this.users.facultad,
-          departamento: this.users.departamento,
+        await this.$http.post("usuario", {
+          nombre_usuario: this.nombre_usuario,
+          contrasena: this.contrasena,
+          nombres: this.nombres,
+          apellidos: this.apellidos,
+          celular: this.celular,
         });
       } catch (error) {
         throw new Error("ALGO SALIO MAL");
@@ -296,11 +215,6 @@ export default {
   outline: none;
   border-bottom: 2px solid #747d8c;
 }
-.form_check-input-error:focus {
-  background: linear-gradient(to bottom, transparent, #ced6e0);
-  outline: none;
-  border-bottom: 2px solid red;
-}
 ::placeholder {
   color: #576574;
 }
@@ -314,6 +228,9 @@ export default {
 }
 .form__section3 {
   display: flex;
+}
+.form__section3__item {
+  width: 33%;
 }
 .formulario_label {
   padding-left: 6px;
@@ -342,26 +259,7 @@ export default {
   border: none;
 }
 .form_check-error {
+  text-align: center;
   color: red;
-  font-size: 13px;
-  text-align: left;
-  margin-left: 20px;
-}
-.container__base {
-  text-align: left;
-  padding-top: 20px;
-  width: 33%;
-}
-.container__label {
-  color: var(--color-name);
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-.container__list {
-  width: 90%;
-  color: #576574;
-  padding: 6px;
-}
-.container__list__option {
 }
 </style>

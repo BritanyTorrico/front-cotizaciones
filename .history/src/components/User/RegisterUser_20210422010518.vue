@@ -16,7 +16,6 @@
               <label
                 ><div class="formulario_label">Nombre:</div>
                 <input
-                  v-on:keydown="keyhandler($event)"
                   :class="
                     $v.users.nombres.$invalid
                       ? 'form_check-input-error'
@@ -78,11 +77,7 @@
               <label
                 ><div class="formulario_label">Celular:</div>
                 <input
-                  :class="
-                    $v.users.celular.$invalid
-                      ? 'form_check-input-error'
-                      : 'form__input'
-                  "
+                  class="form__input"
                   type="text"
                   placeholder="Ingrese su celular"
                   v-model="users.celular"
@@ -129,31 +124,16 @@
             </div>
           </div>
           <div class="form__section3">
-            <div class="container__base">
-              <div class="container__label">Facultad</div>
-              <select class="container__list" v-model="users.facultad">
-                <option
-                  class="container__list__option"
-                  v-for="(item, index) in listfacultad"
-                  :key="index"
-                  value="1"
-                >
-                  {{ listfacultad[index] }}</option
-                >
-              </select>
+            <div class="form__section3__item">
+              <lista-desplegable nombreLista="Facultad:"></lista-desplegable>
             </div>
-            <div class="container__base">
-              <div class="container__label">Departamento</div>
-              <select class="container__list" v-model="users.departamento">
-                <option
-                  class="container__list__option"
-                  v-for="(item, index) in listfacultad"
-                  :key="index"
-                  value="1"
-                >
-                  {{ listfacultad[index] }}</option
-                >
-              </select>
+            <div class="form__section3__item">
+              <lista-desplegable
+                nombreLista="Departamento:"
+              ></lista-desplegable>
+            </div>
+            <div class="form__section3__item">
+              <lista-desplegable nombreLista="Rol:"></lista-desplegable>
             </div>
           </div>
           <div class="boton">
@@ -161,13 +141,16 @@
           </div>
         </div>
       </div>
+      {{ users }}
     </form>
   </div>
 </template>
 
 <script>
+import ListaDesplegable from "./ListaDesplegable.vue";
 import { required, maxLength } from "vuelidate/lib/validators";
 export default {
+  components: { ListaDesplegable },
   name: "RegisterUser",
   data() {
     return {
@@ -178,10 +161,7 @@ export default {
         nombres: null,
         apellidos: null,
         celular: null,
-        facultad: null,
-        departamento: null,
       },
-      listfacultad: ["Tecnologia", "Economia", "Derecho"],
     };
   },
   validations: {
@@ -208,11 +188,6 @@ export default {
     },
   },
   methods: {
-    keyhandler(e) {
-      if (!e.key.match(/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.\s]*$/)) {
-        e.preventDefault();
-      }
-    },
     async submitForm() {
       try {
         await this.sendDataUsers();
@@ -224,14 +199,12 @@ export default {
     async sendDataUsers() {
       try {
         console.log(this.users);
-        await this.$http.post("users", {
-          nombre_usuario: this.users.nombre_usuario,
-          contrasena: this.users.contrasena,
-          nombres: this.users.nombres,
-          apellidos: this.users.apellidos,
-          celular: this.users.celular,
-          facultad: this.users.facultad,
-          departamento: this.users.departamento,
+        await this.$http.post("usuario", {
+          nombre_usuario: this.nombre_usuario,
+          contrasena: this.contrasena,
+          nombres: this.nombres,
+          apellidos: this.apellidos,
+          celular: this.celular,
         });
       } catch (error) {
         throw new Error("ALGO SALIO MAL");
@@ -315,6 +288,9 @@ export default {
 .form__section3 {
   display: flex;
 }
+.form__section3__item {
+  width: 33%;
+}
 .formulario_label {
   padding-left: 6px;
   color: var(--color-name);
@@ -343,25 +319,6 @@ export default {
 }
 .form_check-error {
   color: red;
-  font-size: 13px;
-  text-align: left;
-  margin-left: 20px;
-}
-.container__base {
-  text-align: left;
-  padding-top: 20px;
-  width: 33%;
-}
-.container__label {
-  color: var(--color-name);
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-.container__list {
-  width: 90%;
-  color: #576574;
-  padding: 6px;
-}
-.container__list__option {
+  font-size: 14px;
 }
 </style>

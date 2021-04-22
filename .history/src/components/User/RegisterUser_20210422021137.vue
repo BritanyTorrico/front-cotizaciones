@@ -161,6 +161,7 @@
           </div>
         </div>
       </div>
+      {{ users }}
     </form>
   </div>
 </template>

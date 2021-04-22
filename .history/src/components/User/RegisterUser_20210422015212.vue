@@ -136,7 +136,7 @@
                   class="container__list__option"
                   v-for="(item, index) in listfacultad"
                   :key="index"
-                  value="1"
+                  value="listfacultad[index] "
                 >
                   {{ listfacultad[index] }}</option
                 >
@@ -149,7 +149,7 @@
                   class="container__list__option"
                   v-for="(item, index) in listfacultad"
                   :key="index"
-                  value="1"
+                  value="listfacultad[index] "
                 >
                   {{ listfacultad[index] }}</option
                 >
@@ -161,6 +161,7 @@
           </div>
         </div>
       </div>
+      {{ users }}
     </form>
   </div>
 </template>
@@ -225,13 +226,13 @@ export default {
       try {
         console.log(this.users);
         await this.$http.post("users", {
-          nombre_usuario: this.users.nombre_usuario,
-          contrasena: this.users.contrasena,
-          nombres: this.users.nombres,
-          apellidos: this.users.apellidos,
-          celular: this.users.celular,
-          facultad: this.users.facultad,
-          departamento: this.users.departamento,
+          nombre_usuario: this.nombre_usuario,
+          contrasena: this.contrasena,
+          nombres: this.nombres,
+          apellidos: this.apellidos,
+          celular: this.celular,
+          facultad: this.facultad,
+          departamento: this.departamento,
         });
       } catch (error) {
         throw new Error("ALGO SALIO MAL");
@@ -315,6 +316,9 @@ export default {
 .form__section3 {
   display: flex;
 }
+.form__section3__item {
+  width: 33%;
+}
 .formulario_label {
   padding-left: 6px;
   color: var(--color-name);
@@ -350,7 +354,6 @@ export default {
 .container__base {
   text-align: left;
   padding-top: 20px;
-  width: 33%;
 }
 .container__label {
   color: var(--color-name);
@@ -358,7 +361,7 @@ export default {
   font-weight: bold;
 }
 .container__list {
-  width: 90%;
+  width: 80%;
   color: #576574;
   padding: 6px;
 }

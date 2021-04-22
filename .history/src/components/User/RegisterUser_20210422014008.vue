@@ -129,29 +129,16 @@
             </div>
           </div>
           <div class="form__section3">
-            <div class="container__base">
+            <div class="container">
               <div class="container__label">Facultad</div>
-              <select class="container__list" v-model="users.facultad">
+              <select class="container__list" v-model="a">
                 <option
                   class="container__list__option"
-                  v-for="(item, index) in listfacultad"
+                  v-for="(item, index) in facultad"
                   :key="index"
-                  value="1"
+                  value="facultad[index] "
                 >
-                  {{ listfacultad[index] }}</option
-                >
-              </select>
-            </div>
-            <div class="container__base">
-              <div class="container__label">Departamento</div>
-              <select class="container__list" v-model="users.departamento">
-                <option
-                  class="container__list__option"
-                  v-for="(item, index) in listfacultad"
-                  :key="index"
-                  value="1"
-                >
-                  {{ listfacultad[index] }}</option
+                  {{ facultad[index] }}</option
                 >
               </select>
             </div>
@@ -161,13 +148,16 @@
           </div>
         </div>
       </div>
+      {{ users }}
     </form>
   </div>
 </template>
 
 <script>
+import ListaDesplegable from "./ListaDesplegable.vue";
 import { required, maxLength } from "vuelidate/lib/validators";
 export default {
+  components: { ListaDesplegable },
   name: "RegisterUser",
   data() {
     return {
@@ -181,7 +171,6 @@ export default {
         facultad: null,
         departamento: null,
       },
-      listfacultad: ["Tecnologia", "Economia", "Derecho"],
     };
   },
   validations: {
@@ -224,14 +213,14 @@ export default {
     async sendDataUsers() {
       try {
         console.log(this.users);
-        await this.$http.post("users", {
-          nombre_usuario: this.users.nombre_usuario,
-          contrasena: this.users.contrasena,
-          nombres: this.users.nombres,
-          apellidos: this.users.apellidos,
-          celular: this.users.celular,
-          facultad: this.users.facultad,
-          departamento: this.users.departamento,
+        await this.$http.post("usuario", {
+          nombre_usuario: this.nombre_usuario,
+          contrasena: this.contrasena,
+          nombres: this.nombres,
+          apellidos: this.apellidos,
+          celular: this.celular,
+          facultad: this.facultad,
+          departamento: this.departamento,
         });
       } catch (error) {
         throw new Error("ALGO SALIO MAL");
@@ -315,6 +304,9 @@ export default {
 .form__section3 {
   display: flex;
 }
+.form__section3__item {
+  width: 33%;
+}
 .formulario_label {
   padding-left: 6px;
   color: var(--color-name);
@@ -346,22 +338,5 @@ export default {
   font-size: 13px;
   text-align: left;
   margin-left: 20px;
-}
-.container__base {
-  text-align: left;
-  padding-top: 20px;
-  width: 33%;
-}
-.container__label {
-  color: var(--color-name);
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-.container__list {
-  width: 90%;
-  color: #576574;
-  padding: 6px;
-}
-.container__list__option {
 }
 </style>

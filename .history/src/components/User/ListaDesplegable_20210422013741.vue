@@ -6,7 +6,7 @@
         xlass="container__list__option"
         v-for="(item, index) in facultad"
         :key="index"
-        value="facultad[index]"
+        value="facultad[index"
       >
         {{ facultad[index] }}</option
       >

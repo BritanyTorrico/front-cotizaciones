@@ -161,6 +161,7 @@
           </div>
         </div>
       </div>
+      {{ users }}
     </form>
   </div>
 </template>
@@ -314,6 +315,9 @@ export default {
 }
 .form__section3 {
   display: flex;
+}
+.form__section3__item {
+  width: 33%;
 }
 .formulario_label {
   padding-left: 6px;
