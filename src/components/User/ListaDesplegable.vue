@@ -2,6 +2,7 @@
   <div class="container">
     <div class="container__label">{{ nombreLista }}</div>
     <select
+      required
       v-on:input="$emit('input', $event.target.value)"
       class="container__list"
     >
@@ -49,6 +50,7 @@ export default {
   width: 80%;
   color: #576574;
   padding: 6px;
+  background: #ecf0f1;
 }
 .container__list__option {
 }

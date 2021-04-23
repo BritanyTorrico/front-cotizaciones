@@ -1,5 +1,11 @@
 <template>
   <div class="container">
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+      integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
+      crossorigin="anonymous"
+    />
     <form @submit.prevent="submitForm">
       <div class="flex-container">
         <div class="form__image">
@@ -9,7 +15,6 @@
         <div class="form__datos">
           <div class="form_title">
             <h1>Registrar Usuario</h1>
-            <hr class="form__linea" />
           </div>
           <div class="form__section">
             <div class="form__name">
@@ -119,17 +124,25 @@
             </div>
           </div>
           <div class="form__section2">
-            <div class="formulario_label">Contraseña:</div>
-            <input
-              type="password"
-              :class="
-                $v.users.contrasena.$invalid
-                  ? 'form_check-input-error'
-                  : 'form__input'
-              "
-              placeholder="Ingrese su contraseña"
-              v-model="users.contrasena"
-            />
+            <div class="formulario_label">
+              Contraseña:
+            </div>
+            <div class="flex__contraseña">
+              <input
+                type="password"
+                id="password"
+                :class="
+                  $v.users.contrasena.$invalid
+                    ? 'form_check-input-error'
+                    : 'form__input'
+                "
+                placeholder="Ingrese su contraseña"
+                v-model="users.contrasena"
+              />
+              <div class="flex__contraseña__icon">
+                <i @click="mostrarContrasena()" class="fas fa-eye"></i>
+              </div>
+            </div>
 
             <div class="form_check-error" v-if="!$v.users.contrasena.valid">
               La contraseña debe contener minimo 8 caracteres y al menos una
@@ -145,17 +158,23 @@
           </div>
           <div class="form__section2">
             <div class="formulario_label">Confirmar Contraseña:</div>
-            <input
-              type="password"
-              :class="
-                $v.users.confirmarContraseña.$invalid
-                  ? 'form_check-input-error'
-                  : 'form__input'
-              "
-              placeholder="Ingrese su contraseña"
-              v-model="users.confirmarContraseña"
-              id="validar"
-            />
+            <div class="flex__contraseña">
+              <input
+                type="password"
+                id="password2"
+                :class="
+                  $v.users.confirmarContraseña.$invalid
+                    ? 'form_check-input-error'
+                    : 'form__input'
+                "
+                placeholder="Ingrese su contraseña"
+                v-model="users.confirmarContraseña"
+              />
+              <div class="flex__contraseña__icon">
+                <i @click="mostrarContrasena2()" class="fas fa-eye"></i>
+              </div>
+            </div>
+
             <div
               class="form_check-error"
               v-if="!$v.users.confirmarContraseña.required"
@@ -196,7 +215,6 @@
             </div>
             <div class="fomrm__section__item">
               <lista-desplegable
-                required
                 v-model="users.nombre_rol"
                 nombreLista="Rol:"
                 :lista="listRoles"
@@ -359,6 +377,22 @@ export default {
     alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
+    mostrarContrasena() {
+      var tipo = document.getElementById("password");
+      if (tipo.type == "password") {
+        tipo.type = "text";
+      } else {
+        tipo.type = "password";
+      }
+    },
+    mostrarContrasena2() {
+      var tipo = document.getElementById("password2");
+      if (tipo.type == "password") {
+        tipo.type = "text";
+      } else {
+        tipo.type = "password";
+      }
+    },
   },
 };
 </script>
@@ -385,14 +419,14 @@ export default {
   color: var(--color-title);
   text-align: left;
   font-size: 14px;
+  border-bottom: 1px solid var(--color-title);
+  box-shadow: 0 1px 0 0 gray;
 }
 .form_title h1 {
   padding-top: 30px;
   padding-bottom: 12px;
 }
-.form__linea {
-  color: var(--color-title);
-}
+
 .form__input {
   width: 100%;
   padding: 6px;
@@ -433,6 +467,13 @@ export default {
 .form__section2 {
   margin-top: 20px;
   margin-right: 40px;
+}
+.flex__contraseña {
+  display: flex;
+  padding-top: 10px;
+}
+.flex__contraseña__icon {
+  padding-top: 12px;
 }
 .form__section3 {
   display: flex;

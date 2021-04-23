@@ -5,6 +5,7 @@ import store from "./store";
 import instance from "@/services/axios";
 import Vuelidate from "vuelidate";
 Vue.config.productionTip = false;
+
 Vue.prototype.$http = instance;
 Vue.use(Vuelidate);
 new Vue({

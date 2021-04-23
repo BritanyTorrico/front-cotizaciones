@@ -2,7 +2,8 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+      <router-link to="/register">Registrar Usuario</router-link>
     </div>
     <router-view />
   </div>
@@ -15,7 +16,7 @@
 }
 :root {
   --color-title: #3d8af7;
-  --color-name: #929292;
+  --color-name: #7c7c7c;
   --color-line: #c0c0c0;
 }
 #app {
