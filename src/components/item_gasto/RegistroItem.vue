@@ -189,6 +189,12 @@ export default {
                     descripcion_item: this.item.descripcion_item,
                     justificacion: this.item.justificacion,
                 });
+                await this.$http.post("itemsPerUnit", {
+                    nombre_unidadgasto: "laboratorio 1 de Sistemas",
+                    nombre_itemgasto: this.item.nombre_itemgasto,
+                    presupuesto: 5000,
+                    activo_item: true,
+                });
             } catch (error) {
                 throw new Error("Este ítem ya está registrado");
             }
