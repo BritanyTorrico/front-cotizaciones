@@ -23,6 +23,11 @@ const routes = [
     name: "RegistroItemGasto",
     component: () => import("@/views/RegItem.vue"),
   },
+  {
+    path: "/registro_unidad",
+    name: "RegistroUnidadGasto",
+    component: () => import("@/views/RegUnidad.vue"),
+  },
 ]
 
 const router = new VueRouter({
