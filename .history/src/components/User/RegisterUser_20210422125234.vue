@@ -84,7 +84,6 @@
               >
                 Campo obligatorio.
               </div>
-
               <div
                 class="form_check-error"
                 v-if="!$v.users.nombre_usuario.maxLength"
@@ -102,19 +101,13 @@
                       ? 'form_check-input-error'
                       : 'form__input'
                   "
-                  type=""
+                  type="text"
                   placeholder="Ingrese su celular"
                   v-model="users.celular"
                 />
               </label>
-              <div class="form_check-error" v-if="!$v.users.celular.integer">
-                Solo se aceptan valores numericos.
-              </div>
               <div class="form_check-error" v-if="!$v.users.celular.required">
                 Campo obligatorio.
-              </div>
-              <div class="form_check-error" v-if="!$v.users.celular.minLength">
-                Minimo 8 caracteres.
               </div>
             </div>
           </div>
@@ -130,11 +123,6 @@
               placeholder="Ingrese su contraseña"
               v-model="users.contrasena"
             />
-
-            <div class="form_check-error" v-if="!$v.users.contrasena.valid">
-              La contraseña debe contener minimo 8 caracteres y al menos una
-              mayuscula, minuscula un número y un caracter especial #?!@$%^&*-
-            </div>
             <div class="form_check-error" v-if="!$v.users.contrasena.required">
               Campo obligatorio.
             </div>
@@ -154,19 +142,12 @@
               "
               placeholder="Ingrese su contraseña"
               v-model="users.confirmarContraseña"
-              id="validar"
             />
             <div
               class="form_check-error"
               v-if="!$v.users.confirmarContraseña.required"
             >
               Campo obligatorio.
-            </div>
-            <div
-              class="form_check-error"
-              v-if="!$v.users.confirmarContraseña.sameAsPassword"
-            >
-              Las contraseñas debe coincidir.
             </div>
             <div
               class="form_check-error"
@@ -180,7 +161,6 @@
           <div class="form__section3">
             <div class="fomrm__section__item">
               <lista-desplegable
-                required
                 v-model="users.facultad"
                 nombreLista="Facultad:"
                 :lista="listfacultad"
@@ -188,7 +168,6 @@
             </div>
             <div class="fomrm__section__item">
               <lista-desplegable
-                required
                 v-model="users.departamento"
                 nombreLista="Departamento:"
                 :lista="listDepartament"
@@ -196,7 +175,6 @@
             </div>
             <div class="fomrm__section__item">
               <lista-desplegable
-                required
                 v-model="users.nombre_rol"
                 nombreLista="Rol:"
                 :lista="listRoles"
@@ -214,13 +192,7 @@
 </template>
 
 <script>
-import {
-  required,
-  minLength,
-  maxLength,
-  sameAs,
-  integer,
-} from "vuelidate/lib/validators";
+import { required, minLength, maxLength } from "vuelidate/lib/validators";
 import ListaDesplegable from "./ListaDesplegable.vue";
 import Alert from "@/components/User/Alert.vue";
 export default {
@@ -259,7 +231,6 @@ export default {
       ],
     };
   },
-
   validations: {
     users: {
       nombres: {
@@ -280,33 +251,18 @@ export default {
         required,
         minLength: minLength(8),
         maxLength: maxLength(20),
-        valid: function(value) {
-          const containsUppercase = /[A-Z]/.test(value);
-          const containsNumber = /[0-9]/.test(value);
-          const containsLowercase = /[a-z]/.test(value);
-          const containsSpecial = /[#?!@$%^&*-]/.test(value);
-          return (
-            containsUppercase &&
-            containsLowercase &&
-            containsNumber &&
-            containsSpecial
-          );
-        },
       },
       confirmarContraseña: {
         required,
         minLength: minLength(8),
         maxLength: maxLength(20),
-        sameAsPassword: sameAs("contrasena"),
       },
       celular: {
         required,
         minLength: minLength(8),
-        integer,
       },
     },
   },
-
   methods: {
     keyhandler(e) {
       if (!e.key.match(/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.\s]*$/)) {
@@ -325,7 +281,7 @@ export default {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
-        this.alert("warning", error);
+        this.alert("warning", "Error al crear usuario");
       }
     },
 
@@ -337,7 +293,7 @@ export default {
           nombre_usuario: this.users.nombre_usuario,
         });
       } catch (error) {
-        throw new Error("roles");
+        throw new Error("ALGO SALIO MAL");
       }
     },
     async sendDataUsers() {
@@ -353,7 +309,7 @@ export default {
           departamento: this.users.departamento,
         });
       } catch (error) {
-        throw new Error("El nombre de usuario ya fue registrado");
+        throw new Error("ALGO SALIO MAL");
       }
     },
     alert(alertType, alertMessage) {
@@ -373,7 +329,7 @@ export default {
 }
 .form__image img {
   width: 100%;
-  height: 670px;
+  height: 600px;
 }
 
 .form__datos {
@@ -451,9 +407,10 @@ export default {
   padding-right: 50px;
 }
 .boton {
-  align-items: left;
+  display: flex;
+  justify-content: left;
+  align-items: center;
   margin: 50px 15px;
-  text-align: right;
 }
 .boton__input {
   width: 120px;

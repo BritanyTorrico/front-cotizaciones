@@ -30,10 +30,6 @@
               <div class="form_check-error" v-if="!$v.users.nombres.required">
                 Campo obligatorio.
               </div>
-              <div class="form_check-error" v-if="!$v.users.nombres.maxLength">
-                Máximo
-                {{ $v.users.nombres.$params.maxLength.max }}caracteres.
-              </div>
             </div>
             <div class="form__name">
               <label
@@ -52,13 +48,6 @@
               </label>
               <div class="form_check-error" v-if="!$v.users.apellidos.required">
                 Campo obligatorio.
-              </div>
-              <div
-                class="form_check-error"
-                v-if="!$v.users.apellidos.maxLength"
-              >
-                Máximo
-                {{ $v.users.apellidos.$params.maxLength.max }} caracteres.
               </div>
             </div>
           </div>
@@ -84,14 +73,6 @@
               >
                 Campo obligatorio.
               </div>
-
-              <div
-                class="form_check-error"
-                v-if="!$v.users.nombre_usuario.maxLength"
-              >
-                Máximo
-                {{ $v.users.nombre_usuario.$params.maxLength.max }} caracteres.
-              </div>
             </div>
             <div class="form__name">
               <label
@@ -102,19 +83,13 @@
                       ? 'form_check-input-error'
                       : 'form__input'
                   "
-                  type=""
+                  type="text"
                   placeholder="Ingrese su celular"
                   v-model="users.celular"
                 />
               </label>
-              <div class="form_check-error" v-if="!$v.users.celular.integer">
-                Solo se aceptan valores numericos.
-              </div>
               <div class="form_check-error" v-if="!$v.users.celular.required">
                 Campo obligatorio.
-              </div>
-              <div class="form_check-error" v-if="!$v.users.celular.minLength">
-                Minimo 8 caracteres.
               </div>
             </div>
           </div>
@@ -130,17 +105,8 @@
               placeholder="Ingrese su contraseña"
               v-model="users.contrasena"
             />
-
-            <div class="form_check-error" v-if="!$v.users.contrasena.valid">
-              La contraseña debe contener minimo 8 caracteres y al menos una
-              mayuscula, minuscula un número y un caracter especial #?!@$%^&*-
-            </div>
             <div class="form_check-error" v-if="!$v.users.contrasena.required">
               Campo obligatorio.
-            </div>
-            <div class="form_check-error" v-if="!$v.users.contrasena.maxLength">
-              Contraseña muy larga máximo
-              {{ $v.users.contrasena.$params.maxLength.max }} caracteres.
             </div>
           </div>
           <div class="form__section2">
@@ -154,7 +120,6 @@
               "
               placeholder="Ingrese su contraseña"
               v-model="users.confirmarContraseña"
-              id="validar"
             />
             <div
               class="form_check-error"
@@ -162,25 +127,10 @@
             >
               Campo obligatorio.
             </div>
-            <div
-              class="form_check-error"
-              v-if="!$v.users.confirmarContraseña.sameAsPassword"
-            >
-              Las contraseñas debe coincidir.
-            </div>
-            <div
-              class="form_check-error"
-              v-if="!$v.users.confirmarContraseña.maxLength"
-            >
-              Contraseña muy larga maximo
-              {{ $v.users.confirmarContraseña.$params.maxLength.max }}
-              caracteres.
-            </div>
           </div>
           <div class="form__section3">
             <div class="fomrm__section__item">
               <lista-desplegable
-                required
                 v-model="users.facultad"
                 nombreLista="Facultad:"
                 :lista="listfacultad"
@@ -188,7 +138,6 @@
             </div>
             <div class="fomrm__section__item">
               <lista-desplegable
-                required
                 v-model="users.departamento"
                 nombreLista="Departamento:"
                 :lista="listDepartament"
@@ -196,7 +145,6 @@
             </div>
             <div class="fomrm__section__item">
               <lista-desplegable
-                required
                 v-model="users.nombre_rol"
                 nombreLista="Rol:"
                 :lista="listRoles"
@@ -204,7 +152,7 @@
             </div>
           </div>
           <div class="boton">
-            <input type="submit" value="Confirmar" class="boton__input" />
+            <button>CONFIRMAR</button>
           </div>
           <Alert ref="alert"></Alert>
         </div>
@@ -214,13 +162,7 @@
 </template>
 
 <script>
-import {
-  required,
-  minLength,
-  maxLength,
-  sameAs,
-  integer,
-} from "vuelidate/lib/validators";
+import { required, maxLength } from "vuelidate/lib/validators";
 import ListaDesplegable from "./ListaDesplegable.vue";
 import Alert from "@/components/User/Alert.vue";
 export default {
@@ -259,54 +201,29 @@ export default {
       ],
     };
   },
-
   validations: {
     users: {
       nombres: {
         required,
-        minLength: minLength(3),
-        maxLength: maxLength(20),
+        maxLength: maxLength(30),
       },
       apellidos: {
         required,
-        minLength: minLength(4),
-        maxLength: maxLength(30),
       },
       nombre_usuario: {
         required,
-        maxLength: maxLength(20),
       },
       contrasena: {
         required,
-        minLength: minLength(8),
-        maxLength: maxLength(20),
-        valid: function(value) {
-          const containsUppercase = /[A-Z]/.test(value);
-          const containsNumber = /[0-9]/.test(value);
-          const containsLowercase = /[a-z]/.test(value);
-          const containsSpecial = /[#?!@$%^&*-]/.test(value);
-          return (
-            containsUppercase &&
-            containsLowercase &&
-            containsNumber &&
-            containsSpecial
-          );
-        },
       },
       confirmarContraseña: {
         required,
-        minLength: minLength(8),
-        maxLength: maxLength(20),
-        sameAsPassword: sameAs("contrasena"),
       },
       celular: {
         required,
-        minLength: minLength(8),
-        integer,
       },
     },
   },
-
   methods: {
     keyhandler(e) {
       if (!e.key.match(/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.\s]*$/)) {
@@ -325,7 +242,7 @@ export default {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
-        this.alert("warning", error);
+        this.alert("warning", "Error al crear usuario");
       }
     },
 
@@ -337,7 +254,7 @@ export default {
           nombre_usuario: this.users.nombre_usuario,
         });
       } catch (error) {
-        throw new Error("roles");
+        throw new Error("ALGO SALIO MAL");
       }
     },
     async sendDataUsers() {
@@ -353,7 +270,7 @@ export default {
           departamento: this.users.departamento,
         });
       } catch (error) {
-        throw new Error("El nombre de usuario ya fue registrado");
+        throw new Error("ALGO SALIO MAL");
       }
     },
     alert(alertType, alertMessage) {
@@ -373,7 +290,7 @@ export default {
 }
 .form__image img {
   width: 100%;
-  height: 670px;
+  height: 600px;
 }
 
 .form__datos {
@@ -408,7 +325,7 @@ export default {
   padding: 6px;
   margin: 6px 6px;
   border: none;
-  border-bottom: 2px solid gray;
+  border-bottom: 2px solid #ed1c24;
   background-color: transparent;
   color: black;
   font-size: 14px;
@@ -421,7 +338,7 @@ export default {
 .form_check-input-error:focus {
   background: linear-gradient(to bottom, transparent, #ced6e0);
   outline: none;
-  border-bottom: 2px solid red;
+  border-bottom: 2px solid;
 }
 ::placeholder {
   color: #576574;
@@ -451,9 +368,10 @@ export default {
   padding-right: 50px;
 }
 .boton {
-  align-items: left;
+  display: flex;
+  justify-content: right;
+  align-items: right;
   margin: 50px 15px;
-  text-align: right;
 }
 .boton__input {
   width: 120px;
@@ -466,7 +384,7 @@ export default {
   border: none;
 }
 .form_check-error {
-  color: red;
+  color: re;
   font-size: 13px;
   text-align: left;
   margin-left: 20px;

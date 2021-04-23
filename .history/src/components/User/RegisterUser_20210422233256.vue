@@ -113,9 +113,6 @@
               <div class="form_check-error" v-if="!$v.users.celular.required">
                 Campo obligatorio.
               </div>
-              <div class="form_check-error" v-if="!$v.users.celular.minLength">
-                Minimo 8 caracteres.
-              </div>
             </div>
           </div>
           <div class="form__section2">
@@ -325,7 +322,7 @@ export default {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
-        this.alert("warning", error);
+        this.alert("warning", "Error al crear usuario");
       }
     },
 
@@ -337,7 +334,7 @@ export default {
           nombre_usuario: this.users.nombre_usuario,
         });
       } catch (error) {
-        throw new Error("roles");
+        throw new Error("ALGO SALIO MAL");
       }
     },
     async sendDataUsers() {
@@ -353,7 +350,7 @@ export default {
           departamento: this.users.departamento,
         });
       } catch (error) {
-        throw new Error("El nombre de usuario ya fue registrado");
+        throw new Error("ALGO SALIO MAL");
       }
     },
     alert(alertType, alertMessage) {

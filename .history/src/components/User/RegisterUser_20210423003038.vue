@@ -337,7 +337,7 @@ export default {
           nombre_usuario: this.users.nombre_usuario,
         });
       } catch (error) {
-        throw new Error("roles");
+        throw new Error("ALGO SALIO MAL");
       }
     },
     async sendDataUsers() {
@@ -353,7 +353,7 @@ export default {
           departamento: this.users.departamento,
         });
       } catch (error) {
-        throw new Error("El nombre de usuario ya fue registrado");
+        throw new Error("ALGO SALIO MAL");
       }
     },
     alert(alertType, alertMessage) {
