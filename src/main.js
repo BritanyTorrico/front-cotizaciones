@@ -11,7 +11,7 @@ Vue.config.productionTip = false
 Vue.prototype.$http = instance;
 Vue.use(Vuelidate);
 new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+    router,
+    store,
+    render: (h) => h(App),
+}).$mount("#app");
