@@ -55,9 +55,9 @@
                   Campo obligatorio.
               </div>
               <datalist id="categorias">
-                  <option value="Electronicos"></option>
-                  <option value="Material de escritorio"></option>
-                  <option value="Muebles y enseres"></option>
+                  <option value="Dispositivos"></option>
+                  <option value="Monitores"></option>
+                  <option value="Teclados"></option>
               </datalist>
           </div>
           <div class="form_section">
@@ -185,7 +185,7 @@ export default {
             try {
                 await this.$http.post("expenseItem", {
                     nombre_itemgasto: this.item.nombre_itemgasto,
-                    categoria_especifica: this.item.categoria_especifica,
+                    nombre_categoriaespecifica: this.item.categoria_especifica,
                     descripcion_item: this.item.descripcion_item,
                     justificacion: this.item.justificacion,
                 });
@@ -284,12 +284,35 @@ export default {
 }
 
 .form_check-input {
-    border-bottom: 1px;
-    border-bottom-color: #999999;
+  width: 100%;
+  padding: 3px;
+  margin: 3px 3px;
+  border: none;
+  border-bottom: 1px solid #999999;
+  background-color: transparent;
+  color: #3a3a3a;
+  font-size: 14px;
 }
 
 .form_check-input-error {
-  border: 2px solid #ed1c24 !important;
+  width: 100%;
+  padding: 3px;
+  margin: 3px 3px;
+  border: none;
+  border-bottom: 1px solid #ed1c24;
+  background-color: transparent;
+  color: #3a3a3a;
+  font-size: 14px;
+}
+.form_check-input:focus {
+  background: linear-gradient(to bottom, transparent, #ced6e0);
+  outline: none;
+  border-bottom: 2px solid #999999;
+}
+.form_check-input-error:focus {
+  background: linear-gradient(to bottom, transparent, #ced6e0);
+  outline: none;
+  border-bottom: 2px solid #ed1c24;
 }
 
 .button-disabled {

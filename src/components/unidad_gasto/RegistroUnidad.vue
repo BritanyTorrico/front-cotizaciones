@@ -142,7 +142,7 @@ export default {
             try {
                 if (!this.$v.unit.$invalid){
                     await this.sendData();
-                    this.alert("success", "Item creado exitosamente");
+                    this.alert("success", "Unidad creada exitosamente");
                 } else {
                     this.alert("warning", "Rellene todos los datos correctamente");
                 }
@@ -152,14 +152,14 @@ export default {
         },
         async sendData(){
             try {
-                await this.$http.post("expenseItem", {
+                await this.$http.post("spendingUnit", {
+                    nombre_departamento: "Ingeniería de Sistemas",
                     nombre_unidadgasto: this.unit.nombre_unidadgasto,
                     encargado_unidad: this.unit.encargado_unidad,
-                    descripcion_unidadgasto: this.unit.descripcion_unidadgasto,
-                    nombre_departamento: "Administración",
+                    descripcion_unidadgasto: this.unit.descripcion_unidadgasto
                 });
             } catch (error) {
-                throw new Error("Este ítem ya está registrado");
+                throw new Error("Esta unidad de gasto ya fué registrada");
             }
         },
         alert (alertType, alertMessage){
@@ -253,12 +253,35 @@ export default {
 }
 
 .form_check-input {
-    border-bottom: 1px;
-    border-bottom-color: #999999;
+  width: 100%;
+  padding: 3px;
+  margin: 3px 3px;
+  border: none;
+  border-bottom: 1px solid #999999;
+  background-color: transparent;
+  color: #3a3a3a;
+  font-size: 14px;
 }
 
 .form_check-input-error {
-  border: 2px solid #ed1c24 !important;
+  width: 100%;
+  padding: 3px;
+  margin: 3px 3px;
+  border: none;
+  border-bottom: 1px solid #ed1c24;
+  background-color: transparent;
+  color: #3a3a3a;
+  font-size: 14px;
+}
+.form_check-input:focus {
+  background: linear-gradient(to bottom, transparent, #ced6e0);
+  outline: none;
+  border-bottom: 2px solid #999999;
+}
+.form_check-input-error:focus {
+  background: linear-gradient(to bottom, transparent, #ced6e0);
+  outline: none;
+  border-bottom: 2px solid #ed1c24;
 }
 
 .button-disabled {
