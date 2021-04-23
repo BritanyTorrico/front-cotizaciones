@@ -21,7 +21,6 @@
               <label
                 ><div class="formulario_label">Nombre:</div>
                 <input
-                  v-on:keydown="keyhandler($event)"
                   :class="
                     $v.users.nombres.$invalid
                       ? 'form_check-input-error'
@@ -38,6 +37,12 @@
               <div class="form_check-error" v-if="!$v.users.nombres.maxLength">
                 Máximo
                 {{ $v.users.nombres.$params.maxLength.max }}caracteres.
+              </div>
+              <div class="form_check-error" v-if="!$v.users.nombres.minLength">
+                Minimo 3 caracteres.
+              </div>
+              <div class="form_check-error" v-if="!$v.users.nombres.alpha1">
+                No se aceptan caracteres especiales.
               </div>
             </div>
             <div class="form__name">
@@ -64,6 +69,15 @@
               >
                 Máximo
                 {{ $v.users.apellidos.$params.maxLength.max }} caracteres.
+              </div>
+              <div
+                class="form_check-error"
+                v-if="!$v.users.apellidos.minLength"
+              >
+                Minimo 4 caracteres.
+              </div>
+              <div class="form_check-error" v-if="!$v.users.apellidos.alpha1">
+                No se aceptan caracteres especiales.
               </div>
             </div>
           </div>
@@ -96,6 +110,13 @@
               >
                 Máximo
                 {{ $v.users.nombre_usuario.$params.maxLength.max }} caracteres.
+              </div>
+
+              <div
+                class="form_check-error"
+                v-if="!$v.users.nombre_usuario.alpha1"
+              >
+                No se aceptan caracteres especiales.
               </div>
             </div>
             <div class="form__name">
@@ -238,9 +259,11 @@ import {
   maxLength,
   sameAs,
   integer,
+  helpers,
 } from "vuelidate/lib/validators";
 import ListaDesplegable from "./ListaDesplegable.vue";
 import Alert from "@/components/User/Alert.vue";
+const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
 export default {
   components: { ListaDesplegable, Alert },
   name: "RegisterUser",
@@ -284,15 +307,18 @@ export default {
         required,
         minLength: minLength(3),
         maxLength: maxLength(20),
+        alpha1,
       },
       apellidos: {
         required,
         minLength: minLength(4),
         maxLength: maxLength(30),
+        alpha1,
       },
       nombre_usuario: {
         required,
         maxLength: maxLength(20),
+        alpha1,
       },
       contrasena: {
         required,
