@@ -31,8 +31,6 @@ export default {
     nombre: String,
     lista: Array,
   },
-
-  methods: {},
 };
 </script>
 

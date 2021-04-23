@@ -234,6 +234,7 @@
                 :lista="listDepartament"
               ></lista-desplegable>
             </div>
+
             <div class="fomrm__section__item">
               <lista-desplegable
                 v-model="users.nombre_rol"
@@ -347,6 +348,15 @@ export default {
         required,
         minLength: minLength(8),
         integer,
+      },
+      facultad: {
+        required,
+      },
+      departamento: {
+        required,
+      },
+      nombre_rol: {
+        required,
       },
     },
   },
@@ -537,5 +547,9 @@ export default {
   font-size: 13px;
   text-align: left;
   margin-left: 20px;
+}
+.requerido__listas {
+  padding-top: 60px;
+  color: red;
 }
 </style>
