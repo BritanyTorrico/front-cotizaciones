@@ -4,7 +4,7 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link to="/registro_item">Item</router-link> |
-      <router-link to="/registro_unidad">Unidad</router-link>  |
+      <router-link to="/registro_unidad">Unidad</router-link> |
       <router-link to="/register">Registrar Usuario</router-link>
     </div>
     <router-view />
@@ -20,6 +20,7 @@
   --color-title: #3d8af7;
   --color-name: #7c7c7c;
   --color-line: #c0c0c0;
+  --fondo-gris-claro: #f7f6f6;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
