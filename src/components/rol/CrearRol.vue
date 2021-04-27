@@ -28,8 +28,7 @@
      <div class="form_section">
         <label>
           <div class="form_name">Seleccione las funciones:</div>
-           
-           
+          
         </label>
      </div>  
      
@@ -64,6 +63,7 @@ export default {
        },
      };
    },
+   
    validations:{
      dato:{
        nombre_rol:{
@@ -92,7 +92,7 @@ export default {
      },
      async sendData(){
        try{
-         await this.$http.post("roles",{
+         await this.$http.post("rolePerFunctions",{
            nombre_rol: this.dato.nombre_rol,
          });
        }catch (error){
@@ -120,30 +120,26 @@ export default {
     font-weight: 600;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-.form_section{
-      padding:25px 0px 25px 0px;
-}
+
 .form_crear{
     padding:8px;
     text-align: left;
 }
-.form_name{
-    color:#3f4b5b;
-    font-size:24px;
-    font-weight: 500;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;  
+
+.crear_rol textarea {
+    resize: none;
+    word-wrap:break-word;
+    overflow-y:auto;
 }
-.form_button {
-  margin: auto;
-  display: block;
-  background-color: #0C59CF;
-  padding: 12px 115px 12px 115px;
-  border-radius: 22px;
-  color: #fafafa;
-  font-size: 22px;
-  font-weight: bold;
-  border: 0px;
+
+.form_check{
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  
+  width: 100%;
 }
+
 .crear_rol input,
 .crear_rol textarea {
     background-color: #F7F6F6;
@@ -155,21 +151,53 @@ export default {
     width: 550px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
+
 .crear_rol input ::placeholder,
 .crear_rol textarea ::placeholder{
     color:#999999;
     font-size: 20px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-.form_check{
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  
-  width: 100%;
+
+.form_name{
+    color:#3f4b5b;
+    font-size:24px;
+    font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;  
 }
+
+.form_section{
+      padding:25px 0px 25px 0px;
+}
+
 .form_check-error {
     color: #ed1c24;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.form_button {
+  margin: auto;
+  display: block;
+  background-color: #0C59CF;
+  padding: 12px 115px 12px 115px;
+  border-radius: 22px;
+  color: #fafafa;
+  font-size: 22px;
+  font-weight: bold;
+  border: 0px;
+}
+
+.form_check-input {
+    border-bottom: 1px;
+    border-bottom-color: #999999;
+}
+
+.form_check-input-error {
+  border: 1px solid #ed1c24 !important;
+}
+
+.button-disabled {
+    background:#999999;
+    border: 0px;
 }
 </style>
