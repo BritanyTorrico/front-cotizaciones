@@ -1,17 +1,17 @@
 <template>
-  <section class ="reg_item">
-      <h2 class="item_title">Registrar Item de Gasto</h2>
+  <section class ="reg_unit">
+      <h2 class="unit_title">Registrar Unidad de Gasto</h2>
       <label>
-          <div class="form_desc">Ingrese los datos de un nuevo item de gasto</div>
+          <div class="form_desc">Ingrese los datos de la nueva unidad de gasto</div>
       </label>
-      <form class="form_itemreg" @submit.prevent="submitForm" autocomplete="off">
+      <form class="form_unitreg" @submit.prevent="submitForm" autocomplete="off">
           <div class="form_section">
               <label>
-                  <div class="form_name">Item:</div>
+                  <div class="form_name">Unidad:</div>
                   <input
-                    name="nombreItem"
+                    name="nombreUnidad"
                     :class="
-                      $v.item.nombre_itemgasto.$invalid
+                      $v.unit.nombre_unidadgasto.$invalid
                       ? 'form_check-input-error'
                       : 'form_check-input'
                     "
@@ -20,53 +20,52 @@
                     v-on:keydown="keyhandler($event)"
                     required
                     placeholder="Ingrese el nombre aquí"
-                    v-model="item.nombre_itemgasto"
+                    v-model="unit.nombre_unidadgasto"
                   />
               </label>
               <div
                 class="form_check-error"
-                v-if="!$v.item.nombre_itemgasto.required"
+                v-if="!$v.unit.nombre_unidadgasto.required"
               >
                   Campo obligatorio.
               </div>
           </div>
           <div class="form_section">
               <label>
-                  <div class="form_name">Categoría:</div>
+                  <div class="form_name">Encargado:</div>
                   <input
-                    name="categoriaItem"
+                    name="encargadoUnidad"
                     :class="
-                      $v.item.categoria_especifica.$invalid
+                      $v.unit.encargado_unidad.$invalid
                       ? 'form_check-input-error'
                       : 'form_check-input'
                     "
-                    list="categorias"
+                    list="encargados"
                     maxlength="50"
                     v-on:keydown="keyhandler($event)"
                     required
-                    placeholder="Seleccione un categoría"
-                    v-model="item.categoria_especifica"
+                    placeholder="Seleccione un encargado"
+                    v-model="unit.encargado_unidad"
                   />
               </label>
               <div
                 class="form_check-error"
-                v-if="!$v.item.categoria_especifica.required"
+                v-if="!$v.unit.encargado_unidad.required"
               >
                   Campo obligatorio.
               </div>
-              <datalist id="categorias">
-                  <option value="Dispositivos"></option>
-                  <option value="Monitores"></option>
-                  <option value="Teclados"></option>
+              <datalist id="encargados">
+                  <option value="Freddy Flores"></option>
+                  <option value="Shrek Antonio"></option>
               </datalist>
           </div>
           <div class="form_section">
               <label>
                   <div class="form_name">Descripción:</div>
                   <textarea
-                    name="descripcionItem"
+                    name="descripcionUnidad"
                     :class="
-                      $v.item.descripcion_item.$invalid
+                      $v.unit.descripcion_unidadgasto.$invalid
                       ? 'form_check-input-error'
                       : 'form_check-input'
                     "
@@ -74,45 +73,20 @@
                     rows="10"
                     maxlength="1000"
                     required
-                    placeholder="Ingrese una descripción del ítem"
-                    v-model="item.descripcion_item"
+                    placeholder="Ingrese una descripción de la unidad"
+                    v-model="unit.descripcion_unidadgasto"
                   />
               </label>
               <div
                 class="form_check-error"
-                v-if="!$v.item.descripcion_item.required"
-              >
-                  Campo obligatorio.
-              </div>
-          </div>
-          <div class="form_section">
-              <label>
-                  <div class="form_name">Justificación:</div>
-                  <textarea
-                    name="justificacionItem"
-                    :class="
-                      $v.item.justificacion.$invalid
-                      ? 'form_check-input-error'
-                      : 'form_check-input'
-                    "
-                    cols="50"
-                    rows="10"
-                    maxlength="1000"
-                    required
-                    placeholder="Ingrese la justificación del ítem"
-                    v-model="item.justificacion"
-                  />
-              </label>
-              <div
-                class="form_check-error"
-                v-if="!$v.item.justificacion.required"
+                v-if="!$v.unit.descripcion_unidadgasto.required"
               >
                   Campo obligatorio.
               </div>
           </div>
           <button
-            :disabled="$v.item.$invalid"
-            :class="$v.item.$invalid ? 'button-disabled':''"
+            :disabled="$v.unit.$invalid"
+            :class="$v.unit.$invalid ? 'button-disabled':''"
             class="form_button"
           >
               Crear
@@ -130,34 +104,29 @@ import {
 import Alert from "@/components/Alert.vue";
 
 export default {
-    name: "RegistroItem",
+    name: "RegistroUnidad",
     components: { Alert },
     data(){
         return{
             disabled: false,
-            item: {
-                nombre_itemgasto: null,
-                categoria_especifica: null,
-                descripcion_item: "",
-                justificacion: "",
+            unit: {
+                nombre_unidadgasto: null,
+                encargado_unidad: null,
+                descripcion_unidadgasto: "",
             },
         };
     },
     validations: {
-        item: {
-            nombre_itemgasto: {
+        unit: {
+            nombre_unidadgasto: {
                 required,
                 maxLength: maxLength(50),
             },
-            categoria_especifica: {
+            encargado_unidad: {
                 required,
                 maxLength: maxLength(50),
             },
-            descripcion_item: {
-                required,
-                maxLength: maxLength(1000),
-            },
-            justificacion: {
+            descripcion_unidadgasto: {
                 required,
                 maxLength: maxLength(1000),
             },
@@ -171,9 +140,9 @@ export default {
         },
         async submitForm(){
             try {
-                if (!this.$v.item.$invalid){
+                if (!this.$v.unit.$invalid){
                     await this.sendData();
-                    this.alert("success", "Item creado exitosamente");
+                    this.alert("success", "Unidad creada exitosamente");
                 } else {
                     this.alert("warning", "Rellene todos los datos correctamente");
                 }
@@ -183,20 +152,14 @@ export default {
         },
         async sendData(){
             try {
-                await this.$http.post("expenseItem", {
-                    nombre_itemgasto: this.item.nombre_itemgasto,
-                    nombre_categoriaespecifica: this.item.categoria_especifica,
-                    descripcion_item: this.item.descripcion_item,
-                    justificacion: this.item.justificacion,
-                });
-                await this.$http.post("itemsPerUnit", {
-                    nombre_unidadgasto: "laboratorio 1 de Sistemas",
-                    nombre_itemgasto: this.item.nombre_itemgasto,
-                    presupuesto: 5000,
-                    activo_item: true,
+                await this.$http.post("spendingUnit", {
+                    nombre_departamento: "Ingeniería de Sistemas",
+                    nombre_unidadgasto: this.unit.nombre_unidadgasto,
+                    encargado_unidad: this.unit.encargado_unidad,
+                    descripcion_unidadgasto: this.unit.descripcion_unidadgasto
                 });
             } catch (error) {
-                throw new Error("Este ítem ya está registrado");
+                throw new Error("Esta unidad de gasto ya fué registrada");
             }
         },
         alert (alertType, alertMessage){
@@ -207,12 +170,12 @@ export default {
 </script>
 
 <style>
-.reg_item{
+.reg_unit{
     background-color: #F7F6F6;
     padding: 20px 40px 20px 40px;
 }
 
-.item_title{
+.unit_title{
     text-align:left;
     color: #3D8AF7;
     font-size:36px;
@@ -231,19 +194,19 @@ export default {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.form_itemreg{
+.form_unitreg{
     padding:8px;
     text-align: left;
 }
 
-.reg_item textarea {
+.reg_unit textarea {
     resize: none;
     word-wrap:break-word;
     overflow-y:auto;
 }
 
-.reg_item input,
-.reg_item textarea {
+.reg_unit input,
+.reg_unit textarea {
     background-color: #F7F6F6;
     border-style: none none solid none;
     border: 0px 0px 5px 0px;
@@ -254,8 +217,8 @@ export default {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.reg_item input ::placeholder,
-.reg_item textarea ::placeholder{
+.reg_unit input ::placeholder,
+.reg_unit textarea ::placeholder{
     color:#999999;
     font-size: 20px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
