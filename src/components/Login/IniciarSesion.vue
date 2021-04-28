@@ -85,14 +85,13 @@ export default {
         console.log("metodo");
         console.log(this.users.nombre_usuario);
         console.log(this.users.contrasena);
-        const resp = await this.$http.get("secret", {
-          username: this.users.nombre_usuario,
-          password: this.users.contrasena,
-        });
-        console.log(resp);
+        const resp = await this.$http.get(
+          `secret?user=${this.users.nombre_usuario}&pass=${this.users.contrasena}`
+        );
+        console.log("error" + resp);
         console.log("metodo termina");
       } catch (error) {
-        throw new Error(error);
+        throw new Error("Datos invalidos");
       }
     },
     async submitForm() {
