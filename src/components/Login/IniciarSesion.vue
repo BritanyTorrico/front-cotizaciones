@@ -31,13 +31,12 @@
         <div class="form_check-error" v-if="!$v.users.contrasena.maxLength">
           Maximo 20 caracteres.
         </div>
-        <div class="form_check-error" v-if="!$v.users.contrasena.alpha1">
-          Sin caracteres especiales.
-        </div>
+
         <div class="form__section">
           <input class="form__section__boton" type="submit" value="Ingresar" />
         </div>
       </form>
+      {{ users }}
       <Alert ref="alert"></Alert>
     </div>
   </div>
@@ -70,7 +69,6 @@ export default {
       contrasena: {
         required,
         maxLength: maxLength(20),
-        alpha1,
       },
     },
   },
@@ -78,7 +76,9 @@ export default {
     async submitForm() {
       try {
         if (!this.$v.users.$invalid) {
-          console.log("creo");
+          console.log("inicio a verificar");
+          await this.verificarDatos();
+          console.log("termino verficacion");
           this.alert("success", "Ha iniciador sesion ");
         } else {
           console.log("datos incorrectos");
@@ -87,6 +87,18 @@ export default {
       } catch (error) {
         console.log("ERRROR");
         this.alert("warning", error);
+      }
+    },
+    async verificarDatos() {
+      try {
+        console.log("metodo");
+        await this.$http.get("secret", {
+          nombre_usuario: this.users.nombre_usuario,
+          contrasena: this.users.contrasena,
+        });
+        console.log("metodo termina");
+      } catch (error) {
+        throw new Error("Error inicio");
       }
     },
     alert(alertType, alertMessage) {
