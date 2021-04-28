@@ -372,8 +372,8 @@ export default {
         if (!this.$v.users.$invalid) {
           console.log("creo");
           await this.sendDataUsers();
-
           this.alert("success", "Usuario creado exitosamente");
+          await this.sendUserDepartment();
           await this.sendUsernameRol();
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
@@ -382,7 +382,17 @@ export default {
         this.alert("warning", error);
       }
     },
-
+    async sendUserDepartment() {
+      try {
+        console.log("departamento");
+        await this.$http.post("usersPerDeparment", {
+          nombre_departamento: this.users.departamento,
+          nombre_usuario: this.users.nombre_usuario,
+        });
+      } catch (error) {
+        throw new Error("Error departamento");
+      }
+    },
     async sendUsernameRol() {
       try {
         console.log("roles");
@@ -391,7 +401,7 @@ export default {
           nombre_usuario: this.users.nombre_usuario,
         });
       } catch (error) {
-        throw new Error("roles");
+        throw new Error("Error Roles");
       }
     },
     async sendDataUsers() {
