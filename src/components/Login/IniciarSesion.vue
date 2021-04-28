@@ -31,7 +31,9 @@
         <div class="form_check-error" v-if="!$v.users.contrasena.maxLength">
           Maximo 20 caracteres.
         </div>
-
+        <div class="form_check-error" v-if="!$v.users.contrasena.alpha2">
+          No puede ingresar esos caracteres
+        </div>
         <div class="form__section">
           <input class="form__section__boton" type="submit" value="Ingresar" />
         </div>
@@ -46,6 +48,10 @@
 import { required, maxLength, helpers } from "vuelidate/lib/validators";
 import Alert from "@/components/User/Alert.vue";
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
+const alpha2 = helpers.regex(
+  "alpha1",
+  /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ#?!@$%^&*-\s]*$/
+);
 export default {
   name: "IniciarSesion",
   components: {
@@ -69,10 +75,26 @@ export default {
       contrasena: {
         required,
         maxLength: maxLength(20),
+        alpha2,
       },
     },
   },
   methods: {
+    async verificarDatos() {
+      try {
+        console.log("metodo");
+        console.log(this.users.nombre_usuario);
+        console.log(this.users.contrasena);
+        const resp = await this.$http.get("secret", {
+          username: this.users.nombre_usuario,
+          password: this.users.contrasena,
+        });
+        console.log(resp);
+        console.log("metodo termina");
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
     async submitForm() {
       try {
         if (!this.$v.users.$invalid) {
@@ -89,18 +111,7 @@ export default {
         this.alert("warning", error);
       }
     },
-    async verificarDatos() {
-      try {
-        console.log("metodo");
-        await this.$http.get("secret", {
-          nombre_usuario: this.users.nombre_usuario,
-          contrasena: this.users.contrasena,
-        });
-        console.log("metodo termina");
-      } catch (error) {
-        throw new Error("Error inicio");
-      }
-    },
+
     alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
