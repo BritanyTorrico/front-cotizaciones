@@ -172,7 +172,8 @@ export default {
         async submitForm(){
             try {
                 if (!this.$v.item.$invalid){
-                    await this.sendData();
+                    await this.sendItemData();
+                    await this.sendItemUnitData();
                     this.alert("success", "Item creado exitosamente");
                 } else {
                     this.alert("warning", "Rellene todos los datos correctamente");
@@ -181,7 +182,7 @@ export default {
                 this.alert("warning", error);
             }
         },
-        async sendData(){
+        async sendItemData(){
             try {
                 await this.$http.post("expenseItem", {
                     nombre_itemgasto: this.item.nombre_itemgasto,
@@ -189,8 +190,14 @@ export default {
                     descripcion_item: this.item.descripcion_item,
                     justificacion: this.item.justificacion,
                 });
+            } catch (error) {
+                throw new Error("Este ítem ya está registrado");
+            }
+        },
+        async sendItemUnitData(){
+            try {
                 await this.$http.post("itemsPerUnit", {
-                    nombre_unidadgasto: "laboratorio 1 de Sistemas",
+                    nombre_unidadgasto: "laboritorio 1 de Sistemas",
                     nombre_itemgasto: this.item.nombre_itemgasto,
                     presupuesto: 5000,
                     activo_item: true,
