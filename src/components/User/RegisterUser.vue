@@ -288,10 +288,7 @@ export default {
         "Ingeniería Mecánica",
         "Administración",
       ],
-      listfacultad: [
-        "FACULTAD DE CIENCIAS Y TECNOLOGIA",
-        "FACULTAD DE CIENCIAS ECONÓMICAS",
-      ],
+      listfacultad: [],
       listRoles: [
         "Super Usuario",
         "Jefe de Departamento",
@@ -299,6 +296,9 @@ export default {
         "Cotizador",
         "Responsable de Presupuestos",
       ],
+      datos: {
+        cod_facultad: 1,
+      },
     };
   },
 
@@ -360,8 +360,18 @@ export default {
       },
     },
   },
-
+  mounted() {
+    this.obtenerFacultades();
+    this.obtenerDepartamentos();
+  },
   methods: {
+    async obtenerFacultades() {
+      const listaFacultades = (await this.$http.get(`faculty`)).data;
+      for (let i = 0; i < listaFacultades.length; i++) {
+        this.listfacultad.push(listaFacultades[i].nombre_facultad);
+      }
+    },
+    async obtenerDepartamentos() {},
     keyhandler(e) {
       if (!e.key.match(/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.\s]*$/)) {
         e.preventDefault();
@@ -372,9 +382,9 @@ export default {
         if (!this.$v.users.$invalid) {
           console.log("creo");
           await this.sendDataUsers();
-          this.alert("success", "Usuario creado exitosamente");
           await this.sendUserDepartment();
           await this.sendUsernameRol();
+          this.alert("success", "Usuario creado exitosamente");
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
@@ -390,6 +400,7 @@ export default {
           nombre_usuario: this.users.nombre_usuario,
         });
       } catch (error) {
+        //borra usario
         throw new Error("Error departamento");
       }
     },
@@ -401,6 +412,7 @@ export default {
           nombre_usuario: this.users.nombre_usuario,
         });
       } catch (error) {
+        //borrar un usuario  y departamento modulo departamento
         throw new Error("Error Roles");
       }
     },
