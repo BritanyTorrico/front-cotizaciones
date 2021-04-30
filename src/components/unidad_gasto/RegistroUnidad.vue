@@ -120,7 +120,7 @@ export default {
         async getUsers(){
             const inCharge = (await this.$http.get('users?criterio=facultad&nombre=FACULTAD%20DE%20CIENCIAS%20Y%20TECNOLOGIA')).data;
             for (let i=0;i<inCharge.length;i++){
-                this.listaUsuarios.push(inCharge[i].nombres)
+                this.listaUsuarios.push(inCharge[i].nombres + " " + inCharge[i].apellidos)
             }
         },
         async submitForm(){
