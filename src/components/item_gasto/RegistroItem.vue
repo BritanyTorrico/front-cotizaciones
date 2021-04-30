@@ -54,9 +54,11 @@
                   Campo obligatorio.
               </div>
               <datalist id="categorias">
-                  <option value="Dispositivos"></option>
-                  <option value="Monitores"></option>
-                  <option value="Teclados"></option>
+                  <option 
+                    v-for="(categoria, index) in listaCategorias"
+                    :key="index"
+                    :value="categoria"
+                  >{{  categoria  }}</option>
               </datalist>
           </div>
           <div class="form_section">
@@ -140,6 +142,7 @@ export default {
                 descripcion_item: "",
                 justificacion: "",
             },
+            listaCategorias: [],
         };
     },
     validations: {
@@ -163,6 +166,12 @@ export default {
         },
     },
     methods: {
+        async getCategories(){
+            const categ = (await this.$http.get('specificCategory')).data;
+            for (let i=0;i<categ.length;i++){
+                this.listaCategorias.push(categ[i].nombre_categoriaespecifica)
+            }
+        },
         async submitForm(){
             try {
                 if (!this.$v.item.$invalid){
@@ -205,6 +214,7 @@ export default {
         },
     },
     mounted(){
+        this.getCategories();
         var validCodesItem= [32, 
                          48,49,50,51,52,53,54,55,56,57,
                          65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
