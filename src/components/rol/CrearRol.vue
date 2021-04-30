@@ -12,8 +12,9 @@
            : 'form_check-input'
            "                
           type="text"
+          minlength="5"
           maxlength="25"
-          v-on:keywdown=keyhandler($event)
+          v-on:keydown="keyhandler($event)"
           required
           placeholder="Ingrese nombre aquí"
           v-model="dato.nombre_rol"
@@ -60,6 +61,7 @@
 import {
     required,
     maxLength,
+    minLength,
 } from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
 
@@ -80,13 +82,14 @@ export default {
      dato:{
        nombre_rol:{
          required,
+         minLength: minLength(5),
          maxLength: maxLength(25),
        },
      },
    },
    methods: {
      keyhandler(e){
-       if (!e.key.math(/^[a-zA-Z0-9ñÑ+áéíóúÁÉÍÓÚ'\s]*$/)){
+       if (!e.key.match(/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s]*$/)){
          e.preventDefault();
        }
      },
