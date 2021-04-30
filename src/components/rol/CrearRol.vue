@@ -28,13 +28,20 @@
      <div class="form_section">
         <label>
           <div class="form_name">Seleccione las funciones:</div>
-          
+            <input type="checkbox" id="gestionUsuario" name="funcion" value="Gestionar Usuarios"/>
+            <label for="gestionUsuario">Regisro de Usuarios</label><br>
+            <input type="checkbox" id="gestionRol" name="funcion" value="Gestionar Roles"/>
+            <label for="gestionRol">Regisro de Roles</label><br>
+            <input type="checkbox" id="gestionUnidades" name="funcion" value="Gestionar Unidades de Gasto"/>
+            <label for="gestionUnidades">Regisro de Unidades de Gasto</label><br>
+            <input type="checkbox" id="gestionItems" name="funcion" value="Gestionar Items de Gasto"/>
+            <label for="gestionItems">Regisro de Items de Gasto</label><br>
         </label>
      </div>  
      
      <button 
-     :disabled="$v.dato.$invalid"
-     :class="$v.dato.$invalid ? 'button-disabled':''"
+      :disabled="$v.dato.$invalid"
+      :class="$v.dato.$invalid ? 'button-disabled':''"
       class="form_button">
        Crear
      </button>  
@@ -61,6 +68,7 @@ export default {
        dato: {
          nombre_rol: null,
        },
+       funciones: [],
      };
    },
    
@@ -78,24 +86,55 @@ export default {
          e.preventDefault();
        }
      },
+     async getFunciones(){
+       const checkboxes = document.querySelectorAll('input[name="funcion"]:checked');
+       checkboxes.forEach((checkbox) => {
+             this.funciones.push(checkbox.value);
+           });
+     },
      async submitForm(){
+       this.getFunciones();
        try{
+         console.log("comienza envio");
          if(!this.$v.dato.$invalid){
-           await this.sendData();
+           console.log("es valido");
+           console.log(this.funciones[0]);
+           await this.sendRolData();
+           for (let i=0;i<this.funciones.length;i++){
+             await this.sendFuncData(i);
+           }
+           
            this.alert("success","Rol creado exitosamente")
          }else{
+           console.log("es invalido");
            this.alert("warring","Rellene todos los datos")
          }
        }catch(error){
          this.alert("warring",error);
        }
      },
-     async sendData(){
+     async sendRolData(){
        try{
-         await this.$http.post("rolePerFunctions",{
+         console.log("comienza registro de rol");
+         await this.$http.post("roles",{
            nombre_rol: this.dato.nombre_rol,
          });
+         console.log("termina registro de rol");
        }catch (error){
+         console.log("error en rol");
+         throw new Error ("Este rol ya esta registrado");
+       }
+     },
+     async sendFuncData(index){
+       try{
+         console.log("comienza a enviar funcion " + index);
+         await this.$http.post("rolePerFunctions",{
+           nombre_rol: this.dato.nombre_rol,
+           nombre_funcion: this.funciones[index],
+         });
+         console.log("termina de enviar funcion " + index);
+       }catch (error){
+         console.log("error en funcion");
          throw new Error ("Este rol ya esta registrado");
        }
      },
