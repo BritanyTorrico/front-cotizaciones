@@ -9,7 +9,7 @@
               <label>
                   <div class="form_name">Item:</div>
                   <input
-                    name="nombreItem"
+                    id="nombreItem"
                     :class="
                       $v.item.nombre_itemgasto.$invalid
                       ? 'form_check-input-error'
@@ -17,7 +17,6 @@
                     "
                     type="text"
                     maxlength="50"
-                    v-on:keydown="keyhandler($event)"
                     required
                     placeholder="Ingrese el nombre aquí"
                     v-model="item.nombre_itemgasto"
@@ -35,6 +34,7 @@
                   <div class="form_name">Categoría:</div>
                   <input
                     name="categoriaItem"
+                    id="categoriaItem"
                     :class="
                       $v.item.categoria_especifica.$invalid
                       ? 'form_check-input-error'
@@ -42,7 +42,6 @@
                     "
                     list="categorias"
                     maxlength="50"
-                    v-on:keydown="keyhandler($event)"
                     required
                     placeholder="Seleccione un categoría"
                     v-model="item.categoria_especifica"
@@ -55,9 +54,11 @@
                   Campo obligatorio.
               </div>
               <datalist id="categorias">
-                  <option value="Dispositivos"></option>
-                  <option value="Monitores"></option>
-                  <option value="Teclados"></option>
+                  <option 
+                    v-for="(categoria, index) in listaCategorias"
+                    :key="index"
+                    :value="categoria"
+                  >{{  categoria  }}</option>
               </datalist>
           </div>
           <div class="form_section">
@@ -141,6 +142,7 @@ export default {
                 descripcion_item: "",
                 justificacion: "",
             },
+            listaCategorias: [],
         };
     },
     validations: {
@@ -164,10 +166,11 @@ export default {
         },
     },
     methods: {
-        keyhandler(e){
-          if (!e.key.match(/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s]*$/)){
-            e.preventDefault();
-          }
+        async getCategories(){
+            const categ = (await this.$http.get('specificCategory')).data;
+            for (let i=0;i<categ.length;i++){
+                this.listaCategorias.push(categ[i].nombre_categoriaespecifica)
+            }
         },
         async submitForm(){
             try {
@@ -210,6 +213,40 @@ export default {
             this.$refs.alert.showAlert(alertType, alertMessage);
         },
     },
+    mounted(){
+        this.getCategories();
+        var validCodesItem= [32, 
+                         48,49,50,51,52,53,54,55,56,57,
+                         65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
+                         97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,
+                         193,201,205,209,211,218,225,233,237,241,243,250
+                        ];
+        var myTextbox1=document.getElementById("nombreItem");
+        myTextbox1.addEventListener('keypress', evt => {
+            var charCode = evt.charCode;
+            if (charCode!=0){
+                var isValid = validCodesItem.includes(charCode);
+                if (!isValid){
+                    evt.preventDefault();
+                }
+            }
+        }, false);
+        var validCodesCat= [32, 
+                         65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
+                         97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,
+                         193,201,205,209,211,218,225,233,237,241,243,250
+                        ];
+        var myTextbox2=document.getElementById("categoriaItem");
+        myTextbox2.addEventListener('keypress', evt => {
+            var charCode = evt.charCode;
+            if (charCode!=0){
+                var isValid = validCodesCat.includes(charCode);
+                if (!isValid){
+                    evt.preventDefault();
+                }
+            }
+        }, false);
+    }
 };
 </script>
 
