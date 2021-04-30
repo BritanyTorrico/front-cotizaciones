@@ -28,14 +28,18 @@
      <div class="form_section">
         <label>
           <div class="form_name">Seleccione las funciones:</div>
+          <ul>
+            <div class="checkbox-style">
             <input type="checkbox" id="gestionUsuario" name="funcion" value="Gestionar Usuarios"/>
-            <label for="gestionUsuario">Regisro de Usuarios</label><br>
-            <input type="checkbox" id="gestionRol" name="funcion" value="Gestionar Roles"/>
-            <label for="gestionRol">Regisro de Roles</label><br>
-            <input type="checkbox" id="gestionUnidades" name="funcion" value="Gestionar Unidades de Gasto"/>
-            <label for="gestionUnidades">Regisro de Unidades de Gasto</label><br>
+            <li><label for="gestionUsuario">Regisro de Usuarios</label><br>
+            <input type="checkbox" id="gestionRol" name="funcion" value="Gestionar Roles"/></li>
+            <li><label for="gestionRol">Regisro de Roles</label><br>
+            <input type="checkbox" id="gestionUnidades" name="funcion" value="Gestionar Unidades de Gasto"/></li>
+            <li><label for="gestionUnidades">Regisro de Unidades de Gasto</label><br></li>
             <input type="checkbox" id="gestionItems" name="funcion" value="Gestionar Items de Gasto"/>
-            <label for="gestionItems">Regisro de Items de Gasto</label><br>
+            <li><label for="gestionItems">Regisro de Items de Gasto</label><br></li>
+            </div>
+          </ul>
         </label>
      </div>  
      
@@ -238,5 +242,13 @@ export default {
 .button-disabled {
     background:#999999;
     border: 0px;
+}
+form label{
+	width:300px;
+	font-weight:bold;
+	display:inline-block;
+}
+.checkbox-style {
+      display:inline-block;
 }
 </style>
