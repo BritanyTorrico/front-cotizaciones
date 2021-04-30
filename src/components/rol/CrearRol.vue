@@ -29,13 +29,13 @@
         <label>
           <div class="form_name">Seleccione las funciones:</div>
             <input type="checkbox" id="gestionUsuario" name="funcion" value="Gestionar Usuarios"/>
-            <label for="gestionUsuario">Regisro de Usuarios</label><br>
+            <label for="gestionUsuario">Registro de Usuarios</label><br>
             <input type="checkbox" id="gestionRol" name="funcion" value="Gestionar Roles"/>
-            <label for="gestionRol">Regisro de Roles</label><br>
+            <label for="gestionRol">Registro de Roles</label><br>
             <input type="checkbox" id="gestionUnidades" name="funcion" value="Gestionar Unidades de Gasto"/>
-            <label for="gestionUnidades">Regisro de Unidades de Gasto</label><br>
+            <label for="gestionUnidades">Registro de Unidades de Gasto</label><br>
             <input type="checkbox" id="gestionItems" name="funcion" value="Gestionar Items de Gasto"/>
-            <label for="gestionItems">Regisro de Items de Gasto</label><br>
+            <label for="gestionItems">Registro de Items de Gasto</label><br>
         </label>
      </div>  
      
