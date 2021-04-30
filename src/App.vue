@@ -5,7 +5,8 @@
       <router-link to="/about">About</router-link> |
       <router-link to="/registro_item">Item</router-link> |
       <router-link to="/registro_unidad">Unidad</router-link>  |
-      <router-link to="/register">Registrar Usuario</router-link>
+      <router-link to="/register">Registrar Usuario</router-link>  |
+      <router-link to="/crear_rol"> Rol</router-link>
     </div>
     <router-view />
   </div>
