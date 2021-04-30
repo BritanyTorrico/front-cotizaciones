@@ -30,6 +30,7 @@ export default {
     nombreLista: String,
     nombre: String,
     lista: Array,
+    nombre1: String,
   },
 };
 </script>
