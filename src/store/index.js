@@ -1,15 +1,14 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-Vue.use(Vuex)
-
+Vue.use(Vuex);
+var EventBus = new Vue();
 export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
-})
+    state: {
+        EventBus,
+        lista: [],
+    },
+    mutations: {},
+    actions: {},
+    modules: {},
+});
