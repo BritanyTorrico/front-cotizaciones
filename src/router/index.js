@@ -33,6 +33,11 @@ const routes = [
       name: "RegisterUserPage",
       component: () => import ("../views/RegisterUserPage.vue"),
   },
+  {
+    path: "/crear_rol",
+    name: "CrearRoles",
+    component: () =>import ("@/views/creaRol.vue")
+  }
 ];
 
 const router = new VueRouter({
