@@ -22,6 +22,20 @@
           />
         </label>
       </div>
+      <div class="form_unidadGasto">
+        <label>
+          <div class="formulario_label">Unidad de gasto:</div>
+          <input
+            :class="
+              $v.solicitud.unidadgasto_solicitud.$invalid
+                ? 'form_check-input-error'
+                : 'form__input'
+            "
+            type="text"
+            v-model="solicitud.unidadgasto_solicitud"
+          />
+        </label>
+      </div>
 
       <div class="form__justficacion">
         <label>
@@ -42,7 +56,11 @@
 
       <div class="form__categoria">
         <div class="container__label">Categoria:</div>
-        <select v-model="solicitud.categoria" class="container__list">
+        <select
+          v-model="solicitud.categoria"
+          class="container__list"
+          @change="obtenerItems()"
+        >
           <option disabled="true">{{ solicitud.categoria }}</option>
           <option
             class="container__list__option"
@@ -54,13 +72,22 @@
           </option>
         </select>
       </div>
-      <div class="form__item">
-        <lista-desplegable
-          v-model="solicitud.item_gasto"
-          nombreLista="Items de gasto:"
-          :lista="listaItemsDeGasto"
-        ></lista-desplegable>
+      <div class="container">
+        <div class="container__label">item de gasto:</div>
+        <select required class="container__list" v-model="solicitud.item_gasto">
+          <option disabled="true">{{ solicitud.item_gasto }}</option>
+
+          <option
+            class="container__list__option"
+            v-for="(item, index) in listItems"
+            :key="index"
+            :value="item"
+          >
+            {{ item }}</option
+          >
+        </select>
       </div>
+
       <div class="form__cantidad">
         <label>
           <div class="formulario_label">Cantidad:</div>
@@ -77,7 +104,7 @@
         </label>
       </div>
       <div>
-        <button class="btn btn-success" @click="agragarItem()">Agregar</button>
+        <a class="btn btn-success" @click="agregarItem()">Agregar</a>
       </div>
 
       <div class="form__descripcion">Descripción:</div>
@@ -91,7 +118,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in listaItems" :key="index">
+            <tr v-for="(item, index) in listaPeticion" :key="index">
               <td>
                 {{ item.cantidad }}
               </td>
@@ -107,12 +134,13 @@
           </tbody>
         </table>
       </div>
-      <h4 v-if="listaItems.length == 0">Seleccione un item</h4>
+      <h4 v-if="listaPeticion.length == 0">Seleccione un item</h4>
+      <Alert ref="alert"></Alert>
       <div>
         <input type="submit" value="enviar" class="btn btn-success" />
       </div>
 
-      {{ listaItems }}
+      {{ listItems }}
       <p>datos</p>
       {{ solicitud }}
     </form>
@@ -121,10 +149,10 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-
-import ListaDesplegable from "@/components/User/ListaDesplegable.vue";
+import Alert from "@/components/User/Alert.vue";
+//import ListaDesplegable from "@/components/User/ListaDesplegable.vue";
 export default {
-  components: { ListaDesplegable },
+  components: { Alert },
   name: "SolicitudDatos",
   mounted() {
     this.getCategories();
@@ -135,13 +163,14 @@ export default {
         nombre_solicitud: null,
         detalle_solicitud: null,
         categoria: "Seleccione una opcion",
-        item_gasto: null,
+        item_gasto: "Seleccione una opcion",
         cantidad: null,
+        unidadgasto_solicitud: null,
       },
       listaCategorias: [],
-      listaItemsDeGasto: ["Computadoras", "Impresoras", "Mouse"],
 
-      listaItems: [], //aqui esta la lista de items que mandare
+      listItems: [],
+      listaPeticion: [], //aqui esta la lista de items que mandare
       item: "",
     };
   },
@@ -156,15 +185,18 @@ export default {
       cantidad: {
         required,
       },
+      unidadgasto_solicitud: {
+        required,
+      },
     },
   },
   methods: {
     async submitForm() {
       try {
         if (!this.$v.solicitud.$invalid) {
-          console.log("envio");
+          this.alert("success", "Solicitud enviada");
         } else {
-          console.log("datos ivalidos");
+          this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
         console.log(error);
@@ -177,22 +209,40 @@ export default {
       }
     },
 
-    eliminarItems: function(index) {
-      this.listaItems.splice(index, 1);
+    async obtenerItems() {
+      if (this.solicitud.categoria == "Servicios") {
+        this.alert("warning", "Categoria servicios");
+      }
+      this.listItems = [];
+
+      let listaItems = (
+        await this.$http.get(`expenseItem?cat=${this.solicitud.categoria}`)
+      ).data;
+
+      for (let i = 0; i < listaItems.length; i++) {
+        this.listItems.push(listaItems[i].nombre_itemgasto);
+      }
     },
-    agragarItem: function() {
-      if (this.solicitud.item_gasto != null) {
+
+    eliminarItems: function(index) {
+      this.listaPeticion.splice(index, 1);
+    },
+    agregarItem: function() {
+      this.obtenerItems();
+      if (this.solicitud.item_gasto != "Seleccione una opcion") {
         const item = {
           item_gasto: this.solicitud.item_gasto,
           cantidad: this.solicitud.cantidad,
         };
-        this.listaItems.push(item);
-        this.solicitud.item_gasto = null;
+        this.listaPeticion.push(item);
+        this.solicitud.item_gasto = "Seleccione una opcion";
         this.solicitud.cantidad = null;
       } else {
-        console.log("seleccione una tarea");
+        this.alert("warning", "Seleccione un item porfavor");
       }
-      //
+    },
+    alert(alertType, alertMessage) {
+      this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
 };
