@@ -21,6 +21,31 @@
             v-model="solicitud.nombre_solicitud"
           />
         </label>
+        <div
+          class="form_check-error"
+          v-if="!$v.solicitud.nombre_solicitud.required"
+        >
+          Campo obligatorio.
+        </div>
+        <div
+          class="form_check-error"
+          v-if="!$v.solicitud.nombre_solicitud.maxLength"
+        >
+          Máximo
+          {{ $v.solicitud.nombre_solicitud.$params.maxLength.max }}caracteres.
+        </div>
+        <div
+          class="form_check-error"
+          v-if="!$v.solicitud.nombre_solicitud.minLength"
+        >
+          Minimo 5 caracteres.
+        </div>
+        <div
+          class="form_check-error"
+          v-if="!$v.solicitud.nombre_solicitud.alpha1"
+        >
+          No se aceptan caracteres especiales.
+        </div>
       </div>
       <div class="form_unidadGasto">
         <label>
@@ -52,6 +77,25 @@
             v-model="solicitud.detalle_solicitud"
           />
         </label>
+        <div
+          class="form_check-error"
+          v-if="!$v.solicitud.detalle_solicitud.required"
+        >
+          Campo obligatorio.
+        </div>
+        <div
+          class="form_check-error"
+          v-if="!$v.solicitud.detalle_solicitud.maxLength"
+        >
+          Máximo
+          {{ $v.solicitud.detalle_solicitud.$params.maxLength.max }}caracteres.
+        </div>
+        <div
+          class="form_check-error"
+          v-if="!$v.solicitud.detalle_solicitud.minLength"
+        >
+          Minimo 5 caracteres.
+        </div>
       </div>
 
       <div class="form__categoria">
@@ -97,6 +141,8 @@
                 ? 'form_check-input-error'
                 : 'form__input'
             "
+            :required="!habilitar"
+            :disabled="!disabled"
             type="number"
             placeholder="Ingrese la cantidad"
             v-model="solicitud.cantidad"
@@ -140,7 +186,7 @@
         <input type="submit" value="enviar" class="btn btn-success" />
       </div>
 
-      {{ listItems }}
+      {{ listaPeticion }}
       <p>datos</p>
       {{ solicitud }}
     </form>
@@ -148,8 +194,14 @@
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
+import {
+  required,
+  maxLength,
+  minLength,
+  helpers,
+} from "vuelidate/lib/validators";
 import Alert from "@/components/User/Alert.vue";
+const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
 //import ListaDesplegable from "@/components/User/ListaDesplegable.vue";
 export default {
   components: { Alert },
@@ -172,15 +224,22 @@ export default {
       listItems: [],
       listaPeticion: [], //aqui esta la lista de items que mandare
       item: "",
+      disabled: true,
+      habilitar: true,
     };
   },
   validations: {
     solicitud: {
       nombre_solicitud: {
         required,
+        minLength: minLength(5),
+        maxLength: maxLength(50),
+        alpha1,
       },
       detalle_solicitud: {
         required,
+        minLength: minLength(5),
+        maxLength: maxLength(1000),
       },
       cantidad: {
         required,
@@ -199,6 +258,7 @@ export default {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
+        this.alert("warning", error);
         console.log(error);
       }
     },
@@ -211,7 +271,7 @@ export default {
 
     async obtenerItems() {
       if (this.solicitud.categoria == "Servicios") {
-        this.alert("warning", "Categoria servicios");
+        this.disabled = false;
       }
       this.listItems = [];
 
@@ -229,7 +289,10 @@ export default {
     },
     agregarItem: function() {
       this.obtenerItems();
-      if (this.solicitud.item_gasto != "Seleccione una opcion") {
+      if (
+        this.solicitud.item_gasto != "Seleccione una opcion" &&
+        this.solicitud.categoria === "Servicios"
+      ) {
         const item = {
           item_gasto: this.solicitud.item_gasto,
           cantidad: this.solicitud.cantidad,
@@ -238,7 +301,20 @@ export default {
         this.solicitud.item_gasto = "Seleccione una opcion";
         this.solicitud.cantidad = null;
       } else {
-        this.alert("warning", "Seleccione un item porfavor");
+        if (
+          this.solicitud.item_gasto != "Seleccione una opcion" &&
+          !this.$v.solicitud.cantidad.$invalid
+        ) {
+          const item = {
+            item_gasto: this.solicitud.item_gasto,
+            cantidad: this.solicitud.cantidad,
+          };
+          this.listaPeticion.push(item);
+          this.solicitud.item_gasto = "Seleccione una opcion";
+          this.solicitud.cantidad = null;
+        } else {
+          this.alert("warning", "Ingrese un item porfavor");
+        }
       }
     },
     alert(alertType, alertMessage) {
