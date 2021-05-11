@@ -37,6 +37,11 @@ const routes = [
     path: "/crear_rol",
     name: "CrearRoles",
     component: () =>import ("@/views/creaRol.vue")
+  },
+  {
+    path: "/revisar_solicitudes",
+    name: "RequestReview",
+    component: () =>import ("@/views/RequestReview.vue")
   }
 ];
 
