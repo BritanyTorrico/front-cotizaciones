@@ -41,6 +41,7 @@
       {{ users }}
       <Alert ref="alert"></Alert>
     </div>
+    <p>El valor es : {{ this.permisoHome }}</p>
   </div>
 </template>
 
@@ -52,10 +53,16 @@ const alpha2 = helpers.regex(
   "alpha1",
   /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ#?!@$%^&*-\s]*$/
 );
+import { mapState, mapActions } from "vuex";
+import { store } from "@/store/index.js";
 export default {
   name: "IniciarSesion",
+  store,
   components: {
     Alert,
+  },
+  computed: {
+    ...mapState(["permisoHome", "listaPermisos"]),
   },
   data() {
     return {
@@ -63,6 +70,7 @@ export default {
         nombre_usuario: null,
         contrasena: null,
       },
+      listaPermisos1: [],
     };
   },
   validations: {
@@ -80,6 +88,21 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["getPermi", "push"]),
+    async getPermisos() {
+      const categ = (
+        await this.$http.get(
+          `/permissionsq?user=${this.users.nombre_usuario}&pass=${this.users.contrasena}`
+        )
+      ).data;
+      for (let i = 0; i < categ.length; i++) {
+        console.log(categ[i].nombre_funcion);
+        this.$store.commit("addCustomer", categ[i].nombre_funcion);
+      }
+
+      console.log(this.listaPermisos);
+    },
+
     async verificarDatos() {
       try {
         console.log("metodo");
@@ -101,6 +124,8 @@ export default {
           await this.verificarDatos();
           console.log("termino verficacion");
           this.alert("success", "Ha iniciador sesion ");
+          this.getPermisos();
+          this.getPermi();
         } else {
           console.log("datos incorrectos");
           this.alert("warning", "Rellene todos los datos correctamente");
