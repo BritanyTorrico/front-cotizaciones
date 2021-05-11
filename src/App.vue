@@ -1,18 +1,38 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link v-if="permisoHome == true" to="/">Home</router-link> |
+      <router-link v-if="permisoHome" to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link to="/registro_item">Item</router-link> |
-      <router-link to="/registro_unidad">Unidad</router-link> |
-      <router-link to="/register">Registrar Usuario</router-link>
+      <router-link to="/login">Iniciar Sesion</router-link> |
+      <router-link v-if="permisoItemDeGasto" to="/registro_item"
+        >Item</router-link
+      >
+      |
+      <router-link v-if="permisoUnidadDeGasto" to="/registro_unidad"
+        >Unidad</router-link
+      >
+      |
+      <router-link v-if="permisoCrearUsuario" to="/register"
+        >Registrar Usuario</router-link
+      >
+      |
     </div>
     <router-view />
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   name: "App",
+  computed: {
+    ...mapState([
+      "permisoHome",
+      "permisoItemDeGasto",
+      "permisoUnidadDeGasto",
+      "permisoCrearUsuario",
+      "",
+    ]),
+  },
 };
 </script>
 

@@ -38,10 +38,8 @@
           <input class="form__section__boton" type="submit" value="Ingresar" />
         </div>
       </form>
-      {{ users }}
       <Alert ref="alert"></Alert>
     </div>
-    <p>El valor es : {{ this.permisoHome }}</p>
   </div>
 </template>
 
@@ -96,11 +94,8 @@ export default {
         )
       ).data;
       for (let i = 0; i < categ.length; i++) {
-        console.log(categ[i].nombre_funcion);
         this.$store.commit("addCustomer", categ[i].nombre_funcion);
       }
-
-      console.log(this.listaPermisos);
     },
 
     async verificarDatos() {
@@ -124,8 +119,9 @@ export default {
           await this.verificarDatos();
           console.log("termino verficacion");
           this.alert("success", "Ha iniciador sesion ");
-          this.getPermisos();
-          this.getPermi();
+          await this.getPermisos(); //obtengo los permisos en un arrray
+          await this.getPermi(); //modifica el router.link
+          this.$router.push("/");
         } else {
           console.log("datos incorrectos");
           this.alert("warning", "Rellene todos los datos correctamente");
