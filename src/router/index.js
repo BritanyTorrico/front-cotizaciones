@@ -51,6 +51,15 @@ const routes = [{
         component: () =>
             import ("../views/LoginPage.vue"),
     },
+    {
+        path: "/creaRol",
+        name: "CreaRol",
+        component: () =>
+            import ("../views/creaRol.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    }
 ];
 
 const router = new VueRouter({

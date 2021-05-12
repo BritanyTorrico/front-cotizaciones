@@ -26,6 +26,6 @@ export default {
 
 .register_container{
     display: block;
-    padding: 50px 300px 50px 300px;
+    padding: 50px 400px 50px 400px;
 }
 </style>

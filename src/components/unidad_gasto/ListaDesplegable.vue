@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="list-container">
     <select
       required
       v-on:input="$emit('input', $event.target.value)"
@@ -33,20 +33,23 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
-.container {
+<style>
+.list-container {
   text-align: left;
-  padding-top: 20px;
+  padding-top: 10px;
 }
-.container__label {
-  color: var(--color-name);
-  margin-bottom: 10px;
-  font-weight: bold;
+.container__list ::placeholder{
+  color:#999999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 .container__list {
-  width: 80%;
-  color: #576574;
+  width: 550px;
+  color: #3a3a3a;
   padding: 6px;
-  background: #ecf0f1;
+  background: #F7F6F6;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  border: none;
+  border-radius: 3px;
 }
 </style>

@@ -36,9 +36,20 @@
                   <lista-desplegable
                     nombreLista="encargadoUnidad"
                     :lista="listaUsuarios"
+                    :class="
+                      $v.unit.encargado_unidad.$invalid
+                      ? 'form_check-input-error'
+                      : 'form_check-input'
+                    "
                     required
                     v-model="unit.encargado_unidad"
                   ></lista-desplegable>
+                  <div
+                class="form_check-error"
+                v-if="!$v.unit.encargado_unidad.required"
+              >
+                  Campo obligatorio.
+              </div>
               </label>
           </div>
           <div class="form_section">
@@ -178,6 +189,9 @@ export default {
 .reg_unit{
     background-color: #F7F6F6;
     padding: 20px 40px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    width: 100%
 }
 
 .unit_title{
@@ -211,11 +225,9 @@ export default {
 }
 
 .reg_unit input,
-.reg_unit textarea {
+.reg_unit textarea,
+.reg_unit lista-desplegable {
     background-color: #F7F6F6;
-    border-style: none none solid none;
-    border: 0px 0px 5px 0px;
-    border-color: #3a3a3a;
     border-radius: 3px;
     padding: 8px;
     width: 550px;
@@ -223,7 +235,8 @@ export default {
 }
 
 .reg_unit input ::placeholder,
-.reg_unit textarea ::placeholder{
+.reg_unit textarea ::placeholder
+.reg_unit lista-desplegable ::placeholder{
     color:#999999;
     font-size: 20px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -266,6 +279,7 @@ export default {
   background-color: transparent;
   color: #3a3a3a;
   font-size: 14px;
+  border-radius: 3px;
 }
 
 .form_check-input-error {
@@ -277,6 +291,7 @@ export default {
   background-color: transparent;
   color: #3a3a3a;
   font-size: 14px;
+  border-radius: 3px;
 }
 .form_check-input:focus {
   background: linear-gradient(to bottom, transparent, #ced6e0);
@@ -293,5 +308,4 @@ export default {
     background:#999999;
     border: 0px;
 }
-
 </style>
