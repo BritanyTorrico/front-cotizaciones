@@ -23,18 +23,27 @@ const routes = [{
         name: "RegistroItemGasto",
         component: () =>
             import ("@/views/RegItem.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
     },
     {
         path: "/registro_unidad",
         name: "RegistroUnidadGasto",
         component: () =>
             import ("@/views/RegUnidad.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
     },
     {
         path: "/register",
         name: "RegisterUserPage",
         component: () =>
             import ("../views/RegisterUserPage.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
     },
     {
         path: "/login",
@@ -50,13 +59,17 @@ const router = new VueRouter({
     routes,
 });
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (localStorage.getItem("my-app") == "true") {
-      next();
-    } else {
-      next({ name: "Home" });
+    const rutaEsProtegida = to.matched.some((item) => item.meta.rutaProtegida);
+    const user = localStorage.getItem("username");
+    if (rutaEsProtegida && user === "true") {
+        next(); //protegida
+    } else if (rutaEsProtegida && user === "false") {
+        next("/login");
+    } else if (!rutaEsProtegida) {
+        next();
+    } else if (rutaEsProtegida) {
+        next("/login");
     }
-  } else next();
 });
 
 export default router;

@@ -60,7 +60,7 @@ export default {
     Alert,
   },
   computed: {
-    ...mapState(["permisoHome", "listaPermisos"]),
+    ...mapState(["permisoHome", "listaPermisos", "username"]),
   },
   data() {
     return {
@@ -121,6 +121,9 @@ export default {
           this.alert("success", "Ha iniciador sesion ");
           await this.getPermisos(); //obtengo los permisos en un arrray
           await this.getPermi(); //modifica el router.link
+
+          this.$store.commit("setUser", true);
+          localStorage.setItem("username", this.username);
           this.$router.push("/");
         } else {
           console.log("datos incorrectos");

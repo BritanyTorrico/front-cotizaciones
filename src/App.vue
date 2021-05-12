@@ -3,7 +3,7 @@
     <div id="nav">
       <router-link v-if="permisoHome" to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link to="/login">Iniciar Sesion</router-link> |
+      <router-link v-if="!username" to="/login">Iniciar Sesion</router-link> |
       <router-link v-if="permisoItemDeGasto" to="/registro_item"
         >Item</router-link
       >
@@ -16,6 +16,7 @@
         >Registrar Usuario</router-link
       >
       |
+      <a v-if="username" href="" @click="cerrar()">Cerrar sesion</a>
     </div>
     <router-view />
   </div>
@@ -30,8 +31,17 @@ export default {
       "permisoItemDeGasto",
       "permisoUnidadDeGasto",
       "permisoCrearUsuario",
-      "",
+      "username",
     ]),
+  },
+  methods: {
+    cerrar() {
+      this.$store.commit("setUser", false);
+      localStorage.setItem("username", this.username);
+      console.log("hlaa  " + localStorage.getItem("username"));
+      localStorage.removeItem("my-app");
+      localStorage.removeItem("username");
+    },
   },
 };
 </script>

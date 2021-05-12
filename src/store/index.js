@@ -5,9 +5,9 @@ import VuexPersist from "vuex-persist";
 Vue.use(Vuex);
 
 const vuexPersist = new VuexPersist({
-    key: 'my-app',
-    storage: window.localStorage
-})
+    key: "my-app",
+    storage: window.localStorage,
+});
 
 export default new Vuex.Store({
     plugins: [vuexPersist.plugin],
@@ -22,16 +22,15 @@ export default new Vuex.Store({
         permisoCotizacion: false,
         permisoEmpresa: false,
         listaPermisos: [],
+        username: false,
     },
     mutations: {
         async habilitar(state) {
             for (let i = 0; i < state.listaPermisos.length; i++) {
                 /* if (state.listaPermisos[i] == "Gestionar Usuarios")//llamar a la cookie para obtener su valors
-                            state.permisoHome = true;
-                        else */
-                if (
-                    state.listaPermisos[i] == "Gestionar itemsDeGasto"
-                )
+                                    state.permisoHome = true;
+                                else */
+                if (state.listaPermisos[i] == "Gestionar itemsDeGasto")
                     state.permisoItemDeGasto = true;
                 else if (state.listaPermisos[i] == "Gestionar unidadDeGasto")
                     state.permisoUnidadDeGasto = true;
@@ -45,9 +44,9 @@ export default new Vuex.Store({
                     state.permisoEmpresa = true;
 
                 /*else if (state.listaPermisos[i] == "Gestionar Informe")
-                          state.permisoInforme = true;
-                        else if (state.listaPermisos[i] == "Gestionar Cotizacion")
-                          state.permisoCotizacion = true;*/
+                                  state.permisoInforme = true;
+                                else if (state.listaPermisos[i] == "Gestionar Cotizacion")
+                                  state.permisoCotizacion = true;*/
             }
             console.log("entre al mutations");
 
@@ -57,13 +56,16 @@ export default new Vuex.Store({
             // mutate state
             state.listaPermisos.push(customer);
         },
+        setUser(state, dato) {
+            state.username = dato;
+        },
     },
     /* push(state, categ) {
-                            for (let i = 0; i < state.categ.length; i++) {
-                                state.listaPermisos.push(categ[i].nombre_funcion);
-                            }
-                            console.log("entre al push");
-                        },*/
+                              for (let i = 0; i < state.categ.length; i++) {
+                                  state.listaPermisos.push(categ[i].nombre_funcion);
+                              }
+                              console.log("entre al push");
+                          },*/
     actions: {
         getPermi(context) {
             context.commit("habilitar");
