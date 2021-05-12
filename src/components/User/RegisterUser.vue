@@ -226,7 +226,15 @@
                   @change="obtenerDepartamentos()"
                   class="container__list"
                 >
-                  <option disabled="true">Seleccione una opcion</option>
+                  <option disabled="true">{{ users.facultad }}</option>
+                  <option
+                    class="container__list__option"
+                    v-for="(item, index) in listfacultad"
+                    :key="index"
+                    :value="item"
+                  >
+                    {{ item }}</option
+                  >
                 </select>
               </div>
             </div>
@@ -281,7 +289,7 @@ export default {
         nombres: null,
         apellidos: null,
         celular: null,
-        facultad: null,
+        facultad: "Seleccione una opcion",
         departamento: null,
         nombre_rol: null,
       },
@@ -558,6 +566,7 @@ export default {
 .form__name {
   width: 100%;
   padding-right: 50px;
+  text-align: left;
 }
 .boton {
   align-items: left;
