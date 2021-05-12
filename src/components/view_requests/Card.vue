@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="card-container">
       <div class="card-head">
           <h3>{{ name }}</h3>
           <div class="card-date">{{ date }}</div>
@@ -17,7 +17,7 @@ export default {
     },
     props: {
         name: String,
-        date: Date,
+        date: String,
         author: String,
         description: String,
     }
@@ -25,34 +25,51 @@ export default {
 </script>
 
 <style>
-.container{
-    margin-left: 22px;
+.card-container{
+    margin: 5px 0 5px 0;
+    border: 3px 0 5px 0;
+    padding: 2px 0 0 0;
     color:#8492b4!important;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 .card-head{
+    margin: 0 0 0 0;
+    padding: 0 0 2px 0;
+    align-items: stretch;
     display: flex;
-    align-items: baseline;
+    width: 100%;
     justify-content: space-between;
 }
 h3{
     font-size: 18px;
+    margin: 0%;
+    text-align: left;
 }
 .card-date{
     font-size:16px;
     text-transform: uppercase;
+    margin:0 0 0 20px;
+    align-content: flex-end;
 }
 .card-author{
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 16px;
+    align-self: flex-start;
+    font-weight: 550;
+    text-align: left;
+    margin: 5px 0 10px 0;
 }
 .card-description{
-    font-size: 16px;
+    align-self: flex-start;
+    font-size: 15px;
     color: #8492b4!important;
-    margin: 23px 0 0;
+    margin: 10px 0 0 0;
     line-height: 1.5em;
     height: 4.5em;
     word-wrap: break-word;
     overflow: hidden;
+    text-align: left;
 }
 .container:hover{
     background: #fff!important;

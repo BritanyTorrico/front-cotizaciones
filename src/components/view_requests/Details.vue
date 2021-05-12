@@ -11,8 +11,7 @@
           <h5>Justificación:</h5>
           <p>{{ request.description }}</p>
           <div class="money">
-              <h5>Presupuesto: </h5>
-              {{ request.budget}}
+              <h5>Presupuesto: </h5>{{ request.budget}}
           </div>
       </div>
       <div class="response">
@@ -31,7 +30,7 @@ export default {
     props: {
         request: {
             name: String,
-            date: Date,
+            date: String,
             author: String,
             description: String,
             budget: Number
@@ -40,11 +39,16 @@ export default {
 }
 </script>
 <style>
+.single-request-details::before{
+    color: #fff;
+}
 .single-request-details{
     background: #fff;
     margin: 40px;
-    padding: 70px 66px;
+    padding: 10px 10px 20px 10px;
     box-shadow: 0px 0px 30px 0px rgba(0, 143, 216, 0.15);
+    width: 100%;
+    border: 2px solid #808C8F;
 }
 .head-top{
     display: flex;
@@ -66,8 +70,10 @@ h2{
     font-weight: 600;
     color: #7b8591!important;
     margin-top: 12px;
+    text-align: left;
 }
 .body-part{
+    text-align: left;
     margin: 25px 0 0;
 }
 h5{
@@ -80,6 +86,34 @@ p{
     color: #8492b4!important;
     line-height: 1.8;
     margin-bottom: 30px;
+}
+.money h5{
+    word-break: keep-all;
+}
+.response{
+    display: flex;
+}
+.accept-button {
+  margin: auto;
+  display: block;
+  background-color: #003570;
+  padding: 12px 115px 12px 115px;
+  border-radius: 22px;
+  color: #fafafa;
+  font-size: 22px;
+  font-weight: bold;
+  border: 0px;
+}
+.reject-button {
+  margin: auto;
+  display: block;
+  background-color: #B70D0D;
+  padding: 12px 115px 12px 115px;
+  border-radius: 22px;
+  color: #fafafa;
+  font-size: 22px;
+  font-weight: bold;
+  border: 0px;
 }
 
 </style>

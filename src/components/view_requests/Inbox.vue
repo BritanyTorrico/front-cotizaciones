@@ -1,17 +1,17 @@
 <template>
   <div class="inbox">
       <div class="container">
-          <div class="layout">
               <div class="inbox-cards">
                   <div class="card-left-side">
                       <div class="card-index" v-for="(req,i) in inboxData" :key="i">
-                          <Card
-                            :name="req.nombre_solicitud"
-                            :date="req.fecha_solicitud"
-                            author="Jefe de Unidad"
-                            :description="req.detalle_solicitud"
-                            v-on:click=showRequest(req)
-                          />
+                          <div class="card-container" v-on:click=showRequest(req)>
+                              <Card
+                                :name="req.nombre_solicitud"
+                                :date="req.fecha_solicitud"
+                                author="Jefe de Unidad"
+                                :description="req.detalle_solicitud"
+                              />
+                          </div>
                       </div>
                   </div>
               </div>
@@ -22,7 +22,6 @@
                       />
                   </div>
               </div>
-          </div>
       </div>
   </div>
 </template>
@@ -48,9 +47,11 @@ export default {
     },
     methods: {
         async getData(){
-            const response = (await this.$http.get(`request?type=criteria&from=depto&nombre=Ingeniería%20Civil&estado=ABIERTA`)).data;
+            const response = (await this.$http.get(`request?type=criteria&from=depto&nombre=Ingeniería%20de%20Sistemas`)).data;
             for (let i = 0; i < response.length; i++) {
                 this.inboxData.push(response[i]);
+                this.inboxData[i].fecha_solicitud=this.inboxData[i].fecha_solicitud.substr(5, this.inboxData[i].fecha_solicitud.indexOf('T'));
+                this.inboxData[i].fecha_solicitud=this.inboxData[i].fecha_solicitud.substr(0, this.inboxData[i].fecha_solicitud.indexOf('T'));
             }
         },
         async showRequest(req){
@@ -74,19 +75,17 @@ export default {
 }
 .container{
     padding: 0px!important;
-    display: grid;
-    grid-template-columns: 1fr 0.6fr;
     gap: 2rem;
-}
-.layout{
-    padding: 0px!important;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 .card-left-side{
     height: 92vh;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    -webkit-overflow-scrolling: touch;
     background: #fff;
-    padding: 18px 0px;
+    padding: 10px 0px;
 }
 .card-left-side ::-webkit-scrollbar{width: 5px;}
 .card-left-side ::-webkit-scrollbar-track{
@@ -96,16 +95,14 @@ export default {
 .card-left-side ::-webkit-scrollbar-thumb{background-color: rgba(61,151,227,.2);}
 .card-index{
     position: relative;
-    display: flex;
     align-items: baseline;
-    padding: 30px 40px;
+    padding: 20px 20px;
     background: #fff;
     border-bottom: 1px solid #ddd;
     margin-bottom: 10px;
 }
 .card-index ::before{
     position: absolute;
-    content: "";
     top: 0;
     left: 0;
     width: 3px;
@@ -126,9 +123,19 @@ export default {
 }
 .card-right-side ::-webkit-scrollbar-thumb{background-color: rgba(61,151,227,.2);}
 .inbox-cards{
-    grid-column: 1/2;
+    width: 30%;
+    margin: 10px;
+    display: flex;
 }
 .inbox-details{
-    grid-column: 2/3;
+    width: 60%;
+    padding:0 5rem 5rem 0;
+    margin: 10px;
+    background: #C4DEE4;
+}
+.card-container{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 }
 </style>
