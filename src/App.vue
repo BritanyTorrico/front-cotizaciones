@@ -5,24 +5,23 @@
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <b-navbar-brand href="#">UMSS</b-navbar-brand>
         <b-collapse id="nav-collapse" is-nav>
-          <div id="nav">
-            <b-navbar-nav>
-              <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
-              <b-nav-item to="/about">About</b-nav-item>
-              <b-nav-item v-if="!username" to="/login"
-                >Iniciar Sesion</b-nav-item
-              >
-              <b-nav-item v-if="permisoItemDeGasto" to="/registro_item"
-                >Item</b-nav-item
-              >
-              <b-nav-item v-if="permisoUnidadDeGasto" to="/registro_unidad"
-                >Unidad</b-nav-item
-              >
-              <b-nav-item v-if="permisoCrearUsuario" to="/register"
-                >Registrar Usuario</b-nav-item
-              >
-            </b-navbar-nav>
-          </div>
+          <b-navbar-nav>
+            <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
+            <b-nav-item to="/about">About</b-nav-item>
+            <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
+            <b-nav-item v-if="permisoItemDeGasto" to="/registro_item"
+              >Item</b-nav-item
+            >
+            <b-nav-item v-if="permisoUnidadDeGasto" to="/registro_unidad"
+              >Unidad</b-nav-item
+            >
+            <b-nav-item v-if="permisoCrearUsuario" to="/register"
+              >Registrar Usuario</b-nav-item
+            >
+            <b-nav-item v-if="username" @click="cerrar()"
+              >Cerrar Sesion</b-nav-item
+            >
+          </b-navbar-nav>
         </b-collapse>
       </b-container>
     </b-navbar>
@@ -44,12 +43,11 @@
 
       <a v-if="username" href="" @click="cerrar()">Cerrar sesion</a>
     </div>-->
-
     <router-view />
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "App",
 
@@ -60,17 +58,27 @@ export default {
       "permisoUnidadDeGasto",
       "permisoCrearUsuario",
       "username",
+      "listaPermisos",
     ]),
   },
   methods: {
+    ...mapActions(["getPermi"]),
     cerrar() {
       this.$store.commit("setUser", false);
       localStorage.setItem("username", this.username);
       console.log("hlaa  " + localStorage.getItem("username"));
       localStorage.removeItem("my-app");
       localStorage.removeItem("username");
+      this.$store.commit("setPermisoUsuario", false);
+      this.$store.commit("setPermisoItem", false);
+      this.$store.commit("setPermisoUnidad", false);
+      this.$store.commit("setPermisoRol", false);
+      this.$store.commit("setPermisoSolicitud", false);
+      this.listapermisos = [];
+      this.$router.push("/login");
     },
   },
+  mounted() {},
 };
 </script>
 

@@ -536,6 +536,7 @@ export default {
 .form__name {
   width: 100%;
   padding-right: 50px;
+  text-align: left;
 }
 .boton {
   align-items: left;

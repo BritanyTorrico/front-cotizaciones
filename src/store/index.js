@@ -28,8 +28,8 @@ export default new Vuex.Store({
         async habilitar(state) {
             for (let i = 0; i < state.listaPermisos.length; i++) {
                 /* if (state.listaPermisos[i] == "Gestionar Usuarios")//llamar a la cookie para obtener su valors
-                                    state.permisoHome = true;
-                                else */
+                                                    state.permisoHome = true;
+                                                else */
                 if (state.listaPermisos[i] == "Gestionar itemsDeGasto")
                     state.permisoItemDeGasto = true;
                 else if (state.listaPermisos[i] == "Gestionar unidadDeGasto")
@@ -42,11 +42,6 @@ export default new Vuex.Store({
                     state.permisoSolicitud = true;
                 else if (state.listaPermisos[i] == "Gestionar Empresa")
                     state.permisoEmpresa = true;
-
-                /*else if (state.listaPermisos[i] == "Gestionar Informe")
-                                  state.permisoInforme = true;
-                                else if (state.listaPermisos[i] == "Gestionar Cotizacion")
-                                  state.permisoCotizacion = true;*/
             }
             console.log("entre al mutations");
 
@@ -59,13 +54,25 @@ export default new Vuex.Store({
         setUser(state, dato) {
             state.username = dato;
         },
+        setPermisoUsuario(state, dato2) {
+            state.permisoCrearUsuario = dato2;
+        },
+        setPermisoItem(state, dato2) {
+            state.permisoItemDeGasto = dato2;
+        },
+        setPermisoUnidad(state, dato2) {
+            state.permisoUnidadDeGasto = dato2;
+        },
+        setPermisoRol(state, dato2) {
+            state.permisoCrearRol = dato2;
+        },
+        setPermisoSolicitud(state, dato2) {
+            state.permisoSolicitud = dato2;
+        },
+        setPermisoEmpresa(state, dato2) {
+            state.permisoEmpresa = dato2;
+        },
     },
-    /* push(state, categ) {
-                              for (let i = 0; i < state.categ.length; i++) {
-                                  state.listaPermisos.push(categ[i].nombre_funcion);
-                              }
-                              console.log("entre al push");
-                          },*/
     actions: {
         getPermi(context) {
             context.commit("habilitar");
