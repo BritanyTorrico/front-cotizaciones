@@ -12,8 +12,9 @@
            : 'form_check-input'
            "                
           type="text"
+          minlength="5"
           maxlength="25"
-          v-on:keywdown=keyhandler($event)
+          v-on:keydown="keyhandler($event)"
           required
           placeholder="Ingrese nombre aquí"
           v-model="dato.nombre_rol"
@@ -28,14 +29,18 @@
      <div class="form_section">
         <label>
           <div class="form_name">Seleccione las funciones:</div>
+          <ul>
+            <div class="checkbox-style">
             <input type="checkbox" id="gestionUsuario" name="funcion" value="Gestionar Usuarios"/>
-            <label for="gestionUsuario">Registro de Usuarios</label><br>
-            <input type="checkbox" id="gestionRol" name="funcion" value="Gestionar Roles"/>
-            <label for="gestionRol">Registro de Roles</label><br>
-            <input type="checkbox" id="gestionUnidades" name="funcion" value="Gestionar Unidades de Gasto"/>
-            <label for="gestionUnidades">Registro de Unidades de Gasto</label><br>
+            <li><label for="gestionUsuario">Regisro de Usuarios</label><br>
+            <input type="checkbox" id="gestionRol" name="funcion" value="Gestionar Roles"/></li>
+            <li><label for="gestionRol">Regisro de Roles</label><br>
+            <input type="checkbox" id="gestionUnidades" name="funcion" value="Gestionar Unidades de Gasto"/></li>
+            <li><label for="gestionUnidades">Regisro de Unidades de Gasto</label><br></li>
             <input type="checkbox" id="gestionItems" name="funcion" value="Gestionar Items de Gasto"/>
-            <label for="gestionItems">Registro de Items de Gasto</label><br>
+            <li><label for="gestionItems">Regisro de Items de Gasto</label><br></li>
+            </div>
+          </ul>
         </label>
      </div>  
      
@@ -56,6 +61,7 @@
 import {
     required,
     maxLength,
+    minLength,
 } from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
 
@@ -76,13 +82,14 @@ export default {
      dato:{
        nombre_rol:{
          required,
+         minLength: minLength(5),
          maxLength: maxLength(25),
        },
      },
    },
    methods: {
      keyhandler(e){
-       if (!e.key.math(/^[a-zA-Z0-9ñÑ+áéíóúÁÉÍÓÚ'\s]*$/)){
+       if (!e.key.match(/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s]*$/)){
          e.preventDefault();
        }
      },
@@ -238,5 +245,13 @@ export default {
 .button-disabled {
     background:#999999;
     border: 0px;
+}
+form label{
+	width:300px;
+	font-weight:bold;
+	display:inline-block;
+}
+.checkbox-style {
+      display:inline-block;
 }
 </style>
