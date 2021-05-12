@@ -44,13 +44,16 @@ export default {
   color: var(--color-name);
   margin-bottom: 10px;
   font-weight: bold;
+  text-align: left;
 }
 .container__list {
   width: 80%;
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
+  display: flex;
 }
 .container__list__option {
+  align-items: left;
 }
 </style>

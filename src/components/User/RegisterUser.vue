@@ -219,7 +219,7 @@
           </div>
           <div class="form__section3">
             <div class="fomrm__section__item">
-              <div class="container">
+              <div class="container-facu">
                 <div class="container__label">Facultad:</div>
                 <select
                   v-model="users.facultad"
@@ -474,20 +474,29 @@ export default {
 </script>
 
 <style lang="css" scoped>
+* {
+  margin: 0;
+  padding: 0;
+}
 .flex-container {
   display: flex;
   background-color: #ecf0f1;
+
+  justify-content: center;
+  align-content: center;
+  align-items: center;
 }
 .form__image {
-  width: 40%;
+  width: 45%;
 }
 .form__image img {
   width: 100%;
-  height: 670px;
+  height: 800px;
+  background: red;
 }
 
 .form__datos {
-  width: 60%;
+  width: 70%;
   margin-left: 40px;
   margin-right: 40px;
 }
@@ -594,8 +603,8 @@ export default {
   color: red;
 }
 .container {
-  text-align: left;
-  padding-top: 20px;
+  text-align: center;
+  width: 100%;
 }
 .container__label {
   color: var(--color-name);
@@ -607,5 +616,9 @@ export default {
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
+}
+.container-facu {
+  padding-top: 20px;
+  text-align: left;
 }
 </style>

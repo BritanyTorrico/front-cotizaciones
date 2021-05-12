@@ -51,6 +51,12 @@ const routes = [{
         component: () =>
             import ("../views/LoginPage.vue"),
     },
+    {
+        path: "/crear_rol",
+        name: "creaRol",
+        component: () =>
+            import ("../views/creaRol.vue"),
+    },
 ];
 
 const router = new VueRouter({

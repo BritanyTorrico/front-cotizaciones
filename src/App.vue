@@ -5,7 +5,7 @@
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <b-navbar-brand href="#">UMSS</b-navbar-brand>
         <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav>
+          <b-navbar-nav id="nav">
             <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
             <b-nav-item to="/about">About</b-nav-item>
             <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
@@ -99,5 +99,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+#nav a {
+  font-weight: bold;
+  color: white;
+}
+#nav a.router-link-exact-active {
+  color: #7bed9f;
 }
 </style>
