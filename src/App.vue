@@ -1,23 +1,50 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link v-if="permisoHome" to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link v-if="!username" to="/login">Iniciar Sesion</router-link> |
+    <b-navbar toggleable="md" type="dark" variant="success">
+      <b-container>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-navbar-brand href="#">UMSS</b-navbar-brand>
+        <b-collapse id="nav-collapse" is-nav>
+          <div id="nav">
+            <b-navbar-nav>
+              <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
+              <b-nav-item to="/about">About</b-nav-item>
+              <b-nav-item v-if="!username" to="/login"
+                >Iniciar Sesion</b-nav-item
+              >
+              <b-nav-item v-if="permisoItemDeGasto" to="/registro_item"
+                >Item</b-nav-item
+              >
+              <b-nav-item v-if="permisoUnidadDeGasto" to="/registro_unidad"
+                >Unidad</b-nav-item
+              >
+              <b-nav-item v-if="permisoCrearUsuario" to="/register"
+                >Registrar Usuario</b-nav-item
+              >
+            </b-navbar-nav>
+          </div>
+        </b-collapse>
+      </b-container>
+    </b-navbar>
+    <!--<div id="nav">
+      <router-link v-if="permisoHome" to="/">Home</router-link>
+      <router-link to="/about">About</router-link>
+      <router-link v-if="!username" to="/login">Iniciar Sesion</router-link>
       <router-link v-if="permisoItemDeGasto" to="/registro_item"
         >Item</router-link
       >
-      |
+
       <router-link v-if="permisoUnidadDeGasto" to="/registro_unidad"
         >Unidad</router-link
       >
-      |
+
       <router-link v-if="permisoCrearUsuario" to="/register"
         >Registrar Usuario</router-link
       >
-      |
+
       <a v-if="username" href="" @click="cerrar()">Cerrar sesion</a>
-    </div>
+    </div>-->
+
     <router-view />
   </div>
 </template>
@@ -25,6 +52,7 @@
 import { mapState } from "vuex";
 export default {
   name: "App",
+
   computed: {
     ...mapState([
       "permisoHome",
@@ -63,18 +91,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>
