@@ -1,12 +1,11 @@
 <template>
   <div class="container">
-    <div class="container__label">{{ nombreLista }}</div>
     <select
       required
       v-on:input="$emit('input', $event.target.value)"
       class="container__list"
     >
-      <option selected="true" disabled="disabled">Seleccione una opcion</option>
+      <option selected="true" disabled="disabled">Seleccione una encargado</option>
       <option
         class="container__list__option"
         v-for="(item, index) in lista"
@@ -30,7 +29,6 @@ export default {
     nombreLista: String,
     nombre: String,
     lista: Array,
-    nombre1: String,
   },
 };
 </script>
@@ -50,7 +48,5 @@ export default {
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
-}
-.container__list__option {
 }
 </style>

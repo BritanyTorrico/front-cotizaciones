@@ -219,12 +219,16 @@
           </div>
           <div class="form__section3">
             <div class="fomrm__section__item">
-              <lista-desplegable
-                required
-                v-model="users.facultad"
-                nombreLista="Facultad:"
-                :lista="listfacultad"
-              ></lista-desplegable>
+              <div class="container">
+                <div class="container__label">Facultad:</div>
+                <select
+                  v-model="users.facultad"
+                  @change="obtenerDepartamentos()"
+                  class="container__list"
+                >
+                  <option disabled="true">Seleccione una opcion</option>
+                </select>
+              </div>
             </div>
             <div class="fomrm__section__item">
               <lista-desplegable
@@ -281,24 +285,9 @@ export default {
         departamento: null,
         nombre_rol: null,
       },
-      listDepartament: [
-        "Ingeniería de Sistemas",
-        "Ingeniería Informática",
-        "Ingeniería Civil",
-        "Ingeniería Mecánica",
-        "Administración",
-      ],
-      listfacultad: [
-        "FACULTAD DE CIENCIAS Y TECNOLOGIA",
-        "FACULTAD DE CIENCIAS ECONÓMICAS",
-      ],
-      listRoles: [
-        "Super Usuario",
-        "Jefe de Departamento",
-        "Secretario",
-        "Cotizador",
-        "Responsable de Presupuestos",
-      ],
+      listDepartament: [],
+      listfacultad: [],
+      listRoles: [],
     };
   },
 
@@ -360,8 +349,39 @@ export default {
       },
     },
   },
+  mounted() {
+    this.obtenerFacultades();
+    this.obtenerRoles();
+  },
 
   methods: {
+    async obtenerFacultades() {
+      const listaFacultades = (await this.$http.get(`faculty`)).data;
+      for (let i = 0; i < listaFacultades.length; i++) {
+        this.listfacultad.push(listaFacultades[i].nombre_facultad);
+      }
+    },
+    async obtenerDepartamentos() {
+      this.listDepartament = [];
+      console.log("hol");
+      let listaDepartamentos = (
+        await this.$http.get(`department?facu=${this.users.facultad}`)
+      ).data;
+      console.log("facultad" + this.users.facultad);
+      for (let i = 0; i < listaDepartamentos.length; i++) {
+        this.listDepartament.push(listaDepartamentos[i].nombre_departamento);
+      }
+      listaDepartamentos.splice(1, 5);
+      console.log(listaDepartamentos.data);
+    },
+
+    async obtenerRoles() {
+      const listaRoles = (await this.$http.get(`roles`)).data.datos;
+
+      for (let i = 0; i < listaRoles.length; i++) {
+        this.listRoles.push(listaRoles[i].nombre_rol);
+      }
+    },
     keyhandler(e) {
       if (!e.key.match(/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.\s]*$/)) {
         e.preventDefault();
@@ -372,9 +392,9 @@ export default {
         if (!this.$v.users.$invalid) {
           console.log("creo");
           await this.sendDataUsers();
-          this.alert("success", "Usuario creado exitosamente");
           await this.sendUserDepartment();
           await this.sendUsernameRol();
+          this.alert("success", "Usuario creado exitosamente");
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
@@ -390,6 +410,7 @@ export default {
           nombre_usuario: this.users.nombre_usuario,
         });
       } catch (error) {
+        //borra usario
         throw new Error("Error departamento");
       }
     },
@@ -401,6 +422,7 @@ export default {
           nombre_usuario: this.users.nombre_usuario,
         });
       } catch (error) {
+        //borrar un usuario  y departamento modulo departamento
         throw new Error("Error Roles");
       }
     },
@@ -562,5 +584,20 @@ export default {
 .requerido__listas {
   padding-top: 60px;
   color: red;
+}
+.container {
+  text-align: left;
+  padding-top: 20px;
+}
+.container__label {
+  color: var(--color-name);
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.container__list {
+  width: 80%;
+  color: #576574;
+  padding: 6px;
+  background: #ecf0f1;
 }
 </style>
