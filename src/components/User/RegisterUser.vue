@@ -364,7 +364,9 @@ export default {
 
   methods: {
     async obtenerFacultades() {
-      const listaFacultades = (await this.$http.get(`faculty`)).data;
+      const listaFacultades = (
+        await this.$http.get(`faculty?token=${localStorage.getItem("token")}`)
+      ).data;
       for (let i = 0; i < listaFacultades.length; i++) {
         this.listfacultad.push(listaFacultades[i].nombre_facultad);
       }
@@ -373,7 +375,11 @@ export default {
       this.listDepartament = [];
       console.log("hol");
       let listaDepartamentos = (
-        await this.$http.get(`department?facu=${this.users.facultad}`)
+        await this.$http.get(
+          `department?facu=${this.users.facultad}&token=${localStorage.getItem(
+            "token"
+          )}`
+        )
       ).data;
       console.log("facultad" + this.users.facultad);
       for (let i = 0; i < listaDepartamentos.length; i++) {
@@ -384,7 +390,9 @@ export default {
     },
 
     async obtenerRoles() {
-      const listaRoles = (await this.$http.get(`roles`)).data.datos;
+      const listaRoles = (
+        await this.$http.get(`roles?token=${localStorage.getItem("token")}`)
+      ).data.datos;
 
       for (let i = 0; i < listaRoles.length; i++) {
         this.listRoles.push(listaRoles[i].nombre_rol);
@@ -413,10 +421,13 @@ export default {
     async sendUserDepartment() {
       try {
         console.log("departamento");
-        await this.$http.post("usersPerDeparment", {
-          nombre_departamento: this.users.departamento,
-          nombre_usuario: this.users.nombre_usuario,
-        });
+        await this.$http.post(
+          `usersPerDeparment?token=${localStorage.getItem("token")}`,
+          {
+            nombre_departamento: this.users.departamento,
+            nombre_usuario: this.users.nombre_usuario,
+          }
+        );
       } catch (error) {
         //borra usario
         throw new Error("Error departamento");
@@ -425,10 +436,13 @@ export default {
     async sendUsernameRol() {
       try {
         console.log("roles");
-        await this.$http.post("usersPerRole", {
-          nombre_rol: this.users.nombre_rol,
-          nombre_usuario: this.users.nombre_usuario,
-        });
+        await this.$http.post(
+          `usersPerRole?token=${localStorage.getItem("token")}`,
+          {
+            nombre_rol: this.users.nombre_rol,
+            nombre_usuario: this.users.nombre_usuario,
+          }
+        );
       } catch (error) {
         //borrar un usuario  y departamento modulo departamento
         throw new Error("Error Roles");
@@ -437,7 +451,7 @@ export default {
     async sendDataUsers() {
       try {
         console.log(this.users);
-        await this.$http.post("users", {
+        await this.$http.post(`users?token=${localStorage.getItem("token")}`, {
           nombre_usuario: this.users.nombre_usuario,
           contrasena: this.users.contrasena,
           nombres: this.users.nombres,

@@ -67,18 +67,22 @@ export default {
       this.$store.commit("setUser", false);
       localStorage.setItem("username", this.username);
       console.log("hlaa  " + localStorage.getItem("username"));
-      localStorage.removeItem("my-app");
+
       localStorage.removeItem("username");
+      localStorage.removeItem("token");
+
       this.$store.commit("setPermisoUsuario", false);
       this.$store.commit("setPermisoItem", false);
       this.$store.commit("setPermisoUnidad", false);
       this.$store.commit("setPermisoRol", false);
       this.$store.commit("setPermisoSolicitud", false);
-      this.listapermisos = [];
+      this.$store.commit("setLista");
+
+      sessionStorage.removeItem("my-app");
+
       this.$router.push("/login");
     },
   },
-  mounted() {},
 };
 </script>
 
