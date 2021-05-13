@@ -1,28 +1,28 @@
 <template>
-  <section class ="reg_unit">
+  <div class ="reg_unit">
       <h2 class="unit_title">Registrar Unidad de Gasto</h2>
       <label>
           <div class="form_desc">Ingrese los datos de la nueva unidad de gasto</div>
       </label>
       <form class="form_unitreg" @submit.prevent="submitForm" autocomplete="off">
           <div class="form_section">
-              <label>
                   <div class="form_name">Unidad:</div>
-                  <input
-                    name="nombreUnidad"
-                    id="nombreUnidad"
-                    :class="
-                      $v.unit.nombre_unidadgasto.$invalid
-                      ? 'form_check-input-error'
-                      : 'form_check-input'
-                    "
-                    type="text"
-                    maxlength="30"
-                    required
-                    placeholder="Ingrese el nombre aquí"
-                    v-model="unit.nombre_unidadgasto"
-                  />
-              </label>
+                  <div class="form_input">
+                      <input
+                        name="nombreUnidad"
+                        id="nombreUnidad"
+                        :class="
+                        $v.unit.nombre_unidadgasto.$invalid
+                        ? 'form_check-input-error'
+                        : 'form_check-input'
+                        "
+                        type="text"
+                        maxlength="30"
+                        required
+                        placeholder="Ingrese el nombre aquí"
+                        v-model="unit.nombre_unidadgasto"
+                       />
+                  </div>
               <div
                 class="form_check-error"
                 v-if="!$v.unit.nombre_unidadgasto.required"
@@ -31,7 +31,6 @@
               </div>
           </div>
           <div class="form_section">
-              <label>
                   <div class="form_name">Encargado:</div>
                   <lista-desplegable
                     nombreLista="encargadoUnidad"
@@ -50,10 +49,8 @@
               >
                   Campo obligatorio.
               </div>
-              </label>
           </div>
           <div class="form_section">
-              <label>
                   <div class="form_name">Descripción:</div>
                   <textarea
                     name="descripcionUnidad"
@@ -69,7 +66,6 @@
                     placeholder="Ingrese una descripción de la unidad"
                     v-model="unit.descripcion_unidadgasto"
                   />
-              </label>
               <div
                 class="form_check-error"
                 v-if="!$v.unit.descripcion_unidadgasto.required"
@@ -77,16 +73,18 @@
                   Campo obligatorio.
               </div>
           </div>
-          <button
-            :disabled="$v.unit.$invalid"
-            :class="$v.unit.$invalid ? 'button-disabled':''"
-            class="form_button"
-          >
-              Crear
-          </button>
+          <div class="unit_form_button">
+              <button
+                :disabled="$v.unit.$invalid"
+                :class="$v.unit.$invalid ? 'button-disabled':''"
+                class="form_button"
+              >
+                <div class="button_tag">Crear</div>
+              </button>
+          </div>
       </form>
       <Alert ref="alert"></Alert>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -191,7 +189,7 @@ export default {
     padding: 20px 40px 20px 40px;
     display: flex;
     flex-direction: column;
-    width: 100%
+    width: 100%;
 }
 
 .unit_title{
@@ -209,13 +207,14 @@ export default {
     font-weight: 400;
     padding-bottom: 5px;
     border-bottom: 2px solid #0D58CF;
-    width: 600px;
+    width: 100%;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .form_unitreg{
     padding:8px;
     text-align: left;
+    width: 100%;
 }
 
 .reg_unit textarea {
@@ -225,18 +224,15 @@ export default {
 }
 
 .reg_unit input,
-.reg_unit textarea,
-.reg_unit lista-desplegable {
+.reg_unit textarea {
     background-color: #F7F6F6;
     border-radius: 3px;
     padding: 8px;
-    width: 550px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .reg_unit input ::placeholder,
-.reg_unit textarea ::placeholder
-.reg_unit lista-desplegable ::placeholder{
+.reg_unit textarea ::placeholder{
     color:#999999;
     font-size: 20px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -255,6 +251,8 @@ export default {
 
 .form_check-error {
     color: #ed1c24;
+    font-size: 14px;
+    padding: 0 0 0 2%;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -262,14 +260,14 @@ export default {
   margin: auto;
   display: block;
   background-color: #0C59CF;
-  padding: 12px 115px 12px 115px;
+  padding: 2% 19% 2% 19%;
   border-radius: 22px;
   color: #fafafa;
   font-size: 22px;
   font-weight: bold;
   border: 0px;
+  width: 45%;
 }
-
 .form_check-input {
   width: 100%;
   padding: 3px;
@@ -307,5 +305,8 @@ export default {
 .button-disabled {
     background:#999999;
     border: 0px;
+}
+.form_input{
+    width: 100%;
 }
 </style>
