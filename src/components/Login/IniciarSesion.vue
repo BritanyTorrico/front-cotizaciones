@@ -86,7 +86,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["getPermi", "push"]),
+    ...mapActions(["getPermi", "push", "login"]),
     async getPermisos() {
       const categ = (
         await this.$http.get(
@@ -100,15 +100,12 @@ export default {
 
     async verificarDatos() {
       try {
-        console.log("metodo");
         console.log(this.users.nombre_usuario);
         console.log(this.users.contrasena);
-        const resp = await this.$http.get(
+        const tokensito = await this.$http.get(
           `secret?user=${this.users.nombre_usuario}&pass=${this.users.contrasena}`
         );
-        localStorage.setItem("token", resp.data);
-        console.log(resp);
-        console.log("metodo termina");
+        await this.login(tokensito.data);
       } catch (error) {
         throw new Error("Datos invalidos");
       }
@@ -116,18 +113,9 @@ export default {
     async submitForm() {
       try {
         if (!this.$v.users.$invalid) {
-          console.log("inicio a verificar");
           await this.verificarDatos();
-          console.log("termino verficacion");
           this.alert("success", "Ha iniciador sesion ");
 
-          /*localStorage.setItem(
-            "id",
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJtaXNvcyI6WyJmLnphcGF0YS5wIiwiR2VzdGlvbmFyIFVzdWFyaW9zIiwiR2VzdGlvbmFyIFJvbGVzIiwiR2VzdGlvbmFyIFByZXN1cHVlc3RvcyIsIkFjdHVhbGl6YXIgcHJlc3VwdWVzdG8gdW5pZGFkIGRlIGdhc3RvIiwiR2VzdGlvbmFyIGNhdGVnb3JpYUdlbmVyYWwiLCJHZXN0aW9uYXIgY2F0ZWdvcmlhRXNwZWNpZmljYSIsIkdlc3Rpb25hciBpdGVtc0RlR2FzdG8iLCJHZXN0aW9uYXIgaXRlbVVuaWRhZCIsIkdlc3Rpb25hciB1bmlkYWREZUdhc3RvIiwiR2VzdGlvbmFyIGRlcGFydGFtZW50byIsIkdlc3Rpb25hciBmYWN1bHRhZCIsIkdlc3Rpb25hciB1c3VhcmlvVW5pZGFkIiwiR2VzdGlvbmFyIHVzdWFyaW8iLCJHZXN0aW9uYXIgdXNlclJvbCIsIkdlc3Rpb25hciByb2wiLCJHZXN0aW9uYXIgcm9sRnVuY2lvbiIsIkdlc3Rpb25hciBmdW5jaW9uIiwiR2VzdGlvbmFyIGl0ZW1Tb2xpY2l0dWQiLCJHZXN0aW9uYXIgU29saWNpdHVkIiwiR2VzdGlvbmFyIEluZm9ybWUiLCJHZXN0aW9uYXIgQ290aXphY2lvbiIsIkdlc3Rpb25hciBFbXByZXNhIiwiR2VzdGlvbmFyIGVtcHJlc2FSdWJybyIsIkdlc3Rpb25hciBSdWJybyJdLCJpYXQiOjE2MjA4NzIzODV9.qpiz4o_lbNY3mDguksozsZf3GygPF0OFyTeeoyr7K6c"
-          );*/
-          /* const listaFacultades = (await this.$http.get(`checkedForLog`)).data;
-          console.log("entroooooooooooooooooo");*/
-          //console.log(listaFacultades);
           await this.getPermisos(); //obtengo los permisos en un arrray
           await this.getPermi(); //modifica el router.link
 

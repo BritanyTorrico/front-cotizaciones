@@ -23,13 +23,14 @@ export default new Vuex.Store({
         permisoEmpresa: false,
         listaPermisos: [],
         username: false,
+        token: null,
     },
     mutations: {
         async habilitar(state) {
             for (let i = 0; i < state.listaPermisos.length; i++) {
                 /* if (state.listaPermisos[i] == "Gestionar Usuarios")//llamar a la cookie para obtener su valors
-                                                                                                    state.permisoHome = true;
-                                                                                                else */
+                                                                                                                                                                                                                                    state.permisoHome = true;
+                                                                                                                                                                                                                                else */
                 if (state.listaPermisos[i] == "Gestionar itemsDeGasto") {
                     state.permisoItemDeGasto = true;
                 } else if (state.listaPermisos[i] == "Gestionar unidadDeGasto") {
@@ -79,10 +80,26 @@ export default new Vuex.Store({
         setLista(state) {
             state.listaPermisos = [];
         },
+        setToken(state, payload) {
+            state.token = payload;
+            console.log(state.token);
+        },
     },
     actions: {
         getPermi(context) {
             context.commit("habilitar");
+        },
+        login({ commit }, tokensito) {
+            console.log("entro al login");
+            commit("setToken", tokensito);
+            localStorage.setItem("token", tokensito); //para que no se pierda al refrescar
+        },
+        leerToken({ commit }) {
+            if (localStorage.getItem("token")) {
+                commit("setToken", localStorage.getItem("token"));
+            } else {
+                commit("setToken", null);
+            }
         },
     },
     modules: {},

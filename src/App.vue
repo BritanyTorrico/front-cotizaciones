@@ -50,7 +50,9 @@
 import { mapState, mapActions } from "vuex";
 export default {
   name: "App",
-
+  created() {
+    this.leerToken();
+  },
   computed: {
     ...mapState([
       "permisoHome",
@@ -62,7 +64,7 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions(["getPermi"]),
+    ...mapActions(["getPermi", "leerToken"]),
     cerrar() {
       this.$store.commit("setUser", false);
       localStorage.setItem("username", this.username);

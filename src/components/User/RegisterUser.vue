@@ -275,11 +275,15 @@ import {
   helpers,
 } from "vuelidate/lib/validators";
 import ListaDesplegable from "./ListaDesplegable.vue";
+import { mapState, mapActions } from "vuex";
 import Alert from "@/components/User/Alert.vue";
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
 export default {
   components: { ListaDesplegable, Alert },
   name: "RegisterUser",
+  computed: {
+    ...mapState(["token"]),
+  },
   data() {
     return {
       users: {
@@ -363,10 +367,20 @@ export default {
   },
 
   methods: {
+    ...mapActions(["datosProtegidos"]),
     async obtenerFacultades() {
+      const nuevoToken = "Bearer " + this.token;
+      console.log(nuevoToken);
       const listaFacultades = (
-        await this.$http.get(`faculty?token=${localStorage.getItem("token")}`)
+        await this.$http.get("faculty", {
+          headers: {
+            authorization: nuevoToken,
+          },
+        })
       ).data;
+      console.log("lista");
+      console.log(listaFacultades);
+
       for (let i = 0; i < listaFacultades.length; i++) {
         this.listfacultad.push(listaFacultades[i].nombre_facultad);
       }
