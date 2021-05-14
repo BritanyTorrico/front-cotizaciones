@@ -52,11 +52,14 @@ const routes = [{
             import ("../views/LoginPage.vue"),
     },
     {
-        path: "/crear_rol",
-        name: "creaRol",
+        path: "/creaRol",
+        name: "CreaRol",
         component: () =>
             import ("../views/creaRol.vue"),
-    },
+        meta: {
+            rutaProtegida: true,
+        },
+    }
 ];
 
 const router = new VueRouter({
