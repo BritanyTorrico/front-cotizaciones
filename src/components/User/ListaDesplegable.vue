@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-lista">
     <div class="container__label">{{ nombreLista }}</div>
     <select
       required
@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.container {
+.container-lista {
   text-align: left;
   padding-top: 20px;
 }
@@ -44,13 +44,16 @@ export default {
   color: var(--color-name);
   margin-bottom: 10px;
   font-weight: bold;
+  text-align: left;
 }
 .container__list {
   width: 80%;
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
+  display: flex;
 }
 .container__list__option {
+  align-items: left;
 }
 </style>

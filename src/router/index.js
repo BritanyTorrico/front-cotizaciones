@@ -23,37 +23,68 @@ const routes = [{
         name: "RegistroItemGasto",
         component: () =>
             import ("@/views/RegItem.vue"),
+
+        meta: {
+            rutaProtegida: true,
+        },
+
     },
     {
         path: "/registro_unidad",
         name: "RegistroUnidadGasto",
         component: () =>
             import ("@/views/RegUnidad.vue"),
+
+        meta: {
+            rutaProtegida: true,
+        },
+
     },
     {
         path: "/register",
         name: "RegisterUserPage",
         component: () =>
             import ("../views/RegisterUserPage.vue"),
+
+        meta: {
+            rutaProtegida: true,
+        },
     },
     {
-        path: "/crear_rol",
-        name: "CrearRoles",
+        path: "/login",
+        name: "LoginPage",
         component: () =>
-            import ("@/views/creaRol.vue"),
+            import ("../views/LoginPage.vue"),
     },
     {
-        path: "/solicitud",
-        name: "SolicitudPage",
+        path: "/creaRol",
+        name: "CreaRol",
         component: () =>
-            import ("../views/SolicitudPage.vue"),
-    },
+            import ("../views/creaRol.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    }
+
 ];
 
 const router = new VueRouter({
     mode: "history",
     base: process.env.BASE_URL,
     routes,
+});
+router.beforeEach((to, from, next) => {
+    const rutaEsProtegida = to.matched.some((item) => item.meta.rutaProtegida);
+    const user = localStorage.getItem("username");
+    if (rutaEsProtegida && user === "true") {
+        next(); //protegida
+    } else if (rutaEsProtegida && user === "false") {
+        next("/login");
+    } else if (!rutaEsProtegida) {
+        next();
+    } else if (rutaEsProtegida) {
+        next("/login");
+    }
 });
 
 export default router;

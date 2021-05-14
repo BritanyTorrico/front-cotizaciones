@@ -1,11 +1,11 @@
 <template>
-  <div class="container">
+  <div class="list-container">
     <select
       required
       v-on:input="$emit('input', $event.target.value)"
       class="container__list"
     >
-      <option selected="true" disabled="disabled">Seleccione una encargado</option>
+      <option selected="true" class="container__list__placeholder" disabled="disabled">Seleccione una encargado</option>
       <option
         class="container__list__option"
         v-for="(item, index) in lista"
@@ -33,20 +33,25 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
-.container {
+<style>
+.list-container {
   text-align: left;
-  padding-top: 20px;
+  padding-top: 10px;
 }
-.container__label {
-  color: var(--color-name);
-  margin-bottom: 10px;
-  font-weight: bold;
-}
+
 .container__list {
-  width: 80%;
-  color: #576574;
-  padding: 6px;
-  background: #ecf0f1;
+  width: 100%;
+  color: #3a3a3a;
+  padding: 6px 6px 6px 0;
+  background: #F7F6F6;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  border: none;
+  border-radius: 3px;
+}
+.container__list :default{
+  color:#999999!important;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 </style>

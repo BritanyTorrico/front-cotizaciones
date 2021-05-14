@@ -6,7 +6,6 @@
       </label>
       <form class="form_itemreg" @submit.prevent="submitForm" autocomplete="off">
           <div class="form_section">
-              <label>
                   <div class="form_name">Item:</div>
                   <input
                     id="nombreItem"
@@ -21,7 +20,6 @@
                     placeholder="Ingrese el nombre aquí"
                     v-model="item.nombre_itemgasto"
                   />
-              </label>
               <div
                 class="form_check-error"
                 v-if="!$v.item.nombre_itemgasto.required"
@@ -30,7 +28,6 @@
               </div>
           </div>
           <div class="form_section">
-              <label>
                   <div class="form_name">Categoría:</div>
                   <input
                     name="categoriaItem"
@@ -46,7 +43,6 @@
                     placeholder="Seleccione un categoría"
                     v-model="item.categoria_especifica"
                   />
-              </label>
               <div
                 class="form_check-error"
                 v-if="!$v.item.categoria_especifica.required"
@@ -62,7 +58,6 @@
               </datalist>
           </div>
           <div class="form_section">
-              <label>
                   <div class="form_name">Descripción:</div>
                   <textarea
                     name="descripcionItem"
@@ -78,7 +73,6 @@
                     placeholder="Ingrese una descripción del ítem"
                     v-model="item.descripcion_item"
                   />
-              </label>
               <div
                 class="form_check-error"
                 v-if="!$v.item.descripcion_item.required"
@@ -87,7 +81,6 @@
               </div>
           </div>
           <div class="form_section">
-              <label>
                   <div class="form_name">Justificación:</div>
                   <textarea
                     name="justificacionItem"
@@ -103,7 +96,6 @@
                     placeholder="Ingrese la justificación del ítem"
                     v-model="item.justificacion"
                   />
-              </label>
               <div
                 class="form_check-error"
                 v-if="!$v.item.justificacion.required"
@@ -254,6 +246,9 @@ export default {
 .reg_item{
     background-color: #F7F6F6;
     padding: 20px 40px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .item_title{
@@ -271,13 +266,14 @@ export default {
     font-weight: 400;
     padding-bottom: 5px;
     border-bottom: 2px solid #0D58CF;
-    width: 600px;
+    width: 100%;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .form_itemreg{
     padding:8px;
     text-align: left;
+    width: 100%;
 }
 
 .reg_item textarea {
@@ -289,12 +285,8 @@ export default {
 .reg_item input,
 .reg_item textarea {
     background-color: #F7F6F6;
-    border-style: none none solid none;
-    border: 0px 0px 5px 0px;
-    border-color: #3a3a3a;
     border-radius: 3px;
     padding: 8px;
-    width: 550px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -318,6 +310,8 @@ export default {
 
 .form_check-error {
     color: #ed1c24;
+    font-size: 14px;
+    padding: 0 0 0 2%;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -325,12 +319,13 @@ export default {
   margin: auto;
   display: block;
   background-color: #0C59CF;
-  padding: 12px 115px 12px 115px;
+  padding: 2% 19% 2% 19%;
   border-radius: 22px;
   color: #fafafa;
   font-size: 22px;
   font-weight: bold;
   border: 0px;
+  width: 45%;
 }
 
 .form_check-input {
@@ -342,6 +337,7 @@ export default {
   background-color: transparent;
   color: #3a3a3a;
   font-size: 14px;
+  border-radius: 3px;
 }
 
 .form_check-input-error {
@@ -353,6 +349,7 @@ export default {
   background-color: transparent;
   color: #3a3a3a;
   font-size: 14px;
+  border-radius: 3px;
 }
 .form_check-input:focus {
   background: linear-gradient(to bottom, transparent, #ced6e0);
