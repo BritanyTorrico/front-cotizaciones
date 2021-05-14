@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-user">
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
@@ -650,7 +650,7 @@ export default {
   padding-top: 60px;
   color: red;
 }
-.container {
+.container-user {
   text-align: center;
   width: 100%;
 }
