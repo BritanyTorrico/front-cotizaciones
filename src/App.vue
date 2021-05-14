@@ -18,6 +18,7 @@
             <b-nav-item v-if="permisoCrearUsuario" to="/register"
               >Registrar Usuario</b-nav-item
             >
+            <b-nav-item v-if="permisoCrearRol" to="/creaRol">Rol</b-nav-item>
             <b-nav-item v-if="username" @click="cerrar()"
               >Cerrar Sesion</b-nav-item
             >
@@ -61,6 +62,7 @@ export default {
       "permisoCrearUsuario",
       "username",
       "listaPermisos",
+      "permisoCrearRol",
     ]),
   },
   methods: {

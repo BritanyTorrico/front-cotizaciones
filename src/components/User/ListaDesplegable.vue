@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-lista">
     <div class="container__label">{{ nombreLista }}</div>
     <select
       required
@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.container {
+.container-lista {
   text-align: left;
   padding-top: 20px;
 }

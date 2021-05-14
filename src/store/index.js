@@ -10,11 +10,9 @@ const vuexPersist = new VuexPersist({
     storage: window.sessionStorage,
 });
 
-
 Vue.use(Vuex);
-var EventBus = new Vue();
-export default new Vuex.Store({
 
+export default new Vuex.Store({
     plugins: [vuexPersist.plugin],
     state: {
         permisoHome: true,
@@ -34,8 +32,8 @@ export default new Vuex.Store({
         async habilitar(state) {
             for (let i = 0; i < state.listaPermisos.length; i++) {
                 /* if (state.listaPermisos[i] == "Gestionar Usuarios")//llamar a la cookie para obtener su valors
-                                                                                                                                                                                                                                                            state.permisoHome = true;
-                                                                                                                                                                                                                                                        else */
+                                                                                                                                                                                                                                                                    state.permisoHome = true;
+                                                                                                                                                                                                                                                                else */
                 if (state.listaPermisos[i] == "Gestionar itemsDeGasto") {
                     state.permisoItemDeGasto = true;
                 } else if (state.listaPermisos[i] == "Gestionar unidadDeGasto") {
