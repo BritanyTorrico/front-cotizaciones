@@ -403,7 +403,11 @@ export default {
 
     async obtenerRoles() {
       const listaRoles = (
-        await this.$http.get(`roles?token=${localStorage.getItem("token")}`)
+        await this.$http.get(`roles`, {
+          headers: {
+            authorization: this.token,
+          },
+        })
       ).data.datos;
 
       for (let i = 0; i < listaRoles.length; i++) {
@@ -434,10 +438,15 @@ export default {
       try {
         console.log("departamento");
         await this.$http.post(
-          `usersPerDeparment?token=${localStorage.getItem("token")}`,
+          `usersPerDeparment`,
           {
             nombre_departamento: this.users.departamento,
             nombre_usuario: this.users.nombre_usuario,
+          },
+          {
+            headers: {
+              authorization: this.token,
+            },
           }
         );
       } catch (error) {
@@ -449,10 +458,15 @@ export default {
       try {
         console.log("roles");
         await this.$http.post(
-          `usersPerRole?token=${localStorage.getItem("token")}`,
+          `usersPerRole`,
           {
             nombre_rol: this.users.nombre_rol,
             nombre_usuario: this.users.nombre_usuario,
+          },
+          {
+            headers: {
+              authorization: this.token,
+            },
           }
         );
       } catch (error) {
@@ -463,15 +477,23 @@ export default {
     async sendDataUsers() {
       try {
         console.log(this.users);
-        await this.$http.post(`users?token=${localStorage.getItem("token")}`, {
-          nombre_usuario: this.users.nombre_usuario,
-          contrasena: this.users.contrasena,
-          nombres: this.users.nombres,
-          apellidos: this.users.apellidos,
-          celular: this.users.celular,
-          facultad: this.users.facultad,
-          departamento: this.users.departamento,
-        });
+        await this.$http.post(
+          `users`,
+          {
+            nombre_usuario: this.users.nombre_usuario,
+            contrasena: this.users.contrasena,
+            nombres: this.users.nombres,
+            apellidos: this.users.apellidos,
+            celular: this.users.celular,
+            facultad: this.users.facultad,
+            departamento: this.users.departamento,
+          },
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        );
       } catch (error) {
         throw new Error("El nombre de usuario ya fue registrado");
       }
