@@ -88,98 +88,175 @@
 </template>
 
 <script>
-import {
-    required,
-    maxLength,
-} from "vuelidate/lib/validators";
+import { required, maxLength } from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
 import ListaDesplegable from "./ListaDesplegable.vue";
 
 export default {
-    name: "RegistroUnidad",
-    components: { Alert, ListaDesplegable },
-    data(){
-        return{
-            disabled: false,
-            unit: {
-                nombre_unidadgasto: null,
-                encargado_unidad: null,
-                descripcion_unidadgasto: "",
-            },
-            listaUsuarios: [],
-        };
+  name: "RegistroUnidad",
+  components: { Alert, ListaDesplegable },
+  data() {
+    return {
+      disabled: false,
+      unit: {
+        nombre_unidadgasto: null,
+        encargado_unidad: null,
+        descripcion_unidadgasto: "",
+      },
+      listaUsuarios: [],
+    };
+  },
+  validations: {
+    unit: {
+      nombre_unidadgasto: {
+        required,
+        maxLength: maxLength(50),
+      },
+      encargado_unidad: {
+        required,
+        maxLength: maxLength(50),
+      },
+      descripcion_unidadgasto: {
+        required,
+        maxLength: maxLength(1000),
+      },
     },
-    validations: {
-        unit: {
-            nombre_unidadgasto: {
-                required,
-                maxLength: maxLength(50),
-            },
-            encargado_unidad: {
-                required,
-                maxLength: maxLength(50),
-            },
-            descripcion_unidadgasto: {
-                required,
-                maxLength: maxLength(1000),
-            },
-        },
+  },
+  methods: {
+    async getUsers() {
+      const inCharge = (
+        await this.$http.get(
+          "users?criterio=facultad&nombre=FACULTAD%20DE%20CIENCIAS%20Y%20TECNOLOGIA"
+        )
+      ).data;
+      for (let i = 0; i < inCharge.length; i++) {
+        this.listaUsuarios.push(
+          inCharge[i].nombres + " " + inCharge[i].apellidos
+        );
+      }
     },
-    methods: {
-        async getUsers(){
-            const inCharge = (await this.$http.get('users?criterio=facultad&nombre=FACULTAD%20DE%20CIENCIAS%20Y%20TECNOLOGIA')).data;
-            for (let i=0;i<inCharge.length;i++){
-                this.listaUsuarios.push(inCharge[i].nombres + " " + inCharge[i].apellidos)
-            }
-        },
-        async submitForm(){
-            try {
-                if (!this.$v.unit.$invalid){
-                    await this.sendData();
-                    this.alert("success", "Unidad creada exitosamente");
-                } else {
-                    this.alert("warning", "Rellene todos los datos correctamente");
-                }
-            } catch (error) {
-                this.alert("warning", error);
-            }
-        },
-        async sendData(){
-            try {
-                await this.$http.post("spendingUnit", {
-                    nombre_departamento: "Ingeniería de Sistemas",
-                    nombre_unidadgasto: this.unit.nombre_unidadgasto,
-                    encargado_unidad: this.unit.encargado_unidad,
-                    descripcion_unidadgasto: this.unit.descripcion_unidadgasto
-                });
-            } catch (error) {
-                throw new Error("Esta unidad de gasto ya fué registrada");
-            }
-        },
-        alert (alertType, alertMessage){
-            this.$refs.alert.showAlert(alertType, alertMessage);
-        },
+    async submitForm() {
+      try {
+        if (!this.$v.unit.$invalid) {
+          await this.sendData();
+          this.alert("success", "Unidad creada exitosamente");
+        } else {
+          this.alert("warning", "Rellene todos los datos correctamente");
+        }
+      } catch (error) {
+        this.alert("warning", error);
+      }
     },
-    mounted(){
-        this.getUsers();
-        var validCodesUnit= [32, 
-                         48,49,50,51,52,53,54,55,56,57,
-                         65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
-                         97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,
-                         193,201,205,209,211,218,225,233,237,241,243,250
-                        ];
-        var myTextbox1=document.getElementById("nombreUnidad");
-        myTextbox1.addEventListener('keypress', evt => {
-            var charCode = evt.charCode;
-            if (charCode!=0){
-                var isValid = validCodesUnit.includes(charCode);
-                if (!isValid){
-                    evt.preventDefault();
-                }
-            }
-        }, false);
-    }
-    
+    async sendData() {
+      try {
+        await this.$http.post("spendingUnit", {
+          nombre_departamento: "Ingeniería de Sistemas",
+          nombre_unidadgasto: this.unit.nombre_unidadgasto,
+          encargado_unidad: this.unit.encargado_unidad,
+          descripcion_unidadgasto: this.unit.descripcion_unidadgasto,
+        });
+      } catch (error) {
+        throw new Error("Esta unidad de gasto ya fué registrada");
+      }
+    },
+    alert(alertType, alertMessage) {
+      this.$refs.alert.showAlert(alertType, alertMessage);
+    },
+  },
+  mounted() {
+    this.getUsers();
+    var validCodesUnit = [
+      32,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      193,
+      201,
+      205,
+      209,
+      211,
+      218,
+      225,
+      233,
+      237,
+      241,
+      243,
+      250,
+    ];
+    var myTextbox1 = document.getElementById("nombreUnidad");
+    myTextbox1.addEventListener(
+      "keypress",
+      (evt) => {
+        var charCode = evt.charCode;
+        if (charCode != 0) {
+          var isValid = validCodesUnit.includes(charCode);
+          if (!isValid) {
+            evt.preventDefault();
+          }
+        }
+      },
+      false
+    );
+  },
 };
 </script>
 
@@ -192,12 +269,13 @@ export default {
     width: 100%;
 }
 
-.unit_title{
-    text-align:left;
-    color: #3D8AF7;
-    font-size:36px;
-    font-weight: 600;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+.unit_title {
+  text-align: left;
+  color: #3d8af7;
+  font-size: 36px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 .form_desc{
@@ -218,9 +296,9 @@ export default {
 }
 
 .reg_unit textarea {
-    resize: none;
-    word-wrap:break-word;
-    overflow-y:auto;
+  resize: none;
+  word-wrap: break-word;
+  overflow-y: auto;
 }
 
 .reg_unit input,
@@ -232,21 +310,23 @@ export default {
 }
 
 .reg_unit input ::placeholder,
-.reg_unit textarea ::placeholder{
-    color:#999999;
-    font-size: 20px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+.reg_unit textarea ::placeholder {
+  color: #999999;
+  font-size: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
-.form_name{
-    color:#3f4b5b;
-    font-size:24px;
-    font-weight: 500;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+.form_name {
+  color: #3f4b5b;
+  font-size: 24px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 .form_section {
-    padding:12px 0px 12px 0px;
+  padding: 12px 0px 12px 0px;
 }
 
 .form_check-error {
@@ -303,8 +383,8 @@ export default {
 }
 
 .button-disabled {
-    background:#999999;
-    border: 0px;
+  background: #999999;
+  border: 0px;
 }
 .form_input{
     width: 100%;

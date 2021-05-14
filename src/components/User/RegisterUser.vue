@@ -219,7 +219,7 @@
           </div>
           <div class="form__section3">
             <div class="fomrm__section__item">
-              <div class="container">
+              <div class="container-facu">
                 <div class="container__label">Facultad:</div>
                 <select
                   v-model="users.facultad"
@@ -275,11 +275,15 @@ import {
   helpers,
 } from "vuelidate/lib/validators";
 import ListaDesplegable from "./ListaDesplegable.vue";
+import { mapState, mapActions } from "vuex";
 import Alert from "@/components/User/Alert.vue";
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
 export default {
   components: { ListaDesplegable, Alert },
   name: "RegisterUser",
+  computed: {
+    ...mapState(["token"]),
+  },
   data() {
     return {
       users: {
@@ -363,8 +367,18 @@ export default {
   },
 
   methods: {
+    ...mapActions(["datosProtegidos"]),
     async obtenerFacultades() {
-      const listaFacultades = (await this.$http.get(`faculty`)).data;
+      const listaFacultades = (
+        await this.$http.get("faculty", {
+          headers: {
+            authorization: this.token,
+          },
+        })
+      ).data;
+      console.log("lista");
+      console.log(listaFacultades);
+
       for (let i = 0; i < listaFacultades.length; i++) {
         this.listfacultad.push(listaFacultades[i].nombre_facultad);
       }
@@ -373,7 +387,11 @@ export default {
       this.listDepartament = [];
       console.log("hol");
       let listaDepartamentos = (
-        await this.$http.get(`department?facu=${this.users.facultad}`)
+        await this.$http.get(`department?facu=${this.users.facultad}`, {
+          headers: {
+            authorization: this.token,
+          },
+        })
       ).data;
       console.log("facultad" + this.users.facultad);
       for (let i = 0; i < listaDepartamentos.length; i++) {
@@ -384,7 +402,13 @@ export default {
     },
 
     async obtenerRoles() {
-      const listaRoles = (await this.$http.get(`roles`)).data.datos;
+      const listaRoles = (
+        await this.$http.get(`roles`, {
+          headers: {
+            authorization: this.token,
+          },
+        })
+      ).data.datos;
 
       for (let i = 0; i < listaRoles.length; i++) {
         this.listRoles.push(listaRoles[i].nombre_rol);
@@ -413,10 +437,18 @@ export default {
     async sendUserDepartment() {
       try {
         console.log("departamento");
-        await this.$http.post("usersPerDeparment", {
-          nombre_departamento: this.users.departamento,
-          nombre_usuario: this.users.nombre_usuario,
-        });
+        await this.$http.post(
+          `usersPerDeparment`,
+          {
+            nombre_departamento: this.users.departamento,
+            nombre_usuario: this.users.nombre_usuario,
+          },
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        );
       } catch (error) {
         //borra usario
         throw new Error("Error departamento");
@@ -425,10 +457,18 @@ export default {
     async sendUsernameRol() {
       try {
         console.log("roles");
-        await this.$http.post("usersPerRole", {
-          nombre_rol: this.users.nombre_rol,
-          nombre_usuario: this.users.nombre_usuario,
-        });
+        await this.$http.post(
+          `usersPerRole`,
+          {
+            nombre_rol: this.users.nombre_rol,
+            nombre_usuario: this.users.nombre_usuario,
+          },
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        );
       } catch (error) {
         //borrar un usuario  y departamento modulo departamento
         throw new Error("Error Roles");
@@ -437,15 +477,23 @@ export default {
     async sendDataUsers() {
       try {
         console.log(this.users);
-        await this.$http.post("users", {
-          nombre_usuario: this.users.nombre_usuario,
-          contrasena: this.users.contrasena,
-          nombres: this.users.nombres,
-          apellidos: this.users.apellidos,
-          celular: this.users.celular,
-          facultad: this.users.facultad,
-          departamento: this.users.departamento,
-        });
+        await this.$http.post(
+          `users`,
+          {
+            nombre_usuario: this.users.nombre_usuario,
+            contrasena: this.users.contrasena,
+            nombres: this.users.nombres,
+            apellidos: this.users.apellidos,
+            celular: this.users.celular,
+            facultad: this.users.facultad,
+            departamento: this.users.departamento,
+          },
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        );
       } catch (error) {
         throw new Error("El nombre de usuario ya fue registrado");
       }
@@ -474,20 +522,29 @@ export default {
 </script>
 
 <style lang="css" scoped>
+* {
+  margin: 0;
+  padding: 0;
+}
 .flex-container {
   display: flex;
   background-color: #ecf0f1;
+
+  justify-content: center;
+  align-content: center;
+  align-items: center;
 }
 .form__image {
-  width: 40%;
+  width: 45%;
 }
 .form__image img {
   width: 100%;
-  height: 670px;
+  height: 800px;
+  background: red;
 }
 
 .form__datos {
-  width: 60%;
+  width: 70%;
   margin-left: 40px;
   margin-right: 40px;
 }
@@ -594,8 +651,8 @@ export default {
   color: red;
 }
 .container {
-  text-align: left;
-  padding-top: 20px;
+  text-align: center;
+  width: 100%;
 }
 .container__label {
   color: var(--color-name);
@@ -607,5 +664,9 @@ export default {
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
+}
+.container-facu {
+  padding-top: 20px;
+  text-align: left;
 }
 </style>

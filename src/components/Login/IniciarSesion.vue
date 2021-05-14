@@ -86,7 +86,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["getPermi", "push"]),
+    ...mapActions(["getPermi", "push", "login"]),
     async getPermisos() {
       const categ = (
         await this.$http.get(
@@ -100,14 +100,12 @@ export default {
 
     async verificarDatos() {
       try {
-        console.log("metodo");
         console.log(this.users.nombre_usuario);
         console.log(this.users.contrasena);
-        const resp = await this.$http.get(
+        const tokensito = await this.$http.get(
           `secret?user=${this.users.nombre_usuario}&pass=${this.users.contrasena}`
         );
-        console.log("error" + resp);
-        console.log("metodo termina");
+        await this.login(tokensito.data);
       } catch (error) {
         throw new Error("Datos invalidos");
       }
@@ -115,10 +113,9 @@ export default {
     async submitForm() {
       try {
         if (!this.$v.users.$invalid) {
-          console.log("inicio a verificar");
           await this.verificarDatos();
-          console.log("termino verficacion");
           this.alert("success", "Ha iniciador sesion ");
+
           await this.getPermisos(); //obtengo los permisos en un arrray
           await this.getPermi(); //modifica el router.link
 
