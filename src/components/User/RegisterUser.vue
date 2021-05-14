@@ -369,12 +369,10 @@ export default {
   methods: {
     ...mapActions(["datosProtegidos"]),
     async obtenerFacultades() {
-      const nuevoToken = "Bearer " + this.token;
-      console.log(nuevoToken);
       const listaFacultades = (
         await this.$http.get("faculty", {
           headers: {
-            authorization: nuevoToken,
+            authorization: this.token,
           },
         })
       ).data;
@@ -389,11 +387,11 @@ export default {
       this.listDepartament = [];
       console.log("hol");
       let listaDepartamentos = (
-        await this.$http.get(
-          `department?facu=${this.users.facultad}&token=${localStorage.getItem(
-            "token"
-          )}`
-        )
+        await this.$http.get(`department?facu=${this.users.facultad}`, {
+          headers: {
+            authorization: this.token,
+          },
+        })
       ).data;
       console.log("facultad" + this.users.facultad);
       for (let i = 0; i < listaDepartamentos.length; i++) {
