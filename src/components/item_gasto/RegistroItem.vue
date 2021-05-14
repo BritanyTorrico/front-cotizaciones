@@ -121,9 +121,12 @@ import {
     maxLength,
 } from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
-
+import { mapState } from "vuex";
 export default {
     name: "RegistroItem",
+    computed: {
+    ...mapState(["token"]),
+  },
     components: { Alert },
     data(){
         return{
@@ -159,7 +162,11 @@ export default {
     },
     methods: {
         async getCategories(){
-            const categ = (await this.$http.get('specificCategory')).data;
+            const categ = (await this.$http.get('specificCategory', {
+          headers: {
+            authorization: this.token,
+          },
+        })).data;
             for (let i=0;i<categ.length;i++){
                 this.listaCategorias.push(categ[i].nombre_categoriaespecifica)
             }
