@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+
 import VuexPersist from "vuex-persist";
 
 Vue.use(Vuex);
@@ -9,7 +10,11 @@ const vuexPersist = new VuexPersist({
     storage: window.sessionStorage,
 });
 
+
+Vue.use(Vuex);
+var EventBus = new Vue();
 export default new Vuex.Store({
+
     plugins: [vuexPersist.plugin],
     state: {
         permisoHome: true,
@@ -105,5 +110,6 @@ export default new Vuex.Store({
         },
         datosProtegidos() {},
     },
+
     modules: {},
 });
