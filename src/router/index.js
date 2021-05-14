@@ -23,24 +23,29 @@ const routes = [{
         name: "RegistroItemGasto",
         component: () =>
             import ("@/views/RegItem.vue"),
+
         meta: {
             rutaProtegida: true,
         },
+
     },
     {
         path: "/registro_unidad",
         name: "RegistroUnidadGasto",
         component: () =>
             import ("@/views/RegUnidad.vue"),
+
         meta: {
             rutaProtegida: true,
         },
+
     },
     {
         path: "/register",
         name: "RegisterUserPage",
         component: () =>
             import ("../views/RegisterUserPage.vue"),
+
         meta: {
             rutaProtegida: true,
         },
@@ -60,6 +65,7 @@ const routes = [{
             rutaProtegida: true,
         },
     }
+
 ];
 
 const router = new VueRouter({

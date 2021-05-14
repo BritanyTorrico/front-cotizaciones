@@ -118,6 +118,12 @@
               >
                 No se aceptan caracteres especiales.
               </div>
+              <div
+                class="form_check-error"
+                v-if="!$v.users.nombre_usuario.minLength"
+              >
+                Minimo 3 caracteres.
+              </div>
             </div>
             <div class="form__name">
               <label
@@ -319,6 +325,7 @@ export default {
       },
       nombre_usuario: {
         required,
+        minLength: minLength(3),
         maxLength: maxLength(20),
         alpha1,
       },
@@ -385,7 +392,7 @@ export default {
     },
     async obtenerDepartamentos() {
       this.listDepartament = [];
-      console.log("hol");
+
       let listaDepartamentos = (
         await this.$http.get(`department?facu=${this.users.facultad}`, {
           headers: {
@@ -393,7 +400,7 @@ export default {
           },
         })
       ).data;
-      console.log("facultad" + this.users.facultad);
+
       for (let i = 0; i < listaDepartamentos.length; i++) {
         this.listDepartament.push(listaDepartamentos[i].nombre_departamento);
       }
@@ -437,6 +444,7 @@ export default {
     async sendUserDepartment() {
       try {
         console.log("departamento");
+
         await this.$http.post(
           `usersPerDeparment`,
           {
@@ -449,8 +457,10 @@ export default {
             },
           }
         );
+
       } catch (error) {
         //borra usario
+        // await this.$http.delete("users", { data: this.users.nombre_usuario });
         throw new Error("Error departamento");
       }
     },
