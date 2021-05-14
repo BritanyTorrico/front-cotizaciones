@@ -275,7 +275,7 @@ import {
   helpers,
 } from "vuelidate/lib/validators";
 import ListaDesplegable from "./ListaDesplegable.vue";
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 import Alert from "@/components/User/Alert.vue";
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
 export default {
@@ -367,7 +367,6 @@ export default {
   },
 
   methods: {
-    ...mapActions(["datosProtegidos"]),
     async obtenerFacultades() {
       const listaFacultades = (
         await this.$http.get("faculty", {
