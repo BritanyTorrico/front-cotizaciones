@@ -52,10 +52,6 @@ export default {
   name: "App",
   created() {
     this.leerToken();
-    let nuevoToken = "Bearer " + this.token;
-    this.$store.commit("setToken", nuevoToken);
-    console.log(nuevoToken);
-    nuevoToken = "";
   },
   computed: {
     ...mapState([
@@ -83,7 +79,7 @@ export default {
       this.$store.commit("setPermisoRol", false);
       this.$store.commit("setPermisoSolicitud", false);
       this.$store.commit("setLista");
-
+      this.$store.commit("setToken", null);
       sessionStorage.removeItem("my-app");
 
       this.$router.push("/login");
