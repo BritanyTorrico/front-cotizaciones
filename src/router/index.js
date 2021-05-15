@@ -27,7 +27,6 @@ const routes = [{
         meta: {
             rutaProtegida: true,
         },
-
     },
     {
         path: "/registro_unidad",
@@ -38,7 +37,6 @@ const routes = [{
         meta: {
             rutaProtegida: true,
         },
-
     },
     {
         path: "/register",
@@ -64,8 +62,16 @@ const routes = [{
         meta: {
             rutaProtegida: true,
         },
-    }
-
+    },
+    {
+        path: "/solicitud",
+        name: "SolicitudPage",
+        component: () =>
+            import ("../views/SolicitudPage.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
 ];
 
 const router = new VueRouter({

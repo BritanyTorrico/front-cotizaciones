@@ -48,18 +48,12 @@
         </div>
       </div>
       <div class="form_unidadGasto">
-        <label>
-          <div class="formulario_label">Unidad de gasto:</div>
-          <input
-            :class="
-              $v.solicitud.unidadgasto_solicitud.$invalid
-                ? 'form_check-input-error'
-                : 'form__input'
-            "
-            type="text"
-            v-model="solicitud.unidadgasto_solicitud"
-          />
-        </label>
+        <lista-desplegable
+          required
+          v-model="solicitud.unidadgasto_solicitud"
+          nombreLista="Unidad de gasto"
+          :lista="listaUnidadesDeGasto"
+        ></lista-desplegable>
       </div>
 
       <div class="form__justficacion">
@@ -164,7 +158,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in listaPeticion" :key="index">
+            <tr v-for="(item, index) in this.listaSolicitudItems" :key="index">
               <td>
                 {{ item.cantidad }}
               </td>
@@ -172,21 +166,21 @@
                 {{ item.item_gasto }}
               </td>
               <td>
-                <button class="btn btn-danger" @click="eliminarItems(index)">
-                  Eliminar
-                </button>
+                <a class="btn btn-danger" @click="eliminarItems(index)"
+                  >Eliminar</a
+                >
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <h4 v-if="listaPeticion.length == 0">Seleccione un item</h4>
+      <h4 v-if="this.listaSolicitudItems.length == 0">Seleccione un item</h4>
       <Alert ref="alert"></Alert>
+      <AlertConfirmation ref="alertConfirmation"></AlertConfirmation>
       <div>
         <input type="submit" value="enviar" class="btn btn-success" />
       </div>
-
-      {{ listaPeticion }}
+      {{ this.listaSolicitudItems }}
       <p>datos</p>
       {{ solicitud }}
     </form>
@@ -202,12 +196,20 @@ import {
 } from "vuelidate/lib/validators";
 import Alert from "@/components/User/Alert.vue";
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
-//import ListaDesplegable from "@/components/User/ListaDesplegable.vue";
+import ListaDesplegable from "@/components/User/ListaDesplegable.vue";
+import AlertConfirmation from "@/components/Solicitud/AlertConfirmation.vue";
+import { mapState, mapActions } from "vuex";
+import { store } from "@/store/index.js";
 export default {
-  components: { Alert },
+  components: { Alert, ListaDesplegable, AlertConfirmation },
   name: "SolicitudDatos",
+  store,
   mounted() {
     this.getCategories();
+    this.getDepartamento();
+  },
+  computed: {
+    ...mapState(["token", "listaSolicitudItems"]),
   },
   data() {
     return {
@@ -226,6 +228,7 @@ export default {
       item: "",
       disabled: true,
       habilitar: true,
+      listaUnidadesDeGasto: [],
     };
   },
   validations: {
@@ -250,6 +253,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["setlistaSolicitudItems"]),
     async submitForm() {
       try {
         if (!this.$v.solicitud.$invalid) {
@@ -263,20 +267,50 @@ export default {
       }
     },
     async getCategories() {
-      const categ = (await this.$http.get("specificCategory")).data;
+      const categ = (
+        await this.$http.get("specificCategory", {
+          headers: {
+            authorization: this.token,
+          },
+        })
+      ).data;
       for (let i = 0; i < categ.length; i++) {
         this.listaCategorias.push(categ[i].nombre_categoriaespecifica);
       }
     },
 
     async obtenerItems() {
+      if (
+        this.solicitud.categoria != null &&
+        this.listaSolicitudItems.length > 0
+      ) {
+        let categoriaLista = this.listaSolicitudItems[
+          this.listaSolicitudItems.length - 1
+        ].categoria;
+        if (categoriaLista != this.solicitud.categoria) {
+          //si la categoria cambia
+          this.alertConfirmation(
+            "warning",
+            "Si cambia de categoria se borrara toda la lista !"
+          );
+        }
+      }
+
       if (this.solicitud.categoria == "Servicios") {
         this.disabled = false;
+        this.solicitud.cantidad = 1;
+      } else {
+        this.disabled = true;
       }
+
       this.listItems = [];
 
       let listaItems = (
-        await this.$http.get(`expenseItem?cat=${this.solicitud.categoria}`)
+        await this.$http.get(`expenseItem?cat=${this.solicitud.categoria}`, {
+          headers: {
+            authorization: this.token,
+          },
+        })
       ).data;
 
       for (let i = 0; i < listaItems.length; i++) {
@@ -285,10 +319,11 @@ export default {
     },
 
     eliminarItems: function(index) {
-      this.listaPeticion.splice(index, 1);
+      this.$store.commit("setEliminar", index);
     },
     agregarItem: function() {
       this.obtenerItems();
+
       if (
         this.solicitud.item_gasto != "Seleccione una opcion" &&
         this.solicitud.categoria === "Servicios"
@@ -296,8 +331,12 @@ export default {
         const item = {
           item_gasto: this.solicitud.item_gasto,
           cantidad: this.solicitud.cantidad,
+          categoria: this.solicitud.categoria,
         };
-        this.listaPeticion.push(item);
+        // this.listaPeticion.push(item);
+
+        this.$store.commit("setlistaSolicitudItems", item);
+
         this.solicitud.item_gasto = "Seleccione una opcion";
         this.solicitud.cantidad = null;
       } else {
@@ -308,17 +347,73 @@ export default {
           const item = {
             item_gasto: this.solicitud.item_gasto,
             cantidad: this.solicitud.cantidad,
+            categoria: this.solicitud.categoria,
           };
-          this.listaPeticion.push(item);
+          // this.listaPeticion.push(item);
+          this.$store.commit("setlistaSolicitudItems", item);
+
           this.solicitud.item_gasto = "Seleccione una opcion";
           this.solicitud.cantidad = null;
         } else {
           this.alert("warning", "Ingrese un item porfavor");
         }
       }
+      //verifica que no
+      if (this.listaSolicitudItems.length > 1) {
+        let anteriorCat = this.listaSolicitudItems[
+          this.listaSolicitudItems.length - 2
+        ];
+        let actual = this.listaSolicitudItems[
+          this.listaSolicitudItems.length - 1
+        ];
+        console.log("anterior" + anteriorCat);
+        console.log("anterior" + actual);
+        if (anteriorCat != actual) {
+          this.alert(
+            "warning",
+            "No puede ingresar items de distita categoria!"
+          );
+          for (let i = 0; i < this.listaSolicitudItems.length; i++) {
+            if (this.listaSolicitudItems[i].categoria === actual) {
+              this.$store.commit("setEliminar", i);
+            }
+          }
+        }
+      }
     },
     alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
+    },
+    alertConfirmation(alertType, alertMessage) {
+      this.$refs.alertConfirmation.showAlert(alertType, alertMessage);
+    },
+    async getDepartamento() {
+      const departamentoOfUser = (
+        await this.$http.get(
+          `departmentOfUser?typeIn=name&typeOut=cod&user=${localStorage.getItem(
+            "nombreUsuario"
+          )}`,
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        )
+      ).data;
+      const dep = departamentoOfUser[0].cod_departamento;
+      const unidadGastoPorDepartamento = (
+        await this.$http.get(`spendingUnit?type=cod&departamento=${dep}`, {
+          headers: {
+            authorization: this.token,
+          },
+        })
+      ).data;
+      console.log(unidadGastoPorDepartamento.datos.length);
+      for (let i = 0; i < unidadGastoPorDepartamento.datos.length; i++) {
+        this.listaUnidadesDeGasto.push(
+          unidadGastoPorDepartamento.datos[i].nombre_unidadgasto
+        );
+      }
     },
   },
 };

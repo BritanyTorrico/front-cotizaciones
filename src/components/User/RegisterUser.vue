@@ -268,6 +268,9 @@
         </div>
       </div>
     </form>
+    <p>String = {{ str }}</p>
+    <p>Encoded Base64 String = {{ encodedStr }}</p>
+    <button @click="myFunction()">Click Me</button>
   </div>
 </template>
 
@@ -306,6 +309,8 @@ export default {
       listDepartament: [],
       listfacultad: [],
       listRoles: [],
+      str: "Hello World!",
+      encodedStr: "",
     };
   },
 
@@ -375,6 +380,9 @@ export default {
 
   methods: {
     ...mapActions(["datosProtegidos"]),
+    myFunction: function() {
+      this.encodedStr = btoa(this.str);
+    },
     async obtenerFacultades() {
       const listaFacultades = (
         await this.$http.get("faculty", {
@@ -457,7 +465,6 @@ export default {
             },
           }
         );
-
       } catch (error) {
         //borra usario
         // await this.$http.delete("users", { data: this.users.nombre_usuario });

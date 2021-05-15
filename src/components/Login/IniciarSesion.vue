@@ -115,7 +115,7 @@ export default {
         if (!this.$v.users.$invalid) {
           await this.verificarDatos();
           this.alert("success", "Ha iniciador sesion ");
-
+          localStorage.setItem("nombreUsuario", this.users.nombre_usuario);
           await this.getPermisos(); //obtengo los permisos en un arrray
           await this.getPermi(); //modifica el router.link
 
