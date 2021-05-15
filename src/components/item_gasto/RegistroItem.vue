@@ -138,6 +138,7 @@ export default {
                 justificacion: "",
             },
             listaCategorias: [],
+            listaUnidades: [],
         };
     },
     validations: {
@@ -169,6 +170,7 @@ export default {
         })).data;
             for (let i=0;i<categ.length;i++){
                 this.listaCategorias.push(categ[i].nombre_categoriaespecifica)
+                console.log(this.listaCategorias[i]);
             }
         },
         
@@ -176,6 +178,7 @@ export default {
             try {
                 if (!this.$v.item.$invalid){
                     await this.sendItemData();
+                    await this.getSpendingUnits();
                     await this.sendItemUnitData();
                     this.alert("success", "Item creado exitosamente");
                 } else {
@@ -202,10 +205,22 @@ export default {
                 throw new Error("Este ítem ya está registrado");
             }
         },
+        async getSpendingUnits(){
+            const spun = (await this.$http.get(`spendingUnit?type=name&departamento=${localStorage.getItem('depto')}`, {
+          headers: {
+            authorization: this.token,
+          },
+        })).data.datos;
+            for (let i=0;i<spun.length;i++){
+                this.listaUnidades.push(spun[i].nombre_unidadgasto)
+                console.log(this.listaUnidades[i]);
+            }
+        },
         async sendItemUnitData(){
             try {
+                for (let i=0;i<this.listaUnidades.length;i++){
                 await this.$http.post("itemsPerUnit", {
-                    nombre_unidadgasto: "Laboratorio 1 de Sistemas",
+                    nombre_unidadgasto: this.listaUnidades[i],
                     nombre_itemgasto: this.item.nombre_itemgasto,
                     activo_item: true,
                 },
@@ -213,9 +228,9 @@ export default {
                     headers: {
                         authorization: this.token,
                     },
-                });
+                });}
             } catch (error) {
-                throw new Error("Este ítem ya está registrado");
+                throw new Error("Unidad inválida");
             }
         },
         alert (alertType, alertMessage){
@@ -225,6 +240,7 @@ export default {
     mounted(){
         this.getCategories();
         this.getUserId();
+        
         var validCodesItem= [32, 
                          48,49,50,51,52,53,54,55,56,57,
                          65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
