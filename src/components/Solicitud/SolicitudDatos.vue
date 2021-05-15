@@ -358,21 +358,17 @@ export default {
           this.alert("warning", "Ingrese un item porfavor");
         }
       }
-      //verifica que no
+      //SEGUNDA VERIFICACION
       if (this.listaSolicitudItems.length > 1) {
         let anteriorCat = this.listaSolicitudItems[
           this.listaSolicitudItems.length - 2
-        ];
+        ].categoria;
         let actual = this.listaSolicitudItems[
           this.listaSolicitudItems.length - 1
-        ];
+        ].categoria;
         console.log("anterior" + anteriorCat);
         console.log("anterior" + actual);
         if (anteriorCat != actual) {
-          this.alert(
-            "warning",
-            "No puede ingresar items de distita categoria!"
-          );
           for (let i = 0; i < this.listaSolicitudItems.length; i++) {
             if (this.listaSolicitudItems[i].categoria === actual) {
               this.$store.commit("setEliminar", i);

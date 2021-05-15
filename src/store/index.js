@@ -27,14 +27,11 @@ export default new Vuex.Store({
         listaPermisos: [],
         username: false,
         token: null,
-        listaSolicitudItems: false, //para la parte de solicitud
+        listaSolicitudItems: [], //para la parte de solicitud
     },
     mutations: {
         async habilitar(state) {
             for (let i = 0; i < state.listaPermisos.length; i++) {
-                /* if (state.listaPermisos[i] == "Gestionar Usuarios")//llamar a la cookie para obtener su valors
-                                                                                                                                                                                                                                                                                                                                                                                            state.permisoHome = true;
-                                                                                                                                                                                                                                                                                                                                                                                        else */
                 if (state.listaPermisos[i] == "Gestionar itemsDeGasto") {
                     state.permisoItemDeGasto = true;
                 } else if (state.listaPermisos[i] == "Gestionar unidadDeGasto") {
