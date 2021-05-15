@@ -110,10 +110,7 @@ export default {
             localStorage.setItem('userID', id.cod_usuario)
             localStorage.setItem('roleCod', id.cod_rol)
             localStorage.setItem('facu', id.facultad)
-            const dept= id.departamento.replace(/ /g, "%20")
-            console.log(id.departamento);
-            console.log(dept);
-            localStorage.setItem('depto', dept)
+            localStorage.setItem('depto', id.departamento)
         },
     async verificarDatos() {
       try {

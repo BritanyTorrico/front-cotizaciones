@@ -171,18 +171,7 @@ export default {
                 this.listaCategorias.push(categ[i].nombre_categoriaespecifica)
             }
         },
-        async getUserId(){
-            const id = (
-                await this.$http.get(
-                    `/users/name/${sessionStorage.getItem('username')}`,{
-                        headers: {
-                            authorization: this.token,
-                        },
-                    }
-                )
-            ).data.datos[0];
-            sessionStorage.setItem('userID', id.cod_usuario)
-        },
+        
         async submitForm(){
             try {
                 if (!this.$v.item.$invalid){
@@ -216,9 +205,8 @@ export default {
         async sendItemUnitData(){
             try {
                 await this.$http.post("itemsPerUnit", {
-                    nombre_unidadgasto: "laboritorio 1 de Sistemas",
+                    nombre_unidadgasto: "Laboratorio 1 de Sistemas",
                     nombre_itemgasto: this.item.nombre_itemgasto,
-                    presupuesto: 5000,
                     activo_item: true,
                 },
                 {

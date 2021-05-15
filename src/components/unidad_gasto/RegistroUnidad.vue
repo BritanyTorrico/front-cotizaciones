@@ -152,11 +152,16 @@ export default {
     async sendData() {
       try {
         await this.$http.post("spendingUnit", {
-          nombre_departamento: "Ingeniería de Sistemas",
+          nombre_departamento: localStorage.getItem('depto'),
           nombre_unidadgasto: this.unit.nombre_unidadgasto,
-          encargado_unidad: this.unit.encargado_unidad,
+          Jefe_unidad: this.unit.encargado_unidad,
           descripcion_unidadgasto: this.unit.descripcion_unidadgasto,
-        });
+        },
+                {
+                    headers: {
+                        authorization: this.token,
+                    },
+                });
       } catch (error) {
         throw new Error("Esta unidad de gasto ya fué registrada");
       }
