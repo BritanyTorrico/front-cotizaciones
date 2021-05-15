@@ -97,7 +97,21 @@ export default {
         this.$store.commit("addCustomer", categ[i].nombre_funcion);
       }
     },
-
+    async storeLocalData(){
+            const id = (
+                await this.$http.get(
+                    `/users/name/${this.users.nombre_usuario}`,{
+                        headers: {
+                            authorization: localStorage.getItem('token'),
+                        },
+                    }
+                )
+            ).data.datos[0];
+            localStorage.setItem('userID', id.cod_usuario)
+            localStorage.setItem('roleCod', id.cod_rol)
+            localStorage.setItem('facu', id.facultad)
+            localStorage.setItem('depto', id.departamento)
+        },
     async verificarDatos() {
       try {
         console.log(this.users.nombre_usuario);
@@ -118,9 +132,9 @@ export default {
 
           await this.getPermisos(); //obtengo los permisos en un arrray
           await this.getPermi(); //modifica el router.link
-
           this.$store.commit("setUser", true);
           localStorage.setItem("username", this.username);
+          await this.storeLocalData();
           this.$router.push("/");
         } else {
           console.log("datos incorrectos");
