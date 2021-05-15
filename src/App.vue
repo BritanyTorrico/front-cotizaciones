@@ -82,8 +82,11 @@ export default {
       this.$store.commit("setPermisoSolicitud", false);
       this.$store.commit("setLista");
       this.$store.commit("setToken", null);
-      sessionStorage.removeItem("my-app");
-
+      localStorage.removeItem("my-app");
+      localStorage.removeItem('userID');
+      localStorage.removeItem('roleCod');
+      localStorage.removeItem('facu');
+      localStorage.removeItem('depto');
       this.$router.push("/login");
     },
   },

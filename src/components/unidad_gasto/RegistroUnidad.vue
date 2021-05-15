@@ -126,9 +126,11 @@ export default {
     async getUsers() {
       const inCharge = (
         await this.$http.get(
-          "users?criterio=facultad&nombre=FACULTAD%20DE%20CIENCIAS%20Y%20TECNOLOGIA"
-        )
-      ).data;
+          `users?criterio=departamento&nombre=${localStorage.getItem('depto')}`, {
+          headers: {
+            authorization: this.token,
+          },
+        })).data;
       for (let i = 0; i < inCharge.length; i++) {
         this.listaUsuarios.push(
           inCharge[i].nombres + " " + inCharge[i].apellidos

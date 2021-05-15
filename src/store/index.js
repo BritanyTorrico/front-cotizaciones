@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 const vuexPersist = new VuexPersist({
     key: "my-app",
-    storage: window.sessionStorage,
+    storage: window.localStorage,
 });
 
 Vue.use(Vuex);
