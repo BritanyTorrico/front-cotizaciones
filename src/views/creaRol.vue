@@ -1,21 +1,19 @@
 <template>
     <div class="register">
         <div class ="register_container">
-            <RegistroUnidad class="register_unit"/>
+            <CrearRol class="register_item"/>
         </div>
     </div>
 </template>
 
 <script>
-import RegistroUnidad from "@/components/unidad_gasto/RegistroUnidad.vue";
-
+import CrearRol from "@/components/rol/CrearRol.vue";
 export default {
-    name: "RegistroUnidadGasto",
+    name: "CrearRoles",
     components:{
-        RegistroUnidad,
+        CrearRol,
     },
 }
-
 </script>
 
 <style scoped>
@@ -23,9 +21,8 @@ export default {
     background-color: #46b1c95b;
     margin-top:0;
 }
-
 .register_container{
     display: block;
-    padding: 50px 400px 50px 400px;
+    padding: 50px 300px 50px 300px;
 }
 </style>
