@@ -124,16 +124,43 @@ export default {
   },
   methods: {
     async getUsers() {
-      const inCharge = (
+      const deptUsers = (
         await this.$http.get(
           `users?criterio=departamento&nombre=${localStorage.getItem('depto')}`, {
           headers: {
             authorization: this.token,
           },
         })).data;
-      for (let i = 0; i < inCharge.length; i++) {
+      var deptNames=[];
+      for (let i = 0; i < deptUsers.length; i++) {
+        deptNames.push(
+          deptUsers[i].nombres + " " + deptUsers[i].apellidos
+        );
+      }
+      const usersInCharge = (
+        await this.$http.get(
+          `spendingUnit?type=name&departamento=${localStorage.getItem('depto')}`, {
+          headers: {
+            authorization: this.token,
+          },
+        })).data.datos;
+        var occupied=[];
+        for (let j = 0; j < usersInCharge.length; j++) {
+        occupied.push(
+          usersInCharge[j].jefe_unidad
+        );
+      }
+      for (let k = 0; k < occupied.length; k++) {
+        if (deptNames.includes(occupied[k])){
+          const index = deptNames.indexOf(occupied[k]);
+          if (index > -1) {
+            deptNames.splice(index, 1);
+          }
+        }
+      }
+      for (let l = 0; l < deptNames.length; l++){
         this.listaUsuarios.push(
-          inCharge[i].nombres + " " + inCharge[i].apellidos
+          deptNames[l]
         );
       }
     },
