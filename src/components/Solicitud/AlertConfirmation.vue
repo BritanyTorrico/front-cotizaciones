@@ -1,9 +1,15 @@
 <template>
   <div v-if="show" class="alert" :class="type">
-    <span class="closebtn" @click="hideAlert()">&times;</span>
     {{ message }}
-    <button @click="eliminarLista()">Aceptar</button>
-    <button @click="hideAlert()">Cancelar</button>
+    <div class="botones">
+      <p class="advertencia">(Se borrara la lista si cambia de categoria)</p>
+      <button class="btn btn-success botonBorrar" @click="eliminarLista()">
+        Cambiar Categoria
+      </button>
+      <button class="btn btn-light" @click="hideAlert()">
+        Cancelar
+      </button>
+    </div>
   </div>
 </template>
 
@@ -31,6 +37,7 @@ export default {
     },
     eliminarLista() {
       this.$store.commit("setDelete");
+      this.hideAlert();
     },
   },
 };
@@ -52,6 +59,7 @@ export default {
 .warning {
   background-color: #ed1c24;
 }
+
 .closebtn {
   margin-left: 15px;
   color: white;
@@ -64,5 +72,17 @@ export default {
 }
 .closebtn:hover {
   color: black;
+}
+.botones {
+  margin-top: 15px;
+  text-align: right;
+}
+.botonBorrar {
+  margin-right: 18px;
+}
+.advertencia {
+  padding: 0;
+  text-align: left;
+  font-size: 13px;
 }
 </style>

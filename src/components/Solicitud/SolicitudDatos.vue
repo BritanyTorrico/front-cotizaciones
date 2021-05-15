@@ -291,7 +291,7 @@ export default {
           //si la categoria cambia
           this.alertConfirmation(
             "warning",
-            "Si cambia de categoria se borrara toda la lista !"
+            "No puede seleccionar Items de distinta categoria"
           );
         }
       }
