@@ -63,9 +63,13 @@ const routes = [{
             import ("../views/creaRol.vue"),
         meta: {
             rutaProtegida: true,
-        },
-    }
-
+          },
+      },
+     {
+        path: "/revisar_solicitudes",
+        name: "RequestReview",
+        component: () =>import ("@/views/RequestReview.vue")
+     },
 ];
 
 const router = new VueRouter({
