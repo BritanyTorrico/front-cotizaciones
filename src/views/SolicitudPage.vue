@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="soli_container">
     <solicitud-datos />
   </div>
 </template>
@@ -12,4 +12,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.soli_container {
+  padding: 50px 300px 50px 300px;
+  background-color: #46b1c95b;
+  margin-top: 0;
+}
+</style>

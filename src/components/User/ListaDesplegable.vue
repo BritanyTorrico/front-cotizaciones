@@ -16,10 +16,14 @@
         {{ item }}</option
       >
     </select>
+    <div class="form_check-error" v-if="!$v.value.required">
+      {{ Mensaje }}
+    </div>
   </div>
 </template>
 
 <script>
+import { required } from "vuelidate/lib/validators";
 export default {
   name: "ListaDesplegable",
   data() {
@@ -31,6 +35,12 @@ export default {
     nombre: String,
     lista: Array,
     nombre1: String,
+    Mensaje: String,
+  },
+  validations: {
+    value: {
+      required,
+    },
   },
 };
 </script>
@@ -47,13 +57,20 @@ export default {
   text-align: left;
 }
 .container__list {
-  width: 80%;
+  width: 100%;
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
   display: flex;
+  font-size: 16px;
 }
 .container__list__option {
   align-items: left;
+}
+.form_check-error {
+  color: red;
+  font-size: 13px;
+  text-align: left;
+  margin-left: 20px;
 }
 </style>

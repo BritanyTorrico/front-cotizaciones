@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-soli">
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -9,18 +9,17 @@
 
     <form @submit.prevent="submitForm">
       <div class="form_title">
-        <label>
-          <div class="formulario_label">Titulo:</div>
-          <input
-            :class="
-              $v.solicitud.nombre_solicitud.$invalid
-                ? 'form_check-input-error'
-                : 'form__input'
-            "
-            type="text"
-            v-model="solicitud.nombre_solicitud"
-          />
-        </label>
+        <div class="formulario_label">Titulo:</div>
+        <input
+          :class="
+            $v.solicitud.nombre_solicitud.$invalid
+              ? 'form_check-input-error'
+              : 'form__input'
+          "
+          type="text"
+          v-model="solicitud.nombre_solicitud"
+        />
+
         <div
           class="form_check-error"
           v-if="!$v.solicitud.nombre_solicitud.required"
@@ -47,30 +46,32 @@
           No se aceptan caracteres especiales.
         </div>
       </div>
-      <div class="form_unidadGasto">
-        <lista-desplegable
-          required
-          v-model="solicitud.unidadgasto_solicitud"
-          nombreLista="Unidad de gasto"
-          :lista="listaUnidadesDeGasto"
-        ></lista-desplegable>
+      <div class="lista">
+        <div class="izquierda"></div>
+        <div class="derecha">
+          <lista-desplegable
+            required
+            v-model="solicitud.unidadgasto_solicitud"
+            nombreLista="Unidad de gasto:"
+            :lista="listaUnidadesDeGasto"
+          ></lista-desplegable>
+        </div>
       </div>
 
       <div class="form__justficacion">
-        <label>
-          <div class="formulario_label">Justificacion:</div>
-          <textarea
-            rows="4"
-            cols="50"
-            :class="
-              $v.solicitud.detalle_solicitud.$invalid
-                ? 'form_check-input-error'
-                : 'form__input'
-            "
-            type="text"
-            v-model="solicitud.detalle_solicitud"
-          />
-        </label>
+        <div class="formulario_label">Justificacion:</div>
+        <textarea
+          rows="4"
+          cols="50"
+          :class="
+            $v.solicitud.detalle_solicitud.$invalid
+              ? 'form_check-input-error'
+              : 'form__input'
+          "
+          type="text"
+          v-model="solicitud.detalle_solicitud"
+        />
+
         <div
           class="form_check-error"
           v-if="!$v.solicitud.detalle_solicitud.required"
@@ -112,7 +113,12 @@
       </div>
       <div class="container">
         <div class="container__label">item de gasto:</div>
-        <select required class="container__list" v-model="solicitud.item_gasto">
+        <select
+          required
+          class="container__list"
+          v-model="solicitud.item_gasto"
+          @change="obtenerDescripcion()"
+        >
           <option disabled="true">{{ solicitud.item_gasto }}</option>
 
           <option
@@ -306,16 +312,20 @@ export default {
       this.listItems = [];
 
       let listaItems = (
-        await this.$http.get(`expenseItem?cat=${this.solicitud.categoria}`, {
-          headers: {
-            authorization: this.token,
-          },
-        })
+        await this.$http.get(
+          `expenseItem?type=cat&nombre=${this.solicitud.categoria}`,
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        )
       ).data;
 
       for (let i = 0; i < listaItems.length; i++) {
         this.listItems.push(listaItems[i].nombre_itemgasto);
       }
+      console.log(listaItems);
     },
 
     eliminarItems: function(index) {
@@ -411,14 +421,27 @@ export default {
         );
       }
     },
+    obtenerDescripcion() {
+      console.log("method");
+      console.log(this.solicitud.item_gasto);
+      //lamar al get aqui
+    },
   },
 };
 </script>
 
 <style scoped>
-.container {
+* {
+  margin: 0;
+  padding: 0;
+}
+.container-soli {
   text-align: left;
-  padding-top: 20px;
+  background-color: #f1f2f6;
+  padding: 40px 80px 40px 80px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 .container__label {
   color: var(--color-name);
@@ -430,5 +453,60 @@ export default {
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
+}
+.form__input {
+  width: 100%;
+  padding: 6px;
+  margin: 6px 6px;
+  border: none;
+  border-bottom: 2px solid var(--color-line);
+  background-color: transparent;
+  color: black;
+  font-size: 14px;
+}
+.form__input:focus {
+  background: linear-gradient(to bottom, transparent, #ced6e0);
+  outline: none;
+  border-bottom: 2px solid #747d8c;
+}
+.formulario_label {
+  padding-left: 6px;
+  color: var(--color-name);
+  text-align: left;
+  font-weight: bold;
+  font-size: 24px;
+  color: #576574;
+}
+.form_check-input-error {
+  width: 100%;
+  padding: 6px;
+  margin: 6px 6px;
+  border: none;
+  border-bottom: 2px solid gray;
+  background-color: transparent;
+  color: black;
+  font-size: 14px;
+}
+.form_check-input-error:focus {
+  background: linear-gradient(to bottom, transparent, #ced6e0);
+  outline: none;
+  border-bottom: 2px solid red;
+}
+.form_check-error {
+  color: red;
+  font-size: 13px;
+  text-align: left;
+  margin-left: 20px;
+}
+.lista {
+  display: flex;
+}
+.izquierda {
+  width: 80%;
+}
+.derecha {
+  font-size: 24px;
+  float: right;
+  width: 20%;
 }
 </style>
