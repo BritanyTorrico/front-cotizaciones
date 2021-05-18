@@ -23,7 +23,11 @@
         </div>
         <div class="form__input">
           <div class="form__name">CONTRASEÑA:</div>
-          <input class="form__caja" type="text" v-model="users.contrasena" />
+          <input
+            class="form__caja"
+            type="password"
+            v-model="users.contrasena"
+          />
         </div>
         <div class="form_check-error" v-if="!$v.users.contrasena.required">
           Campo obligatorio.
