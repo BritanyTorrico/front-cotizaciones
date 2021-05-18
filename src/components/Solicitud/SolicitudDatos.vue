@@ -54,12 +54,13 @@
             v-model="solicitud.unidadgasto_solicitud"
             nombreLista="Unidad de gasto:"
             :lista="listaUnidadesDeGasto"
+            Mensaje="Campo Obligatorio"
           ></lista-desplegable>
         </div>
       </div>
 
       <div class="form__justficacion">
-        <div class="formulario_label">Justificacion:</div>
+        <div class="formulario_label">Detalle de solicitud:</div>
         <textarea
           rows="4"
           cols="50"
@@ -92,6 +93,60 @@
           Minimo 5 caracteres.
         </div>
       </div>
+      <div class="form__presupuesto">
+        <div class="formulario_label">Presupuesto:</div>
+        <input
+          :class="
+            $v.solicitud.estimado_solicitud.$invalid
+              ? 'form_check-input-error'
+              : 'form__input'
+          "
+          type="number"
+          v-model="solicitud.estimado_solicitud"
+        />
+        <div
+          class="form_check-error"
+          v-if="!$v.solicitud.estimado_solicitud.required"
+        >
+          Campo Obligatorio.
+        </div>
+        <div
+          class="form_check-error"
+          v-if="!$v.solicitud.estimado_solicitud.between"
+        >
+          Ingrese valores entre (1-10000).
+        </div>
+        <div
+          class="form_check-error"
+          v-if="!$v.solicitud.estimado_solicitud.validate_decimales"
+        >
+          Maximo 2 decimales.
+        </div>
+        <div
+          class="form_check-error"
+          v-if="!$v.solicitud.estimado_solicitud.alpha2"
+        >
+          Ingrese un valor numérico.
+        </div>
+      </div>
+      <div class="form__usuario_solicitante">
+        <div class="formulario_label">usuario solicitante:</div>
+        <input
+          :class="
+            $v.solicitud.usuario_solicitante.$invalid
+              ? 'form_check-input-error'
+              : 'form__input'
+          "
+          type="text"
+          v-model="solicitud.usuario_solicitante"
+        />
+        <div
+          class="form_check-error"
+          v-if="!$v.solicitud.usuario_solicitante.required"
+        >
+          Campo Obligatorio.
+        </div>
+      </div>
 
       <div class="form__categoria">
         <div class="container__label">Categoria:</div>
@@ -116,10 +171,10 @@
         <select
           required
           class="container__list"
-          v-model="solicitud.item_gasto"
+          v-model="solicitud.nombre_item"
           @change="obtenerDescripcion()"
         >
-          <option disabled="true">{{ solicitud.item_gasto }}</option>
+          <option disabled="true">{{ solicitud.nombre_item }}</option>
 
           <option
             class="container__list__option"
@@ -148,19 +203,31 @@
             v-model="solicitud.cantidad"
           />
         </label>
+        <div class="form_check-error" v-if="!$v.solicitud.cantidad.required">
+          Campo Obligatorio.
+        </div>
+        <div class="form_check-error" v-if="!$v.solicitud.cantidad.between">
+          Ingrese valores entre 1-100.
+        </div>
       </div>
       <div>
         <a class="btn btn-success" @click="agregarItem()">Agregar</a>
       </div>
 
-      <div class="form__descripcion">Descripción:</div>
-      <div class="form__lista col-sm-8 col-sm-offset-2">
-        <table class="table">
+      <div class="form__descripcion">
+        <div>Descripción:</div>
+        {{ descripcionItem }}
+      </div>
+      <div
+        class="form__lista col-sm-8 col-sm-offset-2"
+        v-if="this.listaSolicitudItems.length != 0"
+      >
+        <table class="table table-striped">
           <thead>
-            <tr>
+            <tr class="primera-fila">
               <th>Cantidad</th>
               <th>Nombre de item</th>
-              <th>eliminar</th>
+              <th>Eliminar</th>
             </tr>
           </thead>
           <tbody>
@@ -169,7 +236,7 @@
                 {{ item.cantidad }}
               </td>
               <td>
-                {{ item.item_gasto }}
+                {{ item.nombre_item }}
               </td>
               <td>
                 <a class="btn btn-danger" @click="eliminarItems(index)"
@@ -181,6 +248,7 @@
         </table>
       </div>
       <h4 v-if="this.listaSolicitudItems.length == 0">Seleccione un item</h4>
+
       <Alert ref="alert"></Alert>
       <AlertConfirmation ref="alertConfirmation"></AlertConfirmation>
       <div>
@@ -199,13 +267,27 @@ import {
   maxLength,
   minLength,
   helpers,
+  between,
 } from "vuelidate/lib/validators";
 import Alert from "@/components/User/Alert.vue";
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
+const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 import ListaDesplegable from "@/components/User/ListaDesplegable.vue";
 import AlertConfirmation from "@/components/Solicitud/AlertConfirmation.vue";
 import { mapState, mapActions } from "vuex";
 import { store } from "@/store/index.js";
+
+const validate_decimales = (value) => {
+  const datovalue = String(value);
+  if (datovalue.indexOf(".") > 0) {
+    const parts = datovalue.split(".");
+    const dato = String(parts[1]);
+    return !helpers.req(value) || !(dato.length > 2);
+  } else {
+    return true;
+  }
+};
+
 export default {
   components: { Alert, ListaDesplegable, AlertConfirmation },
   name: "SolicitudDatos",
@@ -223,9 +305,11 @@ export default {
         nombre_solicitud: null,
         detalle_solicitud: null,
         categoria: "Seleccione una opcion",
-        item_gasto: "Seleccione una opcion",
+        nombre_item: "Seleccione una opcion",
         cantidad: null,
         unidadgasto_solicitud: null,
+        estimado_solicitud: null,
+        usuario_solicitante: null,
       },
       listaCategorias: [],
 
@@ -235,6 +319,7 @@ export default {
       disabled: true,
       habilitar: true,
       listaUnidadesDeGasto: [],
+      descripcionItem: null,
     };
   },
   validations: {
@@ -252,8 +337,18 @@ export default {
       },
       cantidad: {
         required,
+        between: between(1, 100),
       },
       unidadgasto_solicitud: {
+        required,
+      },
+      estimado_solicitud: {
+        required,
+        between: between(1, 10000),
+        validate_decimales,
+        alpha2,
+      },
+      usuario_solicitante: {
         required,
       },
     },
@@ -263,6 +358,36 @@ export default {
     async submitForm() {
       try {
         if (!this.$v.solicitud.$invalid) {
+          await this.$http.post(
+            `request`,
+            {
+              nombre_solicitud: this.solicitud.nombre_solicitud,
+              detalle_solicitud: this.solicitud.detalle_solicitud,
+              estimado_solicitud: this.solicitud.estimado_solicitud,
+              unidadgasto_solicitud: this.solicitud.unidadgasto_solicitud,
+              usuario_solicitante: this.solicitud.usuario_solicitante,
+            },
+
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          );
+          console.log("pasa el request");
+          await this.$http.post(
+            `itemsPerRequest`,
+            {
+              nombre_solicitud: this.solicitud.nombre_solicitud,
+              items: this.listaSolicitudItems,
+            },
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          );
+          console.log("pasa el itemPerRequest");
           this.alert("success", "Solicitud enviada");
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
@@ -335,11 +460,11 @@ export default {
       this.obtenerItems();
 
       if (
-        this.solicitud.item_gasto != "Seleccione una opcion" &&
+        this.solicitud.nombre_item != "Seleccione una opcion" &&
         this.solicitud.categoria === "Servicios"
       ) {
         const item = {
-          item_gasto: this.solicitud.item_gasto,
+          nombre_item: this.solicitud.nombre_item,
           cantidad: this.solicitud.cantidad,
           categoria: this.solicitud.categoria,
         };
@@ -347,23 +472,25 @@ export default {
 
         this.$store.commit("setlistaSolicitudItems", item);
 
-        this.solicitud.item_gasto = "Seleccione una opcion";
-        this.solicitud.cantidad = null;
+        this.solicitud.nombre_item = "Seleccione una opcion";
+        this.solicitud.cantidad = 0;
       } else {
         if (
-          this.solicitud.item_gasto != "Seleccione una opcion" &&
+          this.solicitud.nombre_item != "Seleccione una opcion" &&
           !this.$v.solicitud.cantidad.$invalid
         ) {
           const item = {
-            item_gasto: this.solicitud.item_gasto,
+            nombre_item: this.solicitud.nombre_item,
             cantidad: this.solicitud.cantidad,
             categoria: this.solicitud.categoria,
+            unidad_solicitud: this.solicitud.unidadgasto_solicitud,
+            detalle_solicitud: this.descripcionItem,
           };
           // this.listaPeticion.push(item);
           this.$store.commit("setlistaSolicitudItems", item);
 
-          this.solicitud.item_gasto = "Seleccione una opcion";
-          this.solicitud.cantidad = null;
+          this.solicitud.nombre_item = "Seleccione una opcion";
+          this.solicitud.cantidad = 0;
         } else {
           this.alert("warning", "Ingrese un item porfavor");
         }
@@ -376,8 +503,7 @@ export default {
         let actual = this.listaSolicitudItems[
           this.listaSolicitudItems.length - 1
         ].categoria;
-        console.log("anterior" + anteriorCat);
-        console.log("anterior" + actual);
+
         if (anteriorCat != actual) {
           for (let i = 0; i < this.listaSolicitudItems.length; i++) {
             if (this.listaSolicitudItems[i].categoria === actual) {
@@ -414,17 +540,25 @@ export default {
           },
         })
       ).data;
-      console.log(unidadGastoPorDepartamento.datos.length);
+
       for (let i = 0; i < unidadGastoPorDepartamento.datos.length; i++) {
         this.listaUnidadesDeGasto.push(
           unidadGastoPorDepartamento.datos[i].nombre_unidadgasto
         );
       }
     },
-    obtenerDescripcion() {
-      console.log("method");
-      console.log(this.solicitud.item_gasto);
-      //lamar al get aqui
+    async obtenerDescripcion() {
+      const descripcion = (
+        await this.$http.get(
+          `expenseItem?type=item&nombre=${this.solicitud.nombre_item}`,
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        )
+      ).data;
+      this.descripcionItem = descripcion.datos[0].descripcion_item;
     },
   },
 };
@@ -474,7 +608,7 @@ export default {
   color: var(--color-name);
   text-align: left;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 20px;
   color: #576574;
 }
 .form_check-input-error {
@@ -502,11 +636,18 @@ export default {
   display: flex;
 }
 .izquierda {
-  width: 80%;
+  width: 60%;
 }
 .derecha {
-  font-size: 24px;
+  font-size: 20px;
   float: right;
-  width: 20%;
+  width: 40%;
+}
+.primera-fila {
+  background: #033076;
+  color: white;
+}
+.form__lista {
+  width: 100%;
 }
 </style>

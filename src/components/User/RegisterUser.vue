@@ -675,6 +675,7 @@ export default {
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
+  border: 1px solid;
 }
 .container-facu {
   padding-top: 20px;

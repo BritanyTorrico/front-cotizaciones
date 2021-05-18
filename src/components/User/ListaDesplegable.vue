@@ -63,6 +63,7 @@ export default {
   background: #ecf0f1;
   display: flex;
   font-size: 16px;
+  border: 1px solid;
 }
 .container__list__option {
   align-items: left;
