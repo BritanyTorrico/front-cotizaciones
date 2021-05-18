@@ -1,14 +1,14 @@
 <template>
   <div class="inbox">
-      <div class="container">
+      <div class="inbox-container">
               <div class="inbox-cards">
                   <div class="card-left-side">
                       <div class="card-index" v-for="(req,i) in inboxData" :key="i">
-                          <div class="card-container" v-on:click=showRequest(req)>
+                          <div class="card-container" v-on:click=showRequest(i)>
                               <Card
                                 :name="req.nombre_solicitud"
                                 :date="req.fecha_solicitud"
-                                author="Jefe de Unidad"
+                                :author="req.usuario_solicitante"
                                 :description="req.detalle_solicitud"
                               />
                           </div>
@@ -29,42 +29,60 @@
 <script>
 import Card from './Card.vue'
 import Details from './Details.vue'
+import { mapState } from "vuex";
 export default {
     name: "Inbox",
+    computed: {
+    ...mapState(["token"]),
+  },
     components: { Details, Card },
     data(){
         return{
             inboxData: [],
+            items: [],
             selectedRequest: {
                 name: "",
                 date: "",
                 author: "",
                 description: "",
                 budget: null,
-                //itemList: []
+                itemList: []
             }
         }
     },
     methods: {
         async getData(){
-            const response = (await this.$http.get(`request?type=criteria&from=depto&nombre=Ingeniería%20de%20Sistemas`)).data;
+            const response = (await this.$http.get(`request?type=All&from=depto&nombre=${localStorage.getItem('depto')}`, {
+          headers: {
+            authorization: this.token,
+          },
+        })).data;
             for (let i = 0; i < response.length; i++) {
                 this.inboxData.push(response[i]);
                 this.inboxData[i].fecha_solicitud=this.inboxData[i].fecha_solicitud.substr(5, this.inboxData[i].fecha_solicitud.indexOf('T'));
                 this.inboxData[i].fecha_solicitud=this.inboxData[i].fecha_solicitud.substr(0, this.inboxData[i].fecha_solicitud.indexOf('T'));
+                const reqItems = (await this.$http.get(`itemsPerRequest?type=solicitud&nombre=${this.inboxData[i].nombre_solicitud}`, {
+                    headers: {
+                        authorization: this.token,
+                    },
+                })).data;
+                for (let j = 0; j<reqItems.datos.length;j++){
+                    this.items.push(reqItems)
+                }
             }
+            
         },
-        async showRequest(req){
-            this.selectedRequest.name=req.nombre_solicitud;
-            this.selectedRequest.date=req.fecha_solicitud;
-            this.selectedRequest.author="Jefe de Unidad";
-            this.selectedRequest.description=req.detalle_solicitud;
-            this.selectedRequest.budget=req.estimado_solicitud;
+        async showRequest(i){
+            this.selectedRequest.name=this.inboxData[i].nombre_solicitud;
+            this.selectedRequest.date=this.inboxData[i].fecha_solicitud;
+            this.selectedRequest.author=this.inboxData[i].usuario_solicitante;
+            this.selectedRequest.description=this.inboxData[i].detalle_solicitud;
+            this.selectedRequest.budget=this.inboxData[i].estimado_solicitud;
+            this.selectedRequest.itemList=this.items[i].datos;
         }
     },
     mounted: function(){
         this.getData();
-        this.showRequest();
     }
 }
 </script>
@@ -73,7 +91,7 @@ export default {
 .inbox{
     position: relative;
 }
-.container{
+.inbox-container{
     padding: 0px!important;
     gap: 2rem;
     width: 100%;
@@ -97,7 +115,6 @@ export default {
     position: relative;
     align-items: baseline;
     padding: 20px 20px;
-    background: #fff;
     border-bottom: 1px solid #ddd;
     margin-bottom: 10px;
 }
@@ -128,7 +145,7 @@ export default {
     display: flex;
 }
 .inbox-details{
-    width: 60%;
+    width: 70%;
     padding:0 5rem 5rem 0;
     margin: 10px;
     background: #C4DEE4;

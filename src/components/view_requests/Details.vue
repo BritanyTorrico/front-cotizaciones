@@ -14,6 +14,24 @@
               <h5>Presupuesto: </h5>{{ request.budget}}
           </div>
       </div>
+      <div class="items">
+          <table class ="items-list">
+              <thead>
+                  <tr>
+                    <th>Cantidad</th>
+                    <th>Item</th>
+                    <th>Detalle</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr v-for="(item, index) in request.itemList" :key="index">
+                      <td>{{ item.cantidad_solicitud }}</td>
+                      <td>{{ item.unidad_solicitud }}</td>
+                      <td>{{ item.detalle_solicitud }}</td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
       <div class="response">
           <button class="accept-button">Aceptar</button>
           <button class="reject-button">Rechazar</button>
@@ -33,7 +51,8 @@ export default {
             date: String,
             author: String,
             description: String,
-            budget: Number
+            budget: Number,
+            itemList: Array,
         }
     }
 }
@@ -48,7 +67,10 @@ export default {
     padding: 10px 10px 20px 10px;
     box-shadow: 0px 0px 30px 0px rgba(0, 143, 216, 0.15);
     width: 100%;
-    border: 2px solid #808C8F;
+    border: 1px solid #808C8F;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
 }
 .head-top{
     display: flex;
@@ -56,19 +78,19 @@ export default {
     justify-content: space-between;
 }
 h2{
-    color: #667080!important;
+    color: #030303!important;
     font-size: 30px;
     font-weight: 600;
 }
 .time{
     font-size: 16px;
-    color: #8492b4!important;
+    color: #3f4b5b!important;
     text-transform: capitalize;
 }
 .head-subject{
     font-size: 22px;
     font-weight: 600;
-    color: #7b8591!important;
+    color: #030303!important;
     margin-top: 12px;
     text-align: left;
 }
@@ -78,17 +100,40 @@ h2{
 }
 h5{
     font-size: 18px;
-    color: #8492b4!important;
+    color: #030303!important;
     line-height: 1.8;
+    font-weight: 600;
 }
 p{
     font-size: 18px;
-    color: #8492b4!important;
+    color: #909094!important;
     line-height: 1.8;
     margin-bottom: 30px;
 }
-.money h5{
+.money{
     word-break: keep-all;
+    color: #909094;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    width: 25%;
+}
+.items{
+    align-self: center;
+    width: 80%;
+    padding: 0 0 5% 0;
+    font-size: 17px;
+}
+.items thead{
+    background-color: #f1f2f6;
+}
+.items th {
+    border: 1px solid #c0c0c0;
+    padding: 0 1% 0 1%;
+}
+.items td {
+    border: 1px solid #c0c0c0;
+    padding: 0 1% 0 1%;
 }
 .response{
     display: flex;
