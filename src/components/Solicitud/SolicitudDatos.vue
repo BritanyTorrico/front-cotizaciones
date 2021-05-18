@@ -129,25 +129,9 @@
           Ingrese un valor numérico.
         </div>
       </div>
-      <div class="form__usuario_solicitante">
-        <div class="formulario_label">usuario solicitante:</div>
-        <input
-          :class="
-            $v.solicitud.usuario_solicitante.$invalid
-              ? 'form_check-input-error'
-              : 'form__input'
-          "
-          type="text"
-          v-model="solicitud.usuario_solicitante"
-        />
-        <div
-          class="form_check-error"
-          v-if="!$v.solicitud.usuario_solicitante.required"
-        >
-          Campo Obligatorio.
-        </div>
-      </div>
 
+      <hr class="prueba" />
+      <div class="formulario_label ">Seleccion de items:</div>
       <div class="form__categoria">
         <div class="container__label">Categoria:</div>
         <select
@@ -187,26 +171,28 @@
         </select>
       </div>
 
-      <div class="form__cantidad">
+      <div
+        v-if="this.solicitud.categoria != 'Servicios'"
+        class="form__cantidad"
+      >
         <label>
-          <div class="formulario_label">Cantidad:</div>
+          <div class="formulario_label">
+            Cantidad:
+          </div>
           <input
             :class="
-              $v.solicitud.cantidad.$invalid
-                ? 'form_check-input-error'
-                : 'form__input'
+              $v.elemento.cantidad.$invalid
+                ? 'form__error-cantidad'
+                : 'form__cantidad'
             "
             :required="!habilitar"
             :disabled="!disabled"
             type="number"
             placeholder="Ingrese la cantidad"
-            v-model="solicitud.cantidad"
+            v-model="elemento.cantidad"
           />
         </label>
-        <div class="form_check-error" v-if="!$v.solicitud.cantidad.required">
-          Campo Obligatorio.
-        </div>
-        <div class="form_check-error" v-if="!$v.solicitud.cantidad.between">
+        <div class="form__error-cantidad" v-if="!$v.elemento.cantidad.between">
           Ingrese valores entre 1-100.
         </div>
       </div>
@@ -214,8 +200,13 @@
         <a class="btn btn-success" @click="agregarItem()">Agregar</a>
       </div>
 
-      <div class="form__descripcion">
-        <div>Descripción:</div>
+      <div
+        class="form__descripcion"
+        v-if="solicitud.nombre_item != 'Seleccione una opcion'"
+      >
+        <div class="formulario_label">
+          Descripción:
+        </div>
         {{ descripcionItem }}
       </div>
       <div
@@ -254,9 +245,9 @@
       <div>
         <input type="submit" value="enviar" class="btn btn-success" />
       </div>
-      {{ this.listaSolicitudItems }}
+      <!-- {{ this.listaSolicitudItems }}
       <p>datos</p>
-      {{ solicitud }}
+      {{ solicitud }}-->
     </form>
   </div>
 </template>
@@ -306,10 +297,12 @@ export default {
         detalle_solicitud: null,
         categoria: "Seleccione una opcion",
         nombre_item: "Seleccione una opcion",
-        cantidad: null,
+
         unidadgasto_solicitud: null,
         estimado_solicitud: null,
-        usuario_solicitante: null,
+      },
+      elemento: {
+        cantidad: null,
       },
       listaCategorias: [],
 
@@ -335,10 +328,7 @@ export default {
         minLength: minLength(5),
         maxLength: maxLength(1000),
       },
-      cantidad: {
-        required,
-        between: between(1, 100),
-      },
+
       unidadgasto_solicitud: {
         required,
       },
@@ -348,8 +338,11 @@ export default {
         validate_decimales,
         alpha2,
       },
-      usuario_solicitante: {
+    },
+    elemento: {
+      cantidad: {
         required,
+        between: between(1, 100),
       },
     },
   },
@@ -357,7 +350,10 @@ export default {
     ...mapActions(["setlistaSolicitudItems"]),
     async submitForm() {
       try {
-        if (!this.$v.solicitud.$invalid) {
+        if (
+          !this.$v.solicitud.$invalid &&
+          this.listaSolicitudItems.length > 0
+        ) {
           await this.$http.post(
             `request`,
             {
@@ -365,7 +361,6 @@ export default {
               detalle_solicitud: this.solicitud.detalle_solicitud,
               estimado_solicitud: this.solicitud.estimado_solicitud,
               unidadgasto_solicitud: this.solicitud.unidadgasto_solicitud,
-              usuario_solicitante: this.solicitud.usuario_solicitante,
             },
 
             {
@@ -429,7 +424,7 @@ export default {
 
       if (this.solicitud.categoria == "Servicios") {
         this.disabled = false;
-        this.solicitud.cantidad = 1;
+        this.elemento.cantidad = null;
       } else {
         this.disabled = true;
       }
@@ -465,7 +460,7 @@ export default {
       ) {
         const item = {
           nombre_item: this.solicitud.nombre_item,
-          cantidad: this.solicitud.cantidad,
+          cantidad: this.elemento.cantidad,
           categoria: this.solicitud.categoria,
         };
         // this.listaPeticion.push(item);
@@ -473,15 +468,15 @@ export default {
         this.$store.commit("setlistaSolicitudItems", item);
 
         this.solicitud.nombre_item = "Seleccione una opcion";
-        this.solicitud.cantidad = 0;
+        this.elemento.cantidad = null;
       } else {
         if (
           this.solicitud.nombre_item != "Seleccione una opcion" &&
-          !this.$v.solicitud.cantidad.$invalid
+          !this.$v.elemento.cantidad.$invalid
         ) {
           const item = {
             nombre_item: this.solicitud.nombre_item,
-            cantidad: this.solicitud.cantidad,
+            cantidad: this.elemento.cantidad,
             categoria: this.solicitud.categoria,
             unidad_solicitud: this.solicitud.unidadgasto_solicitud,
             detalle_solicitud: this.descripcionItem,
@@ -490,9 +485,9 @@ export default {
           this.$store.commit("setlistaSolicitudItems", item);
 
           this.solicitud.nombre_item = "Seleccione una opcion";
-          this.solicitud.cantidad = 0;
+          this.elemento.cantidad = null;
         } else {
-          this.alert("warning", "Ingrese un item porfavor");
+          this.alert("warning", "Rellene correctamente la seccion de items");
         }
       }
       //SEGUNDA VERIFICACION
@@ -649,5 +644,8 @@ export default {
 }
 .form__lista {
   width: 100%;
+}
+.prueba {
+  border: 3px solid red;
 }
 </style>
