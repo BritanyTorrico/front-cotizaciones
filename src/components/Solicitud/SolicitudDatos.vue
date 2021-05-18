@@ -129,86 +129,104 @@
           Ingrese un valor numérico.
         </div>
       </div>
-
-      <hr class="prueba" />
-      <div class="formulario_label ">Seleccion de items:</div>
-      <div class="form__categoria">
-        <div class="container__label">Categoria:</div>
-        <select
-          v-model="solicitud.categoria"
-          class="container__list"
-          @change="obtenerItems()"
-        >
-          <option disabled="true">{{ solicitud.categoria }}</option>
-          <option
-            class="container__list__option"
-            v-for="(item, index) in listaCategorias"
-            :key="index"
-            :value="item"
-          >
-            {{ item }}
-          </option>
-        </select>
-      </div>
-      <div class="container">
-        <div class="container__label">item de gasto:</div>
-        <select
-          required
-          class="container__list"
-          v-model="solicitud.nombre_item"
-          @change="obtenerDescripcion()"
-        >
-          <option disabled="true">{{ solicitud.nombre_item }}</option>
-
-          <option
-            class="container__list__option"
-            v-for="(item, index) in listItems"
-            :key="index"
-            :value="item"
-          >
-            {{ item }}</option
-          >
-        </select>
-      </div>
-
-      <div
-        v-if="this.solicitud.categoria != 'Servicios'"
-        class="form__cantidad"
-      >
-        <label>
-          <div class="formulario_label">
-            Cantidad:
+      <div class="seccion2">
+        <div class="seccion__Izq">
+          <div class="formulario_label seccion__Izq-titulo">
+            Agregar un nuevo item:
           </div>
-          <input
-            :class="
-              $v.elemento.cantidad.$invalid
-                ? 'form__error-cantidad'
-                : 'form__cantidad'
-            "
-            :required="!habilitar"
-            :disabled="!disabled"
-            type="number"
-            placeholder="Ingrese la cantidad"
-            v-model="elemento.cantidad"
-          />
-        </label>
-        <div class="form__error-cantidad" v-if="!$v.elemento.cantidad.between">
-          Ingrese valores entre 1-100.
+          <div class="seccion__Izq-fila1">
+            <div class="form__categoria">
+              <div class="container__label">Categoria:</div>
+              <select
+                v-model="solicitud.categoria"
+                class="container__list"
+                @change="obtenerItems()"
+              >
+                <option disabled="true">{{ solicitud.categoria }}</option>
+                <option
+                  class="container__list__option"
+                  v-for="(item, index) in listaCategorias"
+                  :key="index"
+                  :value="item"
+                >
+                  {{ item }}
+                </option>
+              </select>
+            </div>
+            <div class="container-nombre-item">
+              <div class="container__label">item de gasto:</div>
+              <select
+                required
+                class="container__list"
+                v-model="solicitud.nombre_item"
+                @change="obtenerDescripcion()"
+              >
+                <option disabled="true">{{ solicitud.nombre_item }}</option>
+
+                <option
+                  class="container__list__option"
+                  v-for="(item, index) in listItems"
+                  :key="index"
+                  :value="item"
+                >
+                  {{ item }}</option
+                >
+              </select>
+            </div>
+          </div>
+
+          <div class="seccion__Izq-fila2">
+            <div
+              v-if="this.solicitud.categoria != 'Servicios'"
+              class="form__cantidad"
+            >
+              <label>
+                <div class="formulario_label">
+                  Cantidad:
+                </div>
+                <input
+                  :class="
+                    $v.elemento.cantidad.$invalid
+                      ? 'form__error-cantidad'
+                      : 'form__cantidad'
+                  "
+                  :required="!habilitar"
+                  :disabled="!disabled"
+                  type="number"
+                  placeholder="Ingrese la cantidad"
+                  v-model="elemento.cantidad"
+                />
+              </label>
+              <div
+                class="form__error-cantidad"
+                v-if="!$v.elemento.cantidad.between"
+              >
+                Ingrese valores entre 1-100.
+              </div>
+            </div>
+            <div class="form__boton">
+              <a class="btn btn-success boton-agregar" @click="agregarItem()"
+                >Agregar</a
+              >
+            </div>
+          </div>
+
+          <!---->
         </div>
-      </div>
-      <div>
-        <a class="btn btn-success" @click="agregarItem()">Agregar</a>
+
+        <div class="seccion__Der">
+          <div
+            class="form__descripcion"
+            v-if="solicitud.nombre_item != 'Seleccione una opcion'"
+          >
+            <div class="formulario_label">
+              Descripción:
+            </div>
+            {{ descripcionItem }}
+          </div>
+        </div>
       </div>
 
-      <div
-        class="form__descripcion"
-        v-if="solicitud.nombre_item != 'Seleccione una opcion'"
-      >
-        <div class="formulario_label">
-          Descripción:
-        </div>
-        {{ descripcionItem }}
-      </div>
       <div
         class="form__lista col-sm-8 col-sm-offset-2"
         v-if="this.listaSolicitudItems.length != 0"
@@ -384,6 +402,7 @@ export default {
           );
           console.log("pasa el itemPerRequest");
           this.alert("success", "Solicitud enviada");
+          //borrar todos los campos del fomrulario
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
@@ -645,7 +664,39 @@ export default {
 .form__lista {
   width: 100%;
 }
-.prueba {
-  border: 3px solid red;
+.seccion2 {
+  display: flex;
+}
+.seccion__Izq {
+  width: 55%;
+}
+.seccion__Izq-fila1 {
+  display: flex;
+  margin-top: 20px;
+}
+.form__categoria {
+  width: 50%;
+}
+.container-nombre-item {
+  width: 50%;
+}
+.seccion__Izq-fila2 {
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+.form__cantidad {
+  width: 50%;
+}
+.seccion__Der {
+  width: 45%;
+}
+.form__boton {
+  width: 50%;
+}
+.boton-agregar {
+  margin-top: 20px;
+  width: 80%;
+  background: #033076;
 }
 </style>
