@@ -27,7 +27,6 @@ const routes = [{
         meta: {
             rutaProtegida: true,
         },
-
     },
     {
         path: "/registro_unidad",
@@ -38,7 +37,6 @@ const routes = [{
         meta: {
             rutaProtegida: true,
         },
-
     },
     {
         path: "/register",
@@ -63,13 +61,23 @@ const routes = [{
             import ("../views/creaRol.vue"),
         meta: {
             rutaProtegida: true,
-          },
-      },
-     {
+        },
+    },
+    {
         path: "/revisar_solicitudes",
         name: "RequestReview",
-        component: () =>import ("@/views/RequestReview.vue")
-     },
+        component: () =>
+            import ("@/views/RequestReview.vue"),
+    },
+    {
+        path: "/crear_empresa",
+        name: "creaEmpresa",
+        component: () =>
+            import ("../views/creaEmpresa.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
 ];
 
 const router = new VueRouter({
