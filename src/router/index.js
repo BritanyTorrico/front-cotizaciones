@@ -77,7 +77,10 @@ const routes = [{
         name: "RequestReview",
 
         component: () =>
-            import ("@/views/RequestReview.vue"),
+            import ("../views/RequestReview.vue"),
+            meta: {
+                rutaProtegida: true,
+            },
     },
     {
         path: "/crear_empresa",
