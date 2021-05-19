@@ -4,7 +4,7 @@
               <div class="inbox-cards">
                   <div class="card-side">
                       <div class="card-index" v-for="(req,i) in inboxData" :key="i">
-                          <div class="single-card-container " v-on:click=showRequest(i) v-class="{selected: isSelected}">
+                          <div class="single-card-container " v-on:click=showRequest(i)>
                               <Card
                                 :name="req.nombre_solicitud"
                                 :date="req.fecha_solicitud"
@@ -44,6 +44,7 @@ export default {
             inboxData: [],
             items: [],
             selectedRequest: {
+                cod: null,
                 name: "",
                 date: "",
                 author: "",
@@ -51,12 +52,11 @@ export default {
                 budget: null,
                 itemList: []
             },
-            isSelected: false
         }
     },
     methods: {
         async getData(){
-            const response = (await this.$http.get(`request?type=All&from=depto&nombre=${localStorage.getItem('depto')}`, {
+            const response = (await this.$http.get(`request?type=criteria&status=ABIERTA&from=depto&nombre=${localStorage.getItem('depto')}`, {
           headers: {
             authorization: this.token,
           },
@@ -77,13 +77,13 @@ export default {
             
         },
         async showRequest(i){
+            this.selectedRequest.cod=this.inboxData[i].cod_solicitud;
             this.selectedRequest.name=this.inboxData[i].nombre_solicitud;
             this.selectedRequest.date=this.inboxData[i].fecha_solicitud;
             this.selectedRequest.author=this.inboxData[i].usuario_solicitante;
             this.selectedRequest.description=this.inboxData[i].detalle_solicitud;
             this.selectedRequest.budget=this.inboxData[i].estimado_solicitud;
             this.selectedRequest.itemList=this.items[i].datos;
-            this.isSelected=!this.isSelected;
         }
     },
     mounted: function(){

@@ -33,8 +33,8 @@
           </table>
       </div>
       <div class="response">
-          <b-button class="accept-button" v-b-modal.modal-prevent-closing v-on:click="this.valid=true">Aceptar</b-button>
-          <b-button class="reject-button" v-b-modal.modal-prevent-closing v-on:click="this.valid=false">Rechazar</b-button>
+          <b-button class="accept-button" v-b-modal.modal-prevent-closing v-on:click="assert()">Aceptar</b-button>
+          <b-button class="reject-button" v-b-modal.modal-prevent-closing v-on:click="deny()">Rechazar</b-button>
             <b-modal
                 id="modal-prevent-closing"
                 ref="modal"
@@ -43,7 +43,7 @@
                 @hidden="resetModal"
                 @ok="handleOk"
             >
-                <form ref="form" @submit.prevent="handleSubmit">
+                <form ref="form" @submit.stop.prevent="handleSubmit">
                     <b-form-group
                     invalid-feedback="Justifique su respuesta"
                     :state="resState">
@@ -54,6 +54,7 @@
                         cols="50"
                         rows="10"
                         maxlength="1000"
+                        :state="resState"
                         ></b-form-textarea>
                     </b-form-group>
                 </form>
@@ -65,18 +66,24 @@
 
 <script>
 import Alert from "@/components/Alert.vue";
+import { mapState } from "vuex";
 export default {
     name:"Details",
+    computed: {
+    ...mapState(["token"]),
+  },
     components: {Alert},
     data(){
         return{
             valid: null,
             response: '',
             resState: null,
+            status: '',
         };
     },
     props: {
         request: {
+            cod: Number,
             name: String,
             date: String,
             author: String,
@@ -87,9 +94,9 @@ export default {
     },
     methods: {
         checkFormValidity(){
-            const valid = this.$refs.form.checkValidity()
-            this.resState=valid
-            return valid
+            const v = this.$refs.form.checkValidity()
+            this.resState=v
+            return v
         },
         resetModal() {
         this.response = ''
@@ -99,13 +106,14 @@ export default {
         bvModalEvt.preventDefault()
         this.handleSubmit()
       },
-      handleSubmit() {
+      async handleSubmit() {
           try {
               if (!this.checkFormValidity()) {
-                this.sendData();
-                this.alert("success", "Informe enviado");
+                  return
+                
             }
-              
+              await this.sendData();
+                this.alert("success", "Informe enviado");
           } catch (error) {
               this.alert("warning", error);
           }
@@ -117,20 +125,41 @@ export default {
       },
       async sendData() {
       try {
-        await this.$http.post("report?type=nombre", {
-            nombre_solicitud:this.request.name,
-            titulo_informe: "Informe " + this.request.name,
-            justificacion: this.response,
-            aceptacion: this.valid
-        },
-                {
+          
+          console.log("cod: "+this.request.cod);
+          console.log("nombre: "+'Informe ' + this.request.name);
+          console.log("just: "+this.response);
+          console.log("acept: "+this.valid);
+        await this.$http.post('report?type=codigo', {
+            cod_solicitud: this.request.cod,
+            titulo_informe: 'Informe ' + this.request.name,
+            justificacion_informe: this.response,
+            aceptacion: this.valid,
+            },
+            {
                     headers: {
                         authorization: this.token,
                     },
-                });
+        });
+
+        await this.$http.put(`request/${this.request.cod}?type=State`,{
+            estado_solicitud: this.status,
+        },{
+                    headers: {
+                        authorization: this.token,
+                    },
+                })
       } catch (error) {
         throw new Error("Esta solicitud ya fue revisada");
       }
+    },
+    async assert(){
+        this.valid=true; 
+        this.status='ACEPTADA'
+    },
+    async deny(){
+        this.valid=false; 
+        this.status='RECHAZADA'
     },
     alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
