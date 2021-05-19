@@ -584,21 +584,8 @@ export default {
       this.$refs.alertConfirmation.showAlert(alertType, alertMessage);
     },
     async getDepartamento() {
-      const departamentoOfUser = (
-        await this.$http.get(
-          `departmentOfUser?typeIn=name&typeOut=cod&user=${localStorage.getItem(
-            "nombreUsuario"
-          )}`,
-          {
-            headers: {
-              authorization: this.token,
-            },
-          }
-        )
-      ).data;
-      const dep = departamentoOfUser[0].cod_departamento;
       const unidadGastoPorDepartamento = (
-        await this.$http.get(`spendingUnit?type=cod&departamento=${dep}`, {
+        await this.$http.get(`spendingUnit?type=name&departamento=${localStorage.getItem('depto')}`, {
           headers: {
             authorization: this.token,
           },
