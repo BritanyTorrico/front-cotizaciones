@@ -64,9 +64,14 @@ import {
     minLength,
 } from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
+import { mapState } from "vuex";
+
 
 export default {
   name:"CrearRol",
+  computed:{
+    ...mapState(["token"])
+  },
   components:{ Alert },
    data(){
      return{
@@ -125,6 +130,11 @@ export default {
          console.log("comienza registro de rol");
          await this.$http.post("roles",{
            nombre_rol: this.dato.nombre_rol,
+         },
+         {
+           headers:{
+             autorization: this.token,
+           },
          });
          console.log("termina registro de rol");
        }catch (error){
@@ -138,7 +148,13 @@ export default {
          await this.$http.post("rolePerFunctions",{
            nombre_rol: this.dato.nombre_rol,
            nombre_funcion: this.funciones[index],
-         });
+         },
+         {
+           headers:{
+             autorization: this.token,
+           },
+         }
+         );
          console.log("termina de enviar funcion " + index);
        }catch (error){
          console.log("error en funcion");

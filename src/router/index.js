@@ -51,6 +51,17 @@ const routes = [{
         component: () =>
             import ("../views/LoginPage.vue"),
     },
+    {
+      path: "/crear_empresa",
+      name: "CrearEmpresa",
+      component: () => import  ("../views/creaEmpresa.vue")
+    },
+    {
+      path: "/crear_rol",
+      name: "CrearRoles",
+      component: () =>import ("@/views/creaRol.vue")
+    },
+   
 ];
 
 const router = new VueRouter({

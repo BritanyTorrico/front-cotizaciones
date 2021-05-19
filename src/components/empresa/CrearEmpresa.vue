@@ -209,9 +209,13 @@ import {
     maxLength,
 } from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "CrearEmpresa",
+  computed:{
+    ...mapState(["token"]),
+  },
   components: { Alert },
     data(){
       return{
@@ -291,6 +295,11 @@ export default {
                     correo_empresa: this.dato.correo_empresa,
                     rubro_empresa: this.dato.rubro_empresa,
                     cuenta_bancaria: this.dato.cuenta_bancaria
+                },
+                {
+                  headers:{
+                    autorization:this.token,
+                  },
                 });
             } catch (error) {
                 throw new Error("Esta empresa ya fue registrada");
