@@ -14,7 +14,6 @@
           type="text"
           minlength="5"
           maxlength="25"
-          v-on:keydown="keyhandler($event)"
           required
           placeholder="Ingrese nombre aquí"
           v-model="dato.nombre_rol"
@@ -23,70 +22,101 @@
         <div class="form_check-error" v-if="!$v.dato.nombre_rol.required">
           Campo obligatorio.
         </div>
+        <div class="form_check-error" v-if="!$v.dato.nombre_rol.alpha1">
+          No se aceptan caracteres especiales.
+        </div>
+        <div class="form_check-error" v-if="!$v.dato.nombre_rol.minLength">
+          Minimo 5 caracteres.
+        </div>
       </div>
       <div class="form_section">
         <div class="form_name">Seleccione las funciones:</div>
-        <ul>
-          <div class="checkbox-style">
+
+        <div class="checkbox-style">
+          <div class="input-check">
             <input
               type="checkbox"
               id="gestionUsuario"
               name="funcion"
               value="Gestionar Usuarios"
             />
-            <li>
-              <label for="gestionUsuario">Regisro de Usuarios</label><br />
-              <input
-                type="checkbox"
-                id="gestionRol"
-                name="funcion"
-                value="Gestionar Roles"
-              />
-            </li>
-            <li>
-              <label for="gestionRol">Regisro de Roles</label><br />
-              <input
-                type="checkbox"
-                id="gestionUnidades"
-                name="funcion"
-                value="Gestionar Unidades de Gasto"
-              />
-            </li>
-            <li>
-              <label for="gestionUnidades">Regisro de Unidades de Gasto</label
-              ><br />
-            </li>
+          </div>
+
+          <label for="gestionUsuario">Regisro de Usuarios</label><br />
+          <div class="input-check">
+            <input
+              type="checkbox"
+              id="gestionRol"
+              name="funcion"
+              value="Gestionar Roles"
+            />
+          </div>
+
+          <label for="gestionRol">Regisro de Roles</label><br />
+          <div class="input-check">
+            <input
+              type="checkbox"
+              id="gestionUnidades"
+              name="funcion"
+              value="Gestionar unidadDeGasto"
+            />
+          </div>
+
+          <label for="gestionUnidades">Regisro de Unidades de Gasto</label
+          ><br />
+          <div class="input-check">
             <input
               type="checkbox"
               id="gestionItems"
               name="funcion"
-              value="Gestionar Items de Gasto"
+              value="Gestionar itemsDeGasto"
             />
-            <li>
-              <label for="gestionItems">Regisro de Items de Gasto</label><br />
-            </li>
           </div>
-        </ul>
-      </div>
 
-      <button
-        :disabled="$v.dato.$invalid"
-        :class="$v.dato.$invalid ? 'button-disabled' : ''"
-        class="form_button"
-      >
-        Crear
-      </button>
+          <label for="gestionItems">Regisro de Items de Gasto</label><br />
+          <div class="input-check">
+            <input
+              type="checkbox"
+              id="empresa"
+              name="funcion"
+              value="Gestionar Empresa"
+            />
+          </div>
+
+          <label for="empresa">Regisrtrar Empresas</label><br />
+          <div class="input-check">
+            <input
+              type="checkbox"
+              id="solicitud"
+              name="funcion"
+              value="Gestionar Solicitud"
+            />
+          </div>
+
+          <label for="solicitud">Enviar Solicitudes</label><br />
+        </div>
+      </div>
+      <div class="botoncito">
+        <button class="form_button" @click="obtenerValor()">
+          Crear
+        </button>
+      </div>
     </form>
-    {{ dato }}
+
     <Alert ref="alert"></Alert>
   </section>
 </template>
 
 <script>
-import { required, maxLength, minLength } from "vuelidate/lib/validators";
+import {
+  required,
+  maxLength,
+  minLength,
+  helpers,
+} from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
 import { mapState } from "vuex";
-
+const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
 export default {
   name: "CrearRol",
   computed: {
@@ -109,6 +139,7 @@ export default {
         required,
         minLength: minLength(5),
         maxLength: maxLength(25),
+        alpha1,
       },
     },
   },
@@ -119,6 +150,7 @@ export default {
       }
     },
     async getFunciones() {
+      this.funciones = [];
       const checkboxes = document.querySelectorAll(
         'input[name="funcion"]:checked'
       );
@@ -130,7 +162,7 @@ export default {
       this.getFunciones();
       try {
         console.log("comienza envio");
-        if (!this.$v.dato.$invalid) {
+        if (!this.$v.dato.$invalid && this.funciones.length > 0) {
           console.log("es valido");
           console.log(this.funciones[0]);
           await this.sendRolData();
@@ -141,10 +173,10 @@ export default {
           this.alert("success", "Rol creado exitosamente");
         } else {
           console.log("es invalido");
-          this.alert("warring", "Rellene todos los datos");
+          this.alert("warning", "Seleccione una función ");
         }
       } catch (error) {
-        this.alert("warring", error);
+        this.alert("warning", "Algo salio mal");
       }
     },
     async sendRolData() {
@@ -157,7 +189,7 @@ export default {
           },
           {
             headers: {
-              autorization: this.token,
+              authorization: this.token,
             },
           }
         );
@@ -170,15 +202,16 @@ export default {
     async sendFuncData(index) {
       try {
         console.log("comienza a enviar funcion " + index);
+        console.log(this.funciones[index]);
         await this.$http.post(
           "rolePerFunctions",
           {
-            nombre_rol: this.dato.nombre_rol,
             nombre_funcion: this.funciones[index],
+            nombre_rol: this.dato.nombre_rol,
           },
           {
             headers: {
-              autorization: this.token,
+              authorization: this.token,
             },
           }
         );
@@ -251,29 +284,29 @@ export default {
 }
 
 .form_button {
-  margin: auto;
-  display: block;
   background-color: #0c59cf;
-  padding: 12px 115px 12px 115px;
   border-radius: 22px;
   color: #fafafa;
   font-size: 22px;
   font-weight: bold;
   border: 0px;
+  width: 30%;
+  padding: 8px 0;
+}
+.botoncito {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
 }
 
-.button-disabled {
-  background: #999999;
-  border: 0px;
-}
 form label {
   width: 300px;
   font-weight: bold;
   display: inline-block;
 }
 .checkbox-style {
-  margin-top: 10px;
-  border: 1px solid;
+  margin-top: 20px;
 }
 
 .form_check-input {
@@ -314,5 +347,13 @@ form label {
   padding: 0 0 0 2%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.input-check {
+  width: 5%;
+  float: left;
+}
+.laber-check {
+  width: 95%;
+  float: left;
 }
 </style>

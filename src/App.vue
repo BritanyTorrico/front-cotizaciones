@@ -71,6 +71,7 @@ export default {
       this.$store.commit("setPermisoUnidad", false);
       this.$store.commit("setPermisoRol", false);
       this.$store.commit("setPermisoSolicitud", false);
+      this.$store.commit("setPermisoEmpresa", false);
       this.$store.commit("setLista");
       this.$store.commit("setToken", null);
 
