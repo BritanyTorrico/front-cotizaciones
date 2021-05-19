@@ -91,9 +91,13 @@
 import { required, maxLength } from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
 import ListaDesplegable from "./ListaDesplegable.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "RegistroUnidad",
+  computed: {
+    ...mapState(["token"]),
+  },
   components: { Alert, ListaDesplegable },
   data() {
     return {
