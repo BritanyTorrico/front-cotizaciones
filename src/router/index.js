@@ -64,13 +64,15 @@ const routes = [{
         },
     },
     {
-
         path: "/solicitud",
         name: "SolicitudPage",
         component: () =>
             import ("../views/SolicitudPage.vue"),
-},
-  {
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
         path: "/revisar_solicitudes",
         name: "RequestReview",
 
@@ -86,7 +88,6 @@ const routes = [{
             rutaProtegida: true,
         },
     },
-
 ];
 
 const router = new VueRouter({

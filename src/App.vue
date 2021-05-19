@@ -18,6 +18,9 @@
             <b-nav-item v-if="permisoCrearUsuario" to="/register"
               >Registrar Usuario</b-nav-item
             >
+            <b-nav-item v-if="permisoEmpresa" to="/crear_empresa"
+              >Registrar Empresa</b-nav-item
+            >
             <b-nav-item v-if="permisoCrearRol" to="/creaRol">Rol</b-nav-item>
             <b-nav-item v-if="permisoSolicitud" to="/solicitud"
               >Enviar Solicitud</b-nav-item
@@ -49,6 +52,7 @@ export default {
       "listaPermisos",
       "permisoCrearRol",
       "permisoSolicitud",
+      "permisoEmpresa",
     ]),
   },
   methods: {
@@ -73,12 +77,11 @@ export default {
       this.$store.commit("setDelete");
       sessionStorage.removeItem("my-app");
 
-
       localStorage.removeItem("my-app");
-      localStorage.removeItem('userID');
-      localStorage.removeItem('roleCod');
-      localStorage.removeItem('facu');
-      localStorage.removeItem('depto');
+      localStorage.removeItem("userID");
+      localStorage.removeItem("roleCod");
+      localStorage.removeItem("facu");
+      localStorage.removeItem("depto");
       this.$router.push("/login");
     },
   },
