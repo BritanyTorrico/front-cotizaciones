@@ -1,12 +1,17 @@
 <template>
-  <section class="crear_rol">
-    <h2 class="rol_title">Formulario de cotizacion</h2>
+    <div class="cot-form">
+    <h2 class="form-title">Formulario de cotizacion</h2>
     <form class="form_crear" @submit.prevent="submitForm" autocomplete="off">
       <div class="form_section">
           <div class="form_label">Titulo:</div>
           <div class="form-name">{{ this.nombreCotizacion }}</div>
      </div>
+     <div class="form_section">
+          <div class="form_label">Fecha:</div>
+          <div class="form-name">{{ this.today }}</div>
+     </div>
      <div class="items">
+       <div class="form_label">Items:</div>
          <table class ="items-list">
               <thead>
                   <tr>
@@ -32,8 +37,8 @@
          <empresas></empresas>
      </div>
     </form> 
-    <Alert ref="alert"></Alert>        
-  </section>
+    <Alert ref="alert"></Alert>    
+    </div>    
 
 </template>
 
@@ -48,6 +53,7 @@ export default {
        disabled: false,
        rubro: '',
        nombreCotizacion: '',
+       today: ''
      };
    },
    props: {
@@ -61,11 +67,6 @@ export default {
         }
     },
    methods: {
-     keyhandler(e){
-       if (!e.key.math(/^[a-zA-Z0-9ñÑ+áéíóúÁÉÍÓÚ'\s]*$/)){
-         e.preventDefault();
-       }
-     },
      async submitForm(){
        try{
          if(!this.$v.dato.$invalid){
@@ -90,66 +91,59 @@ export default {
      alert(alertType,alertMessage){
        this.$refs.alert.showAlert(alertType, alertMessage);
      },
+     async curentDate(){
+       const current = new Date();
+       const date =`${current.getDate()}-${current.getMonth()+1}-${current.getFullYear()}`;
+       this.today=date;
+     }
    },
    mounted()  {
        this.nombreCotizacion=this.request.name.replace('Solicitud', 'Cotización')
+       this.curentDate();
    }
 };
 </script>
 
 <style>
-.crear_rol{
+.cot-form{
   background-color: #f1f2f6;
-    padding: 20px 40px 20px 40px;
+    margin: 40px;
+    padding: 10px 10px 20px 10px;
+    box-shadow: 0px 0px 30px 0px rgba(0, 143, 216, 0.15);
+    width: 100%;
+    border: 1px solid #808C8F;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
 }
-.rol_title{
+.form-title{
    text-align:left;
-    color: #5c9aeb;
+    color: #3d8af7;
     font-size:36px;
     font-weight: 600;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border-bottom: 3px solid #0d58cf;
+    width: 90%;
+    padding: 0 0 1.5% 0;
 }
 .form_crear{
-    padding:8px;
+    padding:0 0 0 3%;
     text-align: left;
-}
-.crear_rol textarea {
-    resize: none;
-    word-wrap:break-word;
-    overflow-y:auto;
-}
-.form_check{
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  
-  width: 100%;
-}
-.crear_rol input,
-.crear_rol textarea {
-    background-color: #F7F6F6;
-    border-style: none none solid none;
-    border: 0px 0px 5px 0px;
-    border-color: #3a3a3a;
-    border-radius: 3px;
-    padding: 8px;
-    width: 550px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-.crear_rol input ::placeholder,
-.crear_rol textarea ::placeholder{
-    color:#999999;
-    font-size: 20px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 .form_label{
     color:#3f4b5b;
     font-size:24px;
     font-weight: 500;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;  
+    padding: 0 1% 0 0;
 }
 .form_section{
-      padding:25px 0px 25px 0px;
+      padding:1.5% 0px 1.5% 0px;
+      display: flex;
+      align-items: baseline;
+}
+.form-name{
+  
 }
 .form_check-error {
     color: #ed1c24;

@@ -27,22 +27,17 @@ export default new Vuex.Store({
         listaPermisos: [],
         username: false,
         token: null,
+        listaSolicitudItems: [], //para la parte de solicitud
     },
     mutations: {
         async habilitar(state) {
             for (let i = 0; i < state.listaPermisos.length; i++) {
-                /* if (state.listaPermisos[i] == "Gestionar Usuarios")//llamar a la cookie para obtener su valors
-                                                                                                                                                                                                                                                                    state.permisoHome = true;
-                                                                                                                                                                                                                                                                else */
                 if (state.listaPermisos[i] == "Gestionar itemsDeGasto") {
                     state.permisoItemDeGasto = true;
                 } else if (state.listaPermisos[i] == "Gestionar unidadDeGasto") {
                     state.permisoUnidadDeGasto = true;
                 } else if (state.listaPermisos[i] == "Gestionar Usuarios") {
                     state.permisoCrearUsuario = true;
-                    console.log("stateeee");
-                    console.log(state.permisoCrearUsuario);
-                    console.log(state.listaPermisos[i]);
                 } else if (state.listaPermisos[i] == "Gestionar Roles") {
                     state.permisoCrearRol = true;
                 } else if (state.listaPermisos[i] == "Gestionar Solicitud") {
@@ -51,9 +46,6 @@ export default new Vuex.Store({
                     state.permisoEmpresa = true;
                 }
             }
-            console.log("entre al mutations");
-
-            console.log(state.permisoHome);
         },
         addCustomer(state, customer) {
             // mutate state
@@ -85,7 +77,15 @@ export default new Vuex.Store({
         },
         setToken(state, payload) {
             state.token = payload;
-            console.log(state.token);
+        },
+        setlistaSolicitudItems(state, payload) {
+            state.listaSolicitudItems.push(payload);
+        },
+        setDelete(state) {
+            state.listaSolicitudItems = [];
+        },
+        setEliminar(state, index) {
+            state.listaSolicitudItems.splice(index, 1);
         },
     },
     actions: {
@@ -96,7 +96,6 @@ export default new Vuex.Store({
             let nuevoToken = "Bearer " + tokensito;
             commit("setToken", nuevoToken);
             localStorage.setItem("token", nuevoToken); //para que no se pierda al refrescar
-            console.log(nuevoToken);
             nuevoToken = "";
         },
         leerToken({ commit }) {
@@ -106,7 +105,6 @@ export default new Vuex.Store({
                 commit("setToken", null);
             }
         },
-        datosProtegidos() {},
     },
 
     modules: {},

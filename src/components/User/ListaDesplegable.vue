@@ -6,7 +6,7 @@
       v-on:input="$emit('input', $event.target.value)"
       class="container__list"
     >
-      <option selected="true" disabled="disabled">Seleccione una opcion</option>
+      <option selected="true" disabled="disabled">{{ value }}</option>
       <option
         class="container__list__option"
         v-for="(item, index) in lista"
@@ -16,14 +16,20 @@
         {{ item }}</option
       >
     </select>
+    <div class="form_check-error" v-if="!$v.value.required">
+      {{ Mensaje }}
+    </div>
   </div>
 </template>
 
 <script>
+import { required } from "vuelidate/lib/validators";
 export default {
   name: "ListaDesplegable",
   data() {
-    return {};
+    return {
+      inicial: "Seleccione",
+    };
   },
   props: {
     value: String,
@@ -31,6 +37,12 @@ export default {
     nombre: String,
     lista: Array,
     nombre1: String,
+    Mensaje: String,
+  },
+  validations: {
+    value: {
+      required,
+    },
   },
 };
 </script>
@@ -47,13 +59,21 @@ export default {
   text-align: left;
 }
 .container__list {
-  width: 80%;
+  width: 100%;
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
   display: flex;
+  font-size: 16px;
+  border: 1px solid;
 }
 .container__list__option {
   align-items: left;
+}
+.form_check-error {
+  color: red;
+  font-size: 13px;
+  text-align: left;
+  margin-left: 20px;
 }
 </style>

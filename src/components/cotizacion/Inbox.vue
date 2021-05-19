@@ -108,10 +108,10 @@ export default {
     padding: 2.5% 2.5%;
     border-bottom: 1px solid #ddd;
     margin-bottom: 10px;
+    width: 100%;
 }
 .inbox-cards{
     width: 30%;
-    margin: 0px;
     display: flex;
 }
 .inbox-details{
@@ -128,7 +128,7 @@ export default {
     height: 100%;
     padding:1% 1% 1% 1%;
 }
-.single-card-container selected{
-    background: #afc2c7;
+.card-side{
+    width: 100%;
 }
 </style>

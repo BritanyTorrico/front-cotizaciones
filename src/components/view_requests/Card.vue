@@ -28,7 +28,7 @@ export default {
 .card-container{
     margin: 5px 0 5px 0;
     padding: 2px 0 0 0;
-    color:#8492b4!important;
+    color:#030303!important;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -45,14 +45,14 @@ h3{
     font-size: 18px;
     margin: 0%;
     text-align: left;
-    width: 80%;
+    width: 100%;
 }
 .card-date{
     font-size:16px;
     text-transform: uppercase;
     margin:0 0 0 20px;
     align-content: flex-end;
-    width: 20%;
+    width: 50%;
 }
 .card-author{
     font-size: 16px;
@@ -64,20 +64,12 @@ h3{
 .card-description{
     align-self: flex-start;
     font-size: 15px;
-    color: #8492b4!important;
+    color: #909094!important;
     margin: 10px 0 0 0;
     line-height: 1.5em;
     height: 4.5em;
     word-wrap: break-word;
     overflow: hidden;
     text-align: left;
-}
-.container:hover{
-    background: #fff!important;
-    box-shadow: 0px 0px 40px rgba(0, 143, 216, 0.15);
-}
-.container:hover ::before{
-    visibility: visible;
-    opacity: 1;
 }
 </style>

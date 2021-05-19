@@ -4,7 +4,7 @@
               <div class="inbox-cards">
                   <div class="card-side">
                       <div class="card-index" v-for="(req,i) in inboxData" :key="i">
-                          <div class="single-card-container " v-on:click=showRequest(i) v-class="{selected: isSelected}">
+                          <div class="single-card-container " v-on:click=showRequest(i)>
                               <Card
                                 :name="req.nombre_solicitud"
                                 :date="req.fecha_solicitud"
@@ -44,6 +44,7 @@ export default {
             inboxData: [],
             items: [],
             selectedRequest: {
+                cod: null,
                 name: "",
                 date: "",
                 author: "",
@@ -51,7 +52,6 @@ export default {
                 budget: null,
                 itemList: []
             },
-            isSelected: false
         }
     },
     methods: {
@@ -77,13 +77,13 @@ export default {
             
         },
         async showRequest(i){
+            this.selectedRequest.cod=this.inboxData[i].cod_solicitud;
             this.selectedRequest.name=this.inboxData[i].nombre_solicitud;
             this.selectedRequest.date=this.inboxData[i].fecha_solicitud;
             this.selectedRequest.author=this.inboxData[i].usuario_solicitante;
             this.selectedRequest.description=this.inboxData[i].detalle_solicitud;
             this.selectedRequest.budget=this.inboxData[i].estimado_solicitud;
             this.selectedRequest.itemList=this.items[i].datos;
-            this.isSelected=!this.isSelected;
         }
     },
     mounted: function(){
@@ -110,10 +110,10 @@ export default {
     padding: 2.5% 2.5%;
     border-bottom: 1px solid #ddd;
     margin-bottom: 10px;
+    width: 100%;
 }
 .inbox-cards{
     width: 30%;
-    margin: 0px;
     display: flex;
 }
 .inbox-details{
@@ -130,7 +130,7 @@ export default {
     height: 100%;
     padding:1% 1% 1% 1%;
 }
-.single-card-container selected{
-    background: #afc2c7;
+.card-side{
+    width: 100%;
 }
 </style>

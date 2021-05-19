@@ -246,18 +246,22 @@
             </div>
             <div class="fomrm__section__item">
               <lista-desplegable
+                :key="componentKey"
                 required
                 v-model="users.departamento"
                 nombreLista="Departamento:"
                 :lista="listDepartament"
+                :value="users.departamento"
               ></lista-desplegable>
             </div>
 
             <div class="fomrm__section__item">
               <lista-desplegable
+                :key="componentKey1"
                 v-model="users.nombre_rol"
                 nombreLista="Rol:"
                 :lista="listRoles"
+                :value="users.nombre_rol"
               ></lista-desplegable>
             </div>
           </div>
@@ -300,12 +304,14 @@ export default {
         apellidos: null,
         celular: null,
         facultad: "Seleccione una opcion",
-        departamento: null,
-        nombre_rol: null,
+        departamento: "Seleccione una opcion",
+        nombre_rol: "Seleccione una opcion",
       },
       listDepartament: [],
       listfacultad: [],
       listRoles: [],
+      componentKey: 0,
+      componentKey1: 0,
     };
   },
 
@@ -375,6 +381,12 @@ export default {
 
   methods: {
     ...mapActions(["datosProtegidos"]),
+    forceRerender() {
+      this.componentKey += 1;
+    },
+    forceRerender1() {
+      this.componentKey1 += 1;
+    },
     async obtenerFacultades() {
       const listaFacultades = (
         await this.$http.get("faculty", {
@@ -434,6 +446,18 @@ export default {
           await this.sendUserDepartment();
           await this.sendUsernameRol();
           this.alert("success", "Usuario creado exitosamente");
+          //restablecer variables
+          this.users.nombre_usuario = null;
+          this.users.contrasena = null;
+          this.users.confirmarContraseña = null;
+          this.users.nombres = null;
+          this.users.apellidos = null;
+          this.users.celular = null;
+          this.users.facultad = "Seleccione una opcion";
+          this.users.departamento = "Seleccione una opcion";
+          this.users.nombre_rol = "Seleccione una opcion";
+          this.forceRerender();
+          this.forceRerender1();
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
@@ -457,7 +481,6 @@ export default {
             },
           }
         );
-
       } catch (error) {
         //borra usario
         // await this.$http.delete("users", { data: this.users.nombre_usuario });
@@ -550,7 +573,7 @@ export default {
 .form__image img {
   width: 100%;
   height: 800px;
-  background: red;
+  background: gray;
 }
 
 .form__datos {
@@ -623,6 +646,8 @@ export default {
 }
 .fomrm__section__item {
   width: 33%;
+
+  margin: 30px;
 }
 .formulario_label {
   padding-left: 6px;
@@ -670,10 +695,11 @@ export default {
   font-weight: bold;
 }
 .container__list {
-  width: 80%;
+  width: 100%;
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
+  border: 1px solid;
 }
 .container-facu {
   padding-top: 20px;

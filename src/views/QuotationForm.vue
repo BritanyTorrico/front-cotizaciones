@@ -1,7 +1,7 @@
 <template>
   <div class="quotation-form">
       <div class="form-container">
-          <inbox></inbox>
+          <Inbox/>
       </div>
   </div>
 </template>
@@ -15,12 +15,7 @@ export default {
 
 <style>
 .quotation-form{
-    background-color: #46b1c95b;
-    margin-top:0;
-}
-.form-container{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+    margin: 2rem;
+    margin-top: 0;
 }
 </style>
