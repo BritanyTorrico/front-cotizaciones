@@ -46,7 +46,10 @@
                       <div class="data-label">Cuenta bancaria:</div>
                     <div class="data-info">{{ this.empresa.banco }}</div>
                   </div>
-                  <button class="confirm-company" @click="confirmCompany()">Confirmar empresa</button>
+                  <div class="confirm-button">
+                      <button class="confirm-company" @click="confirmCompany()">Confirmar empresa</button>
+                  </div>
+                  
               </div>
               <div class="confirmed-companies">
                   <div class="confirmed-title">Empresas confirmadas:</div>
@@ -173,9 +176,26 @@ mounted(){
     display: flex;
     font-size: 18px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    padding: 1% 0 1% 0;
 }
 .data-label{
     font-weight: 700;
     padding: 0 1% 0 0;
+}
+.confirm-button{
+    padding: 2% 0 0 0 ;
+}
+.confirm-company{
+  display: block;
+  background-color: #003570;
+  padding: 1.2% 1.5% 1.2% 1.5%;
+  border-radius: 22px;
+  color: #fafafa;
+  font-size: 18px;
+  font-weight: bold;
+  border: 0px;
+}
+.confirmed-companies{
+    width: 30%;
 }
 </style>
