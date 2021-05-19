@@ -86,7 +86,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["getPermi", "push"]),
+    ...mapActions(["getPermi", "push", "login"]),
     async getPermisos() {
       const categ = (
         await this.$http.get(
@@ -97,17 +97,29 @@ export default {
         this.$store.commit("addCustomer", categ[i].nombre_funcion);
       }
     },
-
+    async storeLocalData(){
+            const id = (
+                await this.$http.get(
+                    `/users/name/${this.users.nombre_usuario}`,{
+                        headers: {
+                            authorization: localStorage.getItem('token'),
+                        },
+                    }
+                )
+            ).data.datos[0];
+            localStorage.setItem('userID', id.cod_usuario)
+            localStorage.setItem('roleCod', id.cod_rol)
+            localStorage.setItem('facu', id.facultad)
+            localStorage.setItem('depto', id.departamento)
+        },
     async verificarDatos() {
       try {
-        console.log("metodo");
         console.log(this.users.nombre_usuario);
         console.log(this.users.contrasena);
-        const resp = await this.$http.get(
+        const tokensito = await this.$http.get(
           `secret?user=${this.users.nombre_usuario}&pass=${this.users.contrasena}`
         );
-        console.log("error" + resp);
-        console.log("metodo termina");
+        await this.login(tokensito.data);
       } catch (error) {
         throw new Error("Datos invalidos");
       }
@@ -115,15 +127,14 @@ export default {
     async submitForm() {
       try {
         if (!this.$v.users.$invalid) {
-          console.log("inicio a verificar");
           await this.verificarDatos();
-          console.log("termino verficacion");
           this.alert("success", "Ha iniciador sesion ");
+
           await this.getPermisos(); //obtengo los permisos en un arrray
           await this.getPermi(); //modifica el router.link
-
           this.$store.commit("setUser", true);
           localStorage.setItem("username", this.username);
+          await this.storeLocalData();
           this.$router.push("/");
         } else {
           console.log("datos incorrectos");

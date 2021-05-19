@@ -1,10 +1,11 @@
 <template>
-  <div class="container-lista">
+  <div class="container">
     <div class="container__label">{{ nombreLista }}</div>
     <select
       required
       v-on:input="$emit('input', $event.target.value)"
       class="container__list"
+      @change="ObtenerOtraLista()"
     >
       <option selected="true" disabled="disabled">Seleccione una opcion</option>
       <option
@@ -20,10 +21,16 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
-  name: "ListaDesplegable",
+  name: "listaPadre",
   data() {
-    return {};
+    return {
+      segundaLista: [],
+    };
+  },
+  computed: {
+    ...mapState(["EventBus"]),
   },
   props: {
     value: String,
@@ -32,11 +39,19 @@ export default {
     lista: Array,
     nombre1: String,
   },
+  methods: {
+    ObtenerOtraLista() {
+      this.segundaLista.push("1", "2", "3");
+      this.EventBus.$emit("obtener", this.segundaLista);
+      this.segundaLista = [];
+      console.log("otra lista");
+    },
+  },
 };
 </script>
 
 <style lang="css" scoped>
-.container-lista {
+.container {
   text-align: left;
   padding-top: 20px;
 }
@@ -44,16 +59,13 @@ export default {
   color: var(--color-name);
   margin-bottom: 10px;
   font-weight: bold;
-  text-align: left;
 }
 .container__list {
   width: 80%;
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
-  display: flex;
 }
 .container__list__option {
-  align-items: left;
 }
 </style>

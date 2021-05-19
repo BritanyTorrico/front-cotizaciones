@@ -23,24 +23,29 @@ const routes = [{
         name: "RegistroItemGasto",
         component: () =>
             import ("@/views/RegItem.vue"),
+
         meta: {
             rutaProtegida: true,
         },
+
     },
     {
         path: "/registro_unidad",
         name: "RegistroUnidadGasto",
         component: () =>
             import ("@/views/RegUnidad.vue"),
+
         meta: {
             rutaProtegida: true,
         },
+
     },
     {
         path: "/register",
         name: "RegisterUserPage",
         component: () =>
             import ("../views/RegisterUserPage.vue"),
+
         meta: {
             rutaProtegida: true,
         },
@@ -52,16 +57,19 @@ const routes = [{
             import ("../views/LoginPage.vue"),
     },
     {
-      path: "/crear_empresa",
-      name: "CrearEmpresa",
-      component: () => import  ("../views/creaEmpresa.vue")
-    },
-    {
-      path: "/crear_rol",
-      name: "CrearRoles",
-      component: () =>import ("@/views/creaRol.vue")
-    },
-   
+        path: "/creaRol",
+        name: "CreaRol",
+        component: () =>
+            import ("../views/creaRol.vue"),
+        meta: {
+            rutaProtegida: true,
+          },
+      },
+     {
+        path: "/revisar_solicitudes",
+        name: "RequestReview",
+        component: () =>import ("@/views/RequestReview.vue")
+     },
 ];
 
 const router = new VueRouter({

@@ -5,7 +5,7 @@
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <b-navbar-brand href="#">UMSS</b-navbar-brand>
         <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav>
+          <b-navbar-nav id="nav">
             <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
             <b-nav-item to="/about">About</b-nav-item>
             <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
@@ -18,6 +18,7 @@
             <b-nav-item v-if="permisoCrearUsuario" to="/register"
               >Registrar Usuario</b-nav-item
             >
+            <b-nav-item v-if="permisoCrearRol" to="/creaRol">Rol</b-nav-item>
             <b-nav-item v-if="username" @click="cerrar()"
               >Cerrar Sesion</b-nav-item
             >
@@ -50,7 +51,9 @@
 import { mapState, mapActions } from "vuex";
 export default {
   name: "App",
-
+  created() {
+    this.leerToken();
+  },
   computed: {
     ...mapState([
       "permisoHome",
@@ -59,26 +62,34 @@ export default {
       "permisoCrearUsuario",
       "username",
       "listaPermisos",
+      "permisoCrearRol",
     ]),
   },
   methods: {
-    ...mapActions(["getPermi"]),
+    ...mapActions(["getPermi", "leerToken"]),
     cerrar() {
       this.$store.commit("setUser", false);
       localStorage.setItem("username", this.username);
       console.log("hlaa  " + localStorage.getItem("username"));
-      localStorage.removeItem("my-app");
+
       localStorage.removeItem("username");
+      localStorage.removeItem("token");
+
       this.$store.commit("setPermisoUsuario", false);
       this.$store.commit("setPermisoItem", false);
       this.$store.commit("setPermisoUnidad", false);
       this.$store.commit("setPermisoRol", false);
       this.$store.commit("setPermisoSolicitud", false);
-      this.listapermisos = [];
+      this.$store.commit("setLista");
+      this.$store.commit("setToken", null);
+      localStorage.removeItem("my-app");
+      localStorage.removeItem('userID');
+      localStorage.removeItem('roleCod');
+      localStorage.removeItem('facu');
+      localStorage.removeItem('depto');
       this.$router.push("/login");
     },
   },
-  mounted() {},
 };
 </script>
 
@@ -99,5 +110,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+#nav a {
+  font-weight: bold;
+  color: white;
+}
+#nav a.router-link-exact-active {
+  color: #7bed9f;
 }
 </style>

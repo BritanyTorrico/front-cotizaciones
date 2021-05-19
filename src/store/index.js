@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+
 import VuexPersist from "vuex-persist";
 
 Vue.use(Vuex);
@@ -8,6 +9,8 @@ const vuexPersist = new VuexPersist({
     key: "my-app",
     storage: window.localStorage,
 });
+
+Vue.use(Vuex);
 
 export default new Vuex.Store({
     plugins: [vuexPersist.plugin],
@@ -23,25 +26,30 @@ export default new Vuex.Store({
         permisoEmpresa: false,
         listaPermisos: [],
         username: false,
+        token: null,
     },
     mutations: {
         async habilitar(state) {
             for (let i = 0; i < state.listaPermisos.length; i++) {
                 /* if (state.listaPermisos[i] == "Gestionar Usuarios")//llamar a la cookie para obtener su valors
-                                                    state.permisoHome = true;
-                                                else */
-                if (state.listaPermisos[i] == "Gestionar itemsDeGasto")
+                                                                                                                                                                                                                                                                    state.permisoHome = true;
+                                                                                                                                                                                                                                                                else */
+                if (state.listaPermisos[i] == "Gestionar itemsDeGasto") {
                     state.permisoItemDeGasto = true;
-                else if (state.listaPermisos[i] == "Gestionar unidadDeGasto")
+                } else if (state.listaPermisos[i] == "Gestionar unidadDeGasto") {
                     state.permisoUnidadDeGasto = true;
-                else if (state.listaPermisos[i] == "Gestionar Usuarios")
+                } else if (state.listaPermisos[i] == "Gestionar Usuarios") {
                     state.permisoCrearUsuario = true;
-                else if (state.listaPermisos[i] == "Gestionar Roles")
+                    console.log("stateeee");
+                    console.log(state.permisoCrearUsuario);
+                    console.log(state.listaPermisos[i]);
+                } else if (state.listaPermisos[i] == "Gestionar Roles") {
                     state.permisoCrearRol = true;
-                else if (state.listaPermisos[i] == "Gestionar Solicitud")
+                } else if (state.listaPermisos[i] == "Gestionar Solicitud") {
                     state.permisoSolicitud = true;
-                else if (state.listaPermisos[i] == "Gestionar Empresa")
+                } else if (state.listaPermisos[i] == "Gestionar Empresa") {
                     state.permisoEmpresa = true;
+                }
             }
             console.log("entre al mutations");
 
@@ -72,11 +80,34 @@ export default new Vuex.Store({
         setPermisoEmpresa(state, dato2) {
             state.permisoEmpresa = dato2;
         },
+        setLista(state) {
+            state.listaPermisos = [];
+        },
+        setToken(state, payload) {
+            state.token = payload;
+            console.log(state.token);
+        },
     },
     actions: {
         getPermi(context) {
             context.commit("habilitar");
         },
+        login({ commit }, tokensito) {
+            let nuevoToken = "Bearer " + tokensito;
+            commit("setToken", nuevoToken);
+            localStorage.setItem("token", nuevoToken); //para que no se pierda al refrescar
+            console.log(nuevoToken);
+            nuevoToken = "";
+        },
+        leerToken({ commit }) {
+            if (localStorage.getItem("token")) {
+                commit("setToken", localStorage.getItem("token"));
+            } else {
+                commit("setToken", null);
+            }
+        },
+        datosProtegidos() {},
     },
+
     modules: {},
 });

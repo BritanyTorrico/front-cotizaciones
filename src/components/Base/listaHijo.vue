@@ -1,5 +1,5 @@
 <template>
-  <div class="container-lista">
+  <div class="container">
     <div class="container__label">{{ nombreLista }}</div>
     <select
       required
@@ -11,32 +11,48 @@
         class="container__list__option"
         v-for="(item, index) in lista"
         :key="index"
-        :value="item"
       >
         {{ item }}</option
       >
     </select>
+    <p>hola {{ this.lista }}</p>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
-  name: "ListaDesplegable",
+  name: "listaPadre",
+  computed: {
+    ...mapState(["EventBus", "lista"]),
+  },
   data() {
-    return {};
+    return {
+      variable: ["1", "2"],
+    };
+  },
+  mounted() {
+    this.EventBus.$on("obtener", function(segundaLista) {
+      for (let i = 0; i < segundaLista.length; i++) {
+        console.log(segundaLista[i]);
+
+        this.lista = segundaLista;
+      }
+
+      console.log("otraa " + this.lista);
+    });
   },
   props: {
     value: String,
     nombreLista: String,
     nombre: String,
-    lista: Array,
-    nombre1: String,
   },
+  methods: {},
 };
 </script>
 
 <style lang="css" scoped>
-.container-lista {
+.container {
   text-align: left;
   padding-top: 20px;
 }
@@ -44,16 +60,13 @@ export default {
   color: var(--color-name);
   margin-bottom: 10px;
   font-weight: bold;
-  text-align: left;
 }
 .container__list {
   width: 80%;
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
-  display: flex;
 }
 .container__list__option {
-  align-items: left;
 }
 </style>
