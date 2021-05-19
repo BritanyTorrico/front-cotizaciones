@@ -17,44 +17,51 @@
               </select>
           </div>
           <div class="selected">
-              <div class="selected-data">
-                  <div class="data-line">
-                      <div class="data-label">Nombre:</div>
-                    <div class="data-info">{{ this.empresa.nombre }}</div>
-                  </div>
-                  <div class="data-line">
-                      <div class="data-label">NIT:</div>
-                    <div class="data-info">{{ this.empresa.nit }}</div>
-                  </div>
-                  <div class="data-line">
-                      <div class="data-label">Representante legal:</div>
-                    <div class="data-info">{{ this.empresa.representante }}</div>
-                  </div>
-                  <div class="data-line">
-                      <div class="data-label">Teléfono:</div>
-                    <div class="data-info">{{ this.empresa.telefono }}</div>
-                  </div>
-                  <div class="data-line">
-                      <div class="data-label">Dirección:</div>
-                    <div class="data-info">{{ this.empresa.direccion }}</div>
-                  </div>
-                  <div class="data-line">
-                      <div class="data-label">Correo electrónico:</div>
-                    <div class="data-info">{{ this.empresa.correo }}</div>
-                  </div>
-                  <div class="data-line">
-                      <div class="data-label">Cuenta bancaria:</div>
-                    <div class="data-info">{{ this.empresa.banco }}</div>
-                  </div>
-                  <div class="confirm-button">
-                      <button class="confirm-company" @click="confirmCompany()">Confirmar empresa</button>
-                  </div>
-                  
+              <div v-if="this.empresa.nombre===null"></div>
+              <div v-else>
+                <div class="selected-data">
+                    <div class="data-line">
+                        <div class="data-label">Nombre:</div>
+                        <div class="data-info">{{ this.empresa.nombre }}</div>
+                    </div>
+                    <div class="data-line">
+                        <div class="data-label">NIT:</div>
+                        <div class="data-info">{{ this.empresa.nit }}</div>
+                    </div>
+                    <div class="data-line">
+                        <div class="data-label">Representante legal:</div>
+                        <div class="data-info">{{ this.empresa.representante }}</div>
+                    </div>
+                    <div class="data-line">
+                        <div class="data-label">Teléfono:</div>
+                        <div class="data-info">{{ this.empresa.telefono }}</div>
+                    </div>
+                    <div class="data-line">
+                        <div class="data-label">Dirección:</div>
+                        <div class="data-info">{{ this.empresa.direccion }}</div>
+                    </div>
+                    <div class="data-line">
+                        <div class="data-label">Correo electrónico:</div>
+                        <div class="data-info">{{ this.empresa.correo }}</div>
+                    </div>
+                    <div class="data-line">
+                        <div class="data-label">Cuenta bancaria:</div>
+                        <div class="data-info">{{ this.empresa.banco }}</div>
+                    </div>
+                    <div class="confirm-button">
+                        <button 
+                        class="confirm-company" 
+                        @click="confirmCompany()"
+                        :disabled="this.confirmed.length===3 || this.confirmed[this.confirmed.length-1]===this.empresa.nombre"
+                        >Confirmar empresa</button>
+                    </div>
+                    
+                </div>
               </div>
               <div class="confirmed-companies">
                   <div class="confirmed-title">Empresas confirmadas:</div>
                   <ul class="company-list">
-                      <li v-for="(company, index) in confirmed" :key="index">
+                      <li v-for="(company, index) in confirmed" :key="index" class="list-item">
                           {{ company }}
                           <div class="remove-list" v-on:click="removeElement(index)">x</div>
                       </li>
@@ -67,6 +74,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { required, maxLength, minLength } from "vuelidate/lib/validators";
 export default {
     
 name: "Empresas",
@@ -88,7 +96,15 @@ data(){
         listaEmpresas: [],
         companiesData: [],
         selectedCompany: '',
-        confirmed: []
+        confirmed: [],
+        confirmedData: []
+    }
+},
+validations: {
+    confirmed: {
+        required,
+        maxLength: maxLength(3),
+        minLength: minLength(3)
     }
 },
 methods: {
@@ -122,11 +138,16 @@ methods: {
     },
     confirmCompany(){
         this.confirmed.push(this.empresa.nombre)
+        this.confirmedData.push(this.companiesData[this.listaEmpresas.indexOf(this.empresa.nombre)])
+        this.companiesData.splice(this.listaEmpresas.indexOf(this.empresa.nombre),1)
         this.listaEmpresas.splice(this.listaEmpresas.indexOf(this.empresa.nombre),1)
+        
     },
     removeElement: function (index){
         this.listaEmpresas.push(this.confirmed[index])
+        this.companiesData.push(this.confirmedData[index])
         this.confirmed.splice(index, 1)
+        this.confirmedData.splice(index, 1)
     }
 },
 mounted(){
@@ -151,6 +172,7 @@ mounted(){
     font-size: 24px;
     padding: 0 2% 0 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 650;
 }
 .company-cat{
     width: 50%;
@@ -170,17 +192,24 @@ mounted(){
     padding: 2% 2% 2% 2%;
 }
 .selected-data{
-    width: 70%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: initial;
 }
 .data-line{
     display: flex;
     font-size: 18px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     padding: 1% 0 1% 0;
+    color: #3f4b5b;
+    
 }
 .data-label{
     font-weight: 700;
-    padding: 0 1% 0 0;
+}
+.data-info{
+    padding: 0 0 0 0.5rem;
 }
 .confirm-button{
     padding: 2% 0 0 0 ;
@@ -197,5 +226,32 @@ mounted(){
 }
 .confirmed-companies{
     width: 30%;
+}
+.confirmed-title{
+    color: #3f4b5b;
+    font-size: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    padding-bottom: 4%;
+}
+.company-list{
+    color: #030303;
+    list-style-position: inside;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.list-item{
+    padding: 0 0 3% 15%;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 420;
+    
+}
+.remove-list{
+    display: inline;
+    color: red;
+    font-size: 15px;
+    font-weight: 600;
 }
 </style>

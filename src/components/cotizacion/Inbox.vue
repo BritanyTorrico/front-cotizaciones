@@ -20,9 +20,7 @@
 
                   </div>
                   <div v-else>
-                      <Details
-                        :request="selectedRequest"
-                      />
+                      <Form :request="selectedRequest"/>
                   </div>
               </div>
       </div>
@@ -31,14 +29,14 @@
 
 <script>
 import Card from './Card.vue'
-import Details from './Details.vue'
 import { mapState } from "vuex";
+import Form from './Form.vue';
 export default {
     name: "Inbox",
     computed: {
     ...mapState(["token"]),
   },
-    components: { Details, Card },
+    components: { Card, Form },
     data(){
         return{
             inboxData: [],
@@ -56,7 +54,7 @@ export default {
     },
     methods: {
         async getData(){
-            const response = (await this.$http.get(`request?type=criteria&status=ABIERTA&from=depto&nombre=${localStorage.getItem('depto')}`, {
+            const response = (await this.$http.get(`request?type=criteria&status=ACEPTADA&from=depto&nombre=${localStorage.getItem('depto')}`, {
           headers: {
             authorization: this.token,
           },

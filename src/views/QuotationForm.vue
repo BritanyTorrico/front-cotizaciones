@@ -1,17 +1,15 @@
 <template>
   <div class="quotation-form">
       <div class="form-container">
-          <Form/>
-          <Empresas/>
+          <inbox></inbox>
       </div>
   </div>
 </template>
 
 <script>
-import Empresas from '../components/cotizacion/Empresas.vue';
-import Form from '../components/cotizacion/Form.vue';
+import Inbox from '../components/cotizacion/Inbox.vue'
 export default {
-  components: { Empresas, Form },
+  components: { Inbox },
 }
 </script>
 

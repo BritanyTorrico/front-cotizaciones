@@ -3,39 +3,35 @@
     <h2 class="rol_title">Formulario de cotizacion</h2>
     <form class="form_crear" @submit.prevent="submitForm" autocomplete="off">
       <div class="form_section">
-        <label>
-          <div class="form_name">Titulo:</div>
-        </label>
+          <div class="form_label">Titulo:</div>
+          <div class="form-name">Nombre Cotizacion</div>
      </div>
-     <div class="form_section">
-        <label>
-          <div class="form_name">Fecha:</div> 
-        </label>
-     </div>  
-     <table class="table">
-       <thead>
-         <tr>
-           <th>Cantidad</th>
-            <th>Unidad</th>
-             <th>Item</th>
-             <th>Detalle</th>
-             <th>Unitario</th>
-             <th>Total</th>
-           </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-     </table> 
+     <div class="items">
+         <table class ="items-list">
+              <thead>
+                  <tr>
+                    <th>Cantidad</th>
+                    <th>Unidad</th>
+                    <th>Detalle</th>
+                    <th>Unitario</th>
+                    <th>Total</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr v-for="(item, index) in request.itemList" :key="index">
+                      <td>{{ item.cantidad_solicitud }}</td>
+                      <td>{{ item.unidad_solicitud }}</td>
+                      <td>{{ item.detalle_solicitud }}</td>
+                      <td></td>
+                      <td></td>
+                  </tr>
+              </tbody>
+          </table>
+     </div>
+     <div class="form-empresas">
+         <empresas></empresas>
+     </div>
     </form> 
-    {{dato}}
     <Alert ref="alert"></Alert>        
   </section>
 
@@ -43,14 +39,26 @@
 
 <script>
 import Alert from "@/components/Alert.vue";
+import Empresas from './Empresas.vue';
 export default {
   name:"Form",
-  components:{ Alert },
+  components:{ Alert, Empresas },
    data(){
      return{
        disabled: false,
+       rubro: '',
      };
    },
+   props: {
+        request: {
+            name: String,
+            date: String,
+            author: String,
+            description: String,
+            budget: Number,
+            itemList: Array,
+        }
+    },
    methods: {
      keyhandler(e){
        if (!e.key.math(/^[a-zA-Z0-9ñÑ+áéíóúÁÉÍÓÚ'\s]*$/)){
@@ -130,7 +138,7 @@ export default {
     font-size: 20px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-.form_name{
+.form_label{
     color:#3f4b5b;
     font-size:24px;
     font-weight: 500;
