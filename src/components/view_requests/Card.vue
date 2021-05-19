@@ -27,7 +27,6 @@ export default {
 <style>
 .card-container{
     margin: 5px 0 5px 0;
-    border: 3px 0 5px 0;
     padding: 2px 0 0 0;
     color:#8492b4!important;
     width: 100%;
@@ -46,12 +45,14 @@ h3{
     font-size: 18px;
     margin: 0%;
     text-align: left;
+    width: 80%;
 }
 .card-date{
     font-size:16px;
     text-transform: uppercase;
     margin:0 0 0 20px;
     align-content: flex-end;
+    width: 20%;
 }
 .card-author{
     font-size: 16px;

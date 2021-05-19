@@ -11,7 +11,7 @@
           <h5>Justificación:</h5>
           <p>{{ request.description }}</p>
           <div class="money">
-              <h5>Presupuesto: </h5>{{ request.budget}}
+              <h5>Presupuesto: </h5>Bs. {{ request.budget}}
           </div>
       </div>
       <div class="items">
@@ -33,17 +33,47 @@
           </table>
       </div>
       <div class="response">
-          <button class="accept-button">Aceptar</button>
-          <button class="reject-button">Rechazar</button>
+          <b-button class="accept-button" v-b-modal.modal-prevent-closing v-on:click="this.valid=true">Aceptar</b-button>
+          <b-button class="reject-button" v-b-modal.modal-prevent-closing v-on:click="this.valid=false">Rechazar</b-button>
+            <b-modal
+                id="modal-prevent-closing"
+                ref="modal"
+                title="Justificación"
+                @show="resetModal"
+                @hidden="resetModal"
+                @ok="handleOk"
+            >
+                <form ref="form" @submit.prevent="handleSubmit">
+                    <b-form-group
+                    invalid-feedback="Justifique su respuesta"
+                    :state="resState">
+                        <b-form-textarea
+                        id="response-textarea"
+                        v-model="response"
+                        placeholder="Ingrese su justificación"
+                        cols="50"
+                        rows="10"
+                        maxlength="1000"
+                        ></b-form-textarea>
+                    </b-form-group>
+                </form>
+                <Alert ref="alert"></Alert>
+            </b-modal>
       </div>
   </div>
 </template>
 
 <script>
+import Alert from "@/components/Alert.vue";
 export default {
     name:"Details",
+    components: {Alert},
     data(){
-        return{};
+        return{
+            valid: null,
+            response: '',
+            resState: null,
+        };
     },
     props: {
         request: {
@@ -54,6 +84,57 @@ export default {
             budget: Number,
             itemList: Array,
         }
+    },
+    methods: {
+        checkFormValidity(){
+            const valid = this.$refs.form.checkValidity()
+            this.resState=valid
+            return valid
+        },
+        resetModal() {
+        this.response = ''
+        this.resState = null
+      },
+      handleOk(bvModalEvt) {
+        bvModalEvt.preventDefault()
+        this.handleSubmit()
+      },
+      handleSubmit() {
+          try {
+              if (!this.checkFormValidity()) {
+                this.sendData();
+                this.alert("success", "Informe enviado");
+            }
+              
+          } catch (error) {
+              this.alert("warning", error);
+          }
+              
+        
+        this.$nextTick(() => {
+          this.$bvModal.hide('modal-prevent-closing')
+        })
+      },
+      async sendData() {
+      try {
+        await this.$http.post("report?type=nombre", {
+            nombre_solicitud:this.request.name,
+            titulo_informe: "Informe " + this.request.name,
+            justificacion: this.response,
+            aceptacion: this.valid
+        },
+                {
+                    headers: {
+                        authorization: this.token,
+                    },
+                });
+      } catch (error) {
+        throw new Error("Esta solicitud ya fue revisada");
+      }
+    },
+    alert(alertType, alertMessage) {
+      this.$refs.alert.showAlert(alertType, alertMessage);
+    },
     }
 }
 </script>
@@ -120,20 +201,19 @@ p{
 }
 .items{
     align-self: center;
-    width: 80%;
+    width: 90%;
     padding: 0 0 5% 0;
     font-size: 17px;
 }
 .items thead{
     background-color: #f1f2f6;
+    padding: 0 2% 0 2%;
 }
 .items th {
     border: 1px solid #c0c0c0;
-    padding: 0 1% 0 1%;
 }
 .items td {
     border: 1px solid #c0c0c0;
-    padding: 0 1% 0 1%;
 }
 .response{
     display: flex;
@@ -142,7 +222,7 @@ p{
   margin: auto;
   display: block;
   background-color: #003570;
-  padding: 12px 115px 12px 115px;
+  padding: 1.2% 11.5% 1.2% 11.5%;
   border-radius: 22px;
   color: #fafafa;
   font-size: 22px;
@@ -153,7 +233,7 @@ p{
   margin: auto;
   display: block;
   background-color: #B70D0D;
-  padding: 12px 115px 12px 115px;
+  padding: 1.2% 11.5% 1.2% 11.5%;
   border-radius: 22px;
   color: #fafafa;
   font-size: 22px;
