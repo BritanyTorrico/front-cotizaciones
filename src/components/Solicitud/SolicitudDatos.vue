@@ -104,41 +104,45 @@
           <div class="seccion__Izq-fila1">
             <div class="form__categoria">
               <div class="container__label">Categoria:</div>
-              <select
-                v-model="solicitud.categoria"
-                class="container__list"
-                @change="obtenerItems()"
-              >
-                <option disabled="true">{{ solicitud.categoria }}</option>
-                <option
-                  class="container__list__option"
-                  v-for="(item, index) in listaCategorias"
-                  :key="index"
-                  :value="item"
+              <div class="contenedor-select">
+                <select
+                  v-model="solicitud.categoria"
+                  class="container__list"
+                  @change="obtenerItems()"
                 >
-                  {{ item }}
-                </option>
-              </select>
+                  <option disabled="true">{{ solicitud.categoria }}</option>
+                  <option
+                    class="container__list__option"
+                    v-for="(item, index) in listaCategorias"
+                    :key="index"
+                    :value="item"
+                  >
+                    {{ item }}
+                  </option>
+                </select>
+              </div>
             </div>
             <div class="container-nombre-item">
               <div class="container__label">item de gasto:</div>
-              <select
-                required
-                class="container__list"
-                v-model="solicitud.nombre_item"
-                @change="obtenerDescripcion()"
-              >
-                <option disabled="true">{{ solicitud.nombre_item }}</option>
+              <div class="contenedor-select">
+                <select
+                  required
+                  class="container__list"
+                  v-model="solicitud.nombre_item"
+                  @change="obtenerDescripcion()"
+                >
+                  <option disabled="true">{{ solicitud.nombre_item }}</option>
 
-                <option
-                  class="container__list__option"
-                  v-for="(item, index) in listItems"
-                  :key="index"
-                  :value="item"
-                >
-                  {{ item }}</option
-                >
-              </select>
+                  <option
+                    class="container__list__option"
+                    v-for="(item, index) in listItems"
+                    :key="index"
+                    :value="item"
+                  >
+                    {{ item }}</option
+                  >
+                </select>
+              </div>
             </div>
           </div>
 
@@ -147,10 +151,10 @@
               v-if="this.solicitud.categoria != 'Servicios'"
               class="form__cantidad"
             >
-              <label>
-                <div class="formulario_label">
-                  Cantidad:
-                </div>
+              <div class="formulario_label">
+                Cantidad:
+              </div>
+              <div class="cantidad-input">
                 <input
                   :class="
                     $v.elemento.cantidad.$invalid
@@ -160,10 +164,10 @@
                   :required="!habilitar"
                   :disabled="!disabled"
                   type="number"
-                  placeholder="Ingrese la cantidad"
                   v-model="elemento.cantidad"
                 />
-              </label>
+              </div>
+
               <div
                 class="form_check-error"
                 v-if="!$v.elemento.cantidad.between"
@@ -190,7 +194,13 @@
               Descripción:
             </div>
             <div class="form__descripcion-contenido">
-              {{ descripcionItem }}
+              <textarea
+                rows="7"
+                cols="50"
+                class="form__input"
+                type="text"
+                v-model="descripcionItem"
+              />
             </div>
           </div>
         </div>
@@ -296,9 +306,9 @@
           />
         </div>
       </div>
-      <!-- {{ this.listaSolicitudItems }}
+      {{ this.listaSolicitudItems }}
       <p>datos</p>
-      {{ solicitud }}-->
+      {{ solicitud }}
     </form>
   </div>
 </template>
@@ -647,7 +657,8 @@ export default {
   font-weight: bold;
 }
 .container__list {
-  width: 80%;
+  font-size: 14px;
+  width: 86%;
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
@@ -700,12 +711,16 @@ export default {
   display: flex;
 }
 .izquierda {
-  width: 60%;
+  width: 65%;
 }
 .derecha {
   font-size: 20px;
   float: right;
-  width: 40%;
+  width: 35%;
+  display: flex;
+  justify-content: right;
+  align-items: rigth;
+  text-align: right;
 }
 .primera-fila {
   background: #033076;
@@ -719,7 +734,7 @@ export default {
   margin-top: 20px;
 }
 .seccion__Izq {
-  width: 55%;
+  width: 60%;
 }
 .seccion__Izq-fila1 {
   display: flex;
@@ -740,7 +755,7 @@ export default {
   width: 50%;
 }
 .seccion__Der {
-  width: 45%;
+  width: 40%;
 }
 .form__boton {
   width: 40%;
@@ -787,5 +802,14 @@ export default {
 }
 .form__descripcion-contenido {
   margin-top: 25px;
+}
+.cantidad-input {
+  width: 80%;
+}
+.defecto {
+  font-size: 10px;
+}
+.contenedor-select {
+  width: 100%;
 }
 </style>
