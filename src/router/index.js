@@ -70,6 +70,11 @@ const routes = [{
         name: "RequestReview",
         component: () =>import ("@/views/RequestReview.vue")
      },
+     {
+        path: "/crear_empresa",
+        name: "CrearEmpresa",
+        component: () =>import ("@/views/creaEmpresa.vue")
+    }
 ];
 
 const router = new VueRouter({
