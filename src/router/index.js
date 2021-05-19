@@ -70,6 +70,11 @@ const routes = [{
         name: "RequestReview",
         component: () =>import ("@/views/RequestReview.vue")
      },
+     {
+        path: "/cotizacion",
+        name: "QuotationForm",
+        component: () =>import ("@/views/QuotationForm.vue")
+     },
 ];
 
 const router = new VueRouter({

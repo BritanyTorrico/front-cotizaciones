@@ -43,7 +43,7 @@
                 @hidden="resetModal"
                 @ok="handleOk"
             >
-                <form ref="form" @submit.prevent="handleSubmit">
+                <form ref="form" @submit.stop.prevent="handleSubmit">
                     <b-form-group
                     invalid-feedback="Justifique su respuesta"
                     :state="resState">
@@ -104,10 +104,12 @@ export default {
               if (!this.checkFormValidity()) {
                 this.sendData();
                 this.alert("success", "Informe enviado");
+                return
             }
               
           } catch (error) {
               this.alert("warning", error);
+              return
           }
               
         
