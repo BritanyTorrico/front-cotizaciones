@@ -4,7 +4,7 @@
     <form class="form_crear" @submit.prevent="submitForm" autocomplete="off">
       <div class="form_section">
           <div class="form_label">Titulo:</div>
-          <div class="form-name">Nombre Cotizacion</div>
+          <div class="form-name">{{ this.nombreCotizacion }}</div>
      </div>
      <div class="items">
          <table class ="items-list">
@@ -47,6 +47,7 @@ export default {
      return{
        disabled: false,
        rubro: '',
+       nombreCotizacion: '',
      };
    },
    props: {
@@ -90,6 +91,9 @@ export default {
        this.$refs.alert.showAlert(alertType, alertMessage);
      },
    },
+   mounted()  {
+       this.nombreCotizacion=this.request.name.replace('Solicitud', 'Cotización')
+   }
 };
 </script>
 
@@ -173,19 +177,21 @@ export default {
     background:#999999;
     border: 0px;
 }
-th, td {
-  padding: 20px;
+.items{
+    align-self: center;
+    width: 90%;
+    padding: 0 0 5% 0;
+    font-size: 17px;
 }
-table {
-  table-layout: fixed;
-  width: 100%;
-  border-collapse: collapse;
-  border: 3px solid rgb(109, 111, 112);
+.items thead{
+    background-color: #f1f2f6;
+    padding: 0 2% 0 2%;
+    text-align: center;
 }
-table {
-  background-color: #dbdbdb;
+.items th {
+    border: 1px solid #c0c0c0;
 }
-tbody tr:nth-child(odd) {
-  background-color: #ffffff;
+.items td {
+    border: 1px solid #c0c0c0;
 }
 </style>

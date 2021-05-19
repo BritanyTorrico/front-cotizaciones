@@ -53,6 +53,7 @@
                         class="confirm-company" 
                         @click="confirmCompany()"
                         :disabled="this.confirmed.length===3 || this.confirmed[this.confirmed.length-1]===this.empresa.nombre"
+                        :class="this.confirmed.length===3 || this.confirmed[this.confirmed.length-1]===this.empresa.nombre ? 'button-disabled':''" 
                         >Confirmar empresa</button>
                     </div>
                     
@@ -165,8 +166,9 @@ mounted(){
 }
 .filter-head{
     display: flex;
-    width: 50%;
+    width: 75%;
     padding: 3% 0 0 2%;
+    align-self: flex-start;
 }
 .filter-title{
     font-size: 24px;
@@ -175,13 +177,13 @@ mounted(){
     font-weight: 650;
 }
 .company-cat{
-    width: 50%;
+    width: 80%;
   color: #3a3a3a;
   padding: 6px 6px 6px 0;
   background: #F7F6F6;
   font-size: 17px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  border: none;
+  border: 1px solid #c0c0c0;
   border-radius: 3px;
 }
 .selected{
@@ -214,6 +216,10 @@ mounted(){
 .confirm-button{
     padding: 2% 0 0 0 ;
 }
+.button-disabled {
+    background:#999999;
+    border: 0px;
+}
 .confirm-company{
   display: block;
   background-color: #003570;
@@ -225,7 +231,7 @@ mounted(){
   border: 0px;
 }
 .confirmed-companies{
-    width: 30%;
+    width: 40%;
 }
 .confirmed-title{
     color: #3f4b5b;

@@ -19,7 +19,7 @@ export default {
     margin-top:0;
 }
 .form-container{
-    width: 90%;
+    width: 100%;
     display: flex;
     flex-direction: column;
 }
