@@ -34,7 +34,9 @@
           </table>
      </div>
      <div class="form-empresas">
-         <Empresas/>
+         <Empresas
+          :date="today"
+         />
      </div>
     </div>    
     </div>    

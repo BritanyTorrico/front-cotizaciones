@@ -70,7 +70,7 @@
                              </svg>
                           </div>
                           <div class="redirect-cot">
-                              <button class="accept-button" v-on:click="printDiv(company)">Imprimir</button>
+                              <button class="accept-button" v-on:click="printDiv(company, date)">Enviar</button>
                           </div>
                       </li>
                   </ul>
@@ -106,6 +106,9 @@ data(){
         confirmed: [],
         confirmedData: []
     }
+},
+props: {
+    date: String,
 },
 validations: {
     confirmed: {
@@ -156,6 +159,10 @@ methods: {
         this.confirmed.splice(index, 1)
         this.confirmedData.splice(index, 1)
     },
+    printDiv(emp, fecha){
+        console.log(emp)
+        console.log(fecha);
+    }
 },
 mounted(){
     this.getCompanies();
