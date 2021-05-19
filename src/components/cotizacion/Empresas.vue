@@ -2,10 +2,10 @@
   <section>
       <div class="company-filter">
           <div class="filter-head">
-              <h3 class="filter-title">Empresa</h3>
+              <h3 class="filter-title">Seleccionar Empresa:</h3>
               <select
                     name="companySearch"
-                    class="companyCat"
+                    class="company-cat"
                     @change="onChange($event)"
                     v-model="selectedCompany"
                   >
@@ -18,20 +18,34 @@
           </div>
           <div class="selected">
               <div class="selected-data">
-                  <div class="data-label">Nombre:</div>
-                  <div class="data-info">{{ this.empresa.nombre }}</div>
-                  <div class="data-label">NIT:</div>
-                  <div class="data-info">{{ this.empresa.nit }}</div>
-                  <div class="data-label">Representante legal:</div>
-                  <div class="data-info">{{ this.empresa.representante }}</div>
-                  <div class="data-label">Teléfono:</div>
-                  <div class="data-info">{{ this.empresa.telefono }}</div>
-                  <div class="data-label">Dirección:</div>
-                  <div class="data-info">{{ this.empresa.direccion }}</div>
-                  <div class="data-label">Correo electrónico:</div>
-                  <div class="data-info">{{ this.empresa.correo }}</div>
-                  <div class="data-label">Cuenta bancaria:</div>
-                  <div class="data-info">{{ this.empresa.banco }}</div>
+                  <div class="data-line">
+                      <div class="data-label">Nombre:</div>
+                    <div class="data-info">{{ this.empresa.nombre }}</div>
+                  </div>
+                  <div class="data-line">
+                      <div class="data-label">NIT:</div>
+                    <div class="data-info">{{ this.empresa.nit }}</div>
+                  </div>
+                  <div class="data-line">
+                      <div class="data-label">Representante legal:</div>
+                    <div class="data-info">{{ this.empresa.representante }}</div>
+                  </div>
+                  <div class="data-line">
+                      <div class="data-label">Teléfono:</div>
+                    <div class="data-info">{{ this.empresa.telefono }}</div>
+                  </div>
+                  <div class="data-line">
+                      <div class="data-label">Dirección:</div>
+                    <div class="data-info">{{ this.empresa.direccion }}</div>
+                  </div>
+                  <div class="data-line">
+                      <div class="data-label">Correo electrónico:</div>
+                    <div class="data-info">{{ this.empresa.correo }}</div>
+                  </div>
+                  <div class="data-line">
+                      <div class="data-label">Cuenta bancaria:</div>
+                    <div class="data-info">{{ this.empresa.banco }}</div>
+                  </div>
                   <button class="confirm-company" @click="confirmCompany()">Confirmar empresa</button>
               </div>
               <div class="confirmed-companies">
@@ -119,5 +133,49 @@ mounted(){
 </script>
 
 <style>
-
+.company-filter{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    align-items: center;
+}
+.filter-head{
+    display: flex;
+    width: 50%;
+    padding: 3% 0 0 2%;
+}
+.filter-title{
+    font-size: 24px;
+    padding: 0 2% 0 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.company-cat{
+    width: 50%;
+  color: #3a3a3a;
+  padding: 6px 6px 6px 0;
+  background: #F7F6F6;
+  font-size: 17px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  border: none;
+  border-radius: 3px;
+}
+.selected{
+    display: flex;
+    width: 100%;
+    align-content: center;
+    justify-content: space-between;
+    padding: 2% 2% 2% 2%;
+}
+.selected-data{
+    width: 70%;
+}
+.data-line{
+    display: flex;
+    font-size: 18px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.data-label{
+    font-weight: 700;
+    padding: 0 1% 0 0;
+}
 </style>
