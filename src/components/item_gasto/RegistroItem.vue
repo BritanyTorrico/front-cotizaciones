@@ -121,9 +121,12 @@ import {
     maxLength,
 } from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
-
+import { mapState } from "vuex";
 export default {
     name: "RegistroItem",
+    computed: {
+    ...mapState(["token"]),
+  },
     components: { Alert },
     data(){
         return{
@@ -159,11 +162,16 @@ export default {
     },
     methods: {
         async getCategories(){
-            const categ = (await this.$http.get('specificCategory')).data;
+            const categ = (await this.$http.get('specificCategory', {
+          headers: {
+            authorization: this.token,
+          },
+        })).data;
             for (let i=0;i<categ.length;i++){
                 this.listaCategorias.push(categ[i].nombre_categoriaespecifica)
             }
         },
+        
         async submitForm(){
             try {
                 if (!this.$v.item.$invalid){
@@ -184,6 +192,11 @@ export default {
                     nombre_categoriaespecifica: this.item.categoria_especifica,
                     descripcion_item: this.item.descripcion_item,
                     justificacion: this.item.justificacion,
+                },
+                {
+                    headers: {
+                        authorization: this.token,
+                    },
                 });
             } catch (error) {
                 throw new Error("Este ítem ya está registrado");
@@ -192,10 +205,14 @@ export default {
         async sendItemUnitData(){
             try {
                 await this.$http.post("itemsPerUnit", {
-                    nombre_unidadgasto: "laboritorio 1 de Sistemas",
+                    nombre_unidadgasto: "Laboratorio 1 de Sistemas",
                     nombre_itemgasto: this.item.nombre_itemgasto,
-                    presupuesto: 5000,
                     activo_item: true,
+                },
+                {
+                    headers: {
+                        authorization: this.token,
+                    },
                 });
             } catch (error) {
                 throw new Error("Este ítem ya está registrado");
@@ -207,6 +224,7 @@ export default {
     },
     mounted(){
         this.getCategories();
+        this.getUserId();
         var validCodesItem= [32, 
                          48,49,50,51,52,53,54,55,56,57,
                          65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,

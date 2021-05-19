@@ -126,9 +126,11 @@ export default {
     async getUsers() {
       const inCharge = (
         await this.$http.get(
-          "users?criterio=facultad&nombre=FACULTAD%20DE%20CIENCIAS%20Y%20TECNOLOGIA"
-        )
-      ).data;
+          `users?criterio=departamento&nombre=${localStorage.getItem('depto')}`, {
+          headers: {
+            authorization: this.token,
+          },
+        })).data;
       for (let i = 0; i < inCharge.length; i++) {
         this.listaUsuarios.push(
           inCharge[i].nombres + " " + inCharge[i].apellidos
@@ -150,11 +152,16 @@ export default {
     async sendData() {
       try {
         await this.$http.post("spendingUnit", {
-          nombre_departamento: "Ingeniería de Sistemas",
+          nombre_departamento: localStorage.getItem('depto'),
           nombre_unidadgasto: this.unit.nombre_unidadgasto,
-          encargado_unidad: this.unit.encargado_unidad,
+          Jefe_unidad: this.unit.encargado_unidad,
           descripcion_unidadgasto: this.unit.descripcion_unidadgasto,
-        });
+        },
+                {
+                    headers: {
+                        authorization: this.token,
+                    },
+                });
       } catch (error) {
         throw new Error("Esta unidad de gasto ya fué registrada");
       }
