@@ -64,9 +64,14 @@
                   <ul class="company-list">
                       <li v-for="(company, index) in confirmed" :key="index" class="list-item">
                           {{ company }}
-                          <div class="remove-list" v-on:click="removeElement(index)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
-</svg></div>
+                          <div class="remove-list" v-on:click="removeElement(index)">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                             </svg>
+                          </div>
+                          <div class="redirect-cot">
+                              <button class="accept-button" v-on:click="printDiv(company)">Imprimir</button>
+                          </div>
                       </li>
                   </ul>
               </div>
@@ -150,7 +155,7 @@ methods: {
         this.companiesData.push(this.confirmedData[index])
         this.confirmed.splice(index, 1)
         this.confirmedData.splice(index, 1)
-    }
+    },
 },
 mounted(){
     this.getCompanies();
@@ -253,9 +258,24 @@ mounted(){
     font-size: 16px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: 420;
+    width: 100%;
 }
 .remove-list{
     display: inline;
-    color: red;
+    color: #ed1c24;
+    padding: 0 5% 0 3%;
+}
+.accept-button{
+    margin: auto;
+  background-color: #003570;
+  padding: 1.2% 11.5% 1.2% 11.5%;
+  border-radius: 22px;
+  color: #fafafa;
+  font-size: 13px;
+  font-weight: bold;
+  border: 0px;
+}
+.redirect-cot{
+    display: inline;
 }
 </style>
