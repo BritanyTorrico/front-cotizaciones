@@ -16,7 +16,7 @@
                   </div>
               </div>
               <div class="inbox-details">
-                  <div v-if="this.selectedRequest.name===''">
+                  <div v-if="selectedRequest.name===''">
 
                   </div>
                   <div v-else>
@@ -69,10 +69,12 @@ export default {
                     headers: {
                         authorization: this.token,
                     },
-                })).data;
-                for (let j = 0; j<reqItems.datos.length;j++){
-                    this.items.push(reqItems)
+                })).data.datos;
+                let currentItems=[]
+                for (let j = 0; j<reqItems.length;j++){
+                    currentItems.push(reqItems[j])
                 }
+                this.items.push(currentItems)
             }
             
         },
@@ -83,10 +85,10 @@ export default {
             this.selectedRequest.author=this.inboxData[i].usuario_solicitante;
             this.selectedRequest.description=this.inboxData[i].detalle_solicitud;
             this.selectedRequest.budget=this.inboxData[i].estimado_solicitud;
-            this.selectedRequest.itemList=this.items[i].datos;
+            this.selectedRequest.itemList=this.items[i];
         }
     },
-    mounted: function(){
+    mounted (){
         this.getData();
     }
 }

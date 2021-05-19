@@ -4,8 +4,8 @@
               <div class="inbox-cards">
                   <div class="card-side">
                       <div class="card-index" v-for="(req,i) in inboxData" :key="i">
-                          <div class="single-card-container " v-on:click=showRequest(i) v-class="{selected: isSelected}">
-                              <Card
+                          <div class="single-card-container " v-on:click=showRequest(i)>
+                              <CardCot
                                 :name="req.nombre_solicitud"
                                 :date="req.fecha_solicitud"
                                 :author="req.usuario_solicitante"
@@ -15,12 +15,13 @@
                       </div>
                   </div>
               </div>
-              <div class="inbox-details">
-                  <div v-if="this.selectedRequest.name===''">
+              <div class="inbox-form">
+                  <div v-if="selectedRequest.name===''">
 
                   </div>
                   <div v-else>
-                      <Form :request="selectedRequest"/>
+                      <CotForm 
+                      :request="selectedRequest"/>
                   </div>
               </div>
       </div>
@@ -28,15 +29,15 @@
 </template>
 
 <script>
-import Card from './Card.vue'
+import CardCot from './CardCot.vue'
+import CotForm from './CotForm.vue';
 import { mapState } from "vuex";
-import Form from './Form.vue';
 export default {
-    name: "Inbox",
+    name: "CotInbox",
     computed: {
     ...mapState(["token"]),
   },
-    components: { Card, Form },
+    components: { CardCot, CotForm },
     data(){
         return{
             inboxData: [],
@@ -49,7 +50,6 @@ export default {
                 budget: null,
                 itemList: []
             },
-            isSelected: false
         }
     },
     methods: {
@@ -67,10 +67,12 @@ export default {
                     headers: {
                         authorization: this.token,
                     },
-                })).data;
-                for (let j = 0; j<reqItems.datos.length;j++){
-                    this.items.push(reqItems)
+                })).data.datos;
+                let currentItems=[]
+                for (let j = 0; j<reqItems.length;j++){
+                    currentItems.push(reqItems[j])
                 }
+                this.items.push(currentItems)
             }
             
         },
@@ -79,12 +81,10 @@ export default {
             this.selectedRequest.date=this.inboxData[i].fecha_solicitud;
             this.selectedRequest.author=this.inboxData[i].usuario_solicitante;
             this.selectedRequest.description=this.inboxData[i].detalle_solicitud;
-            this.selectedRequest.budget=this.inboxData[i].estimado_solicitud;
-            this.selectedRequest.itemList=this.items[i].datos;
-            this.isSelected=!this.isSelected;
+            this.selectedRequest.itemList=this.items[i];
         }
     },
-    mounted: function(){
+    mounted (){
         this.getData();
     }
 }
@@ -114,7 +114,7 @@ export default {
     width: 30%;
     display: flex;
 }
-.inbox-details{
+.inbox-form{
     width: 70%;
     padding:0 5rem 5rem 0;
     margin: 10px;

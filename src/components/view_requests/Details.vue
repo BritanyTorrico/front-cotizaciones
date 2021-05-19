@@ -171,9 +171,6 @@ export default {
 }
 </script>
 <style>
-.single-request-details::before{
-    color: #fff;
-}
 .single-request-details{
     background: #fff;
     margin: 40px;
@@ -240,16 +237,16 @@ p{
     font-size: 17px;
 }
 .items thead{
-    background-color: #f1f2f6;
     padding: 0.5% 2% 0.5% 2%;
+    background-color: #f1f2f6;
 }
 .items th {
-    border: 1px solid #c0c0c0;
     padding: 1% 2% 1% 2%;
+    border: 1px solid #c0c0c0;
 }
 .items td {
-    border: 1px solid #c0c0c0;
     padding: 0.5% 1% 0.5% 1%;
+    border: 1px solid #c0c0c0;
 }
 .response{
     display: flex;

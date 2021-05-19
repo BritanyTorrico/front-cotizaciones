@@ -1,7 +1,7 @@
 <template>
     <div class="cot-form">
-    <h2 class="form-title">Formulario de cotizacion</h2>
-    <form class="form_crear" @submit.prevent="submitForm" autocomplete="off">
+      <div class="form-title">Formulario de cotizacion</div>
+    <div class="form_crear">
       <div class="form_section">
           <div class="form_label">Titulo:</div>
           <div class="form-name">{{ this.nombreCotizacion }}</div>
@@ -34,20 +34,18 @@
           </table>
      </div>
      <div class="form-empresas">
-         <empresas></empresas>
+         <Empresas/>
      </div>
-    </form> 
-    <Alert ref="alert"></Alert>    
+    </div>    
     </div>    
 
 </template>
 
 <script>
-import Alert from "@/components/Alert.vue";
 import Empresas from './Empresas.vue';
 export default {
-  name:"Form",
-  components:{ Alert, Empresas },
+  name:"CotForm",
+  components:{ Empresas },
    data(){
      return{
        disabled: false,
@@ -62,40 +60,15 @@ export default {
             date: String,
             author: String,
             description: String,
-            budget: Number,
             itemList: Array,
         }
     },
    methods: {
-     async submitForm(){
-       try{
-         if(!this.$v.dato.$invalid){
-           await this.sendData();
-           this.alert("success","Rol creado exitosamente")
-         }else{
-           this.alert("warring","Rellene todos los datos")
-         }
-       }catch(error){
-         this.alert("warring",error);
-       }
-     },
-     async sendData(){
-       try{
-         await this.$http.post("rolePerFunctions",{
-           nombre_rol: this.dato.nombre_rol,
-         });
-       }catch (error){
-         throw new Error ("Este rol ya esta registrado");
-       }
-     },
-     alert(alertType,alertMessage){
-       this.$refs.alert.showAlert(alertType, alertMessage);
-     },
      async curentDate(){
        const current = new Date();
        const date =`${current.getDate()}-${current.getMonth()+1}-${current.getFullYear()}`;
        this.today=date;
-     }
+     },
    },
    mounted()  {
        this.nombreCotizacion=this.request.name.replace('Solicitud', 'Cotización')
@@ -142,9 +115,6 @@ export default {
       display: flex;
       align-items: baseline;
 }
-.form-name{
-  
-}
 .form_check-error {
     color: #ed1c24;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -177,15 +147,19 @@ export default {
     padding: 0 0 5% 0;
     font-size: 17px;
 }
+.items-list{
+  width: 100%;
+}
 .items thead{
-    background-color: #f1f2f6;
-    padding: 0 2% 0 2%;
+    background-color: #c5c4c4;
     text-align: center;
 }
 .items th {
-    border: 1px solid #c0c0c0;
+    padding: 1% 2% 1% 2%;
+    border: 1px solid #d1d0d0;
 }
 .items td {
+    padding: 0.5% 1% 0.5% 1%;
     border: 1px solid #c0c0c0;
 }
 </style>
