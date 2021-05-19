@@ -1,43 +1,39 @@
 <template>
   <section class="crear_rol">
-    <h2 class="rol_title">Crear rol</h2>
+    <h2 class="rol_title">Formulario de cotizacion</h2>
     <form class="form_crear" @submit.prevent="submitForm" autocomplete="off">
       <div class="form_section">
         <label>
-          <div class="form_name">Nombre de rol:</div>
-          <input name="nombreRol"
-           :class="
-           $v.dato.nombre_rol.$invalid
-           ? 'form_check-input-error'
-           : 'form_check-input'
-           "                
-          type="text"
-          maxlength="25"
-          v-on:keywdown=keyhandler($event)
-          required
-          placeholder="Ingrese nombre aquí"
-          v-model="dato.nombre_rol"
-          
-          />
+          <div class="form_name">Titulo:</div>
         </label>
-        <div class="form_check-error"
-        v-if="!$v.dato.nombre_rol.required">
-        Campo obligatorio.
-        </div>
      </div>
      <div class="form_section">
         <label>
-          <div class="form_name">Seleccione las funciones:</div>
-          
+          <div class="form_name">Fecha:</div> 
         </label>
      </div>  
-     
-     <button 
-     :disabled="$v.dato.$invalid"
-     :class="$v.dato.$invalid ? 'button-disabled':''"
-      class="form_button">
-       Crear
-     </button>  
+     <table class="table">
+       <thead>
+         <tr>
+           <th>Cantidad</th>
+            <th>Unidad</th>
+             <th>Item</th>
+             <th>Detalle</th>
+             <th>Unitario</th>
+             <th>Total</th>
+           </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+     </table> 
     </form> 
     {{dato}}
     <Alert ref="alert"></Alert>        
@@ -46,10 +42,7 @@
 </template>
 
 <script>
-import {
-    required,
-    maxLength,
-} from "vuelidate/lib/validators";
+
 import Alert from "@/components/Alert.vue";
 
 export default {
@@ -58,19 +51,7 @@ export default {
    data(){
      return{
        disabled: false,
-       dato: {
-         nombre_rol: null,
-       },
      };
-   },
-   
-   validations:{
-     dato:{
-       nombre_rol:{
-         required,
-         maxLength: maxLength(25),
-       },
-     },
    },
    methods: {
      keyhandler(e){
@@ -200,4 +181,20 @@ export default {
     background:#999999;
     border: 0px;
 }
+th, td {
+  padding: 20px;
+}
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border: 3px solid rgb(109, 111, 112);
+}
+table {
+  background-color: #dbdbdb;
+}
+tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
 </style>
