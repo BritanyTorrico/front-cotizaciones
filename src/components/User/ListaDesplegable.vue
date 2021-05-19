@@ -6,7 +6,7 @@
       v-on:input="$emit('input', $event.target.value)"
       class="container__list"
     >
-      <option selected="true" disabled="disabled">Seleccione una opcion</option>
+      <option selected="true" disabled="disabled">{{ value }}</option>
       <option
         class="container__list__option"
         v-for="(item, index) in lista"
@@ -27,7 +27,9 @@ import { required } from "vuelidate/lib/validators";
 export default {
   name: "ListaDesplegable",
   data() {
-    return {};
+    return {
+      inicial: "Seleccione",
+    };
   },
   props: {
     value: String,

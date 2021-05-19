@@ -50,11 +50,13 @@
         <div class="izquierda"></div>
         <div class="derecha">
           <lista-desplegable
+            :key="componentKey"
             required
             v-model="solicitud.unidadgasto_solicitud"
             nombreLista="Unidad de gasto:"
             :lista="listaUnidadesDeGasto"
             Mensaje="Campo Obligatorio"
+            :value="solicitud.unidadgasto_solicitud"
           ></lista-desplegable>
         </div>
       </div>
@@ -62,7 +64,7 @@
       <div class="form__justficacion">
         <div class="formulario_label">Detalle de solicitud:</div>
         <textarea
-          rows="4"
+          rows="7"
           cols="50"
           :class="
             $v.solicitud.detalle_solicitud.$invalid
@@ -93,42 +95,7 @@
           Minimo 5 caracteres.
         </div>
       </div>
-      <div class="form__presupuesto">
-        <div class="formulario_label">Presupuesto:</div>
-        <input
-          :class="
-            $v.solicitud.estimado_solicitud.$invalid
-              ? 'form_check-input-error'
-              : 'form__input'
-          "
-          type="number"
-          v-model="solicitud.estimado_solicitud"
-        />
-        <div
-          class="form_check-error"
-          v-if="!$v.solicitud.estimado_solicitud.required"
-        >
-          Campo Obligatorio.
-        </div>
-        <div
-          class="form_check-error"
-          v-if="!$v.solicitud.estimado_solicitud.between"
-        >
-          Ingrese valores entre (1-10000).
-        </div>
-        <div
-          class="form_check-error"
-          v-if="!$v.solicitud.estimado_solicitud.validate_decimales"
-        >
-          Maximo 2 decimales.
-        </div>
-        <div
-          class="form_check-error"
-          v-if="!$v.solicitud.estimado_solicitud.alpha2"
-        >
-          Ingrese un valor numérico.
-        </div>
-      </div>
+
       <div class="seccion2">
         <div class="seccion__Izq">
           <div class="formulario_label seccion__Izq-titulo">
@@ -187,8 +154,8 @@
                 <input
                   :class="
                     $v.elemento.cantidad.$invalid
-                      ? 'form__error-cantidad'
-                      : 'form__cantidad'
+                      ? 'form_check-input-error'
+                      : 'form__input'
                   "
                   :required="!habilitar"
                   :disabled="!disabled"
@@ -198,7 +165,7 @@
                 />
               </label>
               <div
-                class="form__error-cantidad"
+                class="form_check-error"
                 v-if="!$v.elemento.cantidad.between"
               >
                 Ingrese valores entre 1-100.
@@ -222,7 +189,9 @@
             <div class="formulario_label">
               Descripción:
             </div>
-            {{ descripcionItem }}
+            <div class="form__descripcion-contenido">
+              {{ descripcionItem }}
+            </div>
           </div>
         </div>
       </div>
@@ -231,37 +200,101 @@
         class="form__lista col-sm-8 col-sm-offset-2"
         v-if="this.listaSolicitudItems.length != 0"
       >
-        <table class="table table-striped">
-          <thead>
-            <tr class="primera-fila">
-              <th>Cantidad</th>
-              <th>Nombre de item</th>
-              <th>Eliminar</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in this.listaSolicitudItems" :key="index">
-              <td>
-                {{ item.cantidad }}
-              </td>
-              <td>
-                {{ item.nombre_item }}
-              </td>
-              <td>
-                <a class="btn btn-danger" @click="eliminarItems(index)"
-                  >Eliminar</a
-                >
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div
+          class="formulario_label"
+          v-if="this.solicitud.categoria != 'Servicios'"
+        >
+          Lista de items:
+        </div>
+        <div
+          class="formulario_label"
+          v-if="this.solicitud.categoria == 'Servicios'"
+        >
+          Lista de Servicios:
+        </div>
+        <div class="form__tabla">
+          <table class="table table-striped tabla ">
+            <thead>
+              <tr class="primera-fila">
+                <th>Cantidad</th>
+                <th>Nombre de item</th>
+                <th>Eliminar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(item, index) in this.listaSolicitudItems"
+                :key="index"
+              >
+                <td>
+                  {{ item.cantidad }}
+                </td>
+                <td>
+                  {{ item.nombre_item }}
+                </td>
+                <td>
+                  <a class="btn btn-danger" @click="eliminarItems(index)"
+                    >Eliminar</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <h4 v-if="this.listaSolicitudItems.length == 0">Seleccione un item</h4>
-
+      <h4 class="form_check-error" v-if="this.listaSolicitudItems.length == 0">
+        (*) Agregue un item
+      </h4>
+      <div class="form__presupuesto">
+        <div class="aux-izquierdo"></div>
+        <div class="presupuesto">
+          <div class="formulario_label">Presupuesto:</div>
+          <input
+            :class="
+              $v.solicitud.estimado_solicitud.$invalid
+                ? 'form_check-input-error'
+                : 'form__input'
+            "
+            type="text"
+            v-model="solicitud.estimado_solicitud"
+          />
+          <div
+            class="form_check-error"
+            v-if="!$v.solicitud.estimado_solicitud.required"
+          >
+            Campo Obligatorio.
+          </div>
+          <div
+            class="form_check-error"
+            v-if="!$v.solicitud.estimado_solicitud.between"
+          >
+            Ingrese valores entre (1-10000).
+          </div>
+          <div
+            class="form_check-error"
+            v-if="!$v.solicitud.estimado_solicitud.validate_decimales"
+          >
+            Maximo 2 decimales.
+          </div>
+          <div
+            class="form_check-error"
+            v-if="!$v.solicitud.estimado_solicitud.alpha2"
+          >
+            Ingrese un valor numérico.
+          </div>
+        </div>
+      </div>
       <Alert ref="alert"></Alert>
       <AlertConfirmation ref="alertConfirmation"></AlertConfirmation>
-      <div>
-        <input type="submit" value="enviar" class="btn btn-success" />
+      <div class="boton-contenedor">
+        <div class="boton-contenedor-izq"></div>
+        <div class="boton-contenedor-der">
+          <input
+            type="submit"
+            value="Enviar"
+            class="btn btn-success boton-agregar"
+          />
+        </div>
       </div>
       <!-- {{ this.listaSolicitudItems }}
       <p>datos</p>
@@ -316,7 +349,7 @@ export default {
         categoria: "Seleccione una opcion",
         nombre_item: "Seleccione una opcion",
 
-        unidadgasto_solicitud: null,
+        unidadgasto_solicitud: "Seleccione una opcion",
         estimado_solicitud: null,
       },
       elemento: {
@@ -331,6 +364,7 @@ export default {
       habilitar: true,
       listaUnidadesDeGasto: [],
       descripcionItem: null,
+      componentKey: 0,
     };
   },
   validations: {
@@ -366,6 +400,9 @@ export default {
   },
   methods: {
     ...mapActions(["setlistaSolicitudItems"]),
+    forceRerender() {
+      this.componentKey += 1;
+    },
     async submitForm() {
       try {
         if (
@@ -403,12 +440,24 @@ export default {
           console.log("pasa el itemPerRequest");
           this.alert("success", "Solicitud enviada");
           //borrar todos los campos del fomrulario
+
+          this.solicitud.nombre_solicitud = null;
+          this.solicitud.detalle_solicitud = null;
+          this.solicitud.categoria = "Seleccione una opcion";
+          this.solicitud.nombre_item = "Seleccione una opcion";
+          this.solicitud.unidadgasto_solicitud = "Seleccione una opcion";
+          this.solicitud.estimado_solicitud = null;
+          this.$store.commit("setDelete");
+          this.listaUnidadesDeGasto = [];
+          this.getDepartamento();
+          this.forceRerender();
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
         this.alert("warning", error);
         console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
     async getCategories() {
@@ -464,7 +513,6 @@ export default {
       for (let i = 0; i < listaItems.length; i++) {
         this.listItems.push(listaItems[i].nombre_itemgasto);
       }
-      console.log(listaItems);
     },
 
     eliminarItems: function(index) {
@@ -479,8 +527,10 @@ export default {
       ) {
         const item = {
           nombre_item: this.solicitud.nombre_item,
-          cantidad: this.elemento.cantidad,
+          cantidad: 1,
           categoria: this.solicitud.categoria,
+          unidad_solicitud: this.solicitud.unidadgasto_solicitud,
+          detalle_solicitud: this.descripcionItem,
         };
         // this.listaPeticion.push(item);
 
@@ -666,6 +716,7 @@ export default {
 }
 .seccion2 {
   display: flex;
+  margin-top: 20px;
 }
 .seccion__Izq {
   width: 55%;
@@ -692,11 +743,49 @@ export default {
   width: 45%;
 }
 .form__boton {
-  width: 50%;
+  width: 40%;
 }
 .boton-agregar {
-  margin-top: 20px;
-  width: 80%;
+  margin-top: 30px;
+  width: 100%;
   background: #033076;
+  font-weight: bold;
+}
+.boton-agregar:hover {
+  background: #0c59cf;
+}
+.form__tabla {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+.tabla {
+  width: 80%;
+}
+.form__presupuesto {
+  display: flex;
+  justify-content: right;
+  align-content: right;
+  text-align: right;
+}
+.aux-izquierdo {
+  width: 70%;
+}
+.presupuesto {
+  margin-top: 20px;
+  width: 30%;
+  text-align: right;
+}
+.boton-contenedor {
+  display: flex;
+}
+.boton-contenedor-izq {
+  width: 80%;
+}
+.boton-contenedor-der {
+  width: 25%;
+}
+.form__descripcion-contenido {
+  margin-top: 25px;
 }
 </style>
