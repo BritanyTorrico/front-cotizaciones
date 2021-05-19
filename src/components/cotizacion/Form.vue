@@ -60,7 +60,12 @@
         </table>
       </div>
       <p>Do not print.</p>
-      <input type="button" id="btn" value="Print" @click="printDiv()" />
+      <input
+        type="button"
+        id="btn"
+        value="Print"
+        @click="printDiv('empresa')"
+      />
 
       <div id="gabe">
         <link href="style.css" rel="stylesheet" type="text/css" />
@@ -103,6 +108,7 @@
           </tr>
         </table>
       </div>
+      <div>empresaaaaaaaaaaaaaas</div>
       <button type="button" @click="imprim2()">Imprimir</button>
     </form>
     <Alert ref="alert"></Alert>
@@ -153,7 +159,9 @@ export default {
     printWindow: function() {
       window.print();
     },
-    printDiv() {
+    printDiv(dato) {
+      const dato1 = dato + " aunmento";
+
       var divToPrint = document.getElementById("DivIdToPrint");
 
       var newWin = window.open("", "Print-Window");
@@ -161,9 +169,10 @@ export default {
       newWin.document.open();
 
       newWin.document.write(
-        '<html><body onload="window.print()">' +
+        '<html><body onload="window.print()"><h1 class="titulo">Universidad Mayor de San Simon</h1><h1>dato</h1><h2 >Facultad de ciencias y tecnologia</h2><h4>Solicitud De ctizacion</h4>' +
           divToPrint.innerHTML +
-          "</body></html> "
+          "</body></html> <style>h1{font-size:50px ;color:green;} h2{color:red}h4{text-aling:center;font-size:10px}</style>" +
+          dato1
       );
 
       newWin.document.close();
