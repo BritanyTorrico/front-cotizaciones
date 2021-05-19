@@ -69,8 +69,8 @@
 
       <div id="gabe">
         <link href="style.css" rel="stylesheet" type="text/css" />
-        <table border="1">
-          <thead style="border:1px solid;">
+        <table>
+          <thead>
             <tr>
               <th>Cantidad</th>
               <th>Unidad</th>
