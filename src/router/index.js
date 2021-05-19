@@ -64,9 +64,16 @@ const routes = [{
         },
     },
     {
+
+        path: "/solicitud",
+        name: "SolicitudPage",
+        component: () =>
+            import ("../views/SolicitudPage.vue"),
+},
+  {
         path: "/revisar_solicitudes",
         name: "RequestReview",
-<<<<<<< HEAD
+
         component: () =>
             import ("@/views/RequestReview.vue"),
     },
@@ -79,15 +86,7 @@ const routes = [{
             rutaProtegida: true,
         },
     },
-=======
-        component: () =>import ("@/views/RequestReview.vue")
-     },
-     {
-        path: "/crear_empresa",
-        name: "CrearEmpresa",
-        component: () =>import ("@/views/creaEmpresa.vue")
-    }
->>>>>>> 570859b0eb1e97466d6645ac94a4a9458705a1fc
+
 ];
 
 const router = new VueRouter({

@@ -19,6 +19,9 @@
               >Registrar Usuario</b-nav-item
             >
             <b-nav-item v-if="permisoCrearRol" to="/creaRol">Rol</b-nav-item>
+            <b-nav-item v-if="permisoSolicitud" to="/solicitud"
+              >Enviar Solicitud</b-nav-item
+            >
             <b-nav-item v-if="username" @click="cerrar()"
               >Cerrar Sesion</b-nav-item
             >
@@ -26,24 +29,6 @@
         </b-collapse>
       </b-container>
     </b-navbar>
-    <!--<div id="nav">
-      <router-link v-if="permisoHome" to="/">Home</router-link>
-      <router-link to="/about">About</router-link>
-      <router-link v-if="!username" to="/login">Iniciar Sesion</router-link>
-      <router-link v-if="permisoItemDeGasto" to="/registro_item"
-        >Item</router-link
-      >
-
-      <router-link v-if="permisoUnidadDeGasto" to="/registro_unidad"
-        >Unidad</router-link
-      >
-
-      <router-link v-if="permisoCrearUsuario" to="/register"
-        >Registrar Usuario</router-link
-      >
-
-      <a v-if="username" href="" @click="cerrar()">Cerrar sesion</a>
-    </div>-->
     <router-view />
   </div>
 </template>
@@ -63,6 +48,7 @@ export default {
       "username",
       "listaPermisos",
       "permisoCrearRol",
+      "permisoSolicitud",
     ]),
   },
   methods: {
@@ -73,6 +59,7 @@ export default {
       console.log("hlaa  " + localStorage.getItem("username"));
 
       localStorage.removeItem("username");
+      localStorage.removeItem("nombreUsuario");
       localStorage.removeItem("token");
 
       this.$store.commit("setPermisoUsuario", false);
@@ -82,6 +69,11 @@ export default {
       this.$store.commit("setPermisoSolicitud", false);
       this.$store.commit("setLista");
       this.$store.commit("setToken", null);
+
+      this.$store.commit("setDelete");
+      sessionStorage.removeItem("my-app");
+
+
       localStorage.removeItem("my-app");
       localStorage.removeItem('userID');
       localStorage.removeItem('roleCod');

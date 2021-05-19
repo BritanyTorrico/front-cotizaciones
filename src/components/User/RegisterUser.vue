@@ -646,6 +646,8 @@ export default {
 }
 .fomrm__section__item {
   width: 33%;
+
+  margin: 30px;
 }
 .formulario_label {
   padding-left: 6px;
@@ -693,10 +695,11 @@ export default {
   font-weight: bold;
 }
 .container__list {
-  width: 80%;
+  width: 100%;
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
+  border: 1px solid;
 }
 .container-facu {
   padding-top: 20px;
