@@ -21,7 +21,9 @@
             <b-nav-item v-if="permisoEmpresa" to="/crear_empresa"
               >Registrar Empresa</b-nav-item
             >
-            <b-nav-item v-if="permisoCrearRol" to="/creaRol">Rol</b-nav-item>
+            <b-nav-item v-if="permisoCrearRol" to="/creaRol"
+              >Crear Rol</b-nav-item
+            >
             <b-nav-item v-if="permisoSolicitud" to="/solicitud"
               >Enviar Solicitud</b-nav-item
             >

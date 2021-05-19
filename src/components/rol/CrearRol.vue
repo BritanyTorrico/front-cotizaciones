@@ -42,7 +42,7 @@
             />
           </div>
 
-          <label for="gestionUsuario">Regisro de Usuarios</label><br />
+          <label for="gestionUsuario">Crear Usuarios</label><br />
           <div class="input-check">
             <input
               type="checkbox"
@@ -52,7 +52,7 @@
             />
           </div>
 
-          <label for="gestionRol">Regisro de Roles</label><br />
+          <label for="gestionRol">Crear Rol</label><br />
           <div class="input-check">
             <input
               type="checkbox"
@@ -62,7 +62,7 @@
             />
           </div>
 
-          <label for="gestionUnidades">Regisro de Unidades de Gasto</label
+          <label for="gestionUnidades">Registro de Unidades de Gasto</label
           ><br />
           <div class="input-check">
             <input
@@ -73,7 +73,7 @@
             />
           </div>
 
-          <label for="gestionItems">Regisro de Items de Gasto</label><br />
+          <label for="gestionItems">Registro de Items de Gasto</label><br />
           <div class="input-check">
             <input
               type="checkbox"
@@ -83,7 +83,7 @@
             />
           </div>
 
-          <label for="empresa">Regisrtrar Empresas</label><br />
+          <label for="empresa">Registrar Empresas</label><br />
           <div class="input-check">
             <input
               type="checkbox"
