@@ -1,0 +1,75 @@
+<template>
+  <div class="card-container">
+      <div class="card-head">
+          <h3>{{ name }}</h3>
+          <div class="card-date">{{ date }}</div>
+      </div>
+      <div class="card-author">{{ author }}</div>
+      <div class="card-description">{{ description }}</div>
+  </div>
+</template>
+
+<script>
+export default {
+    name: "CardFiltro",
+    data(){
+        return{};
+    },
+    props: {
+        name: String,
+        date: String,
+        author: String,
+        description: String,
+    }
+}
+</script>
+
+<style>
+.card-container{
+    margin: 5px 0 5px 0;
+    padding: 2px 0 0 0;
+    color:#030303!important;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.card-head{
+    margin: 0 0 0 0;
+    padding: 0 0 2px 0;
+    align-items: stretch;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+h3{
+    font-size: 18px;
+    margin: 0%;
+    text-align: left;
+    width: 100%;
+}
+.card-date{
+    font-size:16px;
+    text-transform: uppercase;
+    margin:0 0 0 20px;
+    align-content: flex-end;
+    width: 50%;
+}
+.card-author{
+    font-size: 16px;
+    align-self: flex-start;
+    font-weight: 550;
+    text-align: left;
+    margin: 5px 0 10px 0;
+}
+.card-description{
+    align-self: flex-start;
+    font-size: 15px;
+    color: #909094!important;
+    margin: 10px 0 0 0;
+    line-height: 1.5em;
+    height: 4.5em;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-align: left;
+}
+</style>
