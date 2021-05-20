@@ -75,13 +75,18 @@ const routes = [{
     {
         path: "/revisar_solicitudes",
         name: "RequestReview",
-
-        component: () =>
-            import ("../views/RequestReview.vue"),
+        component: () =>import ("@/views/RequestReview.vue"),
             meta: {
                 rutaProtegida: true,
             },
     },
+     {
+        path: "/cotizacion",
+        name: "QuotationForm",
+        component: () =>import ("@/views/QuotationForm.vue")
+     },
+
+        
     {
         path: "/crear_empresa",
         name: "creaEmpresa",

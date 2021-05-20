@@ -5,7 +5,7 @@
                   <div class="card-side">
                       <div class="card-index" v-for="(req,i) in inboxData" :key="i">
                           <div class="single-card-container " v-on:click=showRequest(i)>
-                              <Card
+                              <CardCot
                                 :name="req.nombre_solicitud"
                                 :date="req.fecha_solicitud"
                                 :author="req.usuario_solicitante"
@@ -15,14 +15,13 @@
                       </div>
                   </div>
               </div>
-              <div class="inbox-details">
+              <div class="inbox-form">
                   <div v-if="selectedRequest.name===''">
 
                   </div>
                   <div v-else>
-                      <Details
-                        :request="selectedRequest"
-                      />
+                      <CotForm 
+                      :request="selectedRequest"/>
                   </div>
               </div>
       </div>
@@ -30,21 +29,20 @@
 </template>
 
 <script>
-import Card from './Card.vue'
-import Details from './Details.vue'
+import CardCot from './CardCot.vue'
+import CotForm from './CotForm.vue';
 import { mapState } from "vuex";
 export default {
-    name: "Inbox",
+    name: "CotInbox",
     computed: {
     ...mapState(["token"]),
   },
-    components: { Details, Card },
+    components: { CardCot, CotForm },
     data(){
         return{
             inboxData: [],
             items: [],
             selectedRequest: {
-                cod: null,
                 name: "",
                 date: "",
                 author: "",
@@ -56,7 +54,7 @@ export default {
     },
     methods: {
         async getData(){
-            const response = (await this.$http.get(`request?type=criteria&status=ABIERTA&from=depto&nombre=${localStorage.getItem('depto')}`, {
+            const response = (await this.$http.get(`request?type=criteria&status=ACEPTADA&from=depto&nombre=${localStorage.getItem('depto')}`, {
           headers: {
             authorization: this.token,
           },
@@ -79,12 +77,10 @@ export default {
             
         },
         async showRequest(i){
-            this.selectedRequest.cod=this.inboxData[i].cod_solicitud;
             this.selectedRequest.name=this.inboxData[i].nombre_solicitud;
             this.selectedRequest.date=this.inboxData[i].fecha_solicitud;
             this.selectedRequest.author=this.inboxData[i].usuario_solicitante;
             this.selectedRequest.description=this.inboxData[i].detalle_solicitud;
-            this.selectedRequest.budget=this.inboxData[i].estimado_solicitud;
             this.selectedRequest.itemList=this.items[i];
         }
     },
@@ -118,7 +114,7 @@ export default {
     width: 30%;
     display: flex;
 }
-.inbox-details{
+.inbox-form{
     width: 70%;
     padding:0 5rem 5rem 0;
     margin: 10px;

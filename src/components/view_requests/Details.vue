@@ -14,6 +14,7 @@
               <h5>Presupuesto: </h5>Bs. {{ request.budget}}
           </div>
       </div>
+      <h5>Items: </h5>
       <div class="items">
           <table class ="items-list">
               <thead>
@@ -116,6 +117,7 @@ export default {
                 this.alert("success", "Informe enviado");
           } catch (error) {
               this.alert("warning", error);
+              return
           }
               
         
@@ -149,6 +151,7 @@ export default {
                         authorization: this.token,
                     },
                 })
+                window.location.reload()
       } catch (error) {
         throw new Error("Esta solicitud ya fue revisada");
       }
@@ -168,9 +171,6 @@ export default {
 }
 </script>
 <style>
-.single-request-details::before{
-    color: #fff;
-}
 .single-request-details{
     background: #fff;
     margin: 40px;
@@ -213,6 +213,7 @@ h5{
     color: #030303!important;
     line-height: 1.8;
     font-weight: 600;
+    text-align: left;
 }
 p{
     font-size: 18px;
@@ -227,6 +228,7 @@ p{
     display: flex;
     justify-content: space-between;
     width: 25%;
+    align-items: baseline;
 }
 .items{
     align-self: center;
@@ -235,13 +237,15 @@ p{
     font-size: 17px;
 }
 .items thead{
+    padding: 0.5% 2% 0.5% 2%;
     background-color: #f1f2f6;
-    padding: 0 2% 0 2%;
 }
 .items th {
+    padding: 1% 2% 1% 2%;
     border: 1px solid #c0c0c0;
 }
 .items td {
+    padding: 0.5% 1% 0.5% 1%;
     border: 1px solid #c0c0c0;
 }
 .response{
