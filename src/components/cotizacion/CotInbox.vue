@@ -4,7 +4,7 @@
               <div class="inbox-cards">
                   <div class="card-side">
                       <div class="card-index" v-for="(req,i) in inboxData" :key="i">
-                          <div class="single-card-container " v-on:click=showRequest(i)>
+                          <div class="single-card-container " v-on:click=showRequest(i) :class="selectedRequest.name==req.nombre_solicitud ? 'selected-card' :''">
                               <CardCot
                                 :name="req.nombre_solicitud"
                                 :date="req.fecha_solicitud"
@@ -113,6 +113,8 @@ export default {
 .inbox-cards{
     width: 30%;
     display: flex;
+    height: 42rem;
+    overflow: auto;
 }
 .inbox-form{
     width: 70%;
@@ -130,5 +132,8 @@ export default {
 }
 .card-side{
     width: 100%;
+}
+.selected-card{
+    background: #b4cace;
 }
 </style>

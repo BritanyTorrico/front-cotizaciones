@@ -4,7 +4,7 @@
               <div class="inbox-cards">
                   <div class="card-side">
                       <div class="card-index" v-for="(req,i) in inboxData" :key="i">
-                          <div class="single-card-container " v-on:click=showRequest(i)>
+                          <div class="single-card-container " v-on:click=showCot(i) :class="selectedRequest.name==req.nombre_solicitud ? 'selected-card' :''">
                               <CardFiltro
                                 :name="req.nombre_solicitud"
                                 :date="req.fecha_solicitud"
@@ -54,12 +54,12 @@ export default {
         items: Array,
     },
     methods: {
-        async showRequest(i){
-            this.selectedRequest.name=this.inboxData[i].nombre_solicitud;
-            this.selectedRequest.date=this.inboxData[i].fecha_solicitud;
-            this.selectedRequest.author=this.inboxData[i].usuario_solicitante;
-            this.selectedRequest.description=this.inboxData[i].detalle_solicitud;
-            this.selectedRequest.itemList=this.items[i];
+        async showCot(i){
+            this.selectedCot.name=this.inboxData[i].nombre_solicitud;
+            this.selectedCot.date=this.inboxData[i].fecha_solicitud;
+            this.selectedCot.author=this.inboxData[i].usuario_solicitante;
+            this.selectedCot.description=this.inboxData[i].detalle_solicitud;
+            this.selectedCot.itemList=this.items[i];
         }
     },
     mounted (){
@@ -90,6 +90,8 @@ export default {
 .inbox-cards{
     width: 30%;
     display: flex;
+    height: 42rem;
+    overflow: auto;
 }
 .inbox-selected{
     width: 70%;
@@ -107,5 +109,8 @@ export default {
 }
 .card-side{
     width: 100%;
+}
+.selected-card{
+    background: #b4cace;
 }
 </style>
