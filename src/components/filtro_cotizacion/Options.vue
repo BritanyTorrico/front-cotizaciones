@@ -122,7 +122,7 @@ export default {
               this.filteredInbox.push(response[i])
               this.filteredInbox[i].fecha_cotizacion=this.filteredInbox[i].fecha_cotizacion.substr(5, this.filteredInbox[i].fecha_cotizacion.indexOf('T'));
               this.filteredInbox[i].fecha_cotizacion=this.filteredInbox[i].fecha_cotizacion.substr(0, this.filteredInbox[i].fecha_cotizacion.indexOf('T'));
-                const reqItems = (await this.$http.get(`itemsPerRequest?type=solicitud&nombre=${this.filteredInbox[i].titulo_cotizacion}`, {
+                const reqItems = (await this.$http.get(`itemsPerRequest?searchby=solicitud&typeinput=nombre&inputdata=${this.filteredInbox[i].titulo_cotizacion}`, {
                     headers: {
                         authorization: this.token,
                     },

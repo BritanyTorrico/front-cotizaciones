@@ -63,7 +63,7 @@ export default {
                 this.inboxData.push(response[i]);
                 this.inboxData[i].fecha_solicitud=this.inboxData[i].fecha_solicitud.substr(5, this.inboxData[i].fecha_solicitud.indexOf('T'));
                 this.inboxData[i].fecha_solicitud=this.inboxData[i].fecha_solicitud.substr(0, this.inboxData[i].fecha_solicitud.indexOf('T'));
-                const reqItems = (await this.$http.get(`itemsPerRequest?type=solicitud&nombre=${this.inboxData[i].nombre_solicitud}`, {
+                const reqItems = (await this.$http.get(`itemsPerRequest?searchby=solicitud&typeinput=nombre&inputdata=${this.inboxData[i].nombre_solicitud}`, {
                     headers: {
                         authorization: this.token,
                     },
