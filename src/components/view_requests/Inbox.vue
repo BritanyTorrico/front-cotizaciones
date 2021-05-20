@@ -4,7 +4,7 @@
               <div class="inbox-cards">
                   <div class="card-side">
                       <div class="card-index" v-for="(req,i) in inboxData" :key="i">
-                          <div class="single-card-container " v-on:click=showRequest(i)>
+                          <div class="single-card-container " v-on:click=showRequest(i) :class="selectedRequest.name==req.nombre_solicitud ? 'selected-card' :''">
                               <Card
                                 :name="req.nombre_solicitud"
                                 :date="req.fecha_solicitud"
@@ -65,7 +65,7 @@ export default {
                 this.inboxData.push(response[i]);
                 this.inboxData[i].fecha_solicitud=this.inboxData[i].fecha_solicitud.substr(5, this.inboxData[i].fecha_solicitud.indexOf('T'));
                 this.inboxData[i].fecha_solicitud=this.inboxData[i].fecha_solicitud.substr(0, this.inboxData[i].fecha_solicitud.indexOf('T'));
-                const reqItems = (await this.$http.get(`itemsPerRequest?type=solicitud&nombre=${this.inboxData[i].nombre_solicitud}`, {
+                const reqItems = (await this.$http.get(`itemsPerRequest?searchby=solicitud&typeinput=nombre&inputdata=${this.inboxData[i].nombre_solicitud}`, {
                     headers: {
                         authorization: this.token,
                     },
@@ -117,6 +117,8 @@ export default {
 .inbox-cards{
     width: 30%;
     display: flex;
+    height: 42rem;
+    overflow: auto;
 }
 .inbox-details{
     width: 70%;
@@ -134,5 +136,8 @@ export default {
 }
 .card-side{
     width: 100%;
+}
+.selected-card{
+    background: #b4cace;
 }
 </style>

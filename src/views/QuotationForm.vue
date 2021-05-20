@@ -9,6 +9,7 @@
 <script>
 import CotInbox from '../components/cotizacion/CotInbox.vue'
 export default {
+  name: "QuotationForm",
   components: { CotInbox },
   data(){
       return{};
@@ -16,7 +17,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .quotation-form{
     margin: 2rem;
     margin-top: 0;

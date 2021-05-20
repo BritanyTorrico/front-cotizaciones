@@ -83,7 +83,10 @@ const routes = [{
      {
         path: "/cotizacion",
         name: "QuotationForm",
-        component: () =>import ("@/views/QuotationForm.vue")
+        component: () =>import ("@/views/QuotationForm.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
      },
 
         
@@ -96,6 +99,15 @@ const routes = [{
             rutaProtegida: true,
         },
     },
+    {
+        path: "/filtro_cotizaciones",
+        name: "QuotationFilter",
+        component: () =>
+            import ("../views/QuotationFilter.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    }
 ];
 
 const router = new VueRouter({

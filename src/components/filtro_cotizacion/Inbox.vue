@@ -19,7 +19,8 @@
                   <div v-if="selectedRequest.name===''">
                   </div>
                   <div v-else>
-
+                      <VistaCot
+                      :cot="selectedCot"/>
                   </div>
               </div>
       </div>
@@ -29,51 +30,30 @@
 <script>
 import CardFiltro from './CardFiltro.vue';
 import { mapState } from "vuex";
+import VistaCot from './VistaCot.vue';
 
 export default {
     name: "InboxFiltro",
     computed: {
     ...mapState(["token"]),
   },
-    components: { CardFiltro },
+    components: { CardFiltro, VistaCot },
     data(){
         return{
-            inboxData: [],
-            items: [],
-            selectedRequest: {
+            selectedCot: {
                 name: "",
                 date: "",
                 author: "",
-                description: "",
-                budget: null,
-                itemList: []
+                itemList: [],
+                companies: [],
             },
         }
     },
+    props: {
+        inboxData: Array,
+        items: Array,
+    },
     methods: {
-        async getData(){
-            const response = (await this.$http.get(`request?type=criteria&status=ACEPTADA&from=depto&nombre=${localStorage.getItem('depto')}`, {
-          headers: {
-            authorization: this.token,
-          },
-        })).data;
-            for (let i = 0; i < response.length; i++) {
-                this.inboxData.push(response[i]);
-                this.inboxData[i].fecha_solicitud=this.inboxData[i].fecha_solicitud.substr(5, this.inboxData[i].fecha_solicitud.indexOf('T'));
-                this.inboxData[i].fecha_solicitud=this.inboxData[i].fecha_solicitud.substr(0, this.inboxData[i].fecha_solicitud.indexOf('T'));
-                const reqItems = (await this.$http.get(`itemsPerRequest?type=solicitud&nombre=${this.inboxData[i].nombre_solicitud}`, {
-                    headers: {
-                        authorization: this.token,
-                    },
-                })).data.datos;
-                let currentItems=[]
-                for (let j = 0; j<reqItems.length;j++){
-                    currentItems.push(reqItems[j])
-                }
-                this.items.push(currentItems)
-            }
-            
-        },
         async showRequest(i){
             this.selectedRequest.name=this.inboxData[i].nombre_solicitud;
             this.selectedRequest.date=this.inboxData[i].fecha_solicitud;
@@ -83,7 +63,6 @@ export default {
         }
     },
     mounted (){
-        this.getData();
     }
 }
 </script>

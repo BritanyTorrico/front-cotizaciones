@@ -30,6 +30,9 @@
                       <td></td>
                       <td></td>
                   </tr>
+                  <tr v-for="n in 5" :key="n">
+                    <td v-for="m in 5" :key="m"></td>
+                  </tr>
               </tbody>
           </table>
      </div>
@@ -159,6 +162,7 @@ export default {
 .items th {
     padding: 1% 2% 1% 2%;
     border: 1px solid #d1d0d0;
+    width: 0;
 }
 .items td {
     padding: 0.5% 1% 0.5% 1%;
