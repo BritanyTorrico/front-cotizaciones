@@ -10,35 +10,10 @@
           <div class="form_label">Fecha:</div>
           <div class="form-name">{{ this.today }}</div>
      </div>
-     <div class="items">
-       <div class="form_label">Items:</div>
-         <table class ="items-list">
-              <thead>
-                  <tr>
-                    <th>Cantidad</th>
-                    <th>Unidad</th>
-                    <th>Detalle</th>
-                    <th>Unitario</th>
-                    <th>Total</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr v-for="(item, index) in request.itemList" :key="index">
-                      <td>{{ item.cantidad_solicitud }}</td>
-                      <td>{{ item.unidad_solicitud }}</td>
-                      <td>{{ item.detalle_solicitud }}</td>
-                      <td></td>
-                      <td></td>
-                  </tr>
-                  <tr v-for="n in 5" :key="n">
-                    <td v-for="m in 5" :key="m"></td>
-                  </tr>
-              </tbody>
-          </table>
-     </div>
      <div class="form-empresas">
          <Empresas
           :date="today"
+          :items="request.itemList"
          />
      </div>
     </div>    
