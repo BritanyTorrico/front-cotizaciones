@@ -145,8 +145,8 @@
               <div class="form_check-error" v-if="!$v.users.celular.required">
                 Campo obligatorio.
               </div>
-              <div class="form_check-error" v-if="!$v.users.celular.minLength">
-                Minimo 8 caracteres.
+              <div class="form_check-error" v-if="!$v.users.celular.maxLength">
+                Maximo 8 caracteres.
               </div>
             </div>
           </div>
@@ -360,7 +360,7 @@ export default {
       },
       celular: {
         required,
-        minLength: minLength(8),
+        maxLength: maxLength(8),
         integer,
       },
       facultad: {
