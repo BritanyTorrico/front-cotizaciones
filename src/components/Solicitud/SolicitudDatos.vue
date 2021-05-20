@@ -539,7 +539,7 @@ export default {
           nombre_item: this.solicitud.nombre_item,
           cantidad: 1,
           categoria: this.solicitud.categoria,
-          unidad_solicitud: this.solicitud.unidadgasto_solicitud,
+          unidad_solicitud: this.solicitud.nombre_item,
           detalle_solicitud: this.descripcionItem,
         };
         // this.listaPeticion.push(item);
@@ -557,7 +557,7 @@ export default {
             nombre_item: this.solicitud.nombre_item,
             cantidad: this.elemento.cantidad,
             categoria: this.solicitud.categoria,
-            unidad_solicitud: this.solicitud.unidadgasto_solicitud,
+            unidad_solicitud: this.solicitud.nombre_item,
             detalle_solicitud: this.descripcionItem,
           };
           // this.listaPeticion.push(item);
@@ -595,11 +595,16 @@ export default {
     },
     async getDepartamento() {
       const unidadGastoPorDepartamento = (
-        await this.$http.get(`spendingUnit?type=name&departamento=${localStorage.getItem('depto')}`, {
-          headers: {
-            authorization: this.token,
-          },
-        })
+        await this.$http.get(
+          `spendingUnit?type=name&departamento=${localStorage.getItem(
+            "depto"
+          )}`,
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        )
       ).data;
 
       for (let i = 0; i < unidadGastoPorDepartamento.datos.length; i++) {
