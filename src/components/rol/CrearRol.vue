@@ -1,7 +1,7 @@
 <template>
-  <section class="crear_rol" :key="componentKey">
+  <section class="crear_rol">
     <h2 class="rol_title">Crear rol</h2>
-    <form class="form_crear" @submit.prevent="submitForm" autocomplete="off">
+    <form class="form_crear" @submit.prevent="submitForm" :key="componentKey">
       <div class="form_section">
         <div class="form_name">Nombre de rol:</div>
         <input
@@ -166,6 +166,7 @@ export default {
       this.getFunciones();
       try {
         console.log("comienza envio");
+
         if (!this.$v.dato.$invalid && this.funciones.length > 0) {
           console.log("es valido");
           console.log(this.funciones[0]);
@@ -173,10 +174,9 @@ export default {
           for (let i = 0; i < this.funciones.length; i++) {
             await this.sendFuncData(i);
           }
-
+          this.alert("success", "Rol creado exitosamente");
           this.dato.nombre_rol = null;
           this.forceRerender();
-          this.alert("success", "Rol creado exitosamente");
         } else {
           console.log("es invalido");
           this.alert("warning", "Seleccione una función ");
