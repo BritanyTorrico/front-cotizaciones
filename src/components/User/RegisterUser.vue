@@ -15,6 +15,9 @@
         <div class="form__datos">
           <div class="form_title">
             <h1>Registrar Usuario</h1>
+            <div class="form_desc">
+              Ingrese los datos de un nuevo item de gasto
+            </div>
           </div>
           <div class="form__section">
             <div class="form__name">
@@ -36,10 +39,10 @@
               </div>
               <div class="form_check-error" v-if="!$v.users.nombres.maxLength">
                 Máximo
-                {{ $v.users.nombres.$params.maxLength.max }}caracteres.
+                {{ $v.users.nombres.$params.maxLength.max }} caracteres.
               </div>
               <div class="form_check-error" v-if="!$v.users.nombres.minLength">
-                Minimo 3 caracteres.
+                Mínimo 3 caracteres.
               </div>
               <div class="form_check-error" v-if="!$v.users.nombres.alpha1">
                 No se aceptan caracteres especiales.
@@ -74,7 +77,7 @@
                 class="form_check-error"
                 v-if="!$v.users.apellidos.minLength"
               >
-                Minimo 4 caracteres.
+                Mínimo 4 caracteres.
               </div>
               <div class="form_check-error" v-if="!$v.users.apellidos.alpha1">
                 No se aceptan caracteres especiales.
@@ -92,7 +95,7 @@
                       : 'form__input'
                   "
                   type="text"
-                  placeholder="Ingrese su nombre de usuario"
+                  placeholder="Ingrese nombre de usuario"
                   v-model="users.nombre_usuario"
                   required
                 />
@@ -122,7 +125,7 @@
                 class="form_check-error"
                 v-if="!$v.users.nombre_usuario.minLength"
               >
-                Minimo 3 caracteres.
+                Mínimo 3 caracteres.
               </div>
             </div>
             <div class="form__name">
@@ -146,7 +149,7 @@
                 Campo obligatorio.
               </div>
               <div class="form_check-error" v-if="!$v.users.celular.maxLength">
-                Maximo 8 caracteres.
+                Máximo 8 caracteres.
               </div>
             </div>
           </div>
@@ -172,8 +175,9 @@
             </div>
 
             <div class="form_check-error" v-if="!$v.users.contrasena.valid">
-              La contraseña debe contener minimo 8 caracteres y al menos una
-              mayuscula, minuscula un número y un caracter especial #?!@$%^&*-
+              La contraseña debe contener Mínimo 8 caracteres y al menos una
+              mayuscula, minuscula un número y un caracter especial de las
+              siguientes opciones: #?!@$%^&*-
             </div>
             <div class="form_check-error" v-if="!$v.users.contrasena.required">
               Campo obligatorio.
@@ -572,7 +576,7 @@ export default {
 }
 .form__image img {
   width: 100%;
-  height: 800px;
+  height: 900px;
   background: gray;
 }
 
@@ -643,17 +647,22 @@ export default {
 }
 .form__section3 {
   display: flex;
+  margin-left: 0;
 }
 .fomrm__section__item {
   width: 33%;
-
-  margin: 30px;
+  font-size: 20px;
+  margin-right: 40px;
+}
+.fomrm__section__item select {
+  font-size: 16px;
 }
 .formulario_label {
   padding-left: 6px;
   color: var(--color-name);
   text-align: left;
   font-weight: bold;
+  font-size: 20px;
 }
 .form__name {
   width: 100%;
@@ -665,15 +674,16 @@ export default {
   margin: 50px 15px;
   text-align: right;
 }
+
 .boton__input {
-  width: 120px;
-  height: 35px;
-  border-radius: 30px;
-  background: blue;
-  color: white;
+  background-color: #0c59cf;
+  border-radius: 22px;
+  color: #fafafa;
+  font-size: 22px;
   font-weight: bold;
-  border-bottom: none;
-  border: none;
+  border: 0px;
+  width: 25%;
+  padding: 8px 0;
 }
 .form_check-error {
   color: red;
@@ -704,5 +714,16 @@ export default {
 .container-facu {
   padding-top: 20px;
   text-align: left;
+}
+.form_desc {
+  text-align: left;
+  color: #0d58cf;
+  font-size: 18px;
+  font-weight: 400;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #0d58cf;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 </style>

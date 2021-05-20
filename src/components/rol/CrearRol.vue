@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="form_section">
-        <div class="form_name">Seleccione las funciones:</div>
+        <div class="form_name">Seleccione los Permisos:</div>
 
         <div class="checkbox-style">
           <div class="input-check">
@@ -179,10 +179,10 @@ export default {
           this.forceRerender();
         } else {
           console.log("es invalido");
-          this.alert("warning", "Seleccione una función ");
+          this.alert("warning", "Seleccione minimamente un permiso.");
         }
       } catch (error) {
-        this.alert("warning", "Algo salio mal");
+        this.alert("warning", "El nombre del rol ya esta registrado");
       }
     },
     async sendRolData() {
@@ -202,7 +202,6 @@ export default {
         console.log("termina registro de rol");
       } catch (error) {
         console.log("error en rol");
-        throw new Error("Este rol ya esta registrado");
       }
     },
     async sendFuncData(index) {
