@@ -1,6 +1,29 @@
 <template>
   <section>
-      <div class="company-filter">
+    <div class="company-filter">
+        <div class="items">
+            <div class="form_label">Items:</div>
+                <table class ="items-list">
+                    <thead>
+                        <tr>
+                            <th>Cantidad</th>
+                            <th>Unidad</th>
+                            <th>Detalle</th>
+                            <th>Unitario</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, index) in items" :key="index">
+                            <td>{{ item.cantidad_solicitud }}</td>
+                            <td>{{ item.unidad_solicitud }}</td>
+                            <td>{{ item.detalle_solicitud }}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
           <div class="filter-head">
               <h3 class="filter-title">Seleccionar Empresa:</h3>
               <select
@@ -109,6 +132,7 @@ data(){
 },
 props: {
     date: String,
+    items: Array,
 },
 validations: {
     confirmed: {
@@ -174,7 +198,7 @@ mounted(){
 .company-filter{
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 90%;
     align-items: center;
 }
 .filter-head{
@@ -284,5 +308,33 @@ mounted(){
 }
 .redirect-cot{
     display: inline;
+}
+.form_label{
+    color:#3f4b5b;
+    font-size:24px;
+    font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;  
+    padding: 0 1% 0 0;
+}
+.items{
+    align-self: center;
+    width: 100%;
+    padding: 0 0 5% 0;
+    font-size: 17px;
+}
+.items-list{
+  width: 100%;
+}
+.items thead{
+    background-color: #c5c4c4;
+    text-align: center;
+}
+.items th {
+    padding: 1% 2% 1% 2%;
+    border: 1px solid #d1d0d0;
+}
+.items td {
+    padding: 0.5% 1% 0.5% 1%;
+    border: 1px solid #c0c0c0;
 }
 </style>
