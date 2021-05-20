@@ -254,7 +254,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .company-filter {
   display: flex;
   flex-direction: column;

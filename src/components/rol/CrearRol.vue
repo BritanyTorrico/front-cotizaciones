@@ -1,5 +1,5 @@
 <template>
-  <section class="crear_rol">
+  <section class="crear_rol" :key="componentKey">
     <h2 class="rol_title">Crear rol</h2>
     <form class="form_crear" @submit.prevent="submitForm" autocomplete="off">
       <div class="form_section">
@@ -97,7 +97,7 @@
         </div>
       </div>
       <div class="botoncito">
-        <button class="form_button" @click="obtenerValor()">
+        <button class="form_button">
           Crear
         </button>
       </div>
@@ -130,6 +130,7 @@ export default {
         nombre_rol: null,
       },
       funciones: [],
+      componentKey: 0,
     };
   },
 
@@ -144,6 +145,9 @@ export default {
     },
   },
   methods: {
+    forceRerender() {
+      this.componentKey += 1;
+    },
     keyhandler(e) {
       if (!e.key.match(/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s]*$/)) {
         e.preventDefault();
@@ -170,6 +174,8 @@ export default {
             await this.sendFuncData(i);
           }
 
+          this.dato.nombre_rol = null;
+          this.forceRerender();
           this.alert("success", "Rol creado exitosamente");
         } else {
           console.log("es invalido");

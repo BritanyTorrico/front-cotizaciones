@@ -1,89 +1,86 @@
 <template>
-  <div class ="reg_unit">
-      <h2 class="unit_title">Registrar Unidad de Gasto</h2>
-      <label>
-          <div class="form_desc">Ingrese los datos de la nueva unidad de gasto</div>
-      </label>
-      <form class="form_unitreg" @submit.prevent="submitForm" autocomplete="off">
-          <div class="form_section">
-                  <div class="form_name">Unidad:</div>
-                  <div class="form_input">
-                      <input
-                        name="nombreUnidad"
-                        id="nombreUnidad"
-                        :class="
-                        $v.unit.nombre_unidadgasto.$invalid
-                        ? 'form_check-input-error'
-                        : 'form_check-input'
-                        "
-                        type="text"
-                        maxlength="30"
-                        required
-                        placeholder="Ingrese el nombre aquí"
-                        v-model="unit.nombre_unidadgasto"
-                       />
-                  </div>
-              <div
-                class="form_check-error"
-                v-if="!$v.unit.nombre_unidadgasto.required"
-              >
-                  Campo obligatorio.
-              </div>
-          </div>
-          <div class="form_section">
-                  <div class="form_name">Encargado:</div>
-                  <lista-desplegable
-                    nombreLista="encargadoUnidad"
-                    :lista="listaUsuarios"
-                    :class="
-                      $v.unit.encargado_unidad.$invalid
-                      ? 'form_check-input-error'
-                      : 'form_check-input'
-                    "
-                    required
-                    v-model="unit.encargado_unidad"
-                  ></lista-desplegable>
-                  <div
-                class="form_check-error"
-                v-if="!$v.unit.encargado_unidad.required"
-              >
-                  Campo obligatorio.
-              </div>
-          </div>
-          <div class="form_section">
-                  <div class="form_name">Descripción:</div>
-                  <textarea
-                    name="descripcionUnidad"
-                    :class="
-                      $v.unit.descripcion_unidadgasto.$invalid
-                      ? 'form_check-input-error'
-                      : 'form_check-input'
-                    "
-                    cols="50"
-                    rows="10"
-                    maxlength="1000"
-                    required
-                    placeholder="Ingrese una descripción de la unidad"
-                    v-model="unit.descripcion_unidadgasto"
-                  />
-              <div
-                class="form_check-error"
-                v-if="!$v.unit.descripcion_unidadgasto.required"
-              >
-                  Campo obligatorio.
-              </div>
-          </div>
-          <div class="unit_form_button">
-              <button
-                :disabled="$v.unit.$invalid"
-                :class="$v.unit.$invalid ? 'button-disabled':''"
-                class="form_button"
-              >
-                <div class="button_tag">Crear</div>
-              </button>
-          </div>
-      </form>
-      <Alert ref="alert"></Alert>
+  <div class="reg_unit">
+    <h2 class="unit_title">Registrar Unidad de Gasto</h2>
+    <label>
+      <div class="form_desc">Ingrese los datos de la nueva unidad de gasto</div>
+    </label>
+    <form class="form_unitreg" @submit.prevent="submitForm" autocomplete="off">
+      <div class="form_section">
+        <div class="form_name">Unidad:</div>
+        <div class="form_input">
+          <input
+            name="nombreUnidad"
+            id="nombreUnidad"
+            :class="
+              $v.unit.nombre_unidadgasto.$invalid
+                ? 'form_check-input-error'
+                : 'form_check-input'
+            "
+            type="text"
+            maxlength="30"
+            required
+            placeholder="Ingrese el nombre aquí"
+            v-model="unit.nombre_unidadgasto"
+          />
+        </div>
+        <div
+          class="form_check-error"
+          v-if="!$v.unit.nombre_unidadgasto.required"
+        >
+          Campo obligatorio.
+        </div>
+      </div>
+      <div class="form_section">
+        <div class="form_name">Encargado:</div>
+        <lista-desplegable
+          nombreLista="encargadoUnidad"
+          :lista="listaUsuarios"
+          :class="
+            $v.unit.encargado_unidad.$invalid
+              ? 'form_check-input-error'
+              : 'form_check-input'
+          "
+          required
+          v-model="unit.encargado_unidad"
+        ></lista-desplegable>
+        <div class="form_check-error" v-if="!$v.unit.encargado_unidad.required">
+          Campo obligatorio.
+        </div>
+      </div>
+      <div class="form_section">
+        <div class="form_name">Descripción:</div>
+        <textarea
+          name="descripcionUnidad"
+          :class="
+            $v.unit.descripcion_unidadgasto.$invalid
+              ? 'form_check-input-error'
+              : 'form_check-input'
+          "
+          cols="50"
+          rows="10"
+          maxlength="1000"
+          required
+          placeholder="Ingrese una descripción de la unidad"
+          v-model="unit.descripcion_unidadgasto"
+        />
+        <div
+          class="form_check-error"
+          v-if="!$v.unit.descripcion_unidadgasto.required"
+        >
+          Campo obligatorio.
+        </div>
+      </div>
+      <div class="unit_form_button">
+        <button
+          :disabled="$v.unit.$invalid"
+          :class="$v.unit.$invalid ? 'button-disabled' : ''"
+          class="form_button"
+        >
+          <div class="button_tag">Crear</div>
+        </button>
+      </div>
+    </form>
+    <Alert ref="alert"></Alert>
   </div>
 </template>
 
@@ -130,11 +127,14 @@ export default {
     async getUsers() {
       const inCharge = (
         await this.$http.get(
-          `users?criterio=departamento&nombre=${localStorage.getItem('depto')}`, {
-          headers: {
-            authorization: this.token,
-          },
-        })).data;
+          `users?criterio=departamento&nombre=${localStorage.getItem("depto")}`,
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        )
+      ).data;
       for (let i = 0; i < inCharge.length; i++) {
         this.listaUsuarios.push(
           inCharge[i].nombres + " " + inCharge[i].apellidos
@@ -146,7 +146,7 @@ export default {
         if (!this.$v.unit.$invalid) {
           await this.sendData();
           this.alert("success", "Unidad creada exitosamente");
-          window.setInterval(window .location.reload(), 10000); 
+          window.setInterval(window.location.reload(), 10000);
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
@@ -156,17 +156,20 @@ export default {
     },
     async sendData() {
       try {
-        await this.$http.post("spendingUnit", {
-          nombre_departamento: localStorage.getItem('depto'),
-          nombre_unidadgasto: this.unit.nombre_unidadgasto,
-          Jefe_unidad: this.unit.encargado_unidad,
-          descripcion_unidadgasto: this.unit.descripcion_unidadgasto,
-        },
-                {
-                    headers: {
-                        authorization: this.token,
-                    },
-                });
+        await this.$http.post(
+          "spendingUnit",
+          {
+            nombre_departamento: localStorage.getItem("depto"),
+            nombre_unidadgasto: this.unit.nombre_unidadgasto,
+            Jefe_unidad: this.unit.encargado_unidad,
+            descripcion_unidadgasto: this.unit.descripcion_unidadgasto,
+          },
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        );
       } catch (error) {
         throw new Error("Esta unidad de gasto ya fué registrada");
       }
@@ -272,13 +275,13 @@ export default {
 };
 </script>
 
-<style>
-.reg_unit{
-    background-color: #F7F6F6;
-    padding: 20px 40px 20px 40px;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+<style scoped>
+.reg_unit {
+  background-color: #f7f6f6;
+  padding: 20px 40px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .unit_title {
@@ -290,21 +293,22 @@ export default {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
-.form_desc{
-    text-align: left;
-    color: #0D58CF;
-    font-size: 18px;
-    font-weight: 400;
-    padding-bottom: 5px;
-    border-bottom: 2px solid #0D58CF;
-    width: 100%;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+.form_desc {
+  text-align: left;
+  color: #0d58cf;
+  font-size: 18px;
+  font-weight: 400;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #0d58cf;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
-.form_unitreg{
-    padding:8px;
-    text-align: left;
-    width: 100%;
+.form_unitreg {
+  padding: 8px;
+  text-align: left;
+  width: 100%;
 }
 
 .reg_unit textarea {
@@ -315,10 +319,11 @@ export default {
 
 .reg_unit input,
 .reg_unit textarea {
-    background-color: #F7F6F6;
-    border-radius: 3px;
-    padding: 8px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #f7f6f6;
+  border-radius: 3px;
+  padding: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 .reg_unit input ::placeholder,
@@ -342,16 +347,17 @@ export default {
 }
 
 .form_check-error {
-    color: #ed1c24;
-    font-size: 14px;
-    padding: 0 0 0 2%;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: #ed1c24;
+  font-size: 14px;
+  padding: 0 0 0 2%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 .form_button {
   margin: auto;
   display: block;
-  background-color: #0C59CF;
+  background-color: #0c59cf;
   padding: 2% 19% 2% 19%;
   border-radius: 22px;
   color: #fafafa;
@@ -398,7 +404,7 @@ export default {
   background: #999999;
   border: 0px;
 }
-.form_input{
-    width: 100%;
+.form_input {
+  width: 100%;
 }
 </style>
