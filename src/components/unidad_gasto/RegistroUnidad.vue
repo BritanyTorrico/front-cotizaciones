@@ -146,6 +146,7 @@ export default {
         if (!this.$v.unit.$invalid) {
           await this.sendData();
           this.alert("success", "Unidad creada exitosamente");
+          window.setInterval(window .location.reload(), 10000); 
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }

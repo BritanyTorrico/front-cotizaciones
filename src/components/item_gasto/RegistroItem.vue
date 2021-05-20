@@ -178,6 +178,7 @@ export default {
                     await this.sendItemData();
                     await this.sendItemUnitData();
                     this.alert("success", "Item creado exitosamente");
+                    window.setInterval(window .location.reload(), 10000); 
                 } else {
                     this.alert("warning", "Rellene todos los datos correctamente");
                 }

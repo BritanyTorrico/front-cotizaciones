@@ -137,6 +137,7 @@ export default {
 .items th {
     padding: 1% 2% 1% 2%;
     border: 1px solid #d1d0d0;
+    width: 0;
 }
 .items td {
     padding: 0.5% 1% 0.5% 1%;

@@ -4,8 +4,8 @@
               <div class="inbox-cards">
                   <div class="card-side">
                       <div class="card-index" v-for="(req,i) in inboxData" :key="i">
-                          <div class="single-card-container " v-on:click=showRequest(i) :class="selectedRequest.name==req.nombre_solicitud ? 'selected-card' :''">
-                              <Card
+                          <div class="single-card-container " v-on:click=showRequest(i)>
+                              <CardFiltro
                                 :name="req.nombre_solicitud"
                                 :date="req.fecha_solicitud"
                                 :author="req.usuario_solicitante"
@@ -15,14 +15,12 @@
                       </div>
                   </div>
               </div>
-              <div class="inbox-details">
+              <div class="inbox-selected">
                   <div v-if="selectedRequest.name===''">
-
                   </div>
                   <div v-else>
-                      <Details
-                        :request="selectedRequest"
-                      />
+                      <VistaCot
+                      :cot="selectedCot"/>
                   </div>
               </div>
       </div>
@@ -30,66 +28,41 @@
 </template>
 
 <script>
-import Card from './Card.vue'
-import Details from './Details.vue'
+import CardFiltro from './CardFiltro.vue';
 import { mapState } from "vuex";
+import VistaCot from './VistaCot.vue';
+
 export default {
-    name: "Inbox",
+    name: "InboxFiltro",
     computed: {
     ...mapState(["token"]),
   },
-    components: { Details, Card },
+    components: { CardFiltro, VistaCot },
     data(){
         return{
-            inboxData: [],
-            items: [],
-            selectedRequest: {
-                cod: null,
+            selectedCot: {
                 name: "",
                 date: "",
                 author: "",
-                description: "",
-                budget: null,
-                itemList: []
+                itemList: [],
+                companies: [],
             },
         }
     },
+    props: {
+        inboxData: Array,
+        items: Array,
+    },
     methods: {
-        async getData(){
-            const response = (await this.$http.get(`request?type=criteria&status=ABIERTA&from=depto&nombre=${localStorage.getItem('depto')}`, {
-          headers: {
-            authorization: this.token,
-          },
-        })).data;
-            for (let i = 0; i < response.length; i++) {
-                this.inboxData.push(response[i]);
-                this.inboxData[i].fecha_solicitud=this.inboxData[i].fecha_solicitud.substr(5, this.inboxData[i].fecha_solicitud.indexOf('T'));
-                this.inboxData[i].fecha_solicitud=this.inboxData[i].fecha_solicitud.substr(0, this.inboxData[i].fecha_solicitud.indexOf('T'));
-                const reqItems = (await this.$http.get(`itemsPerRequest?searchby=solicitud&typeinput=nombre&inputdata=${this.inboxData[i].nombre_solicitud}`, {
-                    headers: {
-                        authorization: this.token,
-                    },
-                })).data.datos;
-                let currentItems=[]
-                for (let j = 0; j<reqItems.length;j++){
-                    currentItems.push(reqItems[j])
-                }
-                this.items.push(currentItems)
-            }
-            
-        },
         async showRequest(i){
-            this.selectedRequest.cod=this.inboxData[i].cod_solicitud;
             this.selectedRequest.name=this.inboxData[i].nombre_solicitud;
             this.selectedRequest.date=this.inboxData[i].fecha_solicitud;
             this.selectedRequest.author=this.inboxData[i].usuario_solicitante;
             this.selectedRequest.description=this.inboxData[i].detalle_solicitud;
-            this.selectedRequest.budget=this.inboxData[i].estimado_solicitud;
             this.selectedRequest.itemList=this.items[i];
         }
     },
     mounted (){
-        this.getData();
     }
 }
 </script>
@@ -117,10 +90,8 @@ export default {
 .inbox-cards{
     width: 30%;
     display: flex;
-    height: 42rem;
-    overflow: auto;
 }
-.inbox-details{
+.inbox-selected{
     width: 70%;
     padding:0 5rem 5rem 0;
     margin: 10px;
@@ -136,8 +107,5 @@ export default {
 }
 .card-side{
     width: 100%;
-}
-.selected-card{
-    background: #b4cace;
 }
 </style>
