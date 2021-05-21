@@ -27,34 +27,55 @@
       <div class="form_section">
             <div class="form_name">Categoría:</div>
                 <div class="form-categ">
-                    <input
-                    name="categoriaItem"
-                    id="categoriaItem"
-                    :class="
-                        $v.item.categoria_especifica.$invalid
-                        ? 'form_check-input-error'
-                        : 'form_check-input'
-                    "
-                    list="categorias"
-                    maxlength="50"
-                    required
-                    placeholder="Seleccione un categoría"
-                    v-model="item.categoria_especifica"
-                    />
-                    <div
-                    class="form_check-error"
-                    v-if="!$v.item.categoria_especifica.required"
-                    >
-                    Campo obligatorio.
+                    <div class="form-categ-gen" v-on:click="getSpeCategories">
+                        <lista-desplegable
+                            nombreLista="categoriaGeneral"
+                            :lista="listaCatGen"
+                            :placeholder="'Seleccione una categoría general'"
+                            :class="
+                                $v.item.categoria_general.$invalid
+                                ? 'form_check-input-error'
+                                : 'form_check-input'
+                            "
+                            required
+                            v-model="item.categoria_general"
+                            
+                        ></lista-desplegable>
+                        <div class="form_check-error" v-if="!$v.item.categoria_general.required">
+                            Campo obligatorio.
+                        </div>
                     </div>
-                    <datalist id="categorias">
-                    <option
-                        v-for="(categoria, index) in listaCategorias"
-                        :key="index"
-                        :value="categoria"
-                        >{{ categoria }}</option
-                    >
-                    </datalist>
+                    <div class="form-categ-esp">
+                        <input
+                        name="categoriaItem"
+                        id="categoriaItem"
+                        :class="
+                            $v.item.categoria_especifica.$invalid
+                            ? 'form_check-input-error'
+                            : 'form_check-input'
+                        "
+                        list="categorias"
+                        maxlength="50"
+                        required
+                        placeholder="Seleccione o ingrese una categoría específica"
+                        v-model="item.categoria_especifica"
+                        
+                        />
+                        <div
+                        class="form_check-error"
+                        v-if="!$v.item.categoria_especifica.required"
+                        >
+                        Campo obligatorio.
+                        </div>
+                        <datalist id="categorias">
+                        <option
+                            v-for="(categoria, index) in listaCategorias"
+                            :key="index"
+                            :value="categoria"
+                            >{{ categoria }}</option
+                        >
+                        </datalist>
+                    </div>
                 </div>
       </div>
       <div class="form_section">
@@ -115,23 +136,27 @@
 import { required, maxLength } from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
 import { mapState } from "vuex";
+import ListaDesplegable from '../unidad_gasto/ListaDesplegable.vue';
 export default {
   name: "RegistroItem",
   computed: {
     ...mapState(["token"]),
   },
-    components: { Alert },
+    components: { Alert, ListaDesplegable },
     data(){
         return{
             disabled: false,
             item: {
                 nombre_itemgasto: null,
+                categoria_general: null,
                 categoria_especifica: null,
                 descripcion_item: "",
                 justificacion: "",
             },
             listaCategorias: [],
             listaUnidades: [],
+            listaCatGen: [],
+            listaCodGen: [],
         };
     },
     validations: {
@@ -144,6 +169,9 @@ export default {
                 required,
                 maxLength: maxLength(50),
             },
+            categoria_general: {
+                required,
+            },
             descripcion_item: {
                 required,
                 maxLength: maxLength(1000),
@@ -155,24 +183,41 @@ export default {
         },
     },
   methods: {
-    async getCategories() {
+    async getGenCategories() {
+      const gen =(
+        await this.$http.get('generalCategory', {
+          headers: {
+            authorization: this.token,
+          },
+        })
+      ).data;
+      for (let i of gen){
+        this.listaCatGen.push(i.nombre_categoriageneral)
+        this.listaCodGen.push(i.cod_categoriageneral)
+      }
+      this.getSpeCategories()
+    },
+    async getSpeCategories(){
+      this.listaCategorias=[]
       const categ = (
         await this.$http.get("specificCategory", {
           headers: {
             authorization: this.token,
           },
         })).data;
-            for (let i=0;i<categ.length;i++){
-                this.listaCategorias.push(categ[i].nombre_categoriaespecifica)
-                console.log(this.listaCategorias[i]);
+        console.log(this.listaCodGen[this.listaCatGen.indexOf(this.item.categoria_general)]);
+        for (let j of categ){
+            if (j.cod_categoriageneral==this.listaCodGen[this.listaCatGen.indexOf(this.item.categoria_general)]){
+              this.listaCategorias.push(j.nombre_categoriaespecifica)
             }
-        },
+        }
+    },
         
         async submitForm(){
             try {
                 if (!this.$v.item.$invalid){
+                  await this.manageCat();
                     await this.sendItemData();
-                    await this.getSpendingUnits();
                     await this.sendItemUnitData();
                     this.alert("success", "Item creado exitosamente");
                     window.setInterval(window .location.reload(), 10000); 
@@ -206,36 +251,62 @@ export default {
             authorization: this.token,
           },
         })).data.datos;
-            for (let i=0;i<spun.length;i++){
-                this.listaUnidades.push(spun[i].nombre_unidadgasto)
-                console.log(this.listaUnidades[i]);
-            }
+        for (let i of spun){
+          this.listaUnidades.push(i.nombre_unidadgasto)
+        }
         },
         async sendItemUnitData(){
             try {
-                for (let i=0;i<this.listaUnidades.length;i++){
-                await this.$http.post("itemsPerUnit", {
-                    nombre_unidadgasto: this.listaUnidades[i],
-                    nombre_itemgasto: this.item.nombre_itemgasto,
-                    activo_item: true,
+              for(let i of this.listaUnidades){
+                await this.$http.post('itemsPerUnit',{
+                  nombre_unidadgasto: i,
+                  nombre_itemgasto: this.item.nombre_itemgasto,
+                  activo_item: true,
                 },
                 {
-                    headers: {
-                        authorization: this.token,
-                    },
-                });}
+                  headers:{
+                    authorization: this.token,
+                  },
+                });
+              }
             } catch (error) {
                 throw new Error("Unidad inválida");
             }
+        },
+        async manageCat(){
+          try {
+            const categ = (
+              await this.$http.get("specificCategory", {
+                headers: {
+                  authorization: this.token,
+                },
+              })).data;
+            let existingcat=[]
+            for(let i of categ){
+              existingcat.push(i.nombre_categoriaespecifica)
+            }
+            if(!existingcat.includes(this.item.categoria_especifica)){
+              await this.$http.post('specificCategory',{
+                cod_categoriageneral: this.listaCodGen[this.listaCatGen.indexOf(this.item.categoria_general)],
+                nombre_categoriaespecifica: this.item.categoria_especifica,
+              },
+              {
+                headers:{
+                  authorization:this.token,
+                },
+              });
+            }
+          } catch (error) {
+            throw new Error("Categoría Inválida") 
+          }
         },
         alert (alertType, alertMessage){
             this.$refs.alert.showAlert(alertType, alertMessage);
         },
     },
     mounted(){
-        this.getCategories();
-        this.getUserId();
-        
+        this.getGenCategories();
+        this.getSpendingUnits();
         var validCodesItem= [32, 
                             48,49,50,51,52,53,54,55,56,57,
                             65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
@@ -401,5 +472,20 @@ export default {
   background: #999999;
   border: 0px;
 }
-.form-categ{}
+.form-categ{
+    display: flex;
+    justify-content: space-around;
+}
+.form-categ-gen{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 0 2% 0 0;
+}
+.form-categ-esp{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 0 0 0 0;
+}
 </style>

@@ -126,21 +126,31 @@ export default {
   },
   methods: {
     async getUsers() {
-      const inCharge = (
+      const deptUsers = (
         await this.$http.get(
-          `users?criterio=departamento&nombre=${localStorage.getItem("depto")}`,
-          {
-            headers: {
-              authorization: this.token,
-            },
+          `users?criterio=departamento&nombre=${localStorage.getItem('depto')}`, {
+          headers: {
+            authorization: this.token,
+          },
+        })).data;
+        for(let i of deptUsers){
+          this.listaUsuarios.push(i.nombres + ' ' + i.apellidos)
+        }
+      const usersInCharge = (
+        await this.$http.get(
+          `spendingUnit?type=name&departamento=${localStorage.getItem('depto')}`, {
+          headers: {
+            authorization: this.token,
+          },
+        })).data.datos;
+        for(let j of usersInCharge){
+          if (this.listaUsuarios.includes(j.jefe_unidad)){
+            const index=this.listaUsuarios.indexOf(j.jefe_unidad)
+            if(index > -1){
+              this.listaUsuarios.splice(index, 1)
+            }
           }
-        )
-      ).data;
-      for (let i = 0; i < inCharge.length; i++) {
-        this.listaUsuarios.push(
-          inCharge[i].nombres + " " + inCharge[i].apellidos
-        );
-      }
+        }
     },
     async submitForm() {
       try {
@@ -181,83 +191,12 @@ export default {
   },
   mounted() {
     this.getUsers();
-    var validCodesUnit = [
-      32,
-      48,
-      49,
-      50,
-      51,
-      52,
-      53,
-      54,
-      55,
-      56,
-      57,
-      65,
-      66,
-      67,
-      68,
-      69,
-      70,
-      71,
-      72,
-      73,
-      74,
-      75,
-      76,
-      77,
-      78,
-      79,
-      80,
-      81,
-      82,
-      83,
-      84,
-      85,
-      86,
-      87,
-      88,
-      89,
-      90,
-      97,
-      98,
-      99,
-      100,
-      101,
-      102,
-      103,
-      104,
-      105,
-      106,
-      107,
-      108,
-      109,
-      110,
-      111,
-      112,
-      113,
-      114,
-      115,
-      116,
-      117,
-      118,
-      119,
-      120,
-      121,
-      122,
-      193,
-      201,
-      205,
-      209,
-      211,
-      218,
-      225,
-      233,
-      237,
-      241,
-      243,
-      250,
-    ];
+    var validCodesUnit = [32, 
+                          48,49,50,51,52,53,54,55,56,57,
+                          65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
+                          97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,
+                          193,201,205,209,211,218,225,233,237,241,243,250
+                          ];
     var myTextbox1 = document.getElementById("nombreUnidad");
     myTextbox1.addEventListener(
       "keypress",

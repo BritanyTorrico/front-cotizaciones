@@ -11,6 +11,7 @@
         <div class="form__nombre">
           <input
             name="nombreRol"
+            id="nombreRol"
             :class="
               $v.dato.nombre_rol.$invalid
                 ? 'form_check-input-error'
@@ -236,6 +237,23 @@ export default {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
+  mounted(){
+    var validCodesRole= [32, 
+                            65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
+                            97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,
+                            193,201,205,209,211,218,225,233,237,241,243,250
+                            ];
+        var myTextbox1=document.getElementById("nombreRol");
+        myTextbox1.addEventListener('keypress', evt => {
+            var charCode = evt.charCode;
+            if (charCode!=0){
+                var isValid = validCodesRole.includes(charCode);
+                if (!isValid){
+                    evt.preventDefault();
+                }
+            }
+        }, false);
+  }
 };
 </script>
 
