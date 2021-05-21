@@ -25,13 +25,13 @@ export default {
 </script>
 
 <style scoped>
-.card-container {
-  margin: 5px 0 5px 0;
-  padding: 2px 0 0 0;
-  color: #030303 !important;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+.card-container{
+    margin: 5px 0 5px 0;
+    padding: 2px 0 0 0;
+    color:#030303!important;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 .card-head {
   margin: 0 0 0 0;
