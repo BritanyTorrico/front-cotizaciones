@@ -294,7 +294,7 @@ export default {
 
 form label {
   width: 300px;
-  font-weight: bold;
+
   display: inline-block;
 }
 .checkbox-style {
