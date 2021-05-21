@@ -32,18 +32,18 @@
       </div>
       <div class="form_section">
         <div class="form_name">Encargado:</div>
-        <lista-desplegable
-          nombreLista="encargadoUnidad"
-          :lista="listaUsuarios"
-          :placeholder="'Seleccione un encargado'"
-          :class="
-            $v.unit.encargado_unidad.$invalid
-              ? 'form_check-input-error'
-              : 'form_check-input'
-          "
-          required
-          v-model="unit.encargado_unidad"
-        ></lista-desplegable>
+            <lista-desplegable
+              nombreLista="encargadoUnidad"
+              :lista="listaUsuarios"
+              :placeholder="'Seleccione un encargado'"
+              :class="
+                $v.unit.encargado_unidad.$invalid
+                  ? 'form_check-input-error'
+                  : 'form_check-input'
+              "
+              required
+              v-model="unit.encargado_unidad"
+            ></lista-desplegable>
         <div class="form_check-error" v-if="!$v.unit.encargado_unidad.required">
           Campo obligatorio.
         </div>
@@ -315,6 +315,7 @@ export default {
   color: #3a3a3a;
   font-size: 14px;
   border-radius: 3px;
+  height:38px;
 }
 
 .form_check-input-error {
@@ -327,6 +328,7 @@ export default {
   color: #3a3a3a;
   font-size: 14px;
   border-radius: 3px;
+  
 }
 .form_check-input:focus {
   background: linear-gradient(to bottom, transparent, #ced6e0);
@@ -351,5 +353,8 @@ export default {
   justify-content: center;
   align-content: center;
   text-align: center;
+}
+.form-charge{
+  
 }
 </style>

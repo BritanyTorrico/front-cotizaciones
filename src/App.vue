@@ -9,23 +9,17 @@
             <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
             <b-nav-item to="/about">About</b-nav-item>
             <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
-            <b-nav-item v-if="permisoItemDeGasto" to="/registro_item"
-              >Item</b-nav-item
-            >
-            <b-nav-item v-if="permisoUnidadDeGasto" to="/registro_unidad"
-              >Unidad</b-nav-item
-            >
             <b-nav-item v-if="permisoCrearUsuario" to="/register"
               >Registrar Usuario</b-nav-item
-            >
-            <b-nav-item v-if="permisoEmpresa" to="/crear_empresa"
-              >Registrar Empresa</b-nav-item
             >
             <b-nav-item v-if="permisoCrearRol" to="/creaRol"
               >Crear Rol</b-nav-item
             >
-            <b-nav-item v-if="permisoSolicitud" to="/solicitud"
-              >Enviar Solicitud</b-nav-item
+            <b-nav-item v-if="permisoUnidadDeGasto" to="/registro_unidad"
+              >Nueva Unidad</b-nav-item
+            >
+            <b-nav-item v-if="permisoItemDeGasto" to="/registro_item"
+              >Nuevo Item</b-nav-item
             >
             <b-nav-item v-if="username" @click="cerrar()"
               >Cerrar Sesion</b-nav-item
