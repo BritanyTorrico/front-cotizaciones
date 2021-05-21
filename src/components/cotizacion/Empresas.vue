@@ -128,7 +128,7 @@
                   class="accept-button"
                   v-on:click="printDiv(company, date)"
                 >
-                  Enviar
+                  Imprimir
                 </button>
               </div>
             </li>
@@ -287,6 +287,7 @@ export default {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   border: 1px solid #c0c0c0;
   border-radius: 3px;
+  height: 35px;
 }
 .selected {
   display: flex;
@@ -406,5 +407,9 @@ export default {
 .items td {
   padding: 0.5% 1% 0.5% 1%;
   border: 1px solid #c0c0c0;
+}
+.button-disabled {
+  background: #999999;
+  border: 0px;
 }
 </style>
