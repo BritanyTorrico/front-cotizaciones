@@ -25,35 +25,37 @@
         </div>
       </div>
       <div class="form_section">
-        <div class="form_name">Categoría:</div>
-        <input
-          name="categoriaItem"
-          id="categoriaItem"
-          :class="
-            $v.item.categoria_especifica.$invalid
-              ? 'form_check-input-error'
-              : 'form_check-input'
-          "
-          list="categorias"
-          maxlength="50"
-          required
-          placeholder="Seleccione un categoría"
-          v-model="item.categoria_especifica"
-        />
-        <div
-          class="form_check-error"
-          v-if="!$v.item.categoria_especifica.required"
-        >
-          Campo obligatorio.
-        </div>
-        <datalist id="categorias">
-          <option
-            v-for="(categoria, index) in listaCategorias"
-            :key="index"
-            :value="categoria"
-            >{{ categoria }}</option
-          >
-        </datalist>
+            <div class="form_name">Categoría:</div>
+                <div class="form-categ">
+                    <input
+                    name="categoriaItem"
+                    id="categoriaItem"
+                    :class="
+                        $v.item.categoria_especifica.$invalid
+                        ? 'form_check-input-error'
+                        : 'form_check-input'
+                    "
+                    list="categorias"
+                    maxlength="50"
+                    required
+                    placeholder="Seleccione un categoría"
+                    v-model="item.categoria_especifica"
+                    />
+                    <div
+                    class="form_check-error"
+                    v-if="!$v.item.categoria_especifica.required"
+                    >
+                    Campo obligatorio.
+                    </div>
+                    <datalist id="categorias">
+                    <option
+                        v-for="(categoria, index) in listaCategorias"
+                        :key="index"
+                        :value="categoria"
+                        >{{ categoria }}</option
+                    >
+                    </datalist>
+                </div>
       </div>
       <div class="form_section">
         <div class="form_name">Descripción:</div>
@@ -95,13 +97,15 @@
           Campo obligatorio.
         </div>
       </div>
-      <button
-        :disabled="$v.item.$invalid"
-        :class="$v.item.$invalid ? 'button-disabled' : ''"
-        class="form_button"
-      >
-        Crear
-      </button>
+        <div class= item-form-button>
+            <button
+                :disabled="$v.item.$invalid"
+                :class="$v.item.$invalid ? 'button-disabled' : ''"
+                class="form_button"
+            >
+                Crear
+            </button>
+        </div>
     </form>
     <Alert ref="alert"></Alert>
   </section>
@@ -171,6 +175,7 @@ export default {
                     await this.getSpendingUnits();
                     await this.sendItemUnitData();
                     this.alert("success", "Item creado exitosamente");
+                    window.setInterval(window .location.reload(), 10000); 
                 } else {
                     this.alert("warning", "Rellene todos los datos correctamente");
                 }
@@ -232,11 +237,11 @@ export default {
         this.getUserId();
         
         var validCodesItem= [32, 
-                         48,49,50,51,52,53,54,55,56,57,
-                         65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
-                         97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,
-                         193,201,205,209,211,218,225,233,237,241,243,250
-                        ];
+                            48,49,50,51,52,53,54,55,56,57,
+                            65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
+                            97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,
+                            193,201,205,209,211,218,225,233,237,241,243,250
+                            ];
         var myTextbox1=document.getElementById("nombreItem");
         myTextbox1.addEventListener('keypress', evt => {
             var charCode = evt.charCode;
@@ -269,6 +274,7 @@ export default {
 <style scoped>
 .reg_item {
   background-color: #f7f6f6;
+  padding: 20px 40px 20px 40px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -348,13 +354,13 @@ export default {
   margin: auto;
   display: block;
   background-color: #0c59cf;
-  padding: 2% 19% 2% 19%;
   border-radius: 22px;
   color: #fafafa;
   font-size: 22px;
   font-weight: bold;
   border: 0px;
-  width: 45%;
+  width: 40%;
+  padding: 1.3% 0;
 }
 
 .form_check-input {
@@ -395,4 +401,5 @@ export default {
   background: #999999;
   border: 0px;
 }
+.form-categ{}
 </style>

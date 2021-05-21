@@ -1,28 +1,31 @@
 <template>
   <div class="inbox">
-    <div class="inbox-container">
-      <div class="inbox-cards">
-        <div class="card-side">
-          <div class="card-index" v-for="(req, i) in inboxData" :key="i">
-            <div class="single-card-container " v-on:click="showRequest(i)">
-              <CardCot
-                :name="req.nombre_solicitud"
-                :date="req.fecha_solicitud"
-                :author="req.usuario_solicitante"
-                :description="req.detalle_solicitud"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="inbox-form">
-        <div v-if="selectedRequest.name === ''"></div>
-        <div v-else>
-          <CotForm :request="selectedRequest" />
-        </div>
+      <div class="inbox-container">
+              <div class="inbox-cards">
+                  <div class="card-side">
+                      <div class="card-index" v-for="(req,i) in inboxData" :key="i">
+                          <div class="single-card-container " v-on:click=showRequest(i) :class="selectedRequest.name==req.nombre_solicitud ? 'selected-card' :''">
+                              <CardCot
+                                :name="req.nombre_solicitud"
+                                :date="req.fecha_solicitud"
+                                :author="req.usuario_solicitante"
+                                :description="req.detalle_solicitud"
+                              />
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="inbox-form">
+                  <div v-if="selectedRequest.name===''">
+
+                  </div>
+                  <div v-else>
+                      <CotForm 
+                      :request="selectedRequest"/>
+                  </div>
+              </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -109,8 +112,8 @@ export default {
 </script>
 
 <style scoped>
-.inbox {
-  position: relative;
+.inbox{
+    position: relative;
 }
 .inbox-container {
   padding: 0px !important;
@@ -128,9 +131,11 @@ export default {
   margin-bottom: 10px;
   width: 100%;
 }
-.inbox-cards {
-  width: 30%;
-  display: flex;
+.inbox-cards{
+    width: 30%;
+    display: flex;
+    height: 42rem;
+    overflow: auto;
 }
 .inbox-form {
   width: 70%;
@@ -148,5 +153,8 @@ export default {
 }
 .card-side {
   width: 100%;
+}
+.selected-card{
+    background: #b4cace;
 }
 </style>

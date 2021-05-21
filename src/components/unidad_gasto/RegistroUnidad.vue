@@ -35,6 +35,7 @@
         <lista-desplegable
           nombreLista="encargadoUnidad"
           :lista="listaUsuarios"
+          :placeholder="'Seleccione un encargado'"
           :class="
             $v.unit.encargado_unidad.$invalid
               ? 'form_check-input-error'
@@ -329,7 +330,6 @@ export default {
 .reg_unit input ::placeholder,
 .reg_unit textarea ::placeholder {
   color: #999999;
-  font-size: 20px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
@@ -358,13 +358,13 @@ export default {
   margin: auto;
   display: block;
   background-color: #0c59cf;
-  padding: 2% 19% 2% 19%;
   border-radius: 22px;
   color: #fafafa;
   font-size: 22px;
   font-weight: bold;
   border: 0px;
-  width: 45%;
+  width: 40%;
+  padding: 1.3% 0;
 }
 .form_check-input {
   width: 100%;
@@ -406,5 +406,11 @@ export default {
 }
 .form_input {
   width: 100%;
+}
+.unit_form_button{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
 }
 </style>

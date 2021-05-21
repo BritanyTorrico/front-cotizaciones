@@ -13,16 +13,17 @@
         </div>
 
         <div class="form__datos">
-          <div class="form_title">
-            <h1>Registrar Usuario</h1>
+          <div class="titulo">
+            <div class="tii"><h2 class="item_title">Registrar Usuario</h2></div>
+
             <div class="form_desc">
-              Ingrese los datos de un nuevo item de gasto
+              Ingrese los datos del usuario.
             </div>
           </div>
           <div class="form__section">
             <div class="form__name">
-              <label
-                ><div class="formulario_label">Nombre:</div>
+              <div class="formulario_label">Nombre:</div>
+              <div class="tam-input">
                 <input
                   :class="
                     $v.users.nombres.$invalid
@@ -33,7 +34,8 @@
                   placeholder="Ingrese su nombre"
                   v-model="users.nombres"
                 />
-              </label>
+              </div>
+
               <div class="form_check-error" v-if="!$v.users.nombres.required">
                 Campo obligatorio.
               </div>
@@ -49,8 +51,8 @@
               </div>
             </div>
             <div class="form__name">
-              <label
-                ><div class="formulario_label">Apellidos:</div>
+              <div class="formulario_label">Apellidos:</div>
+              <div class="tam-input">
                 <input
                   :class="
                     $v.users.apellidos.$invalid
@@ -62,7 +64,8 @@
                   required
                   v-model="users.apellidos"
                 />
-              </label>
+              </div>
+
               <div class="form_check-error" v-if="!$v.users.apellidos.required">
                 Campo obligatorio.
               </div>
@@ -86,8 +89,8 @@
           </div>
           <div class="form__section">
             <div class="form__name">
-              <label
-                ><div class="formulario_label">Nombre de usuario:</div>
+              <div class="formulario_label">Nombre de usuario:</div>
+              <div class="tam-input">
                 <input
                   :class="
                     $v.users.nombre_usuario.$invalid
@@ -99,7 +102,8 @@
                   v-model="users.nombre_usuario"
                   required
                 />
-              </label>
+              </div>
+
               <div
                 class="form_check-error"
                 v-if="!$v.users.nombre_usuario.required"
@@ -129,8 +133,8 @@
               </div>
             </div>
             <div class="form__name">
-              <label
-                ><div class="formulario_label">Celular:</div>
+              <div class="formulario_label">Celular:</div>
+              <div class="tam-input">
                 <input
                   :class="
                     $v.users.celular.$invalid
@@ -141,7 +145,8 @@
                   placeholder="Ingrese su celular"
                   v-model="users.celular"
                 />
-              </label>
+              </div>
+
               <div class="form_check-error" v-if="!$v.users.celular.integer">
                 Solo se aceptan valores numericos.
               </div>
@@ -558,7 +563,7 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
+<style scoped>
 * {
   margin: 0;
   padding: 0;
@@ -566,7 +571,6 @@ export default {
 .flex-container {
   display: flex;
   background-color: #ecf0f1;
-
   justify-content: center;
   align-content: center;
   align-items: center;
@@ -584,17 +588,6 @@ export default {
   width: 70%;
   margin-left: 40px;
   margin-right: 40px;
-}
-.form_title {
-  color: var(--color-title);
-  text-align: left;
-  font-size: 14px;
-  border-bottom: 1px solid var(--color-title);
-  box-shadow: 0 1px 0 0 gray;
-}
-.form_title h1 {
-  padding-top: 30px;
-  padding-bottom: 12px;
 }
 
 .form__input {
@@ -666,7 +659,7 @@ export default {
 }
 .form__name {
   width: 100%;
-  padding-right: 50px;
+
   text-align: left;
 }
 .boton {
@@ -723,7 +716,29 @@ export default {
   padding-bottom: 5px;
   border-bottom: 2px solid #0d58cf;
   width: 100%;
+
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.item_title {
+  text-align: left;
+  color: #3d8af7;
+  font-size: 36px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  margin-top: 0;
+}
+.titulo {
+  text-align: left;
+  width: 100%;
+  margin-top: 0;
+}
+.tam-input {
+  width: 80%;
+}
+.tii {
+  margin: 0;
+  padding: 0;
 }
 </style>

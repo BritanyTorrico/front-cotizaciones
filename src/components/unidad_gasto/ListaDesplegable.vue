@@ -9,7 +9,7 @@
         selected="true"
         class="container__list__placeholder"
         disabled="disabled"
-        >Seleccione una encargado</option
+        >{{ placeholder }}</option
       >
       <option
         class="container__list__option"
@@ -34,6 +34,7 @@ export default {
     nombreLista: String,
     nombre: String,
     lista: Array,
+    placeholder: String,
   },
 };
 </script>

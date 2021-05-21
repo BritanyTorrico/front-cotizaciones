@@ -3,7 +3,7 @@
     <b-navbar toggleable="md" type="dark" variant="success">
       <b-container>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-        <b-navbar-brand href="#">UMSS</b-navbar-brand>
+        <b-navbar-brand href="/">UMSS</b-navbar-brand>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav id="nav">
             <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
@@ -98,7 +98,7 @@ export default {
 }
 :root {
   --color-title: #3d8af7;
-  --color-name: #7c7c7c;
+  --color-name: #3f4b5b;
   --color-line: #c0c0c0;
   --fondo-gris-claro: #f7f6f6;
 }
