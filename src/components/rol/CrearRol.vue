@@ -1,23 +1,29 @@
 <template>
   <section class="crear_rol">
-    <h2 class="rol_title">Crear rol</h2>
+    <div class="titulo">
+      <h2 class="item_title">Crear Rol</h2>
+      <div class="form_desc"></div>
+    </div>
+
     <form class="form_crear" @submit.prevent="submitForm" :key="componentKey">
       <div class="form_section">
         <div class="form_name">Nombre de rol:</div>
-        <input
-          name="nombreRol"
-          :class="
-            $v.dato.nombre_rol.$invalid
-              ? 'form_check-input-error'
-              : 'form_check-input'
-          "
-          type="text"
-          minlength="5"
-          maxlength="25"
-          required
-          placeholder="Ingrese nombre aquí"
-          v-model="dato.nombre_rol"
-        />
+        <div class="form__nombre">
+          <input
+            name="nombreRol"
+            :class="
+              $v.dato.nombre_rol.$invalid
+                ? 'form_check-input-error'
+                : 'form__input'
+            "
+            type="text"
+            minlength="5"
+            maxlength="25"
+            required
+            placeholder="Ingrese nombre aquí"
+            v-model="dato.nombre_rol"
+          />
+        </div>
 
         <div class="form_check-error" v-if="!$v.dato.nombre_rol.required">
           Campo obligatorio.
@@ -257,25 +263,6 @@ export default {
   width: 100%;
 }
 
-.crear_rol input {
-  background-color: #f7f6f6;
-  border-style: none none solid none;
-  border: 0px 0px 5px 0px;
-  border-color: #3a3a3a;
-  border-radius: 3px;
-  padding: 8px;
-  width: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
-.crear_rol input ::placeholder {
-  color: #999999;
-  font-size: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
 .form_name {
   color: #3f4b5b;
   font-size: 24px;
@@ -313,7 +300,16 @@ form label {
 .checkbox-style {
   margin-top: 20px;
 }
-
+.form__input {
+  width: 100%;
+  padding: 6px;
+  margin: 6px 6px;
+  border: none;
+  border-bottom: 2px solid var(--color-line);
+  background-color: transparent !important;
+  color: black;
+  font-size: 14px;
+}
 .form_check-input {
   width: 100%;
   padding: 3px;
@@ -360,5 +356,33 @@ form label {
 .laber-check {
   width: 95%;
   float: left;
+}
+.form_desc {
+  text-align: left;
+  color: #0d58cf;
+  font-size: 18px;
+  font-weight: 400;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #0d58cf;
+  width: 100%;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.item_title {
+  text-align: left;
+  color: #3d8af7;
+  font-size: 36px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.titulo {
+  text-align: left;
+  width: 100%;
+}
+.form__nombre {
+  margin-top: 10px;
+  width: 60%;
 }
 </style>
