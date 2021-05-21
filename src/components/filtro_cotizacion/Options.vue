@@ -58,21 +58,16 @@
                 </div>
           </div>
       </div>
-      <div class="filter-inbox-container">
-          <InboxFiltro :inboxData="this.filteredInbox" :items="this.filteredItems"/>
-      </div>
   </div>
 </template>
 
 <script>
-import InboxFiltro from './Inbox.vue'
 import { mapState } from "vuex";
 export default {
     name: "Options",
     computed: {
     ...mapState(["token"]),
   },
-  components: { InboxFiltro },
   data(){
       return{
           months: 100,
@@ -169,6 +164,7 @@ export default {
                 }
                 this.filteredItems.push(currentItems)
           }
+          this.$emit("sendinboxdata", this.filteredInbox, this.filteredItems)
       }, 
       async setMarketList(){
           const resp= (await this.$http.get('market', {
@@ -204,7 +200,7 @@ export default {
 .filter-categories{
     display: flex;
     justify-content: space-between;
-    padding: 0 10% 5% 10%;
+    padding: 0 10% 5% 3%;
 }
 .option-title{
     text-align: left;
@@ -215,6 +211,7 @@ export default {
 .filter-date{
     display: flex;
     flex-direction: column;
+    width: 20%;
 }
 .date-set{
     display: flex;
@@ -229,6 +226,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    width: 20%;
 }
 .item-set{
     display: flex;
@@ -244,7 +242,7 @@ export default {
 }
 .filter-market{
     font-size: 14px;
-    
+    width: 40%;
 }
 .market-cat{
     padding: 2% 5% 0 0;
@@ -253,5 +251,11 @@ export default {
 .market-comp{
     padding: 2% 0 0 3%;
     width: 50%;
+}
+.market-list{
+    height: 25px;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 1px solid #999999;
 }
 </style>

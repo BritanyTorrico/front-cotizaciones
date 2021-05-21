@@ -4,7 +4,7 @@
               <div class="inbox-cards">
                   <div class="card-side">
                       <div class="card-index" v-for="(cot,i) in inboxData" :key="i">
-                          <div class="single-card-container " v-on:click=showCot(i) :class="selectedRequest.name==req.nombre_solicitud ? 'selected-card' :''">
+                          <div class="single-card-container " v-on:click=showCot(i) :class="selectedCot.name==cot.nombre_cotizacion ? 'selected-card' :''">
                               <CardFiltro
                                 :name="cot.nombre_cotizacion"
                                 :author="cot.autor_solicitud"
@@ -15,7 +15,7 @@
                   </div>
               </div>
               <div class="inbox-selected">
-                  <div v-if="selectedRequest.name===''">
+                  <div v-if="selectedCot.name===''">
                   </div>
                   <div v-else>
                       <VistaCot
