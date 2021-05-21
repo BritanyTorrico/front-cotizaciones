@@ -13,10 +13,10 @@
         </div>
 
         <div class="form__datos">
-          <div class="form_title">
-            <h1>Registrar Usuario</h1>
+          <div class="titulo">
+            <h2 class="item_title">Registrar Usuario</h2>
             <div class="form_desc">
-              Ingrese los datos de un nuevo item de gasto
+              Ingrese los datos del usuario.
             </div>
           </div>
           <div class="form__section">
@@ -585,17 +585,6 @@ export default {
   margin-left: 40px;
   margin-right: 40px;
 }
-.form_title {
-  color: var(--color-title);
-  text-align: left;
-  font-size: 14px;
-  border-bottom: 1px solid var(--color-title);
-  box-shadow: 0 1px 0 0 gray;
-}
-.form_title h1 {
-  padding-top: 30px;
-  padding-bottom: 12px;
-}
 
 .form__input {
   width: 100%;
@@ -723,7 +712,22 @@ export default {
   padding-bottom: 5px;
   border-bottom: 2px solid #0d58cf;
   width: 100%;
+
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.item_title {
+  text-align: left;
+  color: #3d8af7;
+  font-size: 36px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  margin-top: 0;
+}
+.titulo {
+  text-align: left;
+  width: 100%;
+  margin-top: 0;
 }
 </style>
