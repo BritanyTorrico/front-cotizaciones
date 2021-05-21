@@ -24,6 +24,9 @@
               <td style="border:1px solid;"></td>
               <td style="border:1px solid;"></td>
             </tr>
+            <tr v-for="m in 5" :key="m">
+              <td v-for="n in 5" :key="n" style="border:1px solid; height:25px;"></td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -136,7 +139,7 @@
   </section>
 </template>
 
-<script>
+<script scoped>
 import { mapState } from "vuex";
 import { required, maxLength, minLength } from "vuelidate/lib/validators";
 export default {
@@ -397,6 +400,8 @@ export default {
 .items th {
   padding: 1% 2% 1% 2%;
   border: 1px solid #d1d0d0;
+  width: 20%;
+  
 }
 .items td {
   padding: 0.5% 1% 0.5% 1%;

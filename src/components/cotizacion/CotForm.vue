@@ -57,7 +57,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .cot-form{
   background-color: #f1f2f6;
     margin: 40px;

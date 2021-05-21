@@ -24,7 +24,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .card-container{
     margin: 5px 0 5px 0;
     padding: 2px 0 0 0;

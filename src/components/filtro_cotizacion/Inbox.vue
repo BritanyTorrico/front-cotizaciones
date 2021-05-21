@@ -3,13 +3,12 @@
       <div class="inbox-container">
               <div class="inbox-cards">
                   <div class="card-side">
-                      <div class="card-index" v-for="(req,i) in inboxData" :key="i">
+                      <div class="card-index" v-for="(cot,i) in inboxData" :key="i">
                           <div class="single-card-container " v-on:click=showCot(i) :class="selectedRequest.name==req.nombre_solicitud ? 'selected-card' :''">
                               <CardFiltro
-                                :name="req.nombre_solicitud"
-                                :date="req.fecha_solicitud"
-                                :author="req.usuario_solicitante"
-                                :description="req.detalle_solicitud"
+                                :name="cot.nombre_cotizacion"
+                                :author="cot.autor_solicitud"
+                                :status="cot.estado_cotizacion"
                               />
                           </div>
                       </div>
@@ -44,8 +43,9 @@ export default {
                 name: "",
                 date: "",
                 author: "",
+                status: "",
                 itemList: [],
-                companies: [],
+                company: "",
             },
         }
     },
@@ -55,11 +55,12 @@ export default {
     },
     methods: {
         async showCot(i){
-            this.selectedCot.name=this.inboxData[i].nombre_solicitud;
-            this.selectedCot.date=this.inboxData[i].fecha_solicitud;
-            this.selectedCot.author=this.inboxData[i].usuario_solicitante;
-            this.selectedCot.description=this.inboxData[i].detalle_solicitud;
+            this.selectedCot.name=this.inboxData[i].nombre_cotizacion;
+            this.selectedCot.date=this.inboxData[i].fecha_cotizacion;
+            this.selectedCot.author=this.inboxData[i].autor_solicitud;
+            this.selectedCot.status=this.inboxData[i].estado_cotizacion;
             this.selectedCot.itemList=this.items[i];
+            this.selectedCot.company=this.inboxData[i].empresa;
         }
     },
     mounted (){
@@ -67,7 +68,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .inbox{
     position: relative;
 }

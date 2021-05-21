@@ -2,10 +2,9 @@
   <div class="card-container">
       <div class="card-head">
           <h3>{{ name }}</h3>
-          <div class="card-date">{{ date }}</div>
       </div>
       <div class="card-author">{{ author }}</div>
-      <div class="card-description">{{ description }}</div>
+      <div class="card-status">{{ status }}</div>
   </div>
 </template>
 
@@ -17,14 +16,13 @@ export default {
     },
     props: {
         name: String,
-        date: String,
         author: String,
-        description: String,
+        status: String,
     }
 }
 </script>
 
-<style>
+<style scoped>
 .card-container{
     margin: 5px 0 5px 0;
     padding: 2px 0 0 0;
@@ -61,15 +59,19 @@ h3{
     text-align: left;
     margin: 5px 0 10px 0;
 }
-.card-description{
+.card-status{
+    font-size: 16px;
     align-self: flex-start;
-    font-size: 15px;
-    color: #909094!important;
-    margin: 10px 0 0 0;
-    line-height: 1.5em;
-    height: 4.5em;
-    word-wrap: break-word;
-    overflow: hidden;
+    font-weight: 500;
     text-align: left;
+    margin: 5px 0 10px 0;
+    color:#242424;
+}
+.card-company{
+    font-size: 16px;
+    align-self: flex-start;
+    font-weight: 550;
+    text-align: left;
+    margin: 5px 0 10px 0;
 }
 </style>

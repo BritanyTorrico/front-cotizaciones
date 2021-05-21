@@ -9,31 +9,34 @@
       </div>
       <h5>Items: </h5>
       <div class="items">
-          <table class ="items-list">
-              <thead>
-                  <tr>
-                    <th>Cantidad</th>
-                    <th>Item</th>
-                    <th>Detalle</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr v-for="(item, index) in cot.itemList" :key="index">
-                      <td>{{ item.cantidad_solicitud }}</td>
-                      <td>{{ item.unidad_solicitud }}</td>
-                      <td>{{ item.detalle_solicitud }}</td>
-                  </tr>
-              </tbody>
-          </table>
+          <table
+          class="items-list"
+          style="border:1px solid;border-collapse:collapse"
+        >
+          <thead>
+            <tr>
+              <th style="border:1px solid;">Cantidad</th>
+              <th style="border:1px solid;">Unidad</th>
+              <th style="border:1px solid;">Detalle</th>
+              <th style="border:1px solid;">Unitario</th>
+              <th style="border:1px solid;">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in items" :key="index">
+              <td style="border:1px solid;">{{ item.cantidad_solicitud }}</td>
+              <td style="border:1px solid;">{{ item.unidad_solicitud }}</td>
+              <td style="border:1px solid;">{{ item.detalle_solicitud }}</td>
+              <td style="border:1px solid;"></td>
+              <td style="border:1px solid;"></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div class="confirmed-companies">
-                  <div class="confirmed-title">Empresas confirmadas:</div>
-                  <ul class="company-list">
-                      <li v-for="(company, index) in companies" :key="index" class="list-item">
-                          {{ company }}
-                      </li>
-                  </ul>
-              </div>
+                  <div class="confirmed-title">Empresa:</div>
+                  <div class="copany-name">{{ cot.company }}</div>
+        </div>
   </div>
 </template>
 
@@ -54,7 +57,7 @@ export default {
             date: String,
             author: String,
             itemList: Array,
-            companies: Array,
+            company: String,
         }
     },
     methods: {
@@ -66,7 +69,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .single-request-details{
     background: #fff;
     margin: 40px;
@@ -135,14 +138,12 @@ h5{
     font-weight: 500;
     padding-bottom: 4%;
 }
-.company-list{
+.company-name{
     color: #030303;
     list-style-position: inside;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-}
-.list-item{
     padding: 0 0 3% 15%;
     font-size: 16px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
