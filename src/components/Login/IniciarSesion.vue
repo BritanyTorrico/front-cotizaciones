@@ -143,12 +143,10 @@ export default {
           this.$store.commit("addCustomer", categ[i].nombre_funcion);
         }
       } catch (error) {
-        console.log(error);
         this.alert("warning", "Algo salio mal");
       }
     },
     async storeLocalData() {
-      console.log(this.users.nombre_usuario);
       try {
         const id = (
           await this.$http.get(`/users/name/${this.users.nombre_usuario}`, {
@@ -162,18 +160,14 @@ export default {
         localStorage.setItem("facu", id.facultad);
         localStorage.setItem("depto", id.departamento);
       } catch (error) {
-        console.log(error);
         this.alert("warning", error);
       }
     },
     async verificarDatos() {
       try {
-        console.log(this.users.nombre_usuario);
-        console.log(this.users.contrasena);
         const tokensito = await this.$http.get(
           `secret?user=${this.users.nombre_usuario}&pass=${this.users.contrasena}`
         );
-        console.log(tokensito.data);
         await this.login(tokensito.data);
       } catch (error) {
         throw new Error("Datos invalidos");
@@ -192,11 +186,9 @@ export default {
           await this.storeLocalData();
           this.$router.push("/");
         } else {
-          console.log("datos incorrectos");
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
-        console.log("ERRROR");
         this.alert("warning", error);
       }
     },

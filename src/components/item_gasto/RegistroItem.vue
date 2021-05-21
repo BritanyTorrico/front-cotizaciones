@@ -205,7 +205,6 @@ export default {
             authorization: this.token,
           },
         })).data;
-        console.log(this.listaCodGen[this.listaCatGen.indexOf(this.item.categoria_general)]);
         for (let j of categ){
             if (j.cod_categoriageneral==this.listaCodGen[this.listaCatGen.indexOf(this.item.categoria_general)]){
               this.listaCategorias.push(j.nombre_categoriaespecifica)

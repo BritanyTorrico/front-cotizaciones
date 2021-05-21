@@ -213,7 +213,6 @@ export default {
       }
     },
     async showData(i) {
-      console.log(i);
       this.empresa.nombre = this.companiesData[i].nombre_empresa;
       this.empresa.nit = this.companiesData[i].nit_empresa;
       this.empresa.representante = this.companiesData[i].representante_empresa;

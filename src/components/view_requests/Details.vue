@@ -137,10 +137,6 @@ export default {
     },
     async sendData() {
       try {
-        console.log("cod: " + this.request.cod);
-        console.log("nombre: " + "Informe " + this.request.name);
-        console.log("just: " + this.response);
-        console.log("acept: " + this.valid);
         await this.$http.post(
           "report?type=codigo",
           {

@@ -159,11 +159,8 @@ export default {
     async submitForm() {
       this.getFunciones();
       try {
-        console.log("comienza envio");
 
         if (!this.$v.dato.$invalid && this.funciones.length > 0) {
-          console.log("es valido");
-          console.log(this.funciones[0]);
           await this.sendRolData();
           for (let i = 0; i < this.funciones.length; i++) {
             await this.sendFuncData(i);
@@ -172,7 +169,6 @@ export default {
           this.dato.nombre_rol = null;
           this.forceRerender();
         } else {
-          console.log("es invalido");
           this.alert("warning", "Seleccione minimamente un permiso.");
         }
       } catch (error) {
@@ -181,7 +177,6 @@ export default {
     },
     async sendRolData() {
       try {
-        console.log("comienza registro de rol");
         await this.$http.post(
           "roles",
           {
@@ -193,15 +188,11 @@ export default {
             },
           }
         );
-        console.log("termina registro de rol");
       } catch (error) {
-        console.log("error en rol");
       }
     },
     async sendFuncData(index) {
       try {
-        console.log("comienza a enviar funcion " + index);
-        console.log(this.funciones[index]);
         await this.$http.post(
           "rolePerFunctions",
           {
@@ -214,9 +205,7 @@ export default {
             },
           }
         );
-        console.log("termina de enviar funcion " + index);
       } catch (error) {
-        console.log("error en funcion");
         throw new Error("Este rol ya esta registrado");
       }
     },

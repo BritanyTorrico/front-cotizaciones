@@ -434,7 +434,6 @@ export default {
               },
             }
           );
-          console.log("pasa el request");
           await this.$http.post(
             `itemsPerRequest`,
             {
@@ -447,7 +446,6 @@ export default {
               },
             }
           );
-          console.log("pasa el itemPerRequest");
           this.alert("success", "Solicitud enviada");
           //borrar todos los campos del fomrulario
 
@@ -466,7 +464,6 @@ export default {
         }
       } catch (error) {
         this.alert("warning", error);
-        console.log(error);
         this.alert("warning", "Algo salio mal");
       }
     },

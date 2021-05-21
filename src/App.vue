@@ -58,7 +58,6 @@ export default {
     cerrar() {
       this.$store.commit("setUser", false);
       localStorage.setItem("username", this.username);
-      console.log("hlaa  " + localStorage.getItem("username"));
 
       localStorage.removeItem("username");
       localStorage.removeItem("nombreUsuario");

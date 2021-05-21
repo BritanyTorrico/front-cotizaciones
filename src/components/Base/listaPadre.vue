@@ -44,7 +44,6 @@ export default {
       this.segundaLista.push("1", "2", "3");
       this.EventBus.$emit("obtener", this.segundaLista);
       this.segundaLista = [];
-      console.log("otra lista");
     },
   },
 };
