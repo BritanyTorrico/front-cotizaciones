@@ -11,6 +11,7 @@
         <div class="form__nombre">
           <input
             name="nombreRol"
+            id="nombreRol"
             :class="
               $v.dato.nombre_rol.$invalid
                 ? 'form_check-input-error'
@@ -39,67 +40,54 @@
         <div class="form_name">Seleccione los Permisos:</div>
 
         <div class="checkbox-style">
-          <div class="input-check">
-            <input
-              type="checkbox"
-              id="gestionUsuario"
-              name="funcion"
-              value="Gestionar Usuarios"
-            />
-          </div>
+          <div class="form-function">
+              <div class="input-check">
+                <input
+                  type="checkbox"
+                  id="gestionUsuario"
+                  name="funcion"
+                  value="Gestionar Usuarios"
+                />
+              </div>
 
-          <label for="gestionUsuario">Crear Usuarios</label><br />
-          <div class="input-check">
-            <input
-              type="checkbox"
-              id="gestionRol"
-              name="funcion"
-              value="Gestionar Roles"
-            />
+              <label for="gestionUsuario">Registrar Usuarios</label><br />
           </div>
+            <div class="form-function">
+              <div class="input-check">
+                <input
+                  type="checkbox"
+                  id="gestionRol"
+                  name="funcion"
+                  value="Gestionar Roles"
+                />
+              </div>
 
-          <label for="gestionRol">Crear Rol</label><br />
-          <div class="input-check">
-            <input
-              type="checkbox"
-              id="gestionUnidades"
-              name="funcion"
-              value="Gestionar unidadDeGasto"
-            />
-          </div>
+              <label for="gestionRol">Crear Roles</label><br />
+            </div>
+            <div class="form-function">
+              <div class="input-check">
+                <input
+                  type="checkbox"
+                  id="gestionUnidades"
+                  name="funcion"
+                  value="Gestionar unidadDeGasto"
+                />
+              </div>
 
-          <label for="gestionUnidades">Registro de Unidades de Gasto</label
-          ><br />
-          <div class="input-check">
-            <input
-              type="checkbox"
-              id="gestionItems"
-              name="funcion"
-              value="Gestionar itemsDeGasto"
-            />
-          </div>
-
-          <label for="gestionItems">Registro de Items de Gasto</label><br />
-          <div class="input-check">
-            <input
-              type="checkbox"
-              id="empresa"
-              name="funcion"
-              value="Gestionar Empresa"
-            />
-          </div>
-
-          <label for="empresa">Registrar Empresas</label><br />
-          <div class="input-check">
-            <input
-              type="checkbox"
-              id="solicitud"
-              name="funcion"
-              value="Gestionar Solicitud"
-            />
-          </div>
-
-          <label for="solicitud">Enviar Solicitudes</label><br />
+              <label for="gestionUnidades">Añadir Unidades de Gasto</label
+              ><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="gestionItems"
+                    name="funcion"
+                    value="Gestionar itemsDeGasto"
+                  />
+                </div>
+                <label for="gestionItems">Añadir Items de Gasto</label><br />
+            </div>
         </div>
       </div>
       <div class="botoncito">
@@ -236,6 +224,23 @@ export default {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
+  mounted(){
+    var validCodesRole= [32, 
+                            65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
+                            97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,
+                            193,201,205,209,211,218,225,233,237,241,243,250
+                            ];
+        var myTextbox1=document.getElementById("nombreRol");
+        myTextbox1.addEventListener('keypress', evt => {
+            var charCode = evt.charCode;
+            if (charCode!=0){
+                var isValid = validCodesRole.includes(charCode);
+                if (!isValid){
+                    evt.preventDefault();
+                }
+            }
+        }, false);
+  }
 };
 </script>
 
@@ -293,9 +298,13 @@ export default {
 }
 
 form label {
-  width: 300px;
-
+  width: 50%;
+  font-size: 17px;
   display: inline-block;
+  text-align: start;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  padding: 0 0 1.2% 0;
 }
 .checkbox-style {
   margin-top: 20px;
@@ -350,8 +359,9 @@ form label {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .input-check {
-  width: 5%;
+  width: 2.7%;
   float: left;
+  
 }
 .laber-check {
   width: 95%;

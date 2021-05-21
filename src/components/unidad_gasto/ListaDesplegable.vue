@@ -4,12 +4,13 @@
       required
       v-on:input="$emit('input', $event.target.value)"
       class="container__list"
+      :class="value===null ? 'container-list-placeholder' : ''"
     >
       <option
         selected="true"
         class="container__list__placeholder"
         disabled="disabled"
-        >Seleccione una encargado</option
+        >{{ placeholder }}</option
       >
       <option
         class="container__list__option"
@@ -34,6 +35,7 @@ export default {
     nombreLista: String,
     nombre: String,
     lista: Array,
+    placeholder: String,
   },
 };
 </script>
@@ -47,18 +49,28 @@ export default {
 .container__list {
   width: 100%;
   color: #3a3a3a;
-  padding: 6px 6px 6px 0;
+  padding: 1.3% 1.3% 1.3% 0;
   background: #f7f6f6;
   font-size: 14px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  border: none;
+    border: none;
   border-radius: 3px;
 }
 .container__list :default {
-  color: #999999 !important;
-  font-size: 14px;
+  color: #999999!important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    
+  
+}
+.container-list-placeholder{
+  color: #727272!important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.container__list__option{
+  font-weight: 600;
+  border: 1px solid #DBDADA;
 }
 </style>

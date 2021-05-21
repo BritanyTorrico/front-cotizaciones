@@ -24,6 +24,9 @@
               <td style="border:1px solid;"></td>
               <td style="border:1px solid;"></td>
             </tr>
+            <tr v-for="m in 5" :key="m">
+              <td v-for="n in 5" :key="n" style="border:1px solid; height:25px;"></td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -125,7 +128,7 @@
                   class="accept-button"
                   v-on:click="printDiv(company, date)"
                 >
-                  Enviar
+                  Imprimir
                 </button>
               </div>
             </li>
@@ -136,7 +139,7 @@
   </section>
 </template>
 
-<script>
+<script scoped>
 import { mapState } from "vuex";
 import { required, maxLength, minLength } from "vuelidate/lib/validators";
 export default {
@@ -284,6 +287,7 @@ export default {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   border: 1px solid #c0c0c0;
   border-radius: 3px;
+  height: 35px;
 }
 .selected {
   display: flex;
@@ -397,9 +401,15 @@ export default {
 .items th {
   padding: 1% 2% 1% 2%;
   border: 1px solid #d1d0d0;
+  width: 20%;
+  
 }
 .items td {
   padding: 0.5% 1% 0.5% 1%;
   border: 1px solid #c0c0c0;
+}
+.button-disabled {
+  background: #999999;
+  border: 0px;
 }
 </style>

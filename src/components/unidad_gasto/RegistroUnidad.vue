@@ -32,17 +32,18 @@
       </div>
       <div class="form_section">
         <div class="form_name">Encargado:</div>
-        <lista-desplegable
-          nombreLista="encargadoUnidad"
-          :lista="listaUsuarios"
-          :class="
-            $v.unit.encargado_unidad.$invalid
-              ? 'form_check-input-error'
-              : 'form_check-input'
-          "
-          required
-          v-model="unit.encargado_unidad"
-        ></lista-desplegable>
+            <lista-desplegable
+              nombreLista="encargadoUnidad"
+              :lista="listaUsuarios"
+              :placeholder="'Seleccione un encargado'"
+              :class="
+                $v.unit.encargado_unidad.$invalid
+                  ? 'form_check-input-error'
+                  : 'form_check-input'
+              "
+              required
+              v-model="unit.encargado_unidad"
+            ></lista-desplegable>
         <div class="form_check-error" v-if="!$v.unit.encargado_unidad.required">
           Campo obligatorio.
         </div>
@@ -125,21 +126,31 @@ export default {
   },
   methods: {
     async getUsers() {
-      const inCharge = (
+      const deptUsers = (
         await this.$http.get(
-          `users?criterio=departamento&nombre=${localStorage.getItem("depto")}`,
-          {
-            headers: {
-              authorization: this.token,
-            },
+          `users?criterio=departamento&nombre=${localStorage.getItem('depto')}`, {
+          headers: {
+            authorization: this.token,
+          },
+        })).data;
+        for(let i of deptUsers){
+          this.listaUsuarios.push(i.nombres + ' ' + i.apellidos)
+        }
+      const usersInCharge = (
+        await this.$http.get(
+          `spendingUnit?type=name&departamento=${localStorage.getItem('depto')}`, {
+          headers: {
+            authorization: this.token,
+          },
+        })).data.datos;
+        for(let j of usersInCharge){
+          if (this.listaUsuarios.includes(j.jefe_unidad)){
+            const index=this.listaUsuarios.indexOf(j.jefe_unidad)
+            if(index > -1){
+              this.listaUsuarios.splice(index, 1)
+            }
           }
-        )
-      ).data;
-      for (let i = 0; i < inCharge.length; i++) {
-        this.listaUsuarios.push(
-          inCharge[i].nombres + " " + inCharge[i].apellidos
-        );
-      }
+        }
     },
     async submitForm() {
       try {
@@ -180,83 +191,12 @@ export default {
   },
   mounted() {
     this.getUsers();
-    var validCodesUnit = [
-      32,
-      48,
-      49,
-      50,
-      51,
-      52,
-      53,
-      54,
-      55,
-      56,
-      57,
-      65,
-      66,
-      67,
-      68,
-      69,
-      70,
-      71,
-      72,
-      73,
-      74,
-      75,
-      76,
-      77,
-      78,
-      79,
-      80,
-      81,
-      82,
-      83,
-      84,
-      85,
-      86,
-      87,
-      88,
-      89,
-      90,
-      97,
-      98,
-      99,
-      100,
-      101,
-      102,
-      103,
-      104,
-      105,
-      106,
-      107,
-      108,
-      109,
-      110,
-      111,
-      112,
-      113,
-      114,
-      115,
-      116,
-      117,
-      118,
-      119,
-      120,
-      121,
-      122,
-      193,
-      201,
-      205,
-      209,
-      211,
-      218,
-      225,
-      233,
-      237,
-      241,
-      243,
-      250,
-    ];
+    var validCodesUnit = [32, 
+                          48,49,50,51,52,53,54,55,56,57,
+                          65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
+                          97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,
+                          193,201,205,209,211,218,225,233,237,241,243,250
+                          ];
     var myTextbox1 = document.getElementById("nombreUnidad");
     myTextbox1.addEventListener(
       "keypress",
@@ -329,7 +269,6 @@ export default {
 .reg_unit input ::placeholder,
 .reg_unit textarea ::placeholder {
   color: #999999;
-  font-size: 20px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
@@ -358,13 +297,13 @@ export default {
   margin: auto;
   display: block;
   background-color: #0c59cf;
-  padding: 2% 19% 2% 19%;
   border-radius: 22px;
   color: #fafafa;
   font-size: 22px;
   font-weight: bold;
   border: 0px;
-  width: 45%;
+  width: 40%;
+  padding: 1.3% 0;
 }
 .form_check-input {
   width: 100%;
@@ -376,6 +315,7 @@ export default {
   color: #3a3a3a;
   font-size: 14px;
   border-radius: 3px;
+  height:38px;
 }
 
 .form_check-input-error {
@@ -388,6 +328,7 @@ export default {
   color: #3a3a3a;
   font-size: 14px;
   border-radius: 3px;
+  
 }
 .form_check-input:focus {
   background: linear-gradient(to bottom, transparent, #ced6e0);
@@ -406,5 +347,14 @@ export default {
 }
 .form_input {
   width: 100%;
+}
+.unit_form_button{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+}
+.form-charge{
+  
 }
 </style>
