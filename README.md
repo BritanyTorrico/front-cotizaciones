@@ -1,4 +1,4 @@
-# front-cotizaciones
+# UMSS-Cotizaciones
 
 ## Project setup
 ```

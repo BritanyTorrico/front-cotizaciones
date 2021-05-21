@@ -189,6 +189,7 @@ export default {
           }
         );
       } catch (error) {
+        throw new Error("No existe dicha función");
       }
     },
     async sendFuncData(index) {
