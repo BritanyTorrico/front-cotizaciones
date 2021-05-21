@@ -39,7 +39,6 @@
                             "
                             required
                             v-model="item.categoria_general"
-                            
                         ></lista-desplegable>
                         <div class="form_check-error" v-if="!$v.item.categoria_general.required">
                             Campo obligatorio.

@@ -307,7 +307,7 @@ export default {
 }
 .form_check-input {
   width: 100%;
-  padding: 3px;
+  padding: 0 0 5% 0;
   margin: 3px 3px;
   border: none;
   border-bottom: 1px solid #999999;
@@ -320,7 +320,7 @@ export default {
 
 .form_check-input-error {
   width: 100%;
-  padding: 3px;
+  padding: 0 0 0 0;
   margin: 3px 3px;
   border: none;
   border-bottom: 1px solid #ed1c24;
