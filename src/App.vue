@@ -1,9 +1,11 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="md" type="dark" variant="success">
+    <b-navbar toggleable="lg" type="dark" class="navbar navbar-dark bg-primary">
       <b-container>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-        <b-navbar-brand href="/">UMSS</b-navbar-brand>
+        <b-navbar-brand tag="h1" class="mb-0 umss" href="/"
+          >UMSS
+        </b-navbar-brand>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav id="nav">
             <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
@@ -109,11 +111,22 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+#nav {
+}
 #nav a {
-  font-weight: bold;
   color: white;
 }
+#nav a.nav-link:hover {
+  background: #5591f5;
+}
 #nav a.router-link-exact-active {
-  color: #7bed9f;
+  font-weight: bold;
+  font-size: 17px;
+}
+
+a.navbar-brand {
+  font-weight: bold !important;
+  font-size: 22px !important;
+  font-family: "Times New Roman", Times, serifs;
 }
 </style>
