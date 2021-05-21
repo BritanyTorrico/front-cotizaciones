@@ -306,9 +306,9 @@
           />
         </div>
       </div>
-      {{ this.listaSolicitudItems }}
+      <!--{{ this.listaSolicitudItems }}
       <p>datos</p>
-      {{ solicitud }}
+      {{ solicitud }}-->
     </form>
   </div>
 </template>

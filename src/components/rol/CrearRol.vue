@@ -1,23 +1,29 @@
 <template>
   <section class="crear_rol">
-    <h2 class="rol_title">Crear rol</h2>
-    <form class="form_crear" @submit.prevent="submitForm" autocomplete="off">
+    <div class="titulo">
+      <h2 class="item_title">Crear Rol</h2>
+      <div class="form_desc"></div>
+    </div>
+
+    <form class="form_crear" @submit.prevent="submitForm" :key="componentKey">
       <div class="form_section">
         <div class="form_name">Nombre de rol:</div>
-        <input
-          name="nombreRol"
-          :class="
-            $v.dato.nombre_rol.$invalid
-              ? 'form_check-input-error'
-              : 'form_check-input'
-          "
-          type="text"
-          minlength="5"
-          maxlength="25"
-          required
-          placeholder="Ingrese nombre aquí"
-          v-model="dato.nombre_rol"
-        />
+        <div class="form__nombre">
+          <input
+            name="nombreRol"
+            :class="
+              $v.dato.nombre_rol.$invalid
+                ? 'form_check-input-error'
+                : 'form__input'
+            "
+            type="text"
+            minlength="5"
+            maxlength="25"
+            required
+            placeholder="Ingrese nombre aquí"
+            v-model="dato.nombre_rol"
+          />
+        </div>
 
         <div class="form_check-error" v-if="!$v.dato.nombre_rol.required">
           Campo obligatorio.
@@ -30,7 +36,7 @@
         </div>
       </div>
       <div class="form_section">
-        <div class="form_name">Seleccione las funciones:</div>
+        <div class="form_name">Seleccione los Permisos:</div>
 
         <div class="checkbox-style">
           <div class="input-check">
@@ -97,7 +103,7 @@
         </div>
       </div>
       <div class="botoncito">
-        <button class="form_button" @click="obtenerValor()">
+        <button class="form_button">
           Crear
         </button>
       </div>
@@ -130,6 +136,7 @@ export default {
         nombre_rol: null,
       },
       funciones: [],
+      componentKey: 0,
     };
   },
 
@@ -144,6 +151,9 @@ export default {
     },
   },
   methods: {
+    forceRerender() {
+      this.componentKey += 1;
+    },
     keyhandler(e) {
       if (!e.key.match(/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s]*$/)) {
         e.preventDefault();
@@ -162,6 +172,7 @@ export default {
       this.getFunciones();
       try {
         console.log("comienza envio");
+
         if (!this.$v.dato.$invalid && this.funciones.length > 0) {
           console.log("es valido");
           console.log(this.funciones[0]);
@@ -169,14 +180,15 @@ export default {
           for (let i = 0; i < this.funciones.length; i++) {
             await this.sendFuncData(i);
           }
-
           this.alert("success", "Rol creado exitosamente");
+          this.dato.nombre_rol = null;
+          this.forceRerender();
         } else {
           console.log("es invalido");
-          this.alert("warning", "Seleccione una función ");
+          this.alert("warning", "Seleccione minimamente un permiso.");
         }
       } catch (error) {
-        this.alert("warning", "Algo salio mal");
+        this.alert("warning", "El nombre del rol ya esta registrado");
       }
     },
     async sendRolData() {
@@ -196,7 +208,6 @@ export default {
         console.log("termina registro de rol");
       } catch (error) {
         console.log("error en rol");
-        throw new Error("Este rol ya esta registrado");
       }
     },
     async sendFuncData(index) {
@@ -252,25 +263,6 @@ export default {
   width: 100%;
 }
 
-.crear_rol input {
-  background-color: #f7f6f6;
-  border-style: none none solid none;
-  border: 0px 0px 5px 0px;
-  border-color: #3a3a3a;
-  border-radius: 3px;
-  padding: 8px;
-  width: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
-.crear_rol input ::placeholder {
-  color: #999999;
-  font-size: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
 .form_name {
   color: #3f4b5b;
   font-size: 24px;
@@ -302,13 +294,22 @@ export default {
 
 form label {
   width: 300px;
-  font-weight: bold;
+
   display: inline-block;
 }
 .checkbox-style {
   margin-top: 20px;
 }
-
+.form__input {
+  width: 100%;
+  padding: 6px;
+  margin: 6px 6px;
+  border: none;
+  border-bottom: 2px solid var(--color-line);
+  background-color: transparent !important;
+  color: black;
+  font-size: 14px;
+}
 .form_check-input {
   width: 100%;
   padding: 3px;
@@ -355,5 +356,33 @@ form label {
 .laber-check {
   width: 95%;
   float: left;
+}
+.form_desc {
+  text-align: left;
+  color: #0d58cf;
+  font-size: 18px;
+  font-weight: 400;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #0d58cf;
+  width: 100%;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.item_title {
+  text-align: left;
+  color: #3d8af7;
+  font-size: 36px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.titulo {
+  text-align: left;
+  width: 100%;
+}
+.form__nombre {
+  margin-top: 10px;
+  width: 60%;
 }
 </style>

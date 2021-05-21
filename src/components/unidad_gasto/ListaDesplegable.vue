@@ -5,7 +5,12 @@
       v-on:input="$emit('input', $event.target.value)"
       class="container__list"
     >
-      <option selected="true" class="container__list__placeholder" disabled="disabled">Seleccione una encargado</option>
+      <option
+        selected="true"
+        class="container__list__placeholder"
+        disabled="disabled"
+        >Seleccione una encargado</option
+      >
       <option
         class="container__list__option"
         v-for="(item, index) in lista"
@@ -33,7 +38,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .list-container {
   text-align: left;
   padding-top: 10px;
@@ -43,15 +48,17 @@ export default {
   width: 100%;
   color: #3a3a3a;
   padding: 6px 6px 6px 0;
-  background: #F7F6F6;
+  background: #f7f6f6;
   font-size: 14px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   border: none;
   border-radius: 3px;
 }
-.container__list :default{
-  color:#999999!important;
+.container__list :default {
+  color: #999999 !important;
   font-size: 14px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 </style>

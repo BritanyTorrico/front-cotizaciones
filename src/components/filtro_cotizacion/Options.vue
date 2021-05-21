@@ -64,8 +64,8 @@
 <script>
 import { mapState } from "vuex";
 export default {
-    name: "Options",
-    computed: {
+  name: "Options",
+  computed: {
     ...mapState(["token"]),
   },
   data(){

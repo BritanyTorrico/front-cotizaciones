@@ -31,33 +31,33 @@ export default {
     display: flex;
     flex-direction: column;
 }
-.card-head{
-    margin: 0 0 0 0;
-    padding: 0 0 2px 0;
-    align-items: stretch;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
+.card-head {
+  margin: 0 0 0 0;
+  padding: 0 0 2px 0;
+  align-items: stretch;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
-h3{
-    font-size: 18px;
-    margin: 0%;
-    text-align: left;
-    width: 100%;
+h3 {
+  font-size: 18px;
+  margin: 0%;
+  text-align: left;
+  width: 100%;
 }
-.card-date{
-    font-size:16px;
-    text-transform: uppercase;
-    margin:0 0 0 20px;
-    align-content: flex-end;
-    width: 50%;
+.card-date {
+  font-size: 16px;
+  text-transform: uppercase;
+  margin: 0 0 0 20px;
+  align-content: flex-end;
+  width: 50%;
 }
-.card-author{
-    font-size: 16px;
-    align-self: flex-start;
-    font-weight: 550;
-    text-align: left;
-    margin: 5px 0 10px 0;
+.card-author {
+  font-size: 16px;
+  align-self: flex-start;
+  font-weight: 550;
+  text-align: left;
+  margin: 5px 0 10px 0;
 }
 .card-status{
     font-size: 16px;

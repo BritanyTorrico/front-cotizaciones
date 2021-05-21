@@ -13,13 +13,17 @@
         </div>
 
         <div class="form__datos">
-          <div class="form_title">
-            <h1>Registrar Usuario</h1>
+          <div class="titulo">
+            <div class="tii"><h2 class="item_title">Registrar Usuario</h2></div>
+
+            <div class="form_desc">
+              Ingrese los datos del usuario.
+            </div>
           </div>
           <div class="form__section">
             <div class="form__name">
-              <label
-                ><div class="formulario_label">Nombre:</div>
+              <div class="formulario_label">Nombre:</div>
+              <div class="tam-input">
                 <input
                   :class="
                     $v.users.nombres.$invalid
@@ -30,24 +34,25 @@
                   placeholder="Ingrese su nombre"
                   v-model="users.nombres"
                 />
-              </label>
+              </div>
+
               <div class="form_check-error" v-if="!$v.users.nombres.required">
                 Campo obligatorio.
               </div>
               <div class="form_check-error" v-if="!$v.users.nombres.maxLength">
                 Máximo
-                {{ $v.users.nombres.$params.maxLength.max }}caracteres.
+                {{ $v.users.nombres.$params.maxLength.max }} caracteres.
               </div>
               <div class="form_check-error" v-if="!$v.users.nombres.minLength">
-                Minimo 3 caracteres.
+                Mínimo 3 caracteres.
               </div>
               <div class="form_check-error" v-if="!$v.users.nombres.alpha1">
                 No se aceptan caracteres especiales.
               </div>
             </div>
             <div class="form__name">
-              <label
-                ><div class="formulario_label">Apellidos:</div>
+              <div class="formulario_label">Apellidos:</div>
+              <div class="tam-input">
                 <input
                   :class="
                     $v.users.apellidos.$invalid
@@ -59,7 +64,8 @@
                   required
                   v-model="users.apellidos"
                 />
-              </label>
+              </div>
+
               <div class="form_check-error" v-if="!$v.users.apellidos.required">
                 Campo obligatorio.
               </div>
@@ -74,7 +80,7 @@
                 class="form_check-error"
                 v-if="!$v.users.apellidos.minLength"
               >
-                Minimo 4 caracteres.
+                Mínimo 4 caracteres.
               </div>
               <div class="form_check-error" v-if="!$v.users.apellidos.alpha1">
                 No se aceptan caracteres especiales.
@@ -83,8 +89,8 @@
           </div>
           <div class="form__section">
             <div class="form__name">
-              <label
-                ><div class="formulario_label">Nombre de usuario:</div>
+              <div class="formulario_label">Nombre de usuario:</div>
+              <div class="tam-input">
                 <input
                   :class="
                     $v.users.nombre_usuario.$invalid
@@ -92,11 +98,12 @@
                       : 'form__input'
                   "
                   type="text"
-                  placeholder="Ingrese su nombre de usuario"
+                  placeholder="Ingrese nombre de usuario"
                   v-model="users.nombre_usuario"
                   required
                 />
-              </label>
+              </div>
+
               <div
                 class="form_check-error"
                 v-if="!$v.users.nombre_usuario.required"
@@ -122,12 +129,12 @@
                 class="form_check-error"
                 v-if="!$v.users.nombre_usuario.minLength"
               >
-                Minimo 3 caracteres.
+                Mínimo 3 caracteres.
               </div>
             </div>
             <div class="form__name">
-              <label
-                ><div class="formulario_label">Celular:</div>
+              <div class="formulario_label">Celular:</div>
+              <div class="tam-input">
                 <input
                   :class="
                     $v.users.celular.$invalid
@@ -138,15 +145,16 @@
                   placeholder="Ingrese su celular"
                   v-model="users.celular"
                 />
-              </label>
+              </div>
+
               <div class="form_check-error" v-if="!$v.users.celular.integer">
                 Solo se aceptan valores numericos.
               </div>
               <div class="form_check-error" v-if="!$v.users.celular.required">
                 Campo obligatorio.
               </div>
-              <div class="form_check-error" v-if="!$v.users.celular.minLength">
-                Minimo 8 caracteres.
+              <div class="form_check-error" v-if="!$v.users.celular.maxLength">
+                Máximo 8 caracteres.
               </div>
             </div>
           </div>
@@ -172,8 +180,9 @@
             </div>
 
             <div class="form_check-error" v-if="!$v.users.contrasena.valid">
-              La contraseña debe contener minimo 8 caracteres y al menos una
-              mayuscula, minuscula un número y un caracter especial #?!@$%^&*-
+              La contraseña debe contener Mínimo 8 caracteres y al menos una
+              mayuscula, minuscula un número y un caracter especial de las
+              siguientes opciones: #?!@$%^&*-
             </div>
             <div class="form_check-error" v-if="!$v.users.contrasena.required">
               Campo obligatorio.
@@ -360,7 +369,7 @@ export default {
       },
       celular: {
         required,
-        minLength: minLength(8),
+        maxLength: maxLength(8),
         integer,
       },
       facultad: {
@@ -554,7 +563,7 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
+<style scoped>
 * {
   margin: 0;
   padding: 0;
@@ -562,7 +571,6 @@ export default {
 .flex-container {
   display: flex;
   background-color: #ecf0f1;
-
   justify-content: center;
   align-content: center;
   align-items: center;
@@ -572,7 +580,7 @@ export default {
 }
 .form__image img {
   width: 100%;
-  height: 800px;
+  height: 900px;
   background: gray;
 }
 
@@ -580,17 +588,6 @@ export default {
   width: 70%;
   margin-left: 40px;
   margin-right: 40px;
-}
-.form_title {
-  color: var(--color-title);
-  text-align: left;
-  font-size: 14px;
-  border-bottom: 1px solid var(--color-title);
-  box-shadow: 0 1px 0 0 gray;
-}
-.form_title h1 {
-  padding-top: 30px;
-  padding-bottom: 12px;
 }
 
 .form__input {
@@ -643,21 +640,26 @@ export default {
 }
 .form__section3 {
   display: flex;
+  margin-left: 0;
 }
 .fomrm__section__item {
   width: 33%;
-
-  margin: 30px;
+  font-size: 20px;
+  margin-right: 40px;
+}
+.fomrm__section__item select {
+  font-size: 16px;
 }
 .formulario_label {
   padding-left: 6px;
   color: var(--color-name);
   text-align: left;
   font-weight: bold;
+  font-size: 20px;
 }
 .form__name {
   width: 100%;
-  padding-right: 50px;
+
   text-align: left;
 }
 .boton {
@@ -665,15 +667,16 @@ export default {
   margin: 50px 15px;
   text-align: right;
 }
+
 .boton__input {
-  width: 120px;
-  height: 35px;
-  border-radius: 30px;
-  background: blue;
-  color: white;
+  background-color: #0c59cf;
+  border-radius: 22px;
+  color: #fafafa;
+  font-size: 22px;
   font-weight: bold;
-  border-bottom: none;
-  border: none;
+  border: 0px;
+  width: 25%;
+  padding: 8px 0;
 }
 .form_check-error {
   color: red;
@@ -704,5 +707,38 @@ export default {
 .container-facu {
   padding-top: 20px;
   text-align: left;
+}
+.form_desc {
+  text-align: left;
+  color: #0d58cf;
+  font-size: 18px;
+  font-weight: 400;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #0d58cf;
+  width: 100%;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.item_title {
+  text-align: left;
+  color: #3d8af7;
+  font-size: 36px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  margin-top: 0;
+}
+.titulo {
+  text-align: left;
+  width: 100%;
+  margin-top: 0;
+}
+.tam-input {
+  width: 80%;
+}
+.tii {
+  margin: 0;
+  padding: 0;
 }
 </style>

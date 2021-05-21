@@ -347,8 +347,6 @@ export default {
 .crear_empresa {
   background-color: #f1f6f6;
   padding: 20px 40px 20px 40px;
-
-  border: 1px solid;
   display: flex;
   flex-direction: column;
   width: 100%;
