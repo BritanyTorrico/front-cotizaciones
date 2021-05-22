@@ -307,7 +307,7 @@ export default {
 }
 .form_check-input {
   width: 100%;
-  padding: 0 0 5% 0;
+  padding: 3px;
   margin: 3px 3px;
   border: none;
   border-bottom: 1px solid #999999;
@@ -315,12 +315,11 @@ export default {
   color: #3a3a3a;
   font-size: 14px;
   border-radius: 3px;
-  height:38px;
 }
 
 .form_check-input-error {
   width: 100%;
-  padding: 0 0 0 0;
+  padding: 3px;
   margin: 3px 3px;
   border: none;
   border-bottom: 1px solid #ed1c24;
@@ -328,7 +327,6 @@ export default {
   color: #3a3a3a;
   font-size: 14px;
   border-radius: 3px;
-  
 }
 .form_check-input:focus {
   background: linear-gradient(to bottom, transparent, #ced6e0);
@@ -353,8 +351,5 @@ export default {
   justify-content: center;
   align-content: center;
   text-align: center;
-}
-.form-charge{
-  
 }
 </style>
