@@ -5,34 +5,34 @@
           <div class="filter-date">
               <div class="option-title">Fecha</div>
               <div class="date-set">
-                  <input type="radio" class="time-set" value="1" v-model="months" v-on:change="getData">
+                  <input type="radio" class="time-set" value="1" v-model="months" @change="getData">
                   <div class="date-label">Último mes</div>
               </div>
               <div class="date-set">
-                  <input type="radio" class="time-set" value="3" v-model="months" v-on:change="getData">
+                  <input type="radio" class="time-set" value="3" v-model="months" @change="getData">
                   <div class="date-label">Último trimestre</div>
               </div>
               <div class="date-set">
-                  <input type="radio" class="time-set" value="6" v-model="months" v-on:change="getData">
+                  <input type="radio" class="time-set" value="6" v-model="months" @change="getData">
                   <div class="date-label">Último semestre</div>
               </div>
               <div class="date-set">
-                  <input type="radio" class="time-set" value="12" v-model="months" v-on:change="getData">
+                  <input type="radio" class="time-set" value="12" v-model="months" @change="getData">
                   <div class="date-label">Último año</div>
               </div>
               <div class="date-set">
-                  <input type="radio" class="time-set" value="100" v-model="months" v-on:change="getData">
+                  <input type="radio" class="time-set" value="100" v-model="months" @change="getData">
                   <div class="date-label">Todo</div>
               </div>
           </div>
           <div class="filter-item">
               <div class="option-title">Item</div>
               <div class="item-set">
-                  <input type="checkbox" class="item-type" value="Products" v-model="items" v-on:change="getData">
+                  <input type="checkbox" class="item-type" value="Products" v-model="items" @change="getData">
                   <div class="item-label">Productos</div>
               </div>
               <div class="item-set">
-                  <input type="checkbox" class="item-type" value="Services" v-model="items" v-on:change="getData">
+                  <input type="checkbox" class="item-type" value="Services" v-model="items" @change="getData">
                   <div class="item-label">Servicios</div>
               </div>
           </div>
@@ -76,15 +76,7 @@ export default {
           company: "Todas",
           marketsList: ["Todos"],
           companiesList: ["Todas"],
-          filteredInbox: [
-              {
-                  nombre_cotizacion: "",
-                  fecha_cotizacion: "",
-                  autor_solicitud: "",
-                  estado_cotizacion: "",
-                  empresa:""
-              }
-          ],
+          filteredInbox: [],
           filteredItems: []
       }
   },
@@ -92,79 +84,83 @@ export default {
       async getCompanies(){
           this.companiesList=["Todas"]
           this.company="Todas"
-          let emp
-          if (this.market=="Todos"){
-              emp = (await this.$http.get('company?rubro=All', {
+          if (this.market!="Todos"){
+              const emp = (await this.$http.get(`company?rubro=${this.market}`, {
                 headers: {
                     authorization: this.token,
                 },
               })).data;
-          } else {
-              emp = (await this.$http.get(`company?rubro=${this.market}`, {
-                headers: {
-                    authorization: this.token,
-                },
-              })).data;
+              for (let i of emp){
+              this.companiesList.push(i.nombre_empresa)
+              }
           }
-          for (let i=0;i<emp.length;i++){
-                this.companiesList.push(emp[i].nombre_empresa)
-            }
+          
             this.getData()
       }, 
       async getData(){
+          this.filteredInbox=[]
+          this.filteredItems=[]
           let month='' 
           let tipo=''
           let rubro=''
           let empresa=''
           if (this.months!=100)
-              month='&month='+this.months
+              {month='&month='+this.months}
           if(this.items.length==1)
-              tipo='&items='+this.items[0]
+              {tipo='&items='+this.items[0]}
           if (this.market!="Todos")
-              rubro='&rubro='+this.market
+              {rubro='&rubro='+this.market}
           if(this.company!="Todas")
-              empresa='empresa='+this.company
-          const response=(await this.$http.get(`quotation?type=criteria`+month+`&from=depto&nombre=${localStorage.getItem('depto')}`+tipo+rubro+empresa, {
+              {empresa='&empresa='+this.company}
+          const response=(await this.$http.get(`quotation?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}${month}${tipo}${rubro}${empresa}`, {
                     headers: {
                         authorization: this.token,
                     },
                 })).data;
-          for (let i=0;i<response.length;i++){
-              this.filteredInbox[i].nombre_cotizacion=response[i].titulo_cotizacion;
-              this.filteredInbox[i].fecha_cotizacion=response[i].fecha_cotizacion
-              this.filteredInbox[i].fecha_cotizacion=this.filteredInbox[i].fecha_cotizacion.substr(5, this.filteredInbox[i].fecha_cotizacion.indexOf('T'));
-              this.filteredInbox[i].fecha_cotizacion=this.filteredInbox[i].fecha_cotizacion.substr(0, this.filteredInbox[i].fecha_cotizacion.indexOf('T'));
-              const requests=(await this.$http.get(`request?type=criteria&status=ACEPTADA&from=depto&nombre=${localStorage.getItem('depto')}`, {
-                    headers: {
-                        authorization: this.token,
-                    },
-                })).data;
-                for (let r=0;r<requests.length;r++){
-                    if (requests[r].cod_solicitud==response[i].cod_solicitud) 
-                        this.filteredInbox[i].autor_solicitud=requests[r].usuario_solicitante;
+            console.log(`%cquotation?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}%c${month}${tipo}${rubro}${empresa}`, 
+            "font-weight: bold; font-size: 17px;", 
+            "color: green; font-size: 14px;");
+            if (response.length>0){
+                    for (let i=0;i<response.length;i++){
+                    this.filteredInbox[i]=new Object();
+                    this.filteredInbox[i].nombre_cotizacion=response[i].titulo_cotizacion;
+                    this.filteredInbox[i].fecha_cotizacion=response[i].fecha_cotizacion
+                    this.filteredInbox[i].fecha_cotizacion=this.filteredInbox[i].fecha_cotizacion.substr(5, this.filteredInbox[i].fecha_cotizacion.indexOf('T'));
+                    this.filteredInbox[i].fecha_cotizacion=this.filteredInbox[i].fecha_cotizacion.substr(0, this.filteredInbox[i].fecha_cotizacion.indexOf('T'));
+                    const requests=(await this.$http.get(`request?type=criteria&status=ACEPTADA&from=depto&nombre=${localStorage.getItem('depto')}`, {
+                            headers: {
+                                authorization: this.token,
+                            },
+                        })).data;
+                        for (let r of requests){
+                            if (r.cod_solicitud==response[i].cod_solicitud)
+                                {this.filteredInbox[i].autor_solicitud=r.usuario_solicitante_name}
+                        }
+                        this.filteredInbox[i].estado_cotizacion=response[i].estado_cotizacion;
+                        const emp=(await this.$http.get(`companiesperrequest/${response[i].cod_solicitud}`, {
+                            headers: {
+                                authorization: this.token,
+                            },
+                        })).data;
+                        for (let k of emp.datos){
+                            if (k.cod_empresa==response[i].cod_empresa)
+                                {this.filteredInbox[i].empresa=k.nombre_empresa}
+                        }
+                        const reqItems = (await this.$http.get(`itemsPerRequest?searchby=solicitud&typeinput=codigo&inputdata=${response[i].cod_solicitud}`, {
+                            headers: {
+                                authorization: this.token,
+                            },
+                        })).data;
+                        let currentItems=[]
+                        for (let j of reqItems.datos){
+                            currentItems.push(j)
+                        }
+                        this.filteredItems.push(currentItems)
                 }
-                this.filteredInbox[i].estado_cotizacion=response[i].estado_cotizacion;
-                const emp=(await this.$http.get(`companiesperrequest/${response[i].cod_solicitud}`, {
-                    headers: {
-                        authorization: this.token,
-                    },
-                })).data;
-                for (let l=0;l<emp.datos.length;l++){
-                    if (emp.datos[l].cod_empresa==response[i].cod_empresa)
-                        this.filteredInbox[i].empresa=emp.datos[l].nombre_empresa
-                }
-                const reqItems = (await this.$http.get(`itemsPerRequest?searchby=solicitud&typeinput=codigo&inputdata=${response[i].cod_solicitud}`, {
-                    headers: {
-                        authorization: this.token,
-                    },
-                })).data.datos;
-                let currentItems=[]
-                for (let j = 0; j<reqItems.length;j++){
-                    currentItems.push(reqItems[j])
-                }
-                this.filteredItems.push(currentItems)
-          }
-          this.$emit("sendinboxdata", this.filteredInbox, this.filteredItems)
+            }
+          
+          this.$emit("sendinboxdata", this.filteredInbox,)
+          this.$emit("senditems", this.filteredItems)
       }, 
       async setMarketList(){
           const resp= (await this.$http.get('market', {
@@ -172,15 +168,14 @@ export default {
             authorization: this.token,
           },
         })).data;
-        for (let i=0; i<resp.datos.length;i++){
-            this.marketsList.push(resp.datos[i].nombre_rubro)
+        for (let i of resp.datos){
+            this.marketsList.push(i.nombre_rubro)
         }
         this.getData()
       }, 
   },
   mounted(){
       this.setMarketList();
-      
   }
 }
 </script>
