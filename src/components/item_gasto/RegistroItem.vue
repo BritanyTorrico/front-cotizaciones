@@ -117,7 +117,7 @@
           Campo obligatorio.
         </div>
       </div>
-        <div class= item-form-button>
+        <div class= "item-form-button">
             <button
                 :disabled="$v.item.$invalid"
                 :class="$v.item.$invalid ? 'button-disabled' : ''"
