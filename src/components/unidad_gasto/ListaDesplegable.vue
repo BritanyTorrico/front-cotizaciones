@@ -43,8 +43,6 @@ export default {
 <style scoped>
 .list-container {
   text-align: left;
-  padding-top: 10px;
-  height:38px;
 }
 
 .container__list {

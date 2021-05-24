@@ -34,12 +34,10 @@ export default {
   mounted() {
     this.EventBus.$on("obtener", function(segundaLista) {
       for (let i = 0; i < segundaLista.length; i++) {
-        console.log(segundaLista[i]);
 
         this.lista = segundaLista;
       }
 
-      console.log("otraa " + this.lista);
     });
   },
   props: {

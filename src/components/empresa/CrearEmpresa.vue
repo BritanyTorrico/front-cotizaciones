@@ -271,11 +271,9 @@ export default {
           },
         })
       ).data.datos;
-      console.log(listaRubros.length);
       for (let i = 0; i < listaRubros.length; i++) {
         this.listRubros.push(listaRubros[i].nombre_rubro);
       }
-      console.log(this.listRubros);
     },
     async submitForm() {
       try {
@@ -331,7 +329,6 @@ export default {
             },
           }
         );
-        console.log("empresa creada por rubro");
       } catch (error) {
         throw new Error("Esta empresa ya fue registrada");
       }

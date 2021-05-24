@@ -123,13 +123,11 @@
                   />
                 </svg>
               </div>
-              <div class="redirect-cot">
-                <button
-                  class="accept-button"
-                  v-on:click="printDiv(company, date)"
-                >
-                  Imprimir
-                </button>
+              <div class="redirect-cot" v-on:click="printDiv(company, date)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                  <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
+                  <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                </svg>
               </div>
             </li>
           </ul>
@@ -213,7 +211,6 @@ export default {
       }
     },
     async showData(i) {
-      console.log(i);
       this.empresa.nombre = this.companiesData[i].nombre_empresa;
       this.empresa.nit = this.companiesData[i].nit_empresa;
       this.empresa.representante = this.companiesData[i].representante_empresa;
@@ -243,6 +240,7 @@ export default {
         this.listaEmpresas.indexOf(this.empresa.nombre),
         1
       );
+      this.$emit("sendcompanies", this.confirmed)
     },
     removeElement: function(index) {
       this.listaEmpresas.push(this.confirmed[index]);
@@ -364,18 +362,9 @@ export default {
   color: #ed1c24;
   padding: 0 5% 0 3%;
 }
-.accept-button {
-  margin: auto;
-  background-color: #003570;
-  padding: 1.2% 11.5% 1.2% 11.5%;
-  border-radius: 22px;
-  color: #fafafa;
-  font-size: 13px;
-  font-weight: bold;
-  border: 0px;
-}
 .redirect-cot {
   display: inline;
+  color: #3f4b5b;
 }
 .form_label {
   color: #3f4b5b;

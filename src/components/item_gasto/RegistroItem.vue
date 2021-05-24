@@ -39,7 +39,6 @@
                             "
                             required
                             v-model="item.categoria_general"
-                            
                         ></lista-desplegable>
                         <div class="form_check-error" v-if="!$v.item.categoria_general.required">
                             Campo obligatorio.
@@ -118,7 +117,7 @@
           Campo obligatorio.
         </div>
       </div>
-        <div class= item-form-button>
+        <div class= "item-form-button">
             <button
                 :disabled="$v.item.$invalid"
                 :class="$v.item.$invalid ? 'button-disabled' : ''"
@@ -205,7 +204,6 @@ export default {
             authorization: this.token,
           },
         })).data;
-        console.log(this.listaCodGen[this.listaCatGen.indexOf(this.item.categoria_general)]);
         for (let j of categ){
             if (j.cod_categoriageneral==this.listaCodGen[this.listaCatGen.indexOf(this.item.categoria_general)]){
               this.listaCategorias.push(j.nombre_categoriaespecifica)

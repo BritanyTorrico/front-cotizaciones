@@ -40,67 +40,54 @@
         <div class="form_name">Seleccione los Permisos:</div>
 
         <div class="checkbox-style">
-          <div class="input-check">
-            <input
-              type="checkbox"
-              id="gestionUsuario"
-              name="funcion"
-              value="Gestionar Usuarios"
-            />
-          </div>
+          <div class="form-function">
+              <div class="input-check">
+                <input
+                  type="checkbox"
+                  id="gestionUsuario"
+                  name="funcion"
+                  value="Gestionar Usuarios"
+                />
+              </div>
 
-          <label for="gestionUsuario">Crear Usuarios</label><br />
-          <div class="input-check">
-            <input
-              type="checkbox"
-              id="gestionRol"
-              name="funcion"
-              value="Gestionar Roles"
-            />
+              <label for="gestionUsuario">Registrar Usuarios</label><br />
           </div>
+            <div class="form-function">
+              <div class="input-check">
+                <input
+                  type="checkbox"
+                  id="gestionRol"
+                  name="funcion"
+                  value="Gestionar Roles"
+                />
+              </div>
 
-          <label for="gestionRol">Crear Rol</label><br />
-          <div class="input-check">
-            <input
-              type="checkbox"
-              id="gestionUnidades"
-              name="funcion"
-              value="Gestionar unidadDeGasto"
-            />
-          </div>
+              <label for="gestionRol">Crear Roles</label><br />
+            </div>
+            <div class="form-function">
+              <div class="input-check">
+                <input
+                  type="checkbox"
+                  id="gestionUnidades"
+                  name="funcion"
+                  value="Gestionar unidadDeGasto"
+                />
+              </div>
 
-          <label for="gestionUnidades">Registro de Unidades de Gasto</label
-          ><br />
-          <div class="input-check">
-            <input
-              type="checkbox"
-              id="gestionItems"
-              name="funcion"
-              value="Gestionar itemsDeGasto"
-            />
-          </div>
-
-          <label for="gestionItems">Registro de Items de Gasto</label><br />
-          <div class="input-check">
-            <input
-              type="checkbox"
-              id="empresa"
-              name="funcion"
-              value="Gestionar Empresa"
-            />
-          </div>
-
-          <label for="empresa">Registrar Empresas</label><br />
-          <div class="input-check">
-            <input
-              type="checkbox"
-              id="solicitud"
-              name="funcion"
-              value="Gestionar Solicitud"
-            />
-          </div>
-
-          <label for="solicitud">Enviar Solicitudes</label><br />
+              <label for="gestionUnidades">Añadir Unidades de Gasto</label
+              ><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="gestionItems"
+                    name="funcion"
+                    value="Gestionar itemsDeGasto"
+                  />
+                </div>
+                <label for="gestionItems">Añadir Items de Gasto</label><br />
+            </div>
         </div>
       </div>
       <div class="botoncito">
@@ -172,11 +159,8 @@ export default {
     async submitForm() {
       this.getFunciones();
       try {
-        console.log("comienza envio");
 
         if (!this.$v.dato.$invalid && this.funciones.length > 0) {
-          console.log("es valido");
-          console.log(this.funciones[0]);
           await this.sendRolData();
           for (let i = 0; i < this.funciones.length; i++) {
             await this.sendFuncData(i);
@@ -185,7 +169,6 @@ export default {
           this.dato.nombre_rol = null;
           this.forceRerender();
         } else {
-          console.log("es invalido");
           this.alert("warning", "Seleccione minimamente un permiso.");
         }
       } catch (error) {
@@ -194,7 +177,6 @@ export default {
     },
     async sendRolData() {
       try {
-        console.log("comienza registro de rol");
         await this.$http.post(
           "roles",
           {
@@ -206,15 +188,12 @@ export default {
             },
           }
         );
-        console.log("termina registro de rol");
       } catch (error) {
-        console.log("error en rol");
+        throw new Error("No existe dicha función");
       }
     },
     async sendFuncData(index) {
       try {
-        console.log("comienza a enviar funcion " + index);
-        console.log(this.funciones[index]);
         await this.$http.post(
           "rolePerFunctions",
           {
@@ -227,9 +206,7 @@ export default {
             },
           }
         );
-        console.log("termina de enviar funcion " + index);
       } catch (error) {
-        console.log("error en funcion");
         throw new Error("Este rol ya esta registrado");
       }
     },
@@ -311,9 +288,13 @@ export default {
 }
 
 form label {
-  width: 300px;
-
+  width: 50%;
+  font-size: 17px;
   display: inline-block;
+  text-align: start;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  padding: 0 0 1.2% 0;
 }
 .checkbox-style {
   margin-top: 20px;
@@ -368,8 +349,9 @@ form label {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .input-check {
-  width: 5%;
+  width: 2.7%;
   float: left;
+  
 }
 .laber-check {
   width: 95%;

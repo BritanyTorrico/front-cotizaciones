@@ -1,31 +1,27 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="md" type="dark" variant="success">
+    <b-navbar toggleable="lg" type="dark" class="navbar navbar-dark bg-primary">
       <b-container>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-        <b-navbar-brand href="/">UMSS</b-navbar-brand>
+        <b-navbar-brand tag="h1" class="mb-0 umss" href="/"
+          >UMSS
+        </b-navbar-brand>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav id="nav">
             <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
             <b-nav-item to="/about">About</b-nav-item>
             <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
-            <b-nav-item v-if="permisoItemDeGasto" to="/registro_item"
-              >Item</b-nav-item
-            >
-            <b-nav-item v-if="permisoUnidadDeGasto" to="/registro_unidad"
-              >Unidad</b-nav-item
-            >
             <b-nav-item v-if="permisoCrearUsuario" to="/register"
               >Registrar Usuario</b-nav-item
-            >
-            <b-nav-item v-if="permisoEmpresa" to="/crear_empresa"
-              >Registrar Empresa</b-nav-item
             >
             <b-nav-item v-if="permisoCrearRol" to="/creaRol"
               >Crear Rol</b-nav-item
             >
-            <b-nav-item v-if="permisoSolicitud" to="/solicitud"
-              >Enviar Solicitud</b-nav-item
+            <b-nav-item v-if="permisoUnidadDeGasto" to="/registro_unidad"
+              >Nueva Unidad</b-nav-item
+            >
+            <b-nav-item v-if="permisoItemDeGasto" to="/registro_item"
+              >Nuevo Item</b-nav-item
             >
             <b-nav-item v-if="username" @click="cerrar()"
               >Cerrar Sesion</b-nav-item
@@ -62,7 +58,6 @@ export default {
     cerrar() {
       this.$store.commit("setUser", false);
       localStorage.setItem("username", this.username);
-      console.log("hlaa  " + localStorage.getItem("username"));
 
       localStorage.removeItem("username");
       localStorage.removeItem("nombreUsuario");
@@ -109,11 +104,22 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+#nav {
+}
 #nav a {
-  font-weight: bold;
   color: white;
 }
+#nav a.nav-link:hover {
+  background: #5591f5;
+}
 #nav a.router-link-exact-active {
-  color: #7bed9f;
+  font-weight: bold;
+  font-size: 17px;
+}
+
+a.navbar-brand {
+  font-weight: bold !important;
+  font-size: 22px !important;
+  font-family: "Times New Roman", Times, serifs;
 }
 </style>

@@ -404,8 +404,6 @@ export default {
           },
         })
       ).data;
-      console.log("lista");
-      console.log(listaFacultades);
 
       for (let i = 0; i < listaFacultades.length; i++) {
         this.listfacultad.push(listaFacultades[i].nombre_facultad);
@@ -426,7 +424,6 @@ export default {
         this.listDepartament.push(listaDepartamentos[i].nombre_departamento);
       }
       listaDepartamentos.splice(1, 5);
-      console.log(listaDepartamentos.data);
     },
 
     async obtenerRoles() {
@@ -450,7 +447,6 @@ export default {
     async submitForm() {
       try {
         if (!this.$v.users.$invalid) {
-          console.log("creo");
           await this.sendDataUsers();
           await this.sendUserDepartment();
           await this.sendUsernameRol();
@@ -476,7 +472,6 @@ export default {
     },
     async sendUserDepartment() {
       try {
-        console.log("departamento");
 
         await this.$http.post(
           `usersPerDeparment`,
@@ -498,7 +493,6 @@ export default {
     },
     async sendUsernameRol() {
       try {
-        console.log("roles");
         await this.$http.post(
           `usersPerRole`,
           {
@@ -518,7 +512,6 @@ export default {
     },
     async sendDataUsers() {
       try {
-        console.log(this.users);
         await this.$http.post(
           `users`,
           {

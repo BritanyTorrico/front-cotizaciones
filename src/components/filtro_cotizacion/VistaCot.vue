@@ -21,10 +21,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in items" :key="index">
-              <td style="border:1px solid;">{{ item.cantidad_solicitud }}</td>
-              <td style="border:1px solid;">{{ item.unidad_solicitud }}</td>
-              <td style="border:1px solid;">{{ item.detalle_solicitud }}</td>
+            <tr v-for="(item, index) in cot.itemList" :key="index">
+              <td style="border:1px solid;">{{ item.cantidad }}</td>
+              <td style="border:1px solid;">{{ item.unidad }}</td>
+              <td style="border:1px solid;">{{ item.detalle }}</td>
               <td style="border:1px solid;"></td>
               <td style="border:1px solid;"></td>
             </tr>

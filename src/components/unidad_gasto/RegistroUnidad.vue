@@ -32,18 +32,18 @@
       </div>
       <div class="form_section">
         <div class="form_name">Encargado:</div>
-        <lista-desplegable
-          nombreLista="encargadoUnidad"
-          :lista="listaUsuarios"
-          :placeholder="'Seleccione un encargado'"
-          :class="
-            $v.unit.encargado_unidad.$invalid
-              ? 'form_check-input-error'
-              : 'form_check-input'
-          "
-          required
-          v-model="unit.encargado_unidad"
-        ></lista-desplegable>
+            <lista-desplegable
+              nombreLista="encargadoUnidad"
+              :lista="listaUsuarios"
+              :placeholder="'Seleccione un encargado'"
+              :class="
+                $v.unit.encargado_unidad.$invalid
+                  ? 'form_check-input-error'
+                  : 'form_check-input'
+              "
+              required
+              v-model="unit.encargado_unidad"
+            ></lista-desplegable>
         <div class="form_check-error" v-if="!$v.unit.encargado_unidad.required">
           Campo obligatorio.
         </div>
