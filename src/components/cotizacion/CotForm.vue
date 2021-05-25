@@ -1,34 +1,42 @@
 <template>
-  <div class="cot-form">
+    <div class="cot-form">
     <div class="form-title">Formulario de cotizacion</div>
     <div class="form_crear">
       <div class="form_section">
         <div class="form_label">Titulo:</div>
-        <div class="form-name">{{ this.nombreCotizacion }}</div>
-      </div>
-      <div class="form_section">
-        <div class="form_label">Fecha:</div>
-        <div class="form-name">{{ this.today }}</div>
+        <div class="form-name">{{ 'Cotización de '+request.name+' del ' + this.today }}</div>
       </div>
       <div class="form-empresas">
-        <Empresas :date="today" :items="request.itemList" />
+        <Empresas :date="today" :items="request.itemList" @sendcompanies="getCompanies($event)"/>
+      </div>
+      <div class="cot-form-button">
+        <button 
+          class="accept-button" 
+          @click="submitForm" 
+          :disabled="this.companies.length < 3"
+          :class="this.companies.length < 3 ? 'button-disabled' : ''"
+        >Crear</button>
       </div>
     </div>
+    <Alert ref="alert"></Alert>
   </div>
 </template>
 
 <script>
+import Alert from '../Alert.vue';
 import Empresas from "./Empresas.vue";
+
 export default {
   name: "CotForm",
-  components: { Empresas },
-  data() {
-    return {
-      disabled: false,
-      rubro: "",
-      nombreCotizacion: "",
-      today: "",
-    };
+  components: { Empresas, Alert },
+    data(){
+      return {
+        disabled: false,
+        rubro: "",
+        nombreCotizacion: "",
+        today: "",
+        companies: [],
+      };
   },
   props: {
     request: {
@@ -42,16 +50,51 @@ export default {
   methods: {
     async curentDate() {
       const current = new Date();
-      const date = `${current.getDate()}-${current.getMonth() +
-        1}-${current.getFullYear()}`;
+      const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
       this.today = date;
     },
+    async getCompanies(compList){
+      this.companies=compList;
+    },
+    async submitForm(){
+      try {
+        if(this.companies.length==3){
+          await this.sendData();
+          this.alert("success", "Item creado exitosamente");
+            window.setInterval(window .location.reload(), 10000); 
+        }else{
+          this.alert("warning", "Seleccione por lo menos 3 empresas");
+        }
+      } catch (error) {
+        this.alert("warning", error)
+      }
+    },
+    async sendData(){
+      try {
+        console.log(`%c/${this.request.name}/
+        %cCotización de /${this.request.name} del ${this.today}/`,
+        "font-size: 19px; color: red;",
+        "font-size: 15px; color: blue");
+        console.log(this.companies);
+        await this.$http.post("quotation",{
+            nombre_solicitud: this.request.name,
+            titulo: 'Cotización de '+ this.request.name +' del ' + this.today,
+            empresas: this.companies
+        },
+        {
+            headers: {
+                authorization: this.token,
+            },
+        })
+      } catch (error) {
+          throw new Error("Esta cotización ya fue creada");
+      }
+    },
+    alert (alertType, alertMessage){
+            this.$refs.alert.showAlert(alertType, alertMessage);
+        },
   },
   mounted() {
-    this.nombreCotizacion = this.request.name.replace(
-      "Solicitud",
-      "Cotización"
-    );
     this.curentDate();
   },
 };
@@ -145,5 +188,22 @@ export default {
 .items td {
   padding: 0.5% 1% 0.5% 1%;
   border: 1px solid #c0c0c0;
+}
+.accept-button {
+  margin: auto;
+  background-color: #003570;
+  padding: 1.2% 11.5% 1.2% 11.5%;
+  border-radius: 22px;
+  color: #fafafa;
+  font-size: 22px;
+  font-weight: bold;
+  border: 0px;
+}
+.button-disabled {
+  background: #999999;
+  border: 0px;
+}
+.cot-form-button{
+  display: flex;
 }
 </style>

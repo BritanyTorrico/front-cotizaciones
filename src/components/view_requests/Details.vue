@@ -5,7 +5,11 @@
         <h2>{{ request.name }}</h2>
         <div class="time">{{ request.date }}</div>
       </div>
-      <div class="head-subject">{{ request.author }}</div>
+      <div class="head-info">
+        <div class="head-subject"><h3>Solicitante:</h3>{{ request.author }}</div>
+        <div class="head-subject"><h3>Unidad:</h3>{{ request.unit }}</div>
+      </div>
+      
     </div>
     <div class="body-part">
       <h5>Justificación:</h5>
@@ -37,14 +41,14 @@
     <div class="response">
       <b-button
         class="accept-button"
-        v-b-modal.modal-prevent-closing
         v-on:click="assert()"
+        v-b-modal.modal-prevent-closing
         >Aceptar</b-button
       >
       <b-button
         class="reject-button"
-        v-b-modal.modal-prevent-closing
         v-on:click="deny()"
+        v-b-modal.modal-prevent-closing
         >Rechazar</b-button
       >
       <b-modal
@@ -62,12 +66,14 @@
           >
             <b-form-textarea
               id="response-textarea"
+              class="report-just"
               v-model="response"
               placeholder="Ingrese su justificación"
               cols="50"
               rows="10"
               maxlength="1000"
               :state="resState"
+              required
             ></b-form-textarea>
           </b-form-group>
         </form>
@@ -80,12 +86,13 @@
 <script>
 import Alert from "@/components/Alert.vue";
 import { mapState } from "vuex";
+import { BButton, BModal, BFormGroup, BFormTextarea } from "bootstrap-vue";
 export default {
   name: "Details",
   computed: {
     ...mapState(["token"]),
   },
-  components: { Alert },
+  components: { Alert, BButton, BModal, BFormGroup, BFormTextarea },
   data() {
     return {
       valid: null,
@@ -100,6 +107,7 @@ export default {
       name: String,
       date: String,
       author: String,
+      unit: String,
       description: String,
       budget: Number,
       itemList: Array,
@@ -201,20 +209,36 @@ export default {
 }
 h2 {
   color: #030303 !important;
-  font-size: 30px;
+  font-size: 35px;
   font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .time {
   font-size: 16px;
   color: #3f4b5b !important;
-  text-transform: capitalize;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .head-subject {
-  font-size: 22px;
-  font-weight: 600;
-  color: #030303 !important;
+  font-size: 20px;
+  font-weight: 500;
+  color: #3a3939 !important;
   margin-top: 12px;
   text-align: left;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  display: flex;
+  align-items: baseline;
+  width: 50%;
+}
+h3 {
+  color: #030303 !important;
+  font-size: 25px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  padding-right: 0.7%;
 }
 .body-part {
   text-align: left;
@@ -226,27 +250,35 @@ h5 {
   line-height: 1.8;
   font-weight: 600;
   text-align: left;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 p {
   font-size: 18px;
-  color: #909094 !important;
+  color: #626262 !important;
   line-height: 1.8;
   margin-bottom: 30px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .money {
   word-break: keep-all;
-  color: #909094;
+  color: #626262;
   font-size: 18px;
   display: flex;
   justify-content: space-between;
   width: 25%;
   align-items: baseline;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .items {
   align-self: center;
   width: 90%;
   padding: 0 0 5% 0;
   font-size: 17px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .items thead {
   padding: 0.5% 2% 0.5% 2%;
@@ -274,6 +306,8 @@ p {
   font-size: 22px;
   font-weight: bold;
   border: 0px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .reject-button {
   margin: auto;
@@ -285,5 +319,22 @@ p {
   font-size: 22px;
   font-weight: bold;
   border: 0px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.report-just{
+  background-color: #f7f6f6;
+  border-radius: 3px;
+  padding: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    resize: none;
+  word-wrap: break-word;
+  overflow-y: auto;
+}
+.head-info{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 </style>

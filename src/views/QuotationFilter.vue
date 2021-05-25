@@ -1,7 +1,7 @@
 <template>
   <div class="filter-container">
       <div class="quotation-filter">
-          <Options @sendinboxdata="passData($event)"/>
+          <Options @sendinboxdata="passData($event)" @senditems="passItems($event)"/>
           <InboxFiltro :inboxData="inboxData" :items="inboxItems"/>
       </div>
   </div>
@@ -20,8 +20,10 @@ export default {
       };
   },
   methods: {
-    passData(inbox, items){
+    passData(inbox){
       this.inboxData= inbox;
+    },
+    passItems(items){
       this.inboxItems= items;
     }
   }
