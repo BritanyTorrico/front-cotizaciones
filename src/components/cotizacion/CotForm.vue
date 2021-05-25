@@ -4,11 +4,7 @@
     <div class="form_crear">
       <div class="form_section">
         <div class="form_label">Titulo:</div>
-        <div class="form-name">{{ this.nombreCotizacion }}</div>
-      </div>
-      <div class="form_section">
-        <div class="form_label">Fecha:</div>
-        <div class="form-name">{{ this.today }}</div>
+        <div class="form-name">{{ 'Cotización de '+request.name+' del ' + this.today }}</div>
       </div>
       <div class="form-empresas">
         <Empresas :date="today" :items="request.itemList" @sendcompanies="getCompanies($event)"/>
@@ -54,8 +50,7 @@ export default {
   methods: {
     async curentDate() {
       const current = new Date();
-      const date = `${current.getDate()}-${current.getMonth() +
-        1}-${current.getFullYear()}`;
+      const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
       this.today = date;
     },
     async getCompanies(compList){
@@ -76,9 +71,14 @@ export default {
     },
     async sendData(){
       try {
+        console.log(`%c/${this.request.name}/
+        %cCotización de /${this.request.name} del ${this.today}/`,
+        "font-size: 19px; color: red;",
+        "font-size: 15px; color: blue");
+        console.log(this.companies);
         await this.$http.post("quotation",{
             nombre_solicitud: this.request.name,
-            titulo: this.nombreCotizacion,
+            titulo: 'Cotización de '+ this.request.name +' del ' + this.today,
             empresas: this.companies
         },
         {
@@ -96,7 +96,6 @@ export default {
   },
   mounted() {
     this.curentDate();
-    this.nombreCotizacion = "Cotizacion de "+this.request.name+" del "+this.today
   },
 };
 </script>

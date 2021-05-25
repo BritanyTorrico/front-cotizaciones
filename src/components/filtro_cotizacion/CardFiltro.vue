@@ -44,6 +44,8 @@ h3 {
   margin: 0%;
   text-align: left;
   width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .card-date {
   font-size: 16px;
@@ -51,6 +53,8 @@ h3 {
   margin: 0 0 0 20px;
   align-content: flex-end;
   width: 50%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .card-author {
   font-size: 16px;
@@ -58,6 +62,8 @@ h3 {
   font-weight: 550;
   text-align: left;
   margin: 5px 0 10px 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .card-status{
     font-size: 16px;
@@ -66,6 +72,8 @@ h3 {
     text-align: left;
     margin: 5px 0 10px 0;
     color:#242424;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .card-company{
     font-size: 16px;
@@ -73,5 +81,7 @@ h3 {
     font-weight: 550;
     text-align: left;
     margin: 5px 0 10px 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 </style>
