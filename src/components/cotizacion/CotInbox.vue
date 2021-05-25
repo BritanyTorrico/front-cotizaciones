@@ -8,7 +8,7 @@
                               <CardCot
                                 :name="req.nombre_solicitud"
                                 :date="req.fecha_solicitud"
-                                :author="req.usuario_solicitante"
+                                :author="req.usuario_solicitante_name"
                                 :description="req.detalle_solicitud"
                               />
                           </div>
@@ -68,18 +68,8 @@ export default {
       ).data;
       for (let i = 0; i < response.length; i++) {
         this.inboxData.push(response[i]);
-        this.inboxData[i].fecha_solicitud = this.inboxData[
-          i
-        ].fecha_solicitud.substr(
-          5,
-          this.inboxData[i].fecha_solicitud.indexOf("T")
-        );
-        this.inboxData[i].fecha_solicitud = this.inboxData[
-          i
-        ].fecha_solicitud.substr(
-          0,
-          this.inboxData[i].fecha_solicitud.indexOf("T")
-        );
+        const date= this.inboxData[i].fecha_solicitud;
+        this.inboxData[i].fecha_solicitud = `${date.substr(8,2)}/${date.substr(5,2)}/${date.substr(0,4)}`
         const reqItems = (
           await this.$http.get(
             `itemsPerRequest?searchby=solicitud&typeinput=nombre&inputdata=${this.inboxData[i].nombre_solicitud}`,
@@ -91,8 +81,8 @@ export default {
           )
         ).data.datos;
         let currentItems = [];
-        for (let j = 0; j < reqItems.length; j++) {
-          currentItems.push(reqItems[j]);
+        for (let j of reqItems){
+          currentItems.push(j)
         }
         this.items.push(currentItems);
       }
@@ -100,7 +90,7 @@ export default {
     async showRequest(i) {
       this.selectedRequest.name = this.inboxData[i].nombre_solicitud;
       this.selectedRequest.date = this.inboxData[i].fecha_solicitud;
-      this.selectedRequest.author = this.inboxData[i].usuario_solicitante;
+      this.selectedRequest.author = this.inboxData[i].usuario_solicitante_name;
       this.selectedRequest.description = this.inboxData[i].detalle_solicitud;
       this.selectedRequest.itemList = this.items[i];
     },
@@ -156,5 +146,7 @@ export default {
 }
 .selected-card{
     background: #b4cace;
+  border: 3px solid #030303;
+  border-radius: 10px;
 }
 </style>

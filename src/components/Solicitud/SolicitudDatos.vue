@@ -434,6 +434,7 @@ export default {
               },
             }
           );
+          console.log(this.listaSolicitudItems);
           await this.$http.post(
             `itemsPerRequest`,
             {

@@ -9,23 +9,23 @@
         >
           <thead>
             <tr>
-              <th style="border:1px solid;">Cantidad</th>
-              <th style="border:1px solid;">Unidad</th>
-              <th style="border:1px solid;">Detalle</th>
-              <th style="border:1px solid;">Unitario</th>
-              <th style="border:1px solid;">Total</th>
+              <th style="border:1px solid; width:50px;">Cantidad</th>
+              <th style="border:1px solid; width:70px;">Unidad</th>
+              <th style="border:1px solid; width:500px;">Detalle</th>
+              <th style="border:1px solid; width:70px;" >Unitario</th>
+              <th style="border:1px solid; width:100px;" >Total</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in items" :key="index">
-              <td style="border:1px solid;">{{ item.cantidad_solicitud }}</td>
-              <td style="border:1px solid;">{{ item.unidad_solicitud }}</td>
-              <td style="border:1px solid;">{{ item.detalle_solicitud }}</td>
-              <td style="border:1px solid;"></td>
-              <td style="border:1px solid;"></td>
+              <td style="border:1px solid;" class="table-quantity">{{ item.cantidad_solicitud }}</td>
+              <td style="border:1px solid;" class="table-unity">{{ item.unidad_solicitud }}</td>
+              <td style="border:1px solid;" class="table-detail">{{ item.detalle_solicitud }}</td>
+              <td style="border:1px solid;" ></td>
+              <td style="border:1px solid;" ></td>
             </tr>
             <tr v-for="m in 5" :key="m">
-              <td v-for="n in 5" :key="n" style="border:1px solid; height:25px;"></td>
+              <td class="empty-rows" v-for="n in 5" :key="n" style="border:1px solid; height:25px;"></td>
             </tr>
           </tbody>
         </table>
@@ -39,8 +39,8 @@
           v-model="selectedCompany"
         >
           <option
-            v-for="(company, index) in listaEmpresas"
-            :key="index"
+            v-for="(company, ind) in listaEmpresas"
+            :key="ind"
             :value="company"
             >{{ company }}</option
           >
@@ -198,16 +198,32 @@ export default {
       }, 10);
     },
     async getCompanies() {
+      
+       const it = (await this.$http.get(`expenseItem/${this.items[0].cod_itemgasto}`,{
+        headers: {
+            authorization: this.token,
+        },
+      })).data.datos[0];
+       const esp = (await this.$http.get(`specificCategory/${it.cod_categoriaespecifica}`,{
+        headers: {
+            authorization: this.token,
+        },
+      })).data.datos[0];
+      const gen = (await this.$http.get(`generalCategory/${esp.cod_categoriageneral}`,{
+        headers: {
+            authorization: this.token,
+        },
+      })).data.datos[0];
       const emp = (
-        await this.$http.get("company?rubro=All", {
+        await this.$http.get(`company?rubro=${gen.nombre_categoriageneral}`, {
           headers: {
             authorization: this.token,
           },
         })
       ).data;
-      for (let i = 0; i < emp.length; i++) {
-        this.listaEmpresas.push(emp[i].nombre_empresa);
-        this.companiesData.push(emp[i]);
+      for (let i of emp){
+        this.listaEmpresas.push(i.nombre_empresa);
+        this.companiesData.push(i)
       }
     },
     async showData(i) {
@@ -219,7 +235,7 @@ export default {
       this.empresa.correo = this.companiesData[i].correo_empresa;
       this.empresa.banco = this.companiesData[i].cuenta_bancaria;
     },
-    onChange(event) {
+    async onChange(event) {
       let comp = event.target.value;
       for (let i = 0; i < this.companiesData.length; i++) {
         if (this.listaEmpresas[i] == comp) {
@@ -240,7 +256,7 @@ export default {
         this.listaEmpresas.indexOf(this.empresa.nombre),
         1
       );
-      this.$emit("sendcompanies", this.confirmed)
+      this.$emit("sendcompanies", this.confirmedData)
     },
     removeElement: function(index) {
       this.listaEmpresas.push(this.confirmed[index]);
@@ -382,6 +398,7 @@ export default {
 }
 .items-list {
   width: 100%;
+  border:none!important;
 }
 .items thead {
   background-color: #c5c4c4;
@@ -390,8 +407,6 @@ export default {
 .items th {
   padding: 1% 2% 1% 2%;
   border: 1px solid #d1d0d0;
-  width: 20%;
-  
 }
 .items td {
   padding: 0.5% 1% 0.5% 1%;
@@ -400,5 +415,18 @@ export default {
 .button-disabled {
   background: #999999;
   border: 0px;
+}
+.empty-rows{
+  height: 0px!important;
+  border: none!important;
+}
+.table-quantity{
+  width: 12%!important;
+}
+.table-unity{
+  width: 15%!important;
+}
+.table-detail{
+  width: 45%!important;
 }
 </style>

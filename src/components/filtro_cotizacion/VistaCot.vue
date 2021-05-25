@@ -3,30 +3,28 @@
     <div class="head-part">
       <div class="head-top">
         <h2>{{ cot.name }}</h2>
-        <div class="time">{{ cot.date }}</div>
       </div>
       <h5>Items: </h5>
       <div class="items">
           <table
           class="items-list"
-          style="border:1px solid;border-collapse:collapse"
         >
           <thead>
             <tr>
-              <th style="border:1px solid;">Cantidad</th>
-              <th style="border:1px solid;">Unidad</th>
-              <th style="border:1px solid;">Detalle</th>
-              <th style="border:1px solid;">Unitario</th>
-              <th style="border:1px solid;">Total</th>
+              <th>Cantidad</th>
+              <th>Unidad</th>
+              <th>Detalle</th>
+              <th>Unitario</th>
+              <th>Total</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in cot.itemList" :key="index">
-              <td style="border:1px solid;">{{ item.cantidad }}</td>
-              <td style="border:1px solid;">{{ item.unidad }}</td>
-              <td style="border:1px solid;">{{ item.detalle }}</td>
-              <td style="border:1px solid;"></td>
-              <td style="border:1px solid;"></td>
+              <td >{{ item.cantidad }}</td>
+              <td >{{ item.unidad }}</td>
+              <td >{{ item.detalle }}</td>
+              <td ></td>
+              <td ></td>
             </tr>
           </tbody>
         </table>
@@ -63,7 +61,7 @@ export default {
 </script>
 
 <style scoped>
-.single-request-details{
+.single-quotation-details{
     background: #fff;
     margin: 40px;
     padding: 10px 10px 20px 10px;
@@ -116,13 +114,17 @@ h5 {
 .items th {
   padding: 1% 2% 1% 2%;
   border: 1px solid #c0c0c0;
+  width: 20%;
 }
 .items td {
   padding: 0.5% 1% 0.5% 1%;
   border: 1px solid #c0c0c0;
 }
 .confirmed-companies {
-  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  align-items: flex-start;
 }
 .confirmed-title {
   color: #3f4b5b;
@@ -130,15 +132,13 @@ h5 {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: 500;
-  padding-bottom: 4%;
+  padding-bottom: 1%;
 }
 .company-name{
     color: #030303;
     list-style-position: inside;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    padding: 0 0 3% 15%;
     font-size: 16px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: 420;
