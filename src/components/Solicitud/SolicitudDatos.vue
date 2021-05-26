@@ -18,6 +18,7 @@
           "
           type="text"
           v-model="solicitud.nombre_solicitud"
+          name="titulo"
         />
 
         <div
@@ -48,7 +49,7 @@
       </div>
       <div class="lista">
         <div class="izquierda"></div>
-        <div class="derecha">
+        <div class="derecha" id="unidad">
           <lista-desplegable
             :key="componentKey"
             required
@@ -57,6 +58,7 @@
             :lista="listaUnidadesDeGasto"
             Mensaje="Campo Obligatorio"
             :value="solicitud.unidadgasto_solicitud"
+            
           ></lista-desplegable>
         </div>
       </div>
@@ -73,6 +75,7 @@
           "
           type="text"
           v-model="solicitud.detalle_solicitud"
+          name="detalle"
         />
 
         <div
@@ -109,6 +112,7 @@
                   v-model="solicitud.categoria"
                   class="container__list"
                   @change="obtenerItems()"
+                  name="categoria"
                 >
                   <option disabled="true">{{ solicitud.categoria }}</option>
                   <option
@@ -130,6 +134,7 @@
                   class="container__list"
                   v-model="solicitud.nombre_item"
                   @change="obtenerDescripcion()"
+                  name="item"
                 >
                   <option disabled="true">{{ solicitud.nombre_item }}</option>
 
@@ -165,6 +170,7 @@
                   :disabled="!disabled"
                   type="number"
                   v-model="elemento.cantidad"
+                  name="cantidad"
                 />
               </div>
 
@@ -176,7 +182,7 @@
               </div>
             </div>
             <div class="form__boton">
-              <a class="btn btn-success boton-agregar" @click="agregarItem()"
+              <a class="btn btn-success boton-agregar" @click="agregarItem()" id="agregar"
                 >Agregar</a
               >
             </div>
@@ -267,6 +273,7 @@
             "
             type="text"
             v-model="solicitud.estimado_solicitud"
+            name="presupuesto"
           />
           <div
             class="form_check-error"
@@ -303,6 +310,7 @@
             type="submit"
             value="Enviar"
             class="btn btn-success boton-agregar"
+            id="enviar"
           />
         </div>
       </div>
