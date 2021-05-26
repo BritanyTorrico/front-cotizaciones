@@ -46,7 +46,7 @@
                   type="checkbox"
                   id="gestionUsuario"
                   name="funcion"
-                  value="Gestionar Usuarios"
+                  value="Registrar Usuarios"
                 />
               </div>
 
@@ -58,7 +58,7 @@
                   type="checkbox"
                   id="gestionRol"
                   name="funcion"
-                  value="Gestionar Roles"
+                  value="Crear Roles"
                 />
               </div>
 
@@ -70,7 +70,7 @@
                   type="checkbox"
                   id="gestionUnidades"
                   name="funcion"
-                  value="Gestionar unidadDeGasto"
+                  value="Añadir Unidades de Gasto"
                 />
               </div>
 
@@ -83,7 +83,7 @@
                     type="checkbox"
                     id="gestionItems"
                     name="funcion"
-                    value="Gestionar itemsDeGasto"
+                    value="Añadir Items de Gasto"
                   />
                 </div>
                 <label for="gestionItems">Añadir Items de Gasto</label><br />
@@ -125,6 +125,10 @@ export default {
       },
       funciones: [],
       componentKey: 0,
+      permiso1: '',
+      permiso2: '',
+      permiso3: '',
+      permiso4: ''
     };
   },
 
@@ -155,16 +159,19 @@ export default {
       checkboxes.forEach((checkbox) => {
         this.funciones.push(checkbox.value);
       });
+      for (let i of this.funciones){
+        if (i=='Registrar Usuarios') this.permiso1=i
+        if (i=='Crear Roles') this.permiso2=i
+        if (i=='Añadir Unidades de Gasto') this.permiso3=i
+        if (i=='Añadir Items de Gasto') this.permiso4=i
+      }
     },
     async submitForm() {
       this.getFunciones();
       try {
 
         if (!this.$v.dato.$invalid && this.funciones.length > 0) {
-          await this.sendRolData();
-          for (let i = 0; i < this.funciones.length; i++) {
-            await this.sendFuncData(i);
-          }
+          await this.sendFuncData();
           this.alert("success", "Rol creado exitosamente");
           this.dato.nombre_rol = null;
           this.forceRerender();
@@ -175,29 +182,15 @@ export default {
         this.alert("warning", "El nombre del rol ya esta registrado");
       }
     },
-    async sendRolData() {
+    async sendFuncData() {
       try {
         await this.$http.post(
-          "roles",
+          "rolePerFunctionsGroup",
           {
-            nombre_rol: this.dato.nombre_rol,
-          },
-          {
-            headers: {
-              authorization: this.token,
-            },
-          }
-        );
-      } catch (error) {
-        throw new Error("No existe dicha función");
-      }
-    },
-    async sendFuncData(index) {
-      try {
-        await this.$http.post(
-          "rolePerFunctions",
-          {
-            nombre_funcion: this.funciones[index],
+            permiso1: this.permiso1,
+            permiso2: this.permiso2,
+            permiso3: this.permiso3,
+            permiso4: this.permiso4,
             nombre_rol: this.dato.nombre_rol,
           },
           {
