@@ -23,6 +23,7 @@
                 class="form-control"
                 type="text"
                 v-model="users.nombre_usuario"
+                name="usuario"
               />
             </div>
           </div>
@@ -68,7 +69,7 @@
         <!---->
 
         <div class="form__section">
-          <input class="form__section__boton" type="submit" value="Ingresar" />
+          <input class="form__section__boton" type="submit" value="Ingresar" name="ingresar"/>
         </div>
       </form>
       <Alert ref="alert"></Alert>
