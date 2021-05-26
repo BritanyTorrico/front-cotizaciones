@@ -43,7 +43,6 @@ const routes = [{
         name: "RegisterUserPage",
         component: () =>
             import ("../views/RegisterUserPage.vue"),
-
         meta: {
             rutaProtegida: true,
         },
@@ -75,21 +74,22 @@ const routes = [{
     {
         path: "/revisar_solicitudes",
         name: "RequestReview",
-        component: () =>import ("@/views/RequestReview.vue"),
-            meta: {
-                rutaProtegida: true,
-            },
-    },
-     {
-        path: "/cotizacion",
-        name: "QuotationForm",
-        component: () =>import ("@/views/QuotationForm.vue"),
+        component: () =>
+            import ("@/views/RequestReview.vue"),
         meta: {
             rutaProtegida: true,
         },
-     },
+    },
+    {
+        path: "/cotizacion",
+        name: "QuotationForm",
+        component: () =>
+            import ("@/views/QuotationForm.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
 
-        
     {
         path: "/crear_empresa",
         name: "creaEmpresa",
@@ -107,7 +107,7 @@ const routes = [{
         meta: {
             rutaProtegida: true,
         },
-    }
+    },
 ];
 
 const router = new VueRouter({

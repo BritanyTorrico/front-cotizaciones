@@ -93,7 +93,13 @@ export default {
     Alert,
   },
   computed: {
-    ...mapState(["permisoHome", "listaPermisos", "username", "token"]),
+    ...mapState([
+      "permisoHome",
+      "listaPermisos",
+      "username",
+      "token",
+      "permisoCrearUsuario",
+    ]),
   },
   data() {
     return {

@@ -1,14 +1,18 @@
 <template>
-  <div class="soli_container">
+  <div class="soli_container" v-if="this.permisoSolicitud">
     <solicitud-datos />
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import SolicitudDatos from "../components/Solicitud/SolicitudDatos.vue";
 export default {
   components: { SolicitudDatos },
   name: "SolicitudPage",
+  computed: {
+    ...mapState(["permisoSolicitud"]),
+  },
 };
 </script>
 
