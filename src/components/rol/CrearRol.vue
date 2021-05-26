@@ -171,7 +171,9 @@ export default {
       try {
 
         if (!this.$v.dato.$invalid && this.funciones.length > 0) {
+          await this.sendRolData();
           await this.sendFuncData();
+          
           this.alert("success", "Rol creado exitosamente");
           this.dato.nombre_rol = null;
           this.forceRerender();
@@ -180,6 +182,23 @@ export default {
         }
       } catch (error) {
         this.alert("warning", "El nombre del rol ya esta registrado");
+      }
+    },
+    async sendRolData() {
+      try {
+        await this.$http.post(
+          "roles",
+          {
+            nombre_rol: this.dato.nombre_rol,
+          },
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        );
+      } catch (error) {
+        throw new Error("No existe dicha función");
       }
     },
     async sendFuncData() {
