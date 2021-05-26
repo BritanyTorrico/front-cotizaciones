@@ -69,6 +69,8 @@ export default {
 <style scoped>
 .inbox{
     position: relative;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .inbox-container {
   padding: 0px !important;
@@ -92,12 +94,6 @@ export default {
     height: 42rem;
     overflow: auto;
 }
-.inbox-selected {
-  width: 70%;
-  padding: 0 5rem 5rem 0;
-  margin: 10px;
-  background: #c4dee4;
-}
 .single-card-container {
   align-items: center;
   display: flex;
@@ -111,5 +107,13 @@ export default {
 }
 .selected-card{
     background: #b4cace;
+  border: 3px solid #030303;
+  border-radius: 10px;
+}
+.inbox-selected {
+  width: 70%;
+  padding: 0 5rem 5rem 0;
+  margin: 10px;
+  background: #c4dee4;
 }
 </style>

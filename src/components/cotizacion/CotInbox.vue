@@ -43,11 +43,11 @@ export default {
       inboxData: [],
       items: [],
       selectedRequest: {
+        cod: null,
         name: "",
         date: "",
         author: "",
         description: "",
-        budget: null,
         itemList: [],
       },
     };
@@ -56,7 +56,7 @@ export default {
     async getData() {
       const response = (
         await this.$http.get(
-          `request?type=criteria&status=ACEPTADA&from=depto&nombre=${localStorage.getItem(
+          `request?type=criteria&status=EN_COTIZACION&from=depto&nombre=${localStorage.getItem(
             "depto"
           )}`,
           {
@@ -88,6 +88,7 @@ export default {
       }
     },
     async showRequest(i) {
+      this.selectedRequest.cod = this.inboxData[i].cod_solicitud;
       this.selectedRequest.name = this.inboxData[i].nombre_solicitud;
       this.selectedRequest.date = this.inboxData[i].fecha_solicitud;
       this.selectedRequest.author = this.inboxData[i].usuario_solicitante_name;

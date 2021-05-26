@@ -2,7 +2,9 @@
   <div class="filter-container">
       <div class="quotation-filter">
           <Options @sendinboxdata="passData($event)" @senditems="passItems($event)"/>
-          <InboxFiltro :inboxData="inboxData" :items="inboxItems"/>
+      </div>
+      <div class="filter-inbox">
+        <InboxFiltro :inboxData="inboxData" :items="inboxItems"/>
       </div>
   </div>
 </template>
@@ -33,5 +35,8 @@ export default {
 <style scoped>
 .quotation-filter{
   background: #46b1c969;
+}
+.fiter-inbox{
+  background: #c4dee4;
 }
 </style>

@@ -25,9 +25,12 @@
 <script>
 import Alert from '../Alert.vue';
 import Empresas from "./Empresas.vue";
-
+import { mapState } from "vuex";
 export default {
   name: "CotForm",
+  computed: {
+    ...mapState(["token"]),
+  },
   components: { Empresas, Alert },
     data(){
       return {
@@ -40,6 +43,7 @@ export default {
   },
   props: {
     request: {
+      cod: Number,
       name: String,
       date: String,
       author: String,
@@ -59,8 +63,9 @@ export default {
     async submitForm(){
       try {
         if(this.companies.length==3){
-          await this.sendData();
-          this.alert("success", "Item creado exitosamente");
+          await this.sendQuotData();
+          await this.updateRequest();
+          this.alert("success", "Cotizacion creada exitosamente");
             window.setInterval(window .location.reload(), 10000); 
         }else{
           this.alert("warning", "Seleccione por lo menos 3 empresas");
@@ -69,13 +74,8 @@ export default {
         this.alert("warning", error)
       }
     },
-    async sendData(){
+    async sendQuotData(){
       try {
-        console.log(`%c/${this.request.name}/
-        %cCotización de /${this.request.name} del ${this.today}/`,
-        "font-size: 19px; color: red;",
-        "font-size: 15px; color: blue");
-        console.log(this.companies);
         await this.$http.post("quotation",{
             nombre_solicitud: this.request.name,
             titulo: 'Cotización de '+ this.request.name +' del ' + this.today,
@@ -88,6 +88,20 @@ export default {
         })
       } catch (error) {
           throw new Error("Esta cotización ya fue creada");
+      }
+    },
+    async updateRequest(){
+      try {
+        await this.$http.put(`request/${this.request.cod}?type=State`,{
+            estado_solicitud: 'ESPERANDO_RESPUESTAS',
+        },
+        {
+            headers: {
+                authorization: this.token,
+            },
+        })
+      } catch (error) {
+        throw new Error("Esta solicitud ya fue actualizada");
       }
     },
     alert (alertType, alertMessage){
@@ -111,6 +125,8 @@ export default {
   border-radius: 3px;
   display: flex;
   flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .form-title {
   text-align: left;

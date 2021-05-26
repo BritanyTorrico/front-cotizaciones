@@ -178,7 +178,7 @@ export default {
     },
     async assert() {
       this.valid = true;
-      this.status = "ACEPTADA";
+      this.status = "EN_COTIZACION";
     },
     async deny() {
       this.valid = false;
