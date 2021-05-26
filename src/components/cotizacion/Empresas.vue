@@ -277,6 +277,8 @@ export default {
   flex-direction: column;
   width: 90%;
   align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .filter-head {
   display: flex;

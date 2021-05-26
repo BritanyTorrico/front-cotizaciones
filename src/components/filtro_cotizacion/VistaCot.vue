@@ -73,6 +73,7 @@ export default {
     flex-direction: column;
 }
 .head-top {
+  text-align: left;
   display: flex;
   align-items: center;
   justify-content: space-between;
