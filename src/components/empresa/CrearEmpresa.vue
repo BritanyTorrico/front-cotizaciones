@@ -19,7 +19,6 @@
           "
           type="text"
           maxlength="50"
-          v-on:keydown="keyhandler($event)"
           required
           placeholder="Ingrese nombre aquí"
           v-model="dato.nombre_empresa"
@@ -40,7 +39,6 @@
               : 'form__input'
           "
           type="number"
-          v-on:keydown="keyhandler($event)"
           required
           placeholder="Ingrese nit aquí"
           v-model="dato.nit_empresa"
@@ -63,7 +61,6 @@
           "
           type="text"
           maxlength="50"
-          v-on:keydown="keyhandler($event)"
           required
           placeholder="Ingrese nombre aquí"
           v-model="dato.representante_empresa"
@@ -88,7 +85,6 @@
               : 'form__input'
           "
           type="number"
-          v-on:keydown="keyhandler($event)"
           required
           placeholder="Ingrese telefono aquí"
           v-model="dato.telf_empresa"
@@ -110,7 +106,6 @@
           "
           type="text"
           maxlength="1000"
-          v-on:keydown="keyhandler($event)"
           required
           placeholder="Ingrese dirección aquí"
           v-model="dato.direccion_empresa"
@@ -157,7 +152,6 @@
               : 'form__input'
           "
           type="number"
-          v-on:keydown="keyhandler($event)"
           required
           placeholder="Ingrese cuenta bancaria aquí"
           v-model="dato.cuenta_bancaria"
@@ -314,6 +308,14 @@ export default {
     },
     async sendData() {
       try {
+        this.sendEmpData();
+        this.sendCompMark();
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    async sendEmpData(){
+      try {
         await this.$http.post(
           "company",
           {
@@ -332,6 +334,13 @@ export default {
             },
           }
         );
+        
+      } catch (error) {
+        throw new Error("Esta empresa ya fue registrada");
+      }
+    },
+    async sendCompMark(){
+      try {
         await this.$http.post(
           "companiesPerMarket",
           {
@@ -345,7 +354,7 @@ export default {
           }
         );
       } catch (error) {
-        throw new Error("Esta empresa ya fue registrada");
+        throw new Error("El rubro es inválido");
       }
     },
     async manageMark(){
