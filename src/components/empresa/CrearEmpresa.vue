@@ -11,6 +11,7 @@
         <div class="form_name">Nombre de la empresa:</div>
         <input
           name="nombreEmpresa"
+          id="nombreEmpresa"
           :class="
             $v.dato.nombre_empresa.$invalid
               ? 'form_check-input-error'
@@ -32,6 +33,7 @@
         <div class="form_name">Nit de la empresa:</div>
         <input
           name="nitEmpresa"
+          id="nitEmpresa"
           :class="
             $v.dato.nit_empresa.$invalid
               ? 'form_check-input-error'
@@ -53,6 +55,7 @@
         <div class="form_name">Representante legal:</div>
         <input
           name="representanteEmpresa"
+          id="representanteEmpresa"
           :class="
             $v.dato.representante_empresa.$invalid
               ? 'form_check-input-error'
@@ -78,6 +81,7 @@
         <div class="form_name">Telefono de la empresa:</div>
         <input
           name="telfEmpresa"
+          id="telfEmpresa"
           :class="
             $v.dato.telf_empresa.$invalid
               ? 'form_check-input-error'
@@ -98,6 +102,7 @@
         <div class="form_name">Dirección de la empresa:</div>
         <input
           name="direccionEmpresa"
+          id="direccionEmpresa"
           :class="
             $v.dato.direccion_empresa.$invalid
               ? 'form_check-input-error'
@@ -123,6 +128,7 @@
         <div class="form_name">Correo de la empresa:</div>
         <input
           name="correoEmpresa"
+          id="correoEmpresa"
           :class="
             $v.dato.correo_empresa.$invalid
               ? 'form_check-input-error'
@@ -144,6 +150,7 @@
         <div class="form_name">Cuenta bancaria:</div>
         <input
           name="cuentaBancaria"
+          id="cuentaBancaria"
           :class="
             $v.dato.cuenta_bancaria.$invalid
               ? 'form_check-input-error'
@@ -232,9 +239,6 @@ export default {
       listRubros: [],
       componentKey: 0,
     };
-  },
-  mounted() {
-    this.obtenerRubros();
   },
   validations: {
     dato: {
@@ -383,6 +387,96 @@ export default {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
+  mounted(){
+    this.obtenerRubros();
+    var validCodesName=[32, 
+                            48,49,50,51,52,53,54,55,56,57,
+                            65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
+                            97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,
+                            193,201,205,209,211,218,225,233,237,241,243,250
+                            ];
+    var validCodesRep=[32, 
+                            65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
+                            97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,
+                            193,201,205,209,211,218,225,233,237,241,243,250
+                            ];
+    var validCodesNum=[48,49,50,51,52,53,54,55,56,57];
+    var validCodesMail=[32, 45, 46, 64,95,
+                            48,49,50,51,52,53,54,55,56,57,
+                            65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
+                            97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122
+                            ];
+    var myTextBox1=document.getElementById("nombreEmpresa");
+    var myTextBox2=document.getElementById("nitEmpresa");
+    var myTextBox3=document.getElementById("representanteEmpresa");
+    var myTextBox4=document.getElementById("telfEmpresa");
+    var myTextBox5=document.getElementById("correoEmpresa");
+    var myTextBox6=document.getElementById("cuentaBancaria");
+    var myTextBox7=document.getElementById("rubroEmpresa");
+    myTextBox1.addEventListener('keypress', evt => {
+            var charCode = evt.charCode;
+            if (charCode!=0){
+                var isValid = validCodesName.includes(charCode);
+                if (!isValid){
+                    evt.preventDefault();
+                }
+            }
+        }, false);
+    myTextBox2.addEventListener('keypress', evt => {
+            var charCode = evt.charCode;
+            if (charCode!=0){
+                var isValid = validCodesNum.includes(charCode);
+                if (!isValid){
+                    evt.preventDefault();
+                }
+            }
+        }, false);
+        myTextBox3.addEventListener('keypress', evt => {
+            var charCode = evt.charCode;
+            if (charCode!=0){
+                var isValid = validCodesRep.includes(charCode);
+                if (!isValid){
+                    evt.preventDefault();
+                }
+            }
+        }, false);
+        myTextBox4.addEventListener('keypress', evt => {
+            var charCode = evt.charCode;
+            if (charCode!=0){
+                var isValid = validCodesNum.includes(charCode);
+                if (!isValid){
+                    evt.preventDefault();
+                }
+            }
+        }, false);
+        myTextBox5.addEventListener('keypress', evt => {
+            var charCode = evt.charCode;
+            if (charCode!=0){
+                var isValid = validCodesMail.includes(charCode);
+                if (!isValid){
+                    evt.preventDefault();
+                }
+            }
+        }, false);
+        myTextBox6.addEventListener('keypress', evt => {
+            var charCode = evt.charCode;
+            if (charCode!=0){
+                var isValid = validCodesNum.includes(charCode);
+                if (!isValid){
+                    evt.preventDefault();
+                }
+            }
+        }, false);
+        myTextBox7.addEventListener('keypress', evt => {
+            var charCode = evt.charCode;
+            if (charCode!=0){
+                var isValid = validCodesRep.includes(charCode);
+                if (!isValid){
+                    evt.preventDefault();
+                }
+            }
+        }, false);
+  }
 };
 </script>
 
