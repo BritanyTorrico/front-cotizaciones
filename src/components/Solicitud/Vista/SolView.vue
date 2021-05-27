@@ -1,13 +1,12 @@
 <template>
   <div class="single-request-details">
-    <div class="head-part">
+      <div class="head-part">
       <div class="head-top">
         <h2>{{ request.name }}</h2>
         <div class="time">{{ request.date }}</div>
       </div>
       <div class="head-info">
-        <div class="head-subject"><h3>Solicitante:</h3>{{ request.author }}</div>
-        <div class="head-subject"><h3>Unidad:</h3>{{ request.unit }}</div>
+        <div class="head-subject"><h3>Estado:</h3>{{ request.status }}</div>
       </div>
     </div>
     <div class="body-part">
@@ -37,158 +36,32 @@
         </tbody>
       </table>
     </div>
-    <div class="response">
-      <b-button
-        class="accept-button"
-        v-on:click="assert()"
-        v-b-modal.modal-prevent-closing
-        >Aceptar</b-button
-      >
-      <b-button
-        class="reject-button"
-        v-on:click="deny()"
-        v-b-modal.modal-prevent-closing
-        >Rechazar</b-button
-      >
-      <b-modal
-        id="modal-prevent-closing"
-        ref="modal"
-        title="Justificación"
-        @show="resetModal"
-        @hidden="resetModal"
-        @ok="handleOk"
-      >
-        <form ref="form" @submit.stop.prevent="handleSubmit">
-          <b-form-group
-            invalid-feedback="Justifique su respuesta"
-            :state="resState"
-          >
-            <b-form-textarea
-              id="response-textarea"
-              class="report-just"
-              v-model="response"
-              placeholder="Ingrese su justificación"
-              cols="50"
-              rows="10"
-              maxlength="1000"
-              :state="resState"
-              required
-            ></b-form-textarea>
-          </b-form-group>
-        </form>
-        <Alert ref="alert"></Alert>
-      </b-modal>
+    <div class="options">
+        <button class="accept-button">Editar</button>
+        <button class="reject-button">Eliminar</button>
     </div>
   </div>
 </template>
 
 <script>
-import Alert from "@/components/Alert.vue";
-import { mapState } from "vuex";
-import { BButton, BModal, BFormGroup, BFormTextarea } from "bootstrap-vue";
 export default {
-  name: "Details",
-  computed: {
-    ...mapState(["token"]),
+  data(){
+      return{};
   },
-  components: { Alert, BButton, BModal, BFormGroup, BFormTextarea },
-  data() {
-    return {
-      valid: null,
-      response: "",
-      resState: null,
-      status: "",
-    };
+  props:{
+      request:{
+          cod: Number,
+          name: String,
+          date: String,
+          status: String,
+          description: String,
+          budget: Number,
+          itemList: Array
+      },
   },
-  props: {
-    request: {
-      cod: Number,
-      name: String,
-      date: String,
-      author: String,
-      unit: String,
-      description: String,
-      budget: Number,
-      itemList: Array,
-    },
-  },
-  methods: {
-    checkFormValidity() {
-      const v = this.$refs.form.checkValidity();
-      this.resState = v;
-      return v;
-    },
-    resetModal() {
-      this.response = "";
-      this.resState = null;
-    },
-    handleOk(bvModalEvt) {
-      bvModalEvt.preventDefault();
-      this.handleSubmit();
-    },
-    async handleSubmit() {
-      try {
-        if (!this.checkFormValidity()) {
-          return;
-        }
-        await this.sendData();
-        this.alert("success", "Informe enviado");
-      } catch (error) {
-        this.alert("warning", error);
-        return;
-      }
-
-      this.$nextTick(() => {
-        this.$bvModal.hide("modal-prevent-closing");
-      });
-    },
-    async sendData() {
-      try {
-        await this.$http.post(
-          "report?type=codigo",
-          {
-            cod_solicitud: this.request.cod,
-            titulo_informe: "Informe " + this.request.name,
-            justificacion_informe: this.response,
-            aceptacion: this.valid,
-          },
-          {
-            headers: {
-              authorization: this.token,
-            },
-          }
-        );
-
-        await this.$http.put(
-          `request/${this.request.cod}?type=State`,
-          {
-            estado_solicitud: this.status,
-          },
-          {
-            headers: {
-              authorization: this.token,
-            },
-          }
-        );
-        window.location.reload();
-      } catch (error) {
-        throw new Error("Esta solicitud ya fue revisada");
-      }
-    },
-    async assert() {
-      this.valid = true;
-      this.status = "EN_COTIZACION";
-    },
-    async deny() {
-      this.valid = false;
-      this.status = "RECHAZADA";
-    },
-    alert(alertType, alertMessage) {
-      this.$refs.alert.showAlert(alertType, alertMessage);
-    },
-  },
-};
+}
 </script>
+
 <style scoped>
 .single-request-details {
   background: #fff;
@@ -292,9 +165,6 @@ p {
   padding: 0.5% 1% 0.5% 1%;
   border: 1px solid #c0c0c0;
 }
-.response {
-  display: flex;
-}
 .accept-button {
   margin: auto;
   display: block;
@@ -321,19 +191,12 @@ p {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
-.report-just{
-  background-color: #f7f6f6;
-  border-radius: 3px;
-  padding: 8px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    resize: none;
-  word-wrap: break-word;
-  overflow-y: auto;
-}
 .head-info{
   display: flex;
   width: 100%;
   justify-content: space-between;
+}
+.options{
+    display: flex;
 }
 </style>
