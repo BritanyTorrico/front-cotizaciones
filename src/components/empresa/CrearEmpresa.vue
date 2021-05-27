@@ -142,7 +142,7 @@
           <div class="form_name">Correo de la empresa:</div>
           <input
             name="correoEmpresa"
-            id="correo_empresa"
+            id="correoEmpresa"
             :class="
               $v.dato.correo_empresa.$invalid
                 ? 'form_check-input-error'
@@ -211,7 +211,7 @@
           <div class="form_check-error" v-if="!$v.dato.rubro_empresa.alpha3">
             No se aceptan caracteres especiales.
           </div>
-          <datalist id="rubros">
+          <datalist id="rubros" :key="componentKey">
             <option
               v-for="(rubro, index) in listRubros"
               :key="index"
@@ -314,6 +314,7 @@ export default {
   methods: {
     forceRerender() {
       this.componentKey += 1;
+      console.log("cambio");
     },
     async obtenerRubros() {
       const listaRubros = (
@@ -355,6 +356,7 @@ export default {
         this.sendEmpData();
         // si sale bien recien puede registrar compania por rubro
         this.sendCompMark();
+        window.location.reload();
       } catch (error) {
         this.alert("warning", "Algo salio mal");
       }
