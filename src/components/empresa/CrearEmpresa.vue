@@ -161,21 +161,37 @@
         </div>
       </div>
       <div class="form_section">
-        <div class="listaDesplegable">
           <div class="form_name">Rubro:</div>
-          <lista-desplegable
-            :key="componentKey"
-            required
-            v-model="dato.rubro_empresa"
-            nombreLista=""
-            :lista="listRubros"
-            :value="dato.rubro_empresa"
-          ></lista-desplegable>
-        </div>
+          <input
+                        name="rubroEmpresa"
+                        id="rubroEmpresa"
+                        :class="
+                            $v.dato.rubro_empresa.$invalid
+                            ? 'form_check-input-error'
+                            : 'form__input'
+                        "
+                        list="rubros"
+                        maxlength="50"
+                        required
+                        placeholder="Seleccione o ingrese una rubro"
+                        v-model="dato.rubro_empresa"
+                        
+                        />
+                        <div
+                        class="form_check-error"
+                        v-if="!$v.dato.rubro_empresa.required"
+                        >
+                        Campo obligatorio.
+                        </div>
+                        <datalist id="rubros">
+                        <option
+                            v-for="(rubro, index) in listRubros"
+                            :key="index"
+                            :value="rubro"
+                            >{{ rubro }}</option
+                        >
+                        </datalist>
 
-        <div class="form_check-error" v-if="!$v.dato.rubro_empresa.required">
-          Campo obligatorio.
-        </div>
       </div>
       <button
         :disabled="$v.dato.$invalid"
@@ -192,7 +208,6 @@
 <script>
 import { required, maxLength } from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
-import ListaDesplegable from "@/components/User/ListaDesplegable.vue";
 import { mapState } from "vuex";
 
 export default {
@@ -200,7 +215,7 @@ export default {
   computed: {
     ...mapState(["token"]),
   },
-  components: { Alert, ListaDesplegable },
+  components: { Alert },
   data() {
     return {
       disable: false,
@@ -211,7 +226,7 @@ export default {
         telf_empresa: null,
         direccion_empresa: null,
         correo_empresa: null,
-        rubro_empresa: "Seleccione una opcion",
+        rubro_empresa: null,
         cuenta_bancaria: null,
       },
       listRubros: [],
@@ -255,11 +270,6 @@ export default {
     },
   },
   methods: {
-    keyhandler(e) {
-      if (!e.key.match(/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s]*$/)) {
-        e.preventDefault();
-      }
-    },
     forceRerender() {
       this.componentKey += 1;
     },
@@ -271,13 +281,14 @@ export default {
           },
         })
       ).data.datos;
-      for (let i = 0; i < listaRubros.length; i++) {
-        this.listRubros.push(listaRubros[i].nombre_rubro);
+      for (let i of listaRubros){
+        this.listRubros.push(i.nombre_rubro)
       }
     },
     async submitForm() {
       try {
         if (!this.$v.dato.$invalid) {
+          await this.manageMark();
           await this.sendData();
           this.alert("success", "Empresa registrada exitosamente");
 
@@ -287,7 +298,7 @@ export default {
           this.dato.telf_empresa = null;
           this.dato.direccion_empresa = null;
           this.dato.correo_empresa = null;
-          this.dato.rubro_empresa = "Seleccione una opcion";
+          this.dato.rubro_empresa = null;
           this.dato.cuenta_bancaria = null;
           this.forceRerender();
         } else {
@@ -331,6 +342,41 @@ export default {
         );
       } catch (error) {
         throw new Error("Esta empresa ya fue registrada");
+      }
+    },
+    async manageMark(){
+      try {
+        const markets= (
+        await this.$http.get("market", {
+            headers: {
+              authorization: this.token,
+            },
+          })
+        ).data.datos;
+        let existingMark=[]
+        for (let i of markets){
+          existingMark.push(i.nombre_rubro)
+        }
+        if (!existingMark.includes(this.dato.rubro_empresa)){
+          await this.$http.post('market',{
+            nombre_rubro: this.dato.rubro_empresa
+          },
+              {
+                headers:{
+                  authorization:this.token,
+                },
+              });
+          await this.$http.post('generalCategory',{
+            nombre_categoriageneral: this.dato.rubro_empresa
+          },
+              {
+                headers:{
+                  authorization:this.token,
+                },
+              });
+        }
+      } catch (error) {
+        throw new Error("Rubro Inválido") 
       }
     },
     alert(alertType, alertMessage) {

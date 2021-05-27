@@ -127,7 +127,7 @@ export default {
                     this.filteredInbox[i].fecha_cotizacion=response[i].fecha_cotizacion
                     this.filteredInbox[i].fecha_cotizacion=this.filteredInbox[i].fecha_cotizacion.substr(5, this.filteredInbox[i].fecha_cotizacion.indexOf('T'));
                     this.filteredInbox[i].fecha_cotizacion=this.filteredInbox[i].fecha_cotizacion.substr(0, this.filteredInbox[i].fecha_cotizacion.indexOf('T'));
-                    const requests=(await this.$http.get(`request?type=criteria&status=ACEPTADA&from=depto&nombre=${localStorage.getItem('depto')}`, {
+                    const requests=(await this.$http.get(`request?type=All&from=depto&nombre=${localStorage.getItem('depto')}`, {
                             headers: {
                                 authorization: this.token,
                             },
