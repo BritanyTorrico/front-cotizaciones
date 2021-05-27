@@ -6,6 +6,7 @@
       <div class="inbox-container">
               <div class="inbox-cards">
                   <div class="card-side">
+                    <div class=desc>Mis solicitudes:</div>
                       <div class="card-index" v-for="(req,i) in inboxData" :key="i">
                           <div class="single-card-container " v-on:click=showRequest(i) :class="selectedRequest.name==req.nombre_solicitud ? 'selected-card' :''">
                               <SolCard
@@ -138,7 +139,7 @@ export default {
   width: 70%;
   padding: 0 5rem 5rem 0;
   margin: 10px;
-  background: #c4dee4;
+  background: #97ced8;
 }
 .single-card-container {
   align-items: center;
@@ -152,7 +153,7 @@ export default {
   width: 100%;
 }
 .selected-card{
-    background: #b4cace;
+    background: #97ced8;
   border: 3px solid #030303;
   border-radius: 10px;
 }
@@ -174,5 +175,15 @@ export default {
     align-self: flex-start;
     padding:2%;
     width:30%;
+}
+.desc{
+  font-size: 29px;
+  text-align: left;
+  font-weight: 600;
+  padding: 2.5% 1% 1% 1%;
+  background: #dddfe7;
+  border: 1px solid #dddfe7;
+  border-radius: 10%;
+  width: 57%;
 }
 </style>

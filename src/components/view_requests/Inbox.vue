@@ -3,6 +3,7 @@
     <div class="inbox-container">
       <div class="inbox-cards">
         <div class="card-side">
+          <div class="desc">Solicitudes entrantes:</div>
           <div class="card-index" v-for="(req, i) in inboxData" :key="i">
             <div
               class="single-card-container "
@@ -144,7 +145,7 @@ export default {
   width: 70%;
   padding: 0 5rem 5rem 0;
   margin: 10px;
-  background: #c4dee4;
+  background: #a7c8ee;
 }
 .single-card-container {
   align-items: center;
@@ -158,8 +159,18 @@ export default {
   width: 100%;
 }
 .selected-card {
-  background: #b4cace;
+  background: #a7c8ee;
   border: 3px solid #030303;
   border-radius: 10px;
+}
+.desc{
+  font-size: 29px;
+  text-align: left;
+  font-weight: 600;
+  padding: 2.5% 1% 1% 1%;
+  background: #dddfe7;
+  border: 1px solid #dddfe7;
+  border-radius: 0 0 10% 10%;
+  width: 75%;
 }
 </style>
