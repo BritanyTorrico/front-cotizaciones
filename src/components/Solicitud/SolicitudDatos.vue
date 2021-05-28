@@ -58,7 +58,6 @@
             :lista="listaUnidadesDeGasto"
             Mensaje="Campo Obligatorio"
             :value="solicitud.unidadgasto_solicitud"
-            
           ></lista-desplegable>
         </div>
       </div>
@@ -105,7 +104,7 @@
             Agregar un nuevo item:
           </div>
           <div class="seccion__Izq-fila1">
-            <div class="form__categoria">
+            <!--<div class="form__categoria">
               <div class="container__label">Categoria:</div>
               <div class="contenedor-select">
                 <select
@@ -125,7 +124,7 @@
                   </option>
                 </select>
               </div>
-            </div>
+            </div>-->
             <div class="container-nombre-item">
               <div class="container__label">item de gasto:</div>
               <div class="contenedor-select">
@@ -182,10 +181,35 @@
               </div>
             </div>
             <div class="form__boton">
-              <a class="btn btn-success boton-agregar" @click="agregarItem()" id="agregar"
+              <a
+                class="btn btn-success boton-agregar"
+                @click="agregarItem()"
+                id="agregar"
                 >Agregar</a
               >
             </div>
+          </div>
+          <!--Agregue categorias generales-->
+          <div v-on:click="getSpeCategories">
+            <lista-desplegable
+              required
+              v-model="solicitud.categoria_general"
+              nombreLista="Categoria:"
+              :lista="listaCatGen"
+              Mensaje="Campo Obligatorio"
+              :value="solicitud.categoria_general"
+            ></lista-desplegable>
+          </div>
+          <div>
+            <lista-desplegable
+              :key="componentKey3"
+              required
+              v-model="solicitud.categoria"
+              nombreLista="Categoria Espeficica:"
+              :lista="listaCategorias1"
+              Mensaje="Campo Obligatorio"
+              :value="solicitud.categoria"
+            ></lista-desplegable>
           </div>
 
           <!---->
@@ -353,7 +377,8 @@ export default {
   name: "SolicitudDatos",
   store,
   mounted() {
-    this.getCategories();
+    this.getGenCategories();
+    this.getCategories(); //especifica
     this.getDepartamento();
   },
   computed: {
@@ -365,8 +390,8 @@ export default {
         nombre_solicitud: null,
         detalle_solicitud: null,
         categoria: "Seleccione una opcion",
+        categoria_general: "Seleccione una opcion",
         nombre_item: "Seleccione una opcion",
-
         unidadgasto_solicitud: "Seleccione una opcion",
         estimado_solicitud: null,
       },
@@ -374,6 +399,7 @@ export default {
         cantidad: null,
       },
       listaCategorias: [],
+      listaCategorias1: [],
 
       listItems: [],
       listaPeticion: [], //aqui esta la lista de items que mandare
@@ -383,6 +409,9 @@ export default {
       listaUnidadesDeGasto: [],
       descripcionItem: null,
       componentKey: 0,
+      componentKey3: 0,
+      listaCatGen: [],
+      listaCodGen: [],
     };
   },
   validations: {
@@ -420,6 +449,49 @@ export default {
     ...mapActions(["setlistaSolicitudItems"]),
     forceRerender() {
       this.componentKey += 1;
+    },
+    async forceRerender3() {
+      this.componentKey3 += 1;
+      console.log("renderizo");
+    },
+    async getGenCategories() {
+      const gen = (
+        await this.$http.get("generalCategory", {
+          headers: {
+            authorization: this.token,
+          },
+        })
+      ).data;
+      for (let i of gen) {
+        this.listaCatGen.push(i.nombre_categoriageneral);
+        this.listaCodGen.push(i.cod_categoriageneral);
+      }
+      await this.getSpeCategories();
+    },
+    async getSpeCategories() {
+      await this.forceRerender3();
+      this.listaCategorias1 = [];
+      this.solicitud.categoria = "Seleccione una opcion"; // importante
+      console.log(this.listaCategorias1);
+      const categ = (
+        await this.$http.get("specificCategory", {
+          headers: {
+            authorization: this.token,
+          },
+        })
+      ).data;
+      for (let j of categ) {
+        if (
+          j.cod_categoriageneral ==
+          this.listaCodGen[
+            this.listaCatGen.indexOf(this.solicitud.categoria_general)
+          ]
+        ) {
+          this.listaCategorias1.push(j.nombre_categoriaespecifica);
+        }
+      }
+      console.log("Categoria espece");
+      console.log(this.listaCategorias1);
     },
     async submitForm() {
       try {
