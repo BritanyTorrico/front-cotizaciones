@@ -41,15 +41,15 @@
                 <div class="lists-cont">
                     <div class="market-cat">
                         <select class="market-list" v-model="market" @change="getCompanies">
-                            <option disabled="true">{{ market }}</option>
+                            <option disabled="true">Seleccione un rubro</option>
                             <option class="list-option" v-for="(mark, index) in marketsList" :key="index" :value="mark">
                                 {{ mark }}
                             </option>
                         </select>
                     </div>
                     <div class="market-comp">
-                        <select class="market-list" v-model="company" @change="getData">
-                            <option disabled="true">{{ company }}</option>
+                        <select class="market-list" v-model="company" @change="getData" :disabled="market==='Seleccione un rubro' || market === 'Todos'">
+                            <option disabled="true">Seleccione una compañia</option>
                             <option class="list-option" v-for="(comp, index) in companiesList" :key="index" :value="comp">
                                 {{ comp }}
                             </option>
@@ -72,8 +72,8 @@ export default {
       return{
           months: 100,
           items: ["Products", "Services"],
-          market: "Todos",
-          company: "Todas",
+          market: "Seleccione un rubro",
+          company: "Seleccione una compañia",
           marketsList: ["Todos"],
           companiesList: ["Todas"],
           filteredInbox: [],

@@ -1,7 +1,7 @@
 <template>
   <div class="inbox">
       <div class="inbox-container">
-              <div class="inbox-cards">
+              <div class="inbox-cards" :class="selectedRequest.name === '' ? 'full-screen' : 'side-view'" >
                   <div class="card-side">
                       <div class="card-index" v-for="(req,i) in inboxData" :key="i">
                           <div class="single-card-container " v-on:click=showRequest(i) :class="selectedRequest.name==req.nombre_solicitud ? 'selected-card' :''">
@@ -15,12 +15,9 @@
                       </div>
                   </div>
               </div>
-              <div class="inbox-form">
-                  <div v-if="selectedRequest.name===''">
-
-                  </div>
-                  <div v-else>
-                      <CotForm 
+              <div class="inbox-form" :class="selectedRequest.name === '' ? 'no-selected' :''">
+                  <div v-if="selectedRequest.name!=''">
+                    <CotForm 
                       :request="selectedRequest"/>
                   </div>
               </div>
@@ -123,16 +120,15 @@ export default {
   width: 100%;
 }
 .inbox-cards{
-    width: 30%;
     display: flex;
     height: 42rem;
     overflow: auto;
 }
 .inbox-form {
-  width: 70%;
-  padding: 0 5rem 5rem 0;
+  padding: 0 5% 5% 0;
   margin: 10px;
   background: #c4dee4;
+  width:100%;
 }
 .single-card-container {
   align-items: center;
@@ -149,5 +145,16 @@ export default {
     background: #b4cace;
   border: 3px solid #030303;
   border-radius: 10px;
+}
+.no-selected{
+  padding: 0!important;
+  margin:0;
+  width: 0%!important;
+}
+.full-screen{
+  width: 100%!important;
+}
+.side-view{
+  width: 40%!important;
 }
 </style>
