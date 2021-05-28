@@ -342,7 +342,7 @@ export default {
           this.dato.correo_empresa = null;
           this.dato.rubro_empresa = null;
           this.dato.cuenta_bancaria = null;
-          this.forceRerender();
+          window.setInterval(window.location.reload(), 10000);
         } else {
           console.log("llegoooo");
           this.alert("warning", "Rellene todos los datos correctamente");
@@ -353,10 +353,9 @@ export default {
     },
     async sendData() {
       try {
-        this.sendEmpData();
+        await this.sendEmpData();
         // si sale bien recien puede registrar compania por rubro
-        this.sendCompMark();
-        window.location.reload();
+        await this.sendCompMark();
       } catch (error) {
         this.alert("warning", "Algo salio mal");
       }
