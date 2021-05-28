@@ -1,7 +1,7 @@
 <template>
   <div class="inbox">
     <div class="inbox-container">
-      <div class="inbox-cards">
+      <div class="inbox-cards" :class="selectedRequest.name === '' ? 'full-screen' : 'side-view'" >
         <div class="card-side">
           <div class="desc">Solicitudes entrantes:</div>
           <div class="card-index" v-for="(req, i) in inboxData" :key="i">
@@ -24,11 +24,12 @@
           </div>
         </div>
       </div>
-      <div class="inbox-details">
-        <div v-if="selectedRequest.name === ''"></div>
-        <div v-else>
+      <div class="inbox-details" :class="selectedRequest.name === '' ? 'no-selected' :''">
+        <transition name="slide-fade">
+        <div v-if="selectedRequest.name != ''">
           <Details :request="selectedRequest" />
         </div>
+        </transition>
       </div>
     </div>
   </div>
@@ -136,16 +137,29 @@ export default {
   width: 100%;
 }
 .inbox-cards {
-  width: 30%;
   display: flex;
   height: 42rem;
   overflow: auto;
 }
+.full-screen{
+  width: 100%!important;
+}
+.side-view{
+  width: 40%!important;
+}
 .inbox-details {
-  width: 70%;
-  padding: 0 5rem 5rem 0;
+  padding: 0 5% 5% 0;
   margin: 10px;
   background: #a7c8ee;
+  width: 100%;
+}
+.no-selected{
+  padding: 0!important;
+  margin:0;
+  width: 0%!important;
+}
+.selected-enable{
+  width: 100%!important;
 }
 .single-card-container {
   align-items: center;
@@ -172,5 +186,12 @@ export default {
   border: 1px solid #dddfe7;
   border-radius: 0 0 10% 10%;
   width: 75%;
+}
+.slide-fade-enter-active {
+  transition: all .8s ease;
+}
+.slide-fade-enter{
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>
