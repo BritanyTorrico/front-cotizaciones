@@ -54,6 +54,8 @@
         id="modal-prevent-closing"
         ref="modal"
         title="Justificación"
+        ok-title="Enviar"
+        ok-only
         @show="resetModal"
         @hidden="resetModal"
         @ok="handleOk"
@@ -111,6 +113,14 @@ export default {
       budget: Number,
       itemList: Array,
     },
+    
+  },
+  watch:{
+    response: function(){
+      if (this.response!=''){
+        this.resState=null;
+      }
+    }
   },
   methods: {
     checkFormValidity() {
@@ -129,6 +139,11 @@ export default {
     async handleSubmit() {
       try {
         if (!this.checkFormValidity()) {
+          return;
+        }
+        if(this.response.trim().length<1){
+          this.response=this.response.trim()
+          this.resState=false;
           return;
         }
         await this.sendData();
@@ -170,7 +185,7 @@ export default {
             },
           }
         );
-        window.location.reload();
+        window.setInterval(window.location.reload(), 10000);
       } catch (error) {
         throw new Error("Esta solicitud ya fue revisada");
       }
