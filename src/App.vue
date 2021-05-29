@@ -93,9 +93,11 @@ export default {
       this.$store.commit("setToken", null);
       this.$store.commit("setDelete");
       //nuevos
+
       this.$store.commit("setPermisoCotizacion", false);
       this.$store.commit("setPermisoRevisarCotizaciones", false);
       this.$store.commit("setPermisoFiltroCotizaciones", false);
+
       sessionStorage.removeItem("my-app");
 
       localStorage.removeItem("my-app");

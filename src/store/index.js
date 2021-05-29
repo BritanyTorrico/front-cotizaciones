@@ -34,22 +34,23 @@ export default new Vuex.Store({
     mutations: {
         async habilitar(state) {
             for (let i = 0; i < state.listaPermisos.length; i++) {
-                if (state.listaPermisos[i] == "Gestionar itemsDeGasto") {
+                if (state.listaPermisos[i] == "Vista_Nuevo_Item") {
                     state.permisoItemDeGasto = true;
-                } else if (state.listaPermisos[i] == "Gestionar unidadDeGasto") {
+                } else if (state.listaPermisos[i] == "Vista_Nueva_Unidad") {
                     state.permisoUnidadDeGasto = true;
-                } else if (state.listaPermisos[i] == "Gestionar Usuarios") {
+                } else if (state.listaPermisos[i] == "Vista_Registro_Usuario") {
                     state.permisoCrearUsuario = true;
-                } else if (state.listaPermisos[i] == "Gestionar Roles") {
+                } else if (state.listaPermisos[i] == "Vista_Crear_Roles") {
                     state.permisoCrearRol = true;
-                } else if (state.listaPermisos[i] == "Gestionar Solicitud") {
+                } else if (state.listaPermisos[i] == "Vista_Solicitudes") {
                     state.permisoSolicitud = true;
-                } else if (state.listaPermisos[i] == "Gestionar Empresa") {
+                } else if (state.listaPermisos[i] == "Vista_Registro_Empresas") {
                     state.permisoEmpresa = true;
-                } else if (state.listaPermisos[i] == "Gestionar Informe") {
+                } else if (state.listaPermisos[i] == "Vista_Revisar_Solicitudes") {
                     state.permisoRevisionSolicitudes = true;
-                } else if (state.listaPermisos[i] == "Gestionar Cotizacion") {
+                } else if (state.listaPermisos[i] == "Vista_Cotizaciones") {
                     state.permisoCotizacion = true;
+                } else if (state.listaPermisos[i] == "Vista_Filtro_Cotizaciones") {
                     state.permisoFiltroCotizacion = true;
                 }
             }
@@ -80,6 +81,7 @@ export default new Vuex.Store({
             state.permisoEmpresa = dato2;
         },
         //nuevos
+
         setPermisoCotizacion(state, dato2) {
             state.permisoCotizacion = dato2;
         },
