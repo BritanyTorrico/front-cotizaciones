@@ -71,7 +71,7 @@ export default {
   data(){
       return{
           months: 100,
-          items: ["Products", "Services"],
+          items: [],
           market: "Seleccione un rubro",
           company: "Seleccione una compañia",
           marketsList: ["Todos"],
@@ -100,7 +100,9 @@ export default {
       async getData(){
           this.filteredInbox=[]
           this.filteredItems=[]
-          let month='' 
+
+          if(this.items.length>0){
+              let month='' 
           let tipo=''
           let rubro=''
           let empresa=''
@@ -158,6 +160,7 @@ export default {
                         this.filteredItems.push(currentItems)
                 }
             }
+          }
           
           this.$emit("sendinboxdata", this.filteredInbox,)
           this.$emit("senditems", this.filteredItems)

@@ -204,7 +204,7 @@ export default {
     async sendFuncData() {
       try {
         await this.$http.post(
-          "rolePerFunctionsGroup",
+          "rolePerFunctionsGroupSP2",
           {
             permiso1: this.permiso1,
             permiso2: this.permiso2,
