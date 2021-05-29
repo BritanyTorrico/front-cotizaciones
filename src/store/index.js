@@ -25,6 +25,8 @@ export default new Vuex.Store({
         permisoCotizacion: false,
         permisoEmpresa: false,
         listaPermisos: [],
+        permisoRevisionSolicitudes: false,
+        permisoFiltroCotizacion: false,
         username: false,
         token: null,
         listaSolicitudItems: [], //para la parte de solicitud
@@ -44,6 +46,11 @@ export default new Vuex.Store({
                     state.permisoSolicitud = true;
                 } else if (state.listaPermisos[i] == "Gestionar Empresa") {
                     state.permisoEmpresa = true;
+                } else if (state.listaPermisos[i] == "Gestionar Informe") {
+                    state.permisoRevisionSolicitudes = true;
+                } else if (state.listaPermisos[i] == "Gestionar Cotizacion") {
+                    state.permisoCotizacion = true;
+                    state.permisoFiltroCotizacion = true;
                 }
             }
         },
@@ -71,6 +78,16 @@ export default new Vuex.Store({
         },
         setPermisoEmpresa(state, dato2) {
             state.permisoEmpresa = dato2;
+        },
+        //nuevos
+        setPermisoCotizacion(state, dato2) {
+            state.permisoCotizacion = dato2;
+        },
+        setPermisoRevisarCotizaciones(state, dato2) {
+            state.permisoRevisionSolicitudes = dato2;
+        },
+        setPermisoFiltroCotizaciones(state, dato2) {
+            state.permisoFiltroCotizacion = dato2;
         },
         setLista(state) {
             state.listaPermisos = [];
