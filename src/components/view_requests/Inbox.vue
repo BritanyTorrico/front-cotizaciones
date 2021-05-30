@@ -7,7 +7,7 @@
           <div class="card-index" v-for="(req, i) in inboxData" :key="i">
             <div
               class="single-card-container "
-              v-on:click="showRequest(i)"
+              v-on:click="startTransition(i)"
               :class="
                 selectedRequest.name == req.nombre_solicitud
                   ? 'selected-card'
@@ -27,7 +27,14 @@
       <div class="inbox-details" :class="selectedRequest.name === '' ? 'no-selected' :''">
         <transition name="slide-fade">
         <div v-if="selectedRequest.name != ''">
-          <Details :request="selectedRequest" />
+          <transition
+            enter-active-class="animate__animated animate__fadeInRight"
+            leave-active-class="animate__animated animate__fadeOutRight"
+          >
+            <div v-if="!changeReq">
+              <Details :request="selectedRequest" />
+            </div>
+          </transition>
         </div>
         </transition>
       </div>
@@ -49,6 +56,7 @@ export default {
     return {
       inboxData: [],
       items: [],
+      changeReq: false,
       selectedRequest: {
         cod: null,
         name: "",
@@ -108,6 +116,11 @@ export default {
       this.selectedRequest.description = this.inboxData[i].detalle_solicitud;
       this.selectedRequest.budget = this.inboxData[i].estimado_solicitud;
       this.selectedRequest.itemList = this.items[i];
+    },
+    async startTransition(i){
+          this.changeReq=true;
+          await this.showRequest(i);
+          this.changeReq=false;
     },
   },
   mounted() {
@@ -193,5 +206,8 @@ export default {
 .slide-fade-enter{
   transform: translateX(10px);
   opacity: 0;
+}
+:root{
+  --animate-duration: 100ms;
 }
 </style>
