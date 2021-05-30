@@ -47,8 +47,7 @@
         </select>
       </div>
       <div class="selected">
-        <div v-if="this.empresa.nombre === null"></div>
-        <div v-else>
+        <div v-if="this.empresa.nombre != null">
           <div class="selected-data">
             <div class="data-line">
               <div class="data-label">Nombre:</div>
@@ -101,8 +100,12 @@
           </div>
         </div>
         <div class="confirmed-companies">
-          <div class="confirmed-title">Empresas confirmadas:</div>
-          <ul class="company-list">
+          <div v-if="this.confirmed.length>0" class="confirmed-title">Empresas confirmadas:</div>
+          <transition-group 
+            tag="ul" 
+            class="company-list" 
+            enter-active-class="animate__animated animate__fadeInRight"
+            leave-active-class="animate__animated animate__fadeOutRight">
             <li
               v-for="(company, index) in confirmed"
               :key="index"
@@ -130,7 +133,7 @@
                 </svg>
               </div>
             </li>
-          </ul>
+          </transition-group>
         </div>
       </div>
     </div>
@@ -173,6 +176,19 @@ export default {
       required,
       maxLength: maxLength(3),
       minLength: minLength(3),
+    },
+  },
+  watch: {
+    items: function(newItems, oldItems){
+      console.log(`past item cat was ${oldItems[0].unidad_solicitud}
+but now new item cat was ${newItems[0].unidad_solicitud}`);
+      this.empresa.nombre=null;
+      this.listaEmpresas=[];
+      this.companiesData=[];
+      this.selectedCompany='';
+      this.confirmed=[];
+      this.confirmedData=[]
+      this.getCompanies();
     },
   },
   methods: {

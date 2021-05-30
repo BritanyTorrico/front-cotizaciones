@@ -71,8 +71,8 @@ export default {
   data(){
       return{
           months: 100,
-          items: [],
-          market: "Seleccione un rubro",
+          items: ["Products", "Services"],
+          market: "Todos",
           company: "Seleccione una compañia",
           marketsList: ["Todos"],
           companiesList: ["Todas"],
@@ -179,6 +179,7 @@ export default {
   },
   mounted(){
       this.setMarketList();
+      this.getData();
   }
 }
 </script>
