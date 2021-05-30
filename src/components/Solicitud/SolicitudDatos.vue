@@ -58,7 +58,14 @@
             :lista="listaUnidadesDeGasto"
             Mensaje="Campo Obligatorio"
             :value="solicitud.unidadgasto_solicitud"
+            :requerido="solicitud.unidadgasto_solicitud"
           ></lista-desplegable>
+          <div
+            class="form_check-error mensaje"
+            v-if="!$v.solicitud.unidadgasto_solicitud.validate_requerido_listas"
+          >
+            Campo obligatorio.
+          </div>
         </div>
       </div>
 
@@ -100,8 +107,17 @@
 
       <div class="seccion2">
         <div class="seccion__Izq">
-          <div class="formulario_label seccion__Izq-titulo">
+          <div
+            v-if="this.solicitud.categoria_general != 'Servicios'"
+            class="formulario_label seccion__Izq-titulo"
+          >
             Agregar un nuevo item:
+          </div>
+          <div
+            v-if="this.solicitud.categoria_general === 'Servicios'"
+            class="formulario_label seccion__Izq-titulo"
+          >
+            Agregar un Servicio:
           </div>
           <div class="seccion__Izq-fila1">
             <div class="categoriaGeneral" v-on:click="getSpeCategories">
@@ -239,6 +255,12 @@
               type="text"
               v-model="descripcionItem"
             />
+            <div class="form_check-error" v-if="!$v.descripcionItem.required">
+              Campo obligatorio.
+            </div>
+            <div class="form_check-error" v-if="!$v.descripcionItem.maxLength">
+              Maximo 1000 caracteres.
+            </div>
           </div>
         </div>
       </div>
@@ -366,7 +388,14 @@ import ListaDesplegable from "@/components/User/ListaDesplegable.vue";
 import AlertConfirmation from "@/components/Solicitud/AlertConfirmation.vue";
 import { mapState, mapActions } from "vuex";
 import { store } from "@/store/index.js";
-
+const validate_requerido_listas = (value) => {
+  const datovalue = String(value);
+  if (datovalue === "Seleccione una opcion") {
+    return !helpers.req(value) || datovalue != "Seleccione una opcion";
+  } else {
+    return true;
+  }
+};
 const validate_decimales = (value) => {
   const datovalue = String(value);
   if (datovalue.indexOf(".") > 0) {
@@ -438,7 +467,7 @@ export default {
       },
 
       unidadgasto_solicitud: {
-        required,
+        validate_requerido_listas,
       },
       estimado_solicitud: {
         required,
@@ -452,6 +481,10 @@ export default {
         required,
         between: between(1, 100),
       },
+    },
+    descripcionItem: {
+      required,
+      maxLength: maxLength(1000),
     },
   },
   methods: {
@@ -591,14 +624,11 @@ export default {
             "warning",
             "No puede seleccionar Items de distinta categoria"
           );
-        } else {
-          console.log("son de la misma categoria general");
         }
       }
     },
     async obtenerItems() {
       await this.verificarCategoriaDistinta();
-      // await this.verificarSiEstaEnLista();
 
       if (this.solicitud.categoria_general == "Servicios") {
         this.disabled = false;
@@ -631,64 +661,69 @@ export default {
     },
     async verificarSiEstaEnLista() {
       if (this.listaSolicitudItems.length > 0) {
-        console.log("ENTRO");
-
+        let respuesta = false;
         for (let i = 0; i < this.listaSolicitudItems.length; i++) {
           let nombreLista;
           let nombre;
-
           nombreLista = this.listaSolicitudItems[i].nombre_item;
           nombre = this.solicitud.nombre_item;
-
           if (nombreLista === nombre) {
-            this.agregarVer = false;
-            this.mismoNombre = true;
+            respuesta = true;
             this.alert("warning", "Ya ingreso este item");
+            break;
           }
         }
+        return respuesta;
       }
     },
     async agregarItem() {
       await this.obtenerItems();
-
+      let mismoItem = await this.verificarSiEstaEnLista();
+      console.log(mismoItem);
       if (
         this.solicitud.nombre_item != "Seleccione una opcion" &&
-        this.solicitud.categoria_general === "Servicios"
+        this.solicitud.categoria_general === "Servicios" &&
+        !this.$v.descripcionItem.$invalid
       ) {
-        const item = {
-          nombre_item: this.solicitud.nombre_item,
-          cantidad: 1,
-          categoria: this.solicitud.categoria, //especifica
-          categoria_general: this.solicitud.categoria_general,
-          unidad_solicitud: this.solicitud.nombre_item,
-          detalle_solicitud: this.descripcionItem,
-        };
-        // this.listaPeticion.push(item);
-
-        this.$store.commit("setlistaSolicitudItems", item);
-
-        this.solicitud.nombre_item = "Seleccione una opcion";
-        this.elemento.cantidad = null;
-      } else {
-        if (
-          this.solicitud.nombre_item != "Seleccione una opcion" &&
-          !this.$v.elemento.cantidad.$invalid
-        ) {
+        if (!mismoItem) {
           const item = {
             nombre_item: this.solicitud.nombre_item,
-            cantidad: this.elemento.cantidad,
-            categoria: this.solicitud.categoria,
+            cantidad: 1,
+            categoria: this.solicitud.categoria, //especifica
             categoria_general: this.solicitud.categoria_general,
             unidad_solicitud: this.solicitud.nombre_item,
             detalle_solicitud: this.descripcionItem,
           };
-          // this.listaPeticion.push(item);
           this.$store.commit("setlistaSolicitudItems", item);
-
           this.solicitud.nombre_item = "Seleccione una opcion";
           this.elemento.cantidad = null;
-          this.mismoNombre = false;
-          this.agregarVer = false;
+          //aqui
+        } else {
+          console.log("MISMOOOO ITEMM");
+        }
+      } else {
+        if (
+          this.solicitud.nombre_item != "Seleccione una opcion" &&
+          !this.$v.elemento.cantidad.$invalid &&
+          !this.$v.descripcionItem.$invalid
+        ) {
+          if (!mismoItem) {
+            const item = {
+              nombre_item: this.solicitud.nombre_item,
+              cantidad: this.elemento.cantidad,
+              categoria: this.solicitud.categoria,
+              categoria_general: this.solicitud.categoria_general,
+              unidad_solicitud: this.solicitud.nombre_item,
+              detalle_solicitud: this.descripcionItem,
+            };
+            this.$store.commit("setlistaSolicitudItems", item);
+            this.solicitud.nombre_item = "Seleccione una opcion";
+            this.elemento.cantidad = null;
+            this.mismoNombre = false;
+            this.agregarVer = false;
+          } else {
+            console.log("MISMO ITEM!!!");
+          }
         } else {
           this.alert("warning", "Rellene correctamente la seccion de items");
         }
@@ -710,6 +745,7 @@ export default {
           }
         }
       }
+      //hasta aqui
     },
     alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
@@ -834,13 +870,13 @@ export default {
   display: flex;
 }
 .izquierda {
-  width: 65%;
+  width: 75%;
 }
 .derecha {
   font-size: 20px;
   float: right;
-  width: 35%;
-  display: flex;
+  width: 25%;
+
   justify-content: right;
   align-items: rigth;
   text-align: right;
@@ -943,5 +979,8 @@ export default {
 }
 .tamaño {
   resize: none;
+}
+.mensaje {
+  display: block;
 }
 </style>
