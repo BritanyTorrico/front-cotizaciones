@@ -47,7 +47,13 @@
         </b-collapse>
       </b-container>
     </b-navbar>
-    <router-view />
+    <transition
+      mode="out-in"
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+    >
+      <router-view />
+    </transition>
   </div>
 </template>
 <script>
@@ -146,5 +152,8 @@ a.navbar-brand {
   font-weight: bold !important;
   font-size: 22px !important;
   font-family: "Times New Roman", Times, serifs;
+}
+:root{
+  --animate-duration: 50ms;
 }
 </style>

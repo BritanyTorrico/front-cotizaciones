@@ -4,7 +4,7 @@
               <div class="inbox-cards">
                   <div class="card-side">
                       <div class="card-index" v-for="(cot,i) in inboxData" :key="i">
-                          <div class="single-card-container " v-on:click=showCot(i) :class="selectedCot.name==cot.nombre_cotizacion ? 'selected-card' :''">
+                          <div class="single-card-container " v-on:click=startTransition(i) :class="selectedCot.name==cot.nombre_cotizacion ? 'selected-card' :''">
                               <CardFiltro
                                 :name="cot.nombre_cotizacion"
                                 :author="cot.autor_solicitud"
@@ -15,11 +15,16 @@
                   </div>
               </div>
               <div class="inbox-selected">
-                  <div v-if="selectedCot.name===''">
-                  </div>
-                  <div v-else>
-                      <VistaCot
-                      :cot="selectedCot"/>
+                  <div v-if="selectedCot.name!=''">
+                    <transition
+                      enter-active-class="animate__animated animate__fadeInRight"
+                      leave-active-class="animate__animated animate__fadeOutRight"
+                    >
+                      <div v-if="!changeCot">
+                        <VistaCot
+                          :cot="selectedCot"/>
+                      </div>
+                    </transition>
                   </div>
               </div>
       </div>
@@ -39,6 +44,7 @@ export default {
     components: { CardFiltro, VistaCot },
     data(){
         return{
+            changeCot: false,
             selectedCot: {
                 name: "",
                 date: "",
@@ -54,6 +60,11 @@ export default {
         items: Array,
     },
     methods: {
+      async startTransition(i){
+        this.changeCot=true;
+        await this.showCot(i);
+        this.changeCot=false;
+      },
         async showCot(i){
             this.selectedCot.name=this.inboxData[i].nombre_cotizacion;
             this.selectedCot.date=this.inboxData[i].fecha_cotizacion;
