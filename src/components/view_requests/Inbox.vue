@@ -208,6 +208,6 @@ export default {
   opacity: 0;
 }
 :root{
-  --animate-duration: 100ms;
+  --animate-duration: 1000ms;
 }
 </style>

@@ -4,6 +4,14 @@
       <div class="head-top">
         <h2>{{ cot.name }}</h2>
       </div>
+      <div class="confirmed-companies">
+                  <div class="confirmed-title">Solicitante:</div>
+                  <div class="copany-name">{{ cot.author }}</div>
+        </div>
+        <div class="confirmed-companies">
+                  <div class="confirmed-title">Estado:</div>
+                  <div class="copany-name">{{ cot.status }}</div>
+        </div>
       <h5>Items: </h5>
       <div class="items">
           <table
@@ -29,10 +37,6 @@
           </tbody>
         </table>
       </div>
-      <div class="confirmed-companies">
-                  <div class="confirmed-title">Empresa:</div>
-                  <div class="copany-name">{{ cot.company }}</div>
-        </div>
   </div>
   </div>
 </template>
@@ -55,6 +59,7 @@ export default {
             author: String,
             itemList: Array,
             company: String,
+            status: String,
         }
     },
 }
@@ -96,7 +101,7 @@ h2 {
   text-align: left;
 }
 h5 {
-  font-size: 18px;
+  font-size: 20px;
   color: #030303 !important;
   line-height: 1.8;
   font-weight: 600;
@@ -123,17 +128,18 @@ h5 {
 }
 .confirmed-companies {
   display: flex;
-  flex-direction: column;
   align-content: flex-start;
   align-items: flex-start;
+  align-items: baseline;
 }
 .confirmed-title {
-  color: #3f4b5b;
+  color: #030303;
   font-size: 20px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: 500;
   padding-bottom: 1%;
+  padding-right: 1%;
 }
 .company-name{
     color: #030303;
