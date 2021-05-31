@@ -200,7 +200,7 @@ export default {
     width: 100%;
 }
 :root{
-  --animate-duration: 100ms;
+  --animate-duration: 1000ms;
 }
 .no-selected {
     padding: 0 !important;

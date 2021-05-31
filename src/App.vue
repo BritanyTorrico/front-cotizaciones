@@ -154,6 +154,6 @@ a.navbar-brand {
   font-family: "Times New Roman", Times, serifs;
 }
 :root{
-  --animate-duration: 50ms;
+  --animate-duration: 550ms;
 }
 </style>

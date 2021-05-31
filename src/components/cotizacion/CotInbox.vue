@@ -180,6 +180,6 @@ export default {
     width: 40% !important;
 }
 :root{
-  --animate-duration: 100ms;
+  --animate-duration: 1000ms;
 }
 </style>
