@@ -116,6 +116,13 @@ const routes = [{
         meta: {
             rutaProtegida: true,
         }
+    },
+    {
+        path: "/usuarios",
+        name: "Usuarios",
+        component: () =>
+            import ("../views/Users.vue"),
+        
     }
 ];
 
