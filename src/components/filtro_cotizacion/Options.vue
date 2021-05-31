@@ -73,7 +73,7 @@ export default {
           months: 100,
           items: ["Products", "Services"],
           market: "Todos",
-          company: "Seleccione una compañia",
+          company: "Todas",
           marketsList: ["Todos"],
           companiesList: ["Todas"],
           filteredInbox: [],
@@ -122,6 +122,7 @@ export default {
             console.log(`%cquotation?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}%c${month}${tipo}${rubro}${empresa}`, 
             "font-weight: bold; font-size: 17px;", 
             "color: green; font-size: 14px;");
+            console.log(response.length);
             if (response.length>0){
                     for (let i=0;i<response.length;i++){
                     this.filteredInbox[i]=new Object();
@@ -153,11 +154,13 @@ export default {
                                 authorization: this.token,
                             },
                         })).data;
+                        console.log(`itemsPerRequest?searchby=solicitud&typeinput=codigo&inputdata=${response[i].cod_solicitud}`)
                         let currentItems=[]
                         for (let j of reqItems.datos){
                             currentItems.push(j)
                         }
                         this.filteredItems.push(currentItems)
+                        console.log(this.filteredItems[i])
                 }
             }
           }
@@ -179,7 +182,6 @@ export default {
   },
   mounted(){
       this.setMarketList();
-      this.getData();
   }
 }
 </script>
