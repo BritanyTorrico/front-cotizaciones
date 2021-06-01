@@ -58,7 +58,6 @@
             :lista="listaUnidadesDeGasto"
             Mensaje="Campo Obligatorio"
             :value="solicitud.unidadgasto_solicitud"
-            :requerido="solicitud.unidadgasto_solicitud"
           ></lista-desplegable>
           <div
             class="form_check-error mensaje"
@@ -875,7 +874,7 @@ export default {
 .derecha {
   font-size: 20px;
   float: right;
-  width: 25%;
+  width: 30%;
 
   justify-content: right;
   align-items: rigth;
