@@ -180,12 +180,12 @@
             </div>
 
             <div class="form_check-error" v-if="!$v.users.contrasena.valid">
-              La contraseña debe contener Mínimo 8 caracteres y al menos una
-              mayuscula, minuscula un número y un caracter especial de las
-              siguientes opciones: #?!@$%^&*-
+              La contraseña debe contener al menos una mayuscula, minuscula un
+              número y un caracter especial de las siguientes opciones:
+              ?!@$%^&*-
             </div>
-            <div class="form_check-error" v-if="!$v.users.contrasena.required">
-              Campo obligatorio.
+            <div class="form_check-error" v-if="!$v.users.contrasena.minLength">
+              Minimo 8 caracteres
             </div>
             <div class="form_check-error" v-if="!$v.users.contrasena.maxLength">
               Contraseña muy larga máximo
@@ -251,6 +251,12 @@
                     {{ item }}</option
                   >
                 </select>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.users.facultad.validate_requerido_listas"
+                >
+                  1. Campo Obligatorio.
+                </div>
               </div>
             </div>
             <div class="fomrm__section__item">
@@ -262,6 +268,12 @@
                 :lista="listDepartament"
                 :value="users.departamento"
               ></lista-desplegable>
+              <div
+                class="form_check-error"
+                v-if="!$v.users.departamento.validate_requerido_listas"
+              >
+                2. Campo Obligatorio.
+              </div>
             </div>
 
             <div class="fomrm__section__item">
@@ -272,6 +284,12 @@
                 :lista="listRoles"
                 :value="users.nombre_rol"
               ></lista-desplegable>
+              <div
+                class="form_check-error"
+                v-if="!$v.users.nombre_rol.validate_requerido_listas"
+              >
+                3.Campo Obligatorio.
+              </div>
             </div>
           </div>
           <div class="boton">
@@ -297,6 +315,14 @@ import ListaDesplegable from "./ListaDesplegable.vue";
 import { mapState, mapActions } from "vuex";
 import Alert from "@/components/User/Alert.vue";
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
+const validate_requerido_listas = (value) => {
+  const datovalue = String(value);
+  if (datovalue === "Seleccione una opcion") {
+    return !helpers.req(value) || datovalue != "Seleccione una opcion";
+  } else {
+    return true;
+  }
+};
 export default {
   components: { ListaDesplegable, Alert },
   name: "RegisterUser",
@@ -305,6 +331,7 @@ export default {
   },
   data() {
     return {
+      requerido: true,
       users: {
         nombre_usuario: null,
         contrasena: null,
@@ -352,7 +379,7 @@ export default {
           const containsUppercase = /[A-Z]/.test(value);
           const containsNumber = /[0-9]/.test(value);
           const containsLowercase = /[a-z]/.test(value);
-          const containsSpecial = /[#?!@$%^&*-]/.test(value);
+          const containsSpecial = /[?!@$%^&*-]/.test(value);
           return (
             containsUppercase &&
             containsLowercase &&
@@ -374,12 +401,15 @@ export default {
       },
       facultad: {
         required,
+        validate_requerido_listas,
       },
       departamento: {
         required,
+        validate_requerido_listas,
       },
       nombre_rol: {
         required,
+        validate_requerido_listas,
       },
     },
   },
@@ -472,7 +502,6 @@ export default {
     },
     async sendUserDepartment() {
       try {
-
         await this.$http.post(
           `usersPerDeparment`,
           {
