@@ -122,8 +122,19 @@ const routes = [{
         name: "Usuarios",
         component: () =>
             import ("../views/Users.vue"),
-        
-    }
+        meta: {
+                rutaProtegida: true,
+        }
+    },
+    {
+        path: "/roles",
+        name: "Roles",
+        component: () =>
+            import ("../views/Roles.vue"),
+        meta: {
+                rutaProtegida: true,
+        }
+    },
 ];
 
 const router = new VueRouter({

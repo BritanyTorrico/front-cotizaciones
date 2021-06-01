@@ -11,11 +11,11 @@
             <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
             <b-nav-item to="/about">About</b-nav-item>
             <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
-            <b-nav-item v-if="permisoCrearUsuario" to="/register"
-              >Registrar Usuario</b-nav-item
+            <b-nav-item v-if="permisoCrearUsuario" to="/usuarios"
+              >Usuarios</b-nav-item
             >
-            <b-nav-item v-if="permisoCrearRol" to="/creaRol"
-              >Crear Rol</b-nav-item
+            <b-nav-item v-if="permisoCrearRol" to="/roles"
+              >Roles</b-nav-item
             >
             <b-nav-item v-if="permisoUnidadDeGasto" to="/registro_unidad"
               >Nueva Unidad</b-nav-item
