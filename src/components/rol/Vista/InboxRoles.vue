@@ -92,35 +92,18 @@ export default {
                     }
                     this.inboxData[i].funciones=functs
                     const usrs=[]
-                    for (let k=1; k<=100;k++){
-                        let upr =(
+                    const uoar=(
                             await this.$http.get(
-                                `usersPerRole/${k}`,
+                                `usersOfARole?rol=${this.inboxData[i].nombre_rol}`,
                                 {
                                     headers: {
                                         authorization: this.token,
                                     },
                                 }
                                 )
-                            ).data.datos
-                        if (upr.length>0){
-                            console.log(upr[0].cod_usuario);
-                            if (upr[0].cod_rol==this.inboxData[i].cod_rol){
-                                
-                            const usu =(
-                                await this.$http.get(
-                                    `users/${upr[0].cod_usuario}`,
-                                    {
-                                        headers: {
-                                            authorization: this.token,
-                                        },
-                                    }
-                                    )
-                                ).data.datos
-                                console.log(`${usu[0].nombres} ${usu[0].apellidos}`);
-                            usrs.push(`${usu[0].nombres} ${usu[0].apellidos}`)
-                        }
-                        }
+                            ).data
+                    for (let k of uoar){
+                        usrs.push(k)
                     }
                     this.inboxData[i].usuarios=usrs
             }
