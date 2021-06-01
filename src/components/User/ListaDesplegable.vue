@@ -35,17 +35,11 @@ export default {
   props: {
     value: String,
     nombreLista: String,
-    nombre: String,
     lista: Array,
-    nombre1: String,
     Mensaje: String,
-    requerido: String,
   },
   validations: {
     value: {
-      required,
-    },
-    requerido: {
       required,
     },
   },
