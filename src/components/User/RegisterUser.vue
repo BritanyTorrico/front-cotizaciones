@@ -339,7 +339,7 @@ export default {
         nombres: null,
         apellidos: null,
         celular: null,
-        facultad: "Seleccione una opcion",
+        facultad: "Selecciofne una opcion",
         departamento: "Seleccione una opcion",
         nombre_rol: "Seleccione una opcion",
       },
