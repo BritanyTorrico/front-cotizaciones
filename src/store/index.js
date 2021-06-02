@@ -30,30 +30,48 @@ export default new Vuex.Store({
         username: false,
         token: null,
         listaSolicitudItems: [], //para la parte de solicitud
+        contador: 0,
     },
     mutations: {
         async habilitar(state) {
             for (let i = 0; i < state.listaPermisos.length; i++) {
                 if (state.listaPermisos[i] == "Vista_Nuevo_Item") {
                     state.permisoItemDeGasto = true;
+                    state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Vista_Nueva_Unidad") {
                     state.permisoUnidadDeGasto = true;
+                    state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Vista_Registro_Usuario") {
                     state.permisoCrearUsuario = true;
+                    state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Vista_Crear_Roles") {
                     state.permisoCrearRol = true;
+                    state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Vista_Solicitudes") {
                     state.permisoSolicitud = true;
+                    state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Vista_Registro_Empresas") {
                     state.permisoEmpresa = true;
+                    state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Vista_Revisar_Solicitudes") {
                     state.permisoRevisionSolicitudes = true;
+                    state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Vista_Cotizaciones") {
                     state.permisoCotizacion = true;
+                    state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Vista_Filtro_Cotizaciones") {
                     state.permisoFiltroCotizacion = true;
+                    state.contador = state.contador + 1;
                 }
             }
+            console.log("HOLAAAAAAAAA");
+            console.log(state.contador);
+        },
+        incremento(state) {
+            state.contador = state.contador + 1;
+        },
+        borrarContador(state) {
+            state.contador = 0;
         },
         addCustomer(state, customer) {
             // mutate state
