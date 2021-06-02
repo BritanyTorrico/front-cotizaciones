@@ -14,7 +14,7 @@ export default {
 
 <style scoped>
 .contenedor-presupuestos {
-  padding: 50px 250px 50px 250px;
+  padding: 50px 200px 50px 200px;
   background-color: #46b1c95b;
   margin-top: 0;
 }

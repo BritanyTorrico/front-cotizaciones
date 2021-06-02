@@ -48,8 +48,45 @@
           </div>
         </div>
       </div>
-      <div class="form__unidadesGasto">
-        {{ this.listaUnidadesDeGasto }}
+      <div class="form__unidadesGasto ">
+        <table class="table table-hove table-bordered">
+          <thead>
+            <tr class="primera-fila ">
+              <th>Nombre de unidad</th>
+              <th colspan="2">Descripcion</th>
+              <th>Jefe de unidad</th>
+              <th>Presupuesto</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr v-for="(item, index) in this.listaUnidadesDeGasto" :key="index">
+              <div class="col-8">
+                <td>
+                  {{ item.nombre_unidadgasto }}
+                </td>
+              </div>
+
+              <td colspan="2">
+                {{ item.descripcion_unidadgasto }}
+              </td>
+
+              <td>
+                {{ item.jefe_unidad }}
+              </td>
+
+              <td>
+                <input
+                  class="input-tables"
+                  type="text"
+                  placeholder="Ingrese valor"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!--  {{ this.listaUnidadesDeGasto }}-->
       </div>
     </div>
   </div>
@@ -205,7 +242,6 @@ export default {
   margin-left: 20px;
 }
 .form__datos {
-  display: flex;
 }
 .listas__desplegables {
   display: flex;
@@ -219,5 +255,46 @@ export default {
 .form__departamento {
   width: 50%;
   margin-right: 30px;
+}
+.form__unidadesGasto {
+  text-align: left;
+  margin: 20px;
+}
+table {
+  table-layout: fixed;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+#miTablaPersonalizada {
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#nombreTable {
+  width: 500px;
+  overflow: hidden;
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+}
+.primera-fila {
+  background: #dfe4ea;
+}
+.size {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+.input-tables {
+  width: 100%;
+  padding: 10px;
+  border: none;
+}
+#miTablaPersonalizada22 td {
+  overflow: auto;
+  border: 1px solid;
 }
 </style>
