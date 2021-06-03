@@ -10,7 +10,8 @@
           <thead>
             <tr>
               <th style="border:1px solid; width:50px;">Cantidad</th>
-              <th style="border:1px solid; width:70px;">Unidad</th>
+              <th style="border:1px solid; width:50px;">Unidad</th>
+              <th style="border:1px solid; width:70px;">Item</th>
               <th style="border:1px solid; width:500px;">Detalle</th>
               <th style="border:1px solid; width:70px;" >Unitario</th>
               <th style="border:1px solid; width:100px;" >Total</th>
@@ -20,12 +21,13 @@
             <tr v-for="(item, index) in items" :key="index">
               <td style="border:1px solid;" class="table-quantity">{{ item.cantidad_solicitud }}</td>
               <td style="border:1px solid;" class="table-unity">{{ item.unidad_solicitud }}</td>
+              <td style="border:1px solid;" class="table-itemname">{{ item.nombre_itemgasto }}</td>
               <td style="border:1px solid;" class="table-detail">{{ item.detalle_solicitud }}</td>
-              <td style="border:1px solid;" ></td>
-              <td style="border:1px solid;" ></td>
+              <td style="border:1px solid;" class="table-unitprice"></td>
+              <td style="border:1px solid;" class="table-totalprice"></td>
             </tr>
             <tr v-for="m in 5" :key="m">
-              <td class="empty-rows" v-for="n in 5" :key="n" style="border:1px solid; height:25px;"></td>
+              <td class="empty-rows" v-for="n in 6" :key="n" style="border:1px solid; height:25px;"></td>
             </tr>
           </tbody>
         </table>
@@ -439,12 +441,21 @@ but now new item cat was ${newItems[0].unidad_solicitud}`);
   border: none!important;
 }
 .table-quantity{
-  width: 12%!important;
+  width: 11.5%!important;
 }
 .table-unity{
-  width: 15%!important;
+  width: 12%!important;
 }
 .table-detail{
-  width: 45%!important;
+  width: 37%!important;
+}
+.table-itemname{
+  width: 13%!important; 
+}
+.table-unitprice{
+  width: 10.5%!important; 
+}
+.table-totalprice{
+  width: 9%!important; 
 }
 </style>

@@ -154,13 +154,31 @@ export default {
                                 authorization: this.token,
                             },
                         })).data;
-                        console.log(`itemsPerRequest?searchby=solicitud&typeinput=codigo&inputdata=${response[i].cod_solicitud}`)
                         let currentItems=[]
                         for (let j of reqItems.datos){
-                            currentItems.push(j)
+                            const idg=(
+                        await this.$http.get(
+                            `expenseItem/${j.cod_item}`,
+                            {
+                                headers: {
+                                    authorization: this.token,
+                                },
+                            }
+                        )
+                    ).data.datos
+                    const it={
+                        cod_cotizacion: j.cod_cotizacion,
+                        cod_item: j.cod_itemgasto,
+                        cantidad: j.cantidad,
+                        unidad: j.unidad,
+                        detalle: j.detalle,
+                        nombre: idg[0].nombre_itemgasto,
+                        valor_unitario: j.valor_unitario,
+                        precio_total: j.precio_total
+                    }
+                            currentItems.push(it)
                         }
                         this.filteredItems.push(currentItems)
-                        console.log(this.filteredItems[i])
                 }
             }
           }
