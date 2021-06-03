@@ -6,201 +6,253 @@
       Ingrese los datos correspondientes a la nueva empresa
     </div>
 
-    <form class="form_crear" @submit.prevent="submitForm" autocomplete="off">
-      <div class="form_section">
-        <div class="form_name">Nombre de la empresa:</div>
-        <input
-          name="nombreEmpresa"
-          :class="
-            $v.dato.nombre_empresa.$invalid
-              ? 'form_check-input-error'
-              : 'form__input'
-          "
-          type="text"
-          maxlength="50"
-          v-on:keydown="keyhandler($event)"
-          required
-          placeholder="Ingrese nombre aquí"
-          v-model="dato.nombre_empresa"
-        />
-
-        <div class="form_check-error" v-if="!$v.dato.nombre_empresa.required">
-          Campo obligatorio.
-        </div>
-      </div>
-      <div class="form_section">
-        <div class="form_name">Nit de la empresa:</div>
-        <input
-          name="nitEmpresa"
-          :class="
-            $v.dato.nit_empresa.$invalid
-              ? 'form_check-input-error'
-              : 'form__input'
-          "
-          type="number"
-          v-on:keydown="keyhandler($event)"
-          required
-          placeholder="Ingrese nit aquí"
-          v-model="dato.nit_empresa"
-        />
-
-        <div class="form_check-error" v-if="!$v.dato.nit_empresa.required">
-          Campo obligatorio.
-        </div>
-      </div>
-
-      <div class="form_section">
-        <div class="form_name">Representante legal:</div>
-        <input
-          name="representanteEmpresa"
-          :class="
-            $v.dato.representante_empresa.$invalid
-              ? 'form_check-input-error'
-              : 'form__input'
-          "
-          type="text"
-          maxlength="50"
-          v-on:keydown="keyhandler($event)"
-          required
-          placeholder="Ingrese nombre aquí"
-          v-model="dato.representante_empresa"
-        />
-
-        <div
-          class="form_check-error"
-          v-if="!$v.dato.representante_empresa.required"
-        >
-          Campo obligatorio.
-        </div>
-      </div>
-
-      <div class="form_section">
-        <div class="form_name">Telefono de la empresa:</div>
-        <input
-          name="telfEmpresa"
-          :class="
-            $v.dato.telf_empresa.$invalid
-              ? 'form_check-input-error'
-              : 'form__input'
-          "
-          type="number"
-          v-on:keydown="keyhandler($event)"
-          required
-          placeholder="Ingrese telefono aquí"
-          v-model="dato.telf_empresa"
-        />
-
-        <div class="form_check-error" v-if="!$v.dato.telf_empresa.required">
-          Campo obligatorio.
-        </div>
-      </div>
-      <div class="form_section">
-        <div class="form_name">Dirección de la empresa:</div>
-        <input
-          name="direccionEmpresa"
-          :class="
-            $v.dato.direccion_empresa.$invalid
-              ? 'form_check-input-error'
-              : 'form__input'
-          "
-          type="text"
-          maxlength="1000"
-          v-on:keydown="keyhandler($event)"
-          required
-          placeholder="Ingrese dirección aquí"
-          v-model="dato.direccion_empresa"
-        />
-
-        <div
-          class="form_check-error"
-          v-if="!$v.dato.direccion_empresa.required"
-        >
-          Campo obligatorio.
-        </div>
-      </div>
-
-      <div class="form_section">
-        <div class="form_name">Correo de la empresa:</div>
-        <input
-          name="correoEmpresa"
-          :class="
-            $v.dato.correo_empresa.$invalid
-              ? 'form_check-input-error'
-              : 'form__input'
-          "
-          type="email"
-          maxlength="50"
-          required
-          placeholder="Ingrese correo aquí"
-          v-model="dato.correo_empresa"
-        />
-
-        <div class="form_check-error" v-if="!$v.dato.correo_empresa.required">
-          Campo obligatorio.
-        </div>
-      </div>
-
-      <div class="form_section">
-        <div class="form_name">Cuenta bancaria:</div>
-        <input
-          name="cuentaBancaria"
-          :class="
-            $v.dato.cuenta_bancaria.$invalid
-              ? 'form_check-input-error'
-              : 'form__input'
-          "
-          type="number"
-          v-on:keydown="keyhandler($event)"
-          required
-          placeholder="Ingrese cuenta bancaria aquí"
-          v-model="dato.cuenta_bancaria"
-        />
-
-        <div class="form_check-error" v-if="!$v.dato.cuenta_bancaria.required">
-          Campo obligatorio.
-        </div>
-      </div>
-      <div class="form_section">
-        <div class="listaDesplegable">
-          <div class="form_name">Rubro:</div>
-          <lista-desplegable
-            :key="componentKey"
+    <form @submit.prevent="submitForm" autocomplete="off">
+      <div class="form_crear">
+        <div class="form_section">
+          <div class="form_name">Nombre de la empresa:</div>
+          <input
+            name="nombreEmpresa"
+            id="nombreEmpresa"
+            :class="
+              $v.dato.nombre_empresa.$invalid
+                ? 'form_check-input-error'
+                : 'form__input'
+            "
+            type="text"
+            maxlength="50"
             required
-            v-model="dato.rubro_empresa"
-            nombreLista=""
-            :lista="listRubros"
-            :value="dato.rubro_empresa"
-          ></lista-desplegable>
+            placeholder="Ingrese nombre aquí"
+            v-model="dato.nombre_empresa"
+          />
+
+          <div class="form_check-error" v-if="!$v.dato.nombre_empresa.required">
+            Campo obligatorio.
+          </div>
+          <div class="form_check-error" v-if="!$v.dato.nombre_empresa.alpha3">
+            No se aceptan caracteres especiales.
+          </div>
+        </div>
+        <div class="form_section">
+          <div class="form_name">Nit de la empresa:</div>
+          <input
+            name="nitEmpresa"
+            id="nitEmpresa"
+            :class="
+              $v.dato.nit_empresa.$invalid
+                ? 'form_check-input-error'
+                : 'form__input'
+            "
+            type="text"
+            required
+            placeholder="Ingrese nit aquí"
+            v-model="dato.nit_empresa"
+          />
+
+          <div class="form_check-error" v-if="!$v.dato.nit_empresa.required">
+            Campo obligatorio.
+          </div>
+          <div class="form_check-error" v-if="!$v.dato.nit_empresa.integer">
+            Solo se aceptan valores numericos.
+          </div>
         </div>
 
-        <div class="form_check-error" v-if="!$v.dato.rubro_empresa.required">
-          Campo obligatorio.
+        <div class="form_section">
+          <div class="form_name">Representante legal:</div>
+          <input
+            name="representanteEmpresa"
+            id="representanteEmpresa"
+            :class="
+              $v.dato.representante_empresa.$invalid
+                ? 'form_check-input-error'
+                : 'form__input'
+            "
+            type="text"
+            maxlength="50"
+            required
+            placeholder="Ingrese nombre aquí"
+            v-model="dato.representante_empresa"
+          />
+
+          <div
+            class="form_check-error"
+            v-if="!$v.dato.representante_empresa.required"
+          >
+            Campo obligatorio.
+          </div>
+          <div
+            class="form_check-error"
+            v-if="!$v.dato.representante_empresa.alpha1"
+          >
+            No se aceptan caracteres especiales.
+          </div>
+        </div>
+
+        <div class="form_section">
+          <div class="form_name">Telefono de la empresa:</div>
+          <input
+            name="telfEmpresa"
+            id="telfEmpresa"
+            :class="
+              $v.dato.telf_empresa.$invalid
+                ? 'form_check-input-error'
+                : 'form__input'
+            "
+            type="text"
+            required
+            placeholder="Ingrese telefono aquí"
+            v-model="dato.telf_empresa"
+          />
+
+          <div class="form_check-error" v-if="!$v.dato.telf_empresa.required">
+            Campo obligatorio.
+          </div>
+          <div class="form_check-error" v-if="!$v.dato.telf_empresa.maxLength">
+            Máximo 8 digitos.
+          </div>
+          <div class="form_check-error" v-if="!$v.dato.telf_empresa.integer">
+            Solo se aceptan valores numericos.
+          </div>
+        </div>
+        <div class="form_section">
+          <div class="form_name">Dirección de la empresa:</div>
+          <input
+            name="direccionEmpresa"
+            id="direccionEmpresa"
+            :class="
+              $v.dato.direccion_empresa.$invalid
+                ? 'form_check-input-error'
+                : 'form__input'
+            "
+            type="text"
+            maxlength="1000"
+            required
+            placeholder="Ingrese dirección aquí"
+            v-model="dato.direccion_empresa"
+          />
+
+          <div
+            class="form_check-error"
+            v-if="!$v.dato.direccion_empresa.required"
+          >
+            Campo obligatorio.
+          </div>
+        </div>
+
+        <div class="form_section">
+          <div class="form_name">Correo de la empresa:</div>
+          <input
+            name="correoEmpresa"
+            id="correoEmpresa"
+            :class="
+              $v.dato.correo_empresa.$invalid
+                ? 'form_check-input-error'
+                : 'form__input'
+            "
+            type="email"
+            maxlength="50"
+            required
+            placeholder="Ingrese correo aquí"
+            v-model="dato.correo_empresa"
+          />
+
+          <div class="form_check-error" v-if="!$v.dato.correo_empresa.required">
+            Campo obligatorio.
+          </div>
+          <div class="form_check-error" v-if="!$v.dato.correo_empresa.alpha2">
+            No se aceptan esos caracteres.
+          </div>
+        </div>
+
+        <div class="form_section">
+          <div class="form_name">Cuenta bancaria:</div>
+          <input
+            name="cuentaBancaria"
+            id="cuentaBancaria"
+            :class="
+              $v.dato.cuenta_bancaria.$invalid
+                ? 'form_check-input-error'
+                : 'form__input'
+            "
+            type="text"
+            required
+            placeholder="Ingrese cuenta bancaria aquí"
+            v-model="dato.cuenta_bancaria"
+          />
+
+          <div
+            class="form_check-error"
+            v-if="!$v.dato.cuenta_bancaria.required"
+          >
+            Campo obligatorio.
+          </div>
+          <div class="form_check-error" v-if="!$v.dato.cuenta_bancaria.integer">
+            Solo se aceptan valores numericos.
+          </div>
+        </div>
+        <div class="form_section">
+          <div class="form_name">Rubro:</div>
+          <input
+            name="rubroEmpresa"
+            id="rubroEmpresa"
+            :class="
+              $v.dato.rubro_empresa.$invalid
+                ? 'form_check-input-error'
+                : 'form__input'
+            "
+            list="rubros"
+            maxlength="50"
+            required
+            placeholder="Seleccione o ingrese una rubro"
+            v-model="dato.rubro_empresa"
+          />
+          <div class="form_check-error" v-if="!$v.dato.rubro_empresa.required">
+            Campo obligatorio.
+          </div>
+          <div class="form_check-error" v-if="!$v.dato.rubro_empresa.alpha3">
+            No se aceptan caracteres especiales.
+          </div>
+          <datalist id="rubros" :key="componentKey">
+            <option
+              v-for="(rubro, index) in listRubros"
+              :key="index"
+              :value="rubro"
+              >{{ rubro }}</option
+            >
+          </datalist>
         </div>
       </div>
-      <button
-        :disabled="$v.dato.$invalid"
-        :class="$v.dato.$invalid ? 'button-disabled' : ''"
-        class="form_button"
-      >
-        Registrar
-      </button>
+      <div class="botoncito">
+        <button
+          :disabled="$v.dato.$invalid"
+          :class="$v.dato.$invalid ? 'button-disabled' : ''"
+          class="form_button"
+        >
+          Registrar
+        </button>
+      </div>
     </form>
     <Alert ref="alert"></Alert>
   </section>
 </template>
 
 <script>
-import { required, maxLength } from "vuelidate/lib/validators";
+import {
+  required,
+  maxLength,
+  helpers,
+  integer,
+} from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
-import ListaDesplegable from "@/components/User/ListaDesplegable.vue";
 import { mapState } from "vuex";
-
+const alpha1 = helpers.regex("alpha1", /^[a-zA-ZÑñ+áéíóúÁÉÍÓÚ\s]*$/);
+const alpha2 = helpers.regex("alpha2", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.-_@\s]*$/);
+const alpha3 = helpers.regex("alpha3", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ\s]*$/);
 export default {
   name: "CrearEmpresa",
   computed: {
     ...mapState(["token"]),
   },
-  components: { Alert, ListaDesplegable },
+  components: { Alert },
   data() {
     return {
       disable: false,
@@ -211,31 +263,33 @@ export default {
         telf_empresa: null,
         direccion_empresa: null,
         correo_empresa: null,
-        rubro_empresa: "Seleccione una opcion",
+        rubro_empresa: null,
         cuenta_bancaria: null,
       },
       listRubros: [],
       componentKey: 0,
     };
   },
-  mounted() {
-    this.obtenerRubros();
-  },
   validations: {
     dato: {
       nombre_empresa: {
         required,
         maxLength: maxLength(50),
+        alpha3,
       },
       nit_empresa: {
         required,
+        integer,
       },
       representante_empresa: {
         required,
         maxLength: maxLength(50),
+        alpha1,
       },
       telf_empresa: {
         required,
+        maxLength: maxLength(8),
+        integer,
       },
       direccion_empresa: {
         required,
@@ -244,24 +298,23 @@ export default {
       correo_empresa: {
         required,
         maxLength: maxLength(50),
+        alpha2,
       },
       rubro_empresa: {
         required,
         maxLength: maxLength(50),
+        alpha3,
       },
       cuenta_bancaria: {
         required,
+        integer,
       },
     },
   },
   methods: {
-    keyhandler(e) {
-      if (!e.key.match(/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s]*$/)) {
-        e.preventDefault();
-      }
-    },
     forceRerender() {
       this.componentKey += 1;
+      console.log("cambio");
     },
     async obtenerRubros() {
       const listaRubros = (
@@ -271,15 +324,15 @@ export default {
           },
         })
       ).data.datos;
-      for (let i = 0; i < listaRubros.length; i++) {
-        this.listRubros.push(listaRubros[i].nombre_rubro);
+      for (let i of listaRubros) {
+        this.listRubros.push(i.nombre_rubro);
       }
     },
     async submitForm() {
       try {
         if (!this.$v.dato.$invalid) {
+          await this.manageMark();
           await this.sendData();
-          this.alert("success", "Empresa registrada exitosamente");
 
           this.dato.nombre_empresa = null;
           this.dato.nit_empresa = null;
@@ -287,10 +340,11 @@ export default {
           this.dato.telf_empresa = null;
           this.dato.direccion_empresa = null;
           this.dato.correo_empresa = null;
-          this.dato.rubro_empresa = "Seleccione una opcion";
+          this.dato.rubro_empresa = null;
           this.dato.cuenta_bancaria = null;
-          this.forceRerender();
+          window.setInterval(window.location.reload(), 10000);
         } else {
+          console.log("llegoooo");
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
@@ -298,6 +352,15 @@ export default {
       }
     },
     async sendData() {
+      try {
+        await this.sendEmpData();
+        // si sale bien recien puede registrar compania por rubro
+        await this.sendCompMark();
+      } catch (error) {
+        this.alert("warning", "Algo salio mal");
+      }
+    },
+    async sendEmpData() {
       try {
         await this.$http.post(
           "company",
@@ -317,6 +380,14 @@ export default {
             },
           }
         );
+        this.alert("success", "Empresa registrada exitosamente");
+      } catch (error) {
+        // throw new Error("Esta empresa ya fue registrada");
+        this.alert("warning", "El nombre de esta empresa ya fue registrada");
+      }
+    },
+    async sendCompMark() {
+      try {
         await this.$http.post(
           "companiesPerMarket",
           {
@@ -330,12 +401,368 @@ export default {
           }
         );
       } catch (error) {
-        throw new Error("Esta empresa ya fue registrada");
+        throw new Error("El rubro es inválido");
+      }
+    },
+    async manageMark() {
+      try {
+        const markets = (
+          await this.$http.get("market", {
+            headers: {
+              authorization: this.token,
+            },
+          })
+        ).data.datos;
+        let existingMark = [];
+        for (let i of markets) {
+          existingMark.push(i.nombre_rubro);
+        }
+        if (!existingMark.includes(this.dato.rubro_empresa)) {
+          await this.$http.post(
+            "market",
+            {
+              nombre_rubro: this.dato.rubro_empresa,
+            },
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          );
+          await this.$http.post(
+            "generalCategory",
+            {
+              nombre_categoriageneral: this.dato.rubro_empresa,
+            },
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          );
+        }
+      } catch (error) {
+        throw new Error("Rubro Inválido");
       }
     },
     alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
+  },
+  mounted() {
+    this.obtenerRubros();
+    var validCodesName = [
+      32,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      193,
+      201,
+      205,
+      209,
+      211,
+      218,
+      225,
+      233,
+      237,
+      241,
+      243,
+      250,
+    ];
+    var validCodesRep = [
+      32,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      193,
+      201,
+      205,
+      209,
+      211,
+      218,
+      225,
+      233,
+      237,
+      241,
+      243,
+      250,
+    ];
+    var validCodesNum = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
+    var validCodesMail = [
+      32,
+      45,
+      46,
+      64,
+      95,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+    ];
+    var myTextBox1 = document.getElementById("nombreEmpresa");
+    var myTextBox2 = document.getElementById("nitEmpresa");
+    var myTextBox3 = document.getElementById("representanteEmpresa");
+    var myTextBox4 = document.getElementById("telfEmpresa");
+    var myTextBox5 = document.getElementById("correoEmpresa");
+    var myTextBox6 = document.getElementById("cuentaBancaria");
+    var myTextBox7 = document.getElementById("rubroEmpresa");
+    myTextBox1.addEventListener(
+      "keypress",
+      (evt) => {
+        var charCode = evt.charCode;
+        if (charCode != 0) {
+          var isValid = validCodesName.includes(charCode);
+          if (!isValid) {
+            evt.preventDefault();
+          }
+        }
+      },
+      false
+    );
+    myTextBox2.addEventListener(
+      "keypress",
+      (evt) => {
+        var charCode = evt.charCode;
+        if (charCode != 0) {
+          var isValid = validCodesNum.includes(charCode);
+          if (!isValid) {
+            evt.preventDefault();
+          }
+        }
+      },
+      false
+    );
+    myTextBox3.addEventListener(
+      "keypress",
+      (evt) => {
+        var charCode = evt.charCode;
+        if (charCode != 0) {
+          var isValid = validCodesRep.includes(charCode);
+          if (!isValid) {
+            evt.preventDefault();
+          }
+        }
+      },
+      false
+    );
+    myTextBox4.addEventListener(
+      "keypress",
+      (evt) => {
+        var charCode = evt.charCode;
+        if (charCode != 0) {
+          var isValid = validCodesNum.includes(charCode);
+          if (!isValid) {
+            evt.preventDefault();
+          }
+        }
+      },
+      false
+    );
+    myTextBox5.addEventListener(
+      "keypress",
+      (evt) => {
+        var charCode = evt.charCode;
+        if (charCode != 0) {
+          var isValid = validCodesMail.includes(charCode);
+          if (!isValid) {
+            evt.preventDefault();
+          }
+        }
+      },
+      false
+    );
+    myTextBox6.addEventListener(
+      "keypress",
+      (evt) => {
+        var charCode = evt.charCode;
+        if (charCode != 0) {
+          var isValid = validCodesNum.includes(charCode);
+          if (!isValid) {
+            evt.preventDefault();
+          }
+        }
+      },
+      false
+    );
+    myTextBox7.addEventListener(
+      "keypress",
+      (evt) => {
+        var charCode = evt.charCode;
+        if (charCode != 0) {
+          var isValid = validCodesRep.includes(charCode);
+          if (!isValid) {
+            evt.preventDefault();
+          }
+        }
+      },
+      false
+    );
   },
 };
 </script>
@@ -439,7 +866,6 @@ export default {
   border: 0px;
 }
 .form_button {
-  margin: auto;
   display: block;
   background-color: #0c59cf;
   padding: 12px 115px 12px 115px;
@@ -483,5 +909,15 @@ export default {
   width: 30%;
 
   margin-bottom: 30px;
+}
+.button-disabled {
+  background: #999999;
+  border: 0px;
+}
+.botoncito {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
 }
 </style>

@@ -1,19 +1,22 @@
 <template>
     <div class="inbox">
+        <div class="btn">
+            <button class="new-request" v-on:click="newRequest()">Nueva Solicitud</button>
+        </div>
         <div class="inbox-container">
             <div class="inbox-cards" :class="selectedRequest.name === '' ? 'full-screen' : 'side-view'">
                 <div class="card-side">
-                    <div class="desc">Solicitudes aceptadas:</div>
+                    <div class="desc">Mis solicitudes:</div>
                     <div class="card-index" v-for="(req, i) in inboxData" :key="i">
                         <div
                             class="single-card-container "
                             v-on:click="startTransition(i)"
                             :class="selectedRequest.name == req.nombre_solicitud ? 'selected-card' : ''"
                         >
-                            <CardCot
+                            <SolCard
                                 :name="req.nombre_solicitud"
                                 :date="req.fecha_solicitud"
-                                :author="req.usuario_solicitante_name"
+                                :status="req.estado_solicitud"
                                 :description="req.detalle_solicitud"
                             />
                         </div>
@@ -22,14 +25,14 @@
             </div>
             <div class="inbox-form" :class="selectedRequest.name === '' ? 'no-selected' : ''">
               <div v-if="selectedRequest.name!=''">
-              <transition
-                enter-active-class="animate__animated animate__fadeInRight"
-                leave-active-class="animate__animated animate__fadeOutRight"
-              >
-                  <div v-if="!changeCot">
-                      <CotForm :request="selectedRequest" />
-                  </div>
-              </transition>
+                <transition
+                    enter-active-class="animate__animated animate__fadeInRight"
+                    leave-active-class="animate__animated animate__fadeOutRight"
+                >
+                        <div v-if="!changeReq">
+                            <SolView :request="selectedRequest"/>
+                        </div>
+                </transition>
               </div>
             </div>
         </div>
@@ -37,26 +40,27 @@
 </template>
 
 <script>
-import CardCot from './CardCot.vue'
-import CotForm from './CotForm.vue'
+import SolCard from './SolCard.vue'
+import SolView from './SolView.vue'
 import { mapState } from 'vuex'
 export default {
-    name: 'CotInbox',
+    name: 'InboxSolicitudes',
     computed: {
         ...mapState(['token']),
     },
-    components: { CardCot, CotForm },
+    components: { SolCard, SolView },
     data() {
         return {
             inboxData: [],
             items: [],
-            changeCot: false,
+            changeReq: false,
             selectedRequest: {
                 cod: null,
                 name: '',
                 date: '',
-                author: '',
+                status: '',
                 description: '',
+                budget: '',
                 itemList: [],
             },
         }
@@ -64,11 +68,16 @@ export default {
     methods: {
         async getData() {
             const response = (
-                await this.$http.get(`request?type=criteria&status=EN_COTIZACION&from=depto&nombre=${localStorage.getItem('depto')}`, {
-                    headers: {
-                        authorization: this.token,
-                    },
-                })
+                await this.$http.get(
+                    `request?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}&petitioner=${localStorage.getItem(
+                        'nombreUsuario'
+                    )}`,
+                    {
+                        headers: {
+                            authorization: this.token,
+                        },
+                    }
+                )
             ).data
             for (let i = 0; i < response.length; i++) {
                 this.inboxData.push(response[i])
@@ -91,18 +100,22 @@ export default {
                 this.items.push(currentItems)
             }
         },
+        async startTransition(i){
+          this.changeReq=true;
+          await this.showRequest(i);
+          this.changeReq=false;
+        },
         async showRequest(i) {
             this.selectedRequest.cod = this.inboxData[i].cod_solicitud
             this.selectedRequest.name = this.inboxData[i].nombre_solicitud
             this.selectedRequest.date = this.inboxData[i].fecha_solicitud
-            this.selectedRequest.author = this.inboxData[i].usuario_solicitante_name
+            this.selectedRequest.status = this.inboxData[i].estado_solicitud
             this.selectedRequest.description = this.inboxData[i].detalle_solicitud
+            this.selectedRequest.budget = this.inboxData[i].estimado_solicitud
             this.selectedRequest.itemList = this.items[i]
         },
-        async startTransition(i) {
-            this.changeCot = true
-            await this.showRequest(i)
-            this.changeCot = false
+        async newRequest() {
+            this.$router.push('/solicitud/nueva')
         },
     },
     mounted() {
@@ -136,21 +149,11 @@ export default {
     height: 42rem;
     overflow: auto;
 }
-.desc {
-    font-size: 29px;
-    text-align: left;
-    font-weight: 600;
-    padding: 2.5% 1% 1% 1%;
-    background: #dddfe7;
-    border: 1px solid #dddfe7;
-    border-radius: 5%;
-    width: 100%;
-}
 .inbox-form {
-    padding: 0 5% 5% 0;
-    margin: 10px;
-    background: #c4dee4;
     width: 100%;
+    padding: 0 5rem 5rem 0;
+    margin: 10px;
+    background: #97ced8;
 }
 .single-card-container {
     align-items: center;
@@ -164,9 +167,40 @@ export default {
     width: 100%;
 }
 .selected-card {
-    background: #b4cace;
+    background: #97ced8;
     border: 3px solid #030303;
     border-radius: 10px;
+}
+.new-request {
+    margin: auto;
+    display: block;
+    background-color: #003570;
+    padding: 1.2% 11.5% 1.2% 11.5% !important;
+    border-radius: 22px;
+    color: #fafafa;
+    font-size: 22px;
+    font-weight: bold;
+    border: 0px;
+    height: 50px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.btn {
+    align-self: flex-start;
+    padding: 2%;
+    width: 30%;
+}
+.desc {
+    font-size: 29px;
+    text-align: left;
+    font-weight: 600;
+    padding: 2.5% 1% 1% 1%;
+    background: #dddfe7;
+    border: 1px solid #dddfe7;
+    border-radius: 5%;
+    width: 100%;
+}
+:root{
+  --animate-duration: 1000ms;
 }
 .no-selected {
     padding: 0 !important;
@@ -178,8 +212,5 @@ export default {
 }
 .side-view {
     width: 40% !important;
-}
-:root{
-  --animate-duration: 1000ms;
 }
 </style>

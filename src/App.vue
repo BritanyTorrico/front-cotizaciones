@@ -23,6 +23,23 @@
             <b-nav-item v-if="permisoItemDeGasto" to="/registro_item"
               >Nuevo Item</b-nav-item
             >
+            <b-nav-item v-if="permisoEmpresa" to="/crear_empresa"
+              >Registrar empresas</b-nav-item
+            >
+            <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
+              >Solicitudes</b-nav-item
+            >
+            <b-nav-item
+              v-if="permisoRevisionSolicitudes"
+              to="/revisar_solicitudes"
+              >Revisar solicitudes</b-nav-item
+            >
+            <b-nav-item v-if="permisoCotizacion" to="/cotizacion"
+              >Cotizaciones</b-nav-item
+            >
+            <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
+              >Filtro de Cotizaciones</b-nav-item
+            >
             <b-nav-item v-if="username" @click="cerrar()"
               >Cerrar Sesion</b-nav-item
             >
@@ -30,7 +47,13 @@
         </b-collapse>
       </b-container>
     </b-navbar>
-    <router-view />
+    <transition
+      mode="out-in"
+      enter-active-class="animate__animated animate__fadeIn"
+      leave-active-class="animate__animated animate__fadeOut"
+    >
+      <router-view />
+    </transition>
   </div>
 </template>
 <script>
@@ -51,6 +74,9 @@ export default {
       "permisoCrearRol",
       "permisoSolicitud",
       "permisoEmpresa",
+      "permisoRevisionSolicitudes",
+      "permisoCotizacion",
+      "permisoFiltroCotizacion",
     ]),
   },
   methods: {
@@ -72,6 +98,12 @@ export default {
       this.$store.commit("setLista");
       this.$store.commit("setToken", null);
       this.$store.commit("setDelete");
+      //nuevos
+
+      this.$store.commit("setPermisoCotizacion", false);
+      this.$store.commit("setPermisoRevisarCotizaciones", false);
+      this.$store.commit("setPermisoFiltroCotizaciones", false);
+
       sessionStorage.removeItem("my-app");
 
       localStorage.removeItem("my-app");
@@ -120,5 +152,8 @@ a.navbar-brand {
   font-weight: bold !important;
   font-size: 22px !important;
   font-family: "Times New Roman", Times, serifs;
+}
+:root{
+  --animate-duration: 550ms;
 }
 </style>

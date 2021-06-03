@@ -41,15 +41,15 @@
                 <div class="lists-cont">
                     <div class="market-cat">
                         <select class="market-list" v-model="market" @change="getCompanies">
-                            <option disabled="true">{{ market }}</option>
+                            <option disabled="true">Seleccione un rubro</option>
                             <option class="list-option" v-for="(mark, index) in marketsList" :key="index" :value="mark">
                                 {{ mark }}
                             </option>
                         </select>
                     </div>
                     <div class="market-comp">
-                        <select class="market-list" v-model="company" @change="getData">
-                            <option disabled="true">{{ company }}</option>
+                        <select class="market-list" v-model="company" @change="getData" :disabled="market==='Seleccione un rubro' || market === 'Todos'">
+                            <option disabled="true">Seleccione una compañia</option>
                             <option class="list-option" v-for="(comp, index) in companiesList" :key="index" :value="comp">
                                 {{ comp }}
                             </option>
@@ -100,7 +100,9 @@ export default {
       async getData(){
           this.filteredInbox=[]
           this.filteredItems=[]
-          let month='' 
+
+          if(this.items.length>0){
+              let month='' 
           let tipo=''
           let rubro=''
           let empresa=''
@@ -120,6 +122,7 @@ export default {
             console.log(`%cquotation?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}%c${month}${tipo}${rubro}${empresa}`, 
             "font-weight: bold; font-size: 17px;", 
             "color: green; font-size: 14px;");
+            console.log(response.length);
             if (response.length>0){
                     for (let i=0;i<response.length;i++){
                     this.filteredInbox[i]=new Object();
@@ -127,7 +130,7 @@ export default {
                     this.filteredInbox[i].fecha_cotizacion=response[i].fecha_cotizacion
                     this.filteredInbox[i].fecha_cotizacion=this.filteredInbox[i].fecha_cotizacion.substr(5, this.filteredInbox[i].fecha_cotizacion.indexOf('T'));
                     this.filteredInbox[i].fecha_cotizacion=this.filteredInbox[i].fecha_cotizacion.substr(0, this.filteredInbox[i].fecha_cotizacion.indexOf('T'));
-                    const requests=(await this.$http.get(`request?type=criteria&status=ACEPTADA&from=depto&nombre=${localStorage.getItem('depto')}`, {
+                    const requests=(await this.$http.get(`request?type=All&from=depto&nombre=${localStorage.getItem('depto')}`, {
                             headers: {
                                 authorization: this.token,
                             },
@@ -151,13 +154,16 @@ export default {
                                 authorization: this.token,
                             },
                         })).data;
+                        console.log(`itemsPerRequest?searchby=solicitud&typeinput=codigo&inputdata=${response[i].cod_solicitud}`)
                         let currentItems=[]
                         for (let j of reqItems.datos){
                             currentItems.push(j)
                         }
                         this.filteredItems.push(currentItems)
+                        console.log(this.filteredItems[i])
                 }
             }
+          }
           
           this.$emit("sendinboxdata", this.filteredInbox,)
           this.$emit("senditems", this.filteredItems)

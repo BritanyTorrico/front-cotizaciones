@@ -1,12 +1,13 @@
 <template>
   <div class="inbox">
     <div class="inbox-container">
-      <div class="inbox-cards">
+      <div class="inbox-cards" :class="selectedRequest.name === '' ? 'full-screen' : 'side-view'" >
         <div class="card-side">
+          <div class="desc">Solicitudes entrantes:</div>
           <div class="card-index" v-for="(req, i) in inboxData" :key="i">
             <div
               class="single-card-container "
-              v-on:click="showRequest(i)"
+              v-on:click="startTransition(i)"
               :class="
                 selectedRequest.name == req.nombre_solicitud
                   ? 'selected-card'
@@ -23,11 +24,19 @@
           </div>
         </div>
       </div>
-      <div class="inbox-details">
-        <div v-if="selectedRequest.name === ''"></div>
-        <div v-else>
-          <Details :request="selectedRequest" />
+      <div class="inbox-details" :class="selectedRequest.name === '' ? 'no-selected' :''">
+        <transition name="slide-fade">
+        <div v-if="selectedRequest.name != ''">
+          <transition
+            enter-active-class="animate__animated animate__fadeInRight"
+            leave-active-class="animate__animated animate__fadeOutRight"
+          >
+            <div v-if="!changeReq">
+              <Details :request="selectedRequest" />
+            </div>
+          </transition>
         </div>
+        </transition>
       </div>
     </div>
   </div>
@@ -47,6 +56,7 @@ export default {
     return {
       inboxData: [],
       items: [],
+      changeReq: false,
       selectedRequest: {
         cod: null,
         name: "",
@@ -107,6 +117,11 @@ export default {
       this.selectedRequest.budget = this.inboxData[i].estimado_solicitud;
       this.selectedRequest.itemList = this.items[i];
     },
+    async startTransition(i){
+          this.changeReq=true;
+          await this.showRequest(i);
+          this.changeReq=false;
+    },
   },
   mounted() {
     this.getData();
@@ -135,16 +150,29 @@ export default {
   width: 100%;
 }
 .inbox-cards {
-  width: 30%;
   display: flex;
   height: 42rem;
   overflow: auto;
 }
+.full-screen{
+  width: 100%!important;
+}
+.side-view{
+  width: 40%!important;
+}
 .inbox-details {
-  width: 70%;
-  padding: 0 5rem 5rem 0;
+  padding: 0 5% 5% 0;
   margin: 10px;
-  background: #c4dee4;
+  background: #a7c8ee;
+  width: 100%;
+}
+.no-selected{
+  padding: 0!important;
+  margin:0;
+  width: 0%!important;
+}
+.selected-enable{
+  width: 100%!important;
 }
 .single-card-container {
   align-items: center;
@@ -158,8 +186,28 @@ export default {
   width: 100%;
 }
 .selected-card {
-  background: #b4cace;
+  background: #a7c8ee;
   border: 3px solid #030303;
   border-radius: 10px;
+}
+.desc{
+  font-size: 29px;
+  text-align: left;
+  font-weight: 600;
+  padding: 2.5% 1% 1% 1%;
+  background: #dddfe7;
+  border: 1px solid #dddfe7;
+  border-radius: 0 0 10% 10%;
+  width: 75%;
+}
+.slide-fade-enter-active {
+  transition: all .8s ease;
+}
+.slide-fade-enter{
+  transform: translateX(10px);
+  opacity: 0;
+}
+:root{
+  --animate-duration: 1000ms;
 }
 </style>

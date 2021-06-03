@@ -24,6 +24,7 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
+
 export default {
   name: "ListaDesplegable",
   data() {
@@ -38,9 +39,13 @@ export default {
     lista: Array,
     nombre1: String,
     Mensaje: String,
+    requerido: String,
   },
   validations: {
     value: {
+      required,
+    },
+    requerido: {
       required,
     },
   },

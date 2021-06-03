@@ -88,6 +88,62 @@
                 </div>
                 <label for="gestionItems">Añadir Items de Gasto</label><br />
             </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="hacerSol"
+                    name="funcion"
+                    value="Hacer solicitud"
+                  />
+                </div>
+                <label for="hacerSol">Hacer solicitud</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="revSol"
+                    name="funcion"
+                    value="Revisar solicitud"
+                  />
+                </div>
+                <label for="revSol">Revisar solicitud</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="creaCot"
+                    name="funcion"
+                    value="Crear cotización"
+                  />
+                </div>
+                <label for="creaCot">Crear cotización</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="regEmp"
+                    name="funcion"
+                    value="Registro de empresas"
+                  />
+                </div>
+                <label for="regEmp">Registro de empresas</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="filtrito"
+                    name="funcion"
+                    value="Filtro de cotizaciones"
+                  />
+                </div>
+                <label for="filtrito">Filtro de cotizaciones</label><br />
+            </div>
+            
         </div>
       </div>
       <div class="botoncito">
@@ -128,7 +184,12 @@ export default {
       permiso1: '',
       permiso2: '',
       permiso3: '',
-      permiso4: ''
+      permiso4: '',
+      permiso5: '',
+      permiso6: '',
+      permiso7: '',
+      permiso8: '',
+      permiso9: ''
     };
   },
 
@@ -164,6 +225,11 @@ export default {
         if (i=='Crear Roles') this.permiso2=i
         if (i=='Añadir Unidades de Gasto') this.permiso3=i
         if (i=='Añadir Items de Gasto') this.permiso4=i
+        if (i=='Hacer solicitud') this.permiso5=i
+        if (i=='Revisar solicitud') this.permiso6=i
+        if (i=='Crear cotización') this.permiso7=i
+        if (i=='Registro de empresas') this.permiso8=i
+        if (i=='Filtro de cotizaciones') this.permiso9=i
       }
     },
     async submitForm() {
@@ -181,7 +247,7 @@ export default {
           this.alert("warning", "Seleccione minimamente un permiso.");
         }
       } catch (error) {
-        this.alert("warning", "El nombre del rol ya esta registrado");
+        this.alert("warning", error);
       }
     },
     async sendRolData() {
@@ -204,12 +270,17 @@ export default {
     async sendFuncData() {
       try {
         await this.$http.post(
-          "rolePerFunctionsGroup",
+          "rolePerFunctionsGroupSP2",
           {
             permiso1: this.permiso1,
             permiso2: this.permiso2,
             permiso3: this.permiso3,
             permiso4: this.permiso4,
+            permiso5: this.permiso5,
+            permiso6: this.permiso6,
+            permiso7: this.permiso7,
+            permiso8: this.permiso8,
+            permiso9: this.permiso9,
             nombre_rol: this.dato.nombre_rol,
           },
           {

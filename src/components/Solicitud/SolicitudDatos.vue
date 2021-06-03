@@ -58,8 +58,13 @@
             :lista="listaUnidadesDeGasto"
             Mensaje="Campo Obligatorio"
             :value="solicitud.unidadgasto_solicitud"
-            
           ></lista-desplegable>
+          <div
+            class="form_check-error mensaje"
+            v-if="!$v.solicitud.unidadgasto_solicitud.validate_requerido_listas"
+          >
+            Campo obligatorio.
+          </div>
         </div>
       </div>
 
@@ -70,8 +75,8 @@
           cols="50"
           :class="
             $v.solicitud.detalle_solicitud.$invalid
-              ? 'form_check-input-error'
-              : 'form__input'
+              ? 'form_check-input-error tamaño'
+              : 'form__input tamaño'
           "
           type="text"
           v-model="solicitud.detalle_solicitud"
@@ -101,14 +106,35 @@
 
       <div class="seccion2">
         <div class="seccion__Izq">
-          <div class="formulario_label seccion__Izq-titulo">
+          <div
+            v-if="this.solicitud.categoria_general != 'Servicios'"
+            class="formulario_label seccion__Izq-titulo"
+          >
             Agregar un nuevo item:
           </div>
+          <div
+            v-if="this.solicitud.categoria_general === 'Servicios'"
+            class="formulario_label seccion__Izq-titulo"
+          >
+            Agregar un Servicio:
+          </div>
           <div class="seccion__Izq-fila1">
+            <div class="categoriaGeneral" v-on:click="getSpeCategories">
+              <lista-desplegable
+                required
+                v-model="solicitud.categoria_general"
+                nombreLista="Categoria General:"
+                :lista="listaCatGen"
+                Mensaje="Campo Obligatorio"
+                :value="solicitud.categoria_general"
+              ></lista-desplegable>
+            </div>
+
             <div class="form__categoria">
-              <div class="container__label">Categoria:</div>
+              <div class="container__label">Categoria especifica:</div>
               <div class="contenedor-select">
                 <select
+                  :key="componentKey3"
                   v-model="solicitud.categoria"
                   class="container__list"
                   @change="obtenerItems()"
@@ -117,7 +143,7 @@
                   <option disabled="true">{{ solicitud.categoria }}</option>
                   <option
                     class="container__list__option"
-                    v-for="(item, index) in listaCategorias"
+                    v-for="(item, index) in listaCategorias1"
                     :key="index"
                     :value="item"
                   >
@@ -126,34 +152,11 @@
                 </select>
               </div>
             </div>
-            <div class="container-nombre-item">
-              <div class="container__label">item de gasto:</div>
-              <div class="contenedor-select">
-                <select
-                  required
-                  class="container__list"
-                  v-model="solicitud.nombre_item"
-                  @change="obtenerDescripcion()"
-                  name="item"
-                >
-                  <option disabled="true">{{ solicitud.nombre_item }}</option>
-
-                  <option
-                    class="container__list__option"
-                    v-for="(item, index) in listItems"
-                    :key="index"
-                    :value="item"
-                  >
-                    {{ item }}</option
-                  >
-                </select>
-              </div>
-            </div>
           </div>
 
           <div class="seccion__Izq-fila2">
             <div
-              v-if="this.solicitud.categoria != 'Servicios'"
+              v-if="this.solicitud.categoria_general != 'Servicios'"
               class="form__cantidad"
             >
               <div class="formulario_label">
@@ -182,31 +185,80 @@
               </div>
             </div>
             <div class="form__boton">
-              <a class="btn btn-success boton-agregar" @click="agregarItem()" id="agregar"
+              <a
+                class="btn btn-success boton-agregar"
+                @click="agregarItem()"
+                id="agregar"
                 >Agregar</a
               >
             </div>
           </div>
+          <!--Agregue categorias generales-->
 
           <!---->
         </div>
 
         <div class="seccion__Der">
-          <div
-            class="form__descripcion"
-            v-if="solicitud.nombre_item != 'Seleccione una opcion'"
-          >
-            <div class="formulario_label">
-              Descripción:
+          <div class="container-nombre-item">
+            <div
+              class="container__label"
+              v-if="this.solicitud.categoria_general != 'Servicios'"
+            >
+              Items de gasto:
             </div>
-            <div class="form__descripcion-contenido">
-              <textarea
-                rows="7"
-                cols="50"
-                class="form__input"
-                type="text"
-                v-model="descripcionItem"
-              />
+            <div
+              class="container__label"
+              v-if="this.solicitud.categoria_general == 'Servicios'"
+            >
+              Nombre del Servicio:
+            </div>
+            <div class="contenedor-select">
+              <select
+                required
+                class="container__listNuevo"
+                v-model="solicitud.nombre_item"
+                @change="obtenerDescripcion()"
+                name="item"
+              >
+                <option disabled="true">{{ solicitud.nombre_item }}</option>
+
+                <option
+                  class="container__list__option"
+                  v-for="(item, index) in listItems"
+                  :key="index"
+                  :value="item"
+                >
+                  {{ item }}</option
+                >
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h4 class="form_check-error" v-if="this.listaSolicitudItems.length == 0">
+        (*) Agregue un item
+      </h4>
+      <div class="seccion3">
+        <div
+          class="form__descripcion"
+          v-if="solicitud.nombre_item != 'Seleccione una opcion'"
+        >
+          <div class="formulario_label">
+            Descripción:
+          </div>
+          <div class="form__descripcion-contenido">
+            <textarea
+              rows="7"
+              cols="50"
+              class="form__input tamaño"
+              type="text"
+              v-model="descripcionItem"
+            />
+            <div class="form_check-error" v-if="!$v.descripcionItem.required">
+              Campo obligatorio.
+            </div>
+            <div class="form_check-error" v-if="!$v.descripcionItem.maxLength">
+              Maximo 1000 caracteres.
             </div>
           </div>
         </div>
@@ -218,13 +270,13 @@
       >
         <div
           class="formulario_label"
-          v-if="this.solicitud.categoria != 'Servicios'"
+          v-if="this.solicitud.categoria_general != 'Servicios'"
         >
           Lista de items:
         </div>
         <div
           class="formulario_label"
-          v-if="this.solicitud.categoria == 'Servicios'"
+          v-if="this.solicitud.categoria_general == 'Servicios'"
         >
           Lista de Servicios:
         </div>
@@ -258,9 +310,7 @@
           </table>
         </div>
       </div>
-      <h4 class="form_check-error" v-if="this.listaSolicitudItems.length == 0">
-        (*) Agregue un item
-      </h4>
+
       <div class="form__presupuesto">
         <div class="aux-izquierdo"></div>
         <div class="presupuesto">
@@ -314,7 +364,8 @@
           />
         </div>
       </div>
-      <!--{{ this.listaSolicitudItems }}
+
+      <!-- {{ this.listaSolicitudItems }}
       <p>datos</p>
       {{ solicitud }}-->
     </form>
@@ -336,7 +387,14 @@ import ListaDesplegable from "@/components/User/ListaDesplegable.vue";
 import AlertConfirmation from "@/components/Solicitud/AlertConfirmation.vue";
 import { mapState, mapActions } from "vuex";
 import { store } from "@/store/index.js";
-
+const validate_requerido_listas = (value) => {
+  const datovalue = String(value);
+  if (datovalue === "Seleccione una opcion") {
+    return !helpers.req(value) || datovalue != "Seleccione una opcion";
+  } else {
+    return true;
+  }
+};
 const validate_decimales = (value) => {
   const datovalue = String(value);
   if (datovalue.indexOf(".") > 0) {
@@ -353,7 +411,8 @@ export default {
   name: "SolicitudDatos",
   store,
   mounted() {
-    this.getCategories();
+    this.getGenCategories();
+    this.getCategories(); //especifica
     this.getDepartamento();
   },
   computed: {
@@ -365,8 +424,8 @@ export default {
         nombre_solicitud: null,
         detalle_solicitud: null,
         categoria: "Seleccione una opcion",
+        categoria_general: "Seleccione una opcion",
         nombre_item: "Seleccione una opcion",
-
         unidadgasto_solicitud: "Seleccione una opcion",
         estimado_solicitud: null,
       },
@@ -374,6 +433,7 @@ export default {
         cantidad: null,
       },
       listaCategorias: [],
+      listaCategorias1: [],
 
       listItems: [],
       listaPeticion: [], //aqui esta la lista de items que mandare
@@ -383,6 +443,12 @@ export default {
       listaUnidadesDeGasto: [],
       descripcionItem: null,
       componentKey: 0,
+      componentKey3: 0,
+      componentKey4: 0,
+      listaCatGen: [],
+      listaCodGen: [],
+      agregarVer: false,
+      mismoNombre: false,
     };
   },
   validations: {
@@ -400,7 +466,7 @@ export default {
       },
 
       unidadgasto_solicitud: {
-        required,
+        validate_requerido_listas,
       },
       estimado_solicitud: {
         required,
@@ -415,11 +481,76 @@ export default {
         between: between(1, 100),
       },
     },
+    descripcionItem: {
+      required,
+      maxLength: maxLength(1000),
+    },
   },
   methods: {
     ...mapActions(["setlistaSolicitudItems"]),
     forceRerender() {
       this.componentKey += 1;
+    },
+    async forceRerender3() {
+      this.componentKey3 += 1;
+    },
+    async forceRerender4() {
+      this.componentKey4 += 1;
+    },
+    async getGenCategories() {
+      const gen = (
+        await this.$http.get("generalCategory", {
+          headers: {
+            authorization: this.token,
+          },
+        })
+      ).data;
+      for (let i of gen) {
+        this.listaCatGen.push(i.nombre_categoriageneral);
+        this.listaCodGen.push(i.cod_categoriageneral);
+      }
+      await this.getSpeCategories();
+    },
+    async getSpeCategories() {
+      await this.forceRerender3();
+      this.listaCategorias1 = [];
+      this.solicitud.categoria = "Seleccione una opcion"; // importante
+
+      const categ = (
+        await this.$http.get("specificCategory", {
+          headers: {
+            authorization: this.token,
+          },
+        })
+      ).data;
+      for (let j of categ) {
+        if (
+          j.cod_categoriageneral ==
+          this.listaCodGen[
+            this.listaCatGen.indexOf(this.solicitud.categoria_general)
+          ]
+        ) {
+          this.listaCategorias1.push(j.nombre_categoriaespecifica);
+        }
+      }
+    },
+    async envioItems() {
+      try {
+        await this.$http.post(
+          `itemsPerRequest`,
+          {
+            nombre_solicitud: this.solicitud.nombre_solicitud,
+            items: this.listaSolicitudItems,
+          },
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        );
+      } catch (error) {
+        this.alert("warning", error);
+      }
     },
     async submitForm() {
       try {
@@ -442,19 +573,9 @@ export default {
               },
             }
           );
-          console.log(this.listaSolicitudItems);
-          await this.$http.post(
-            `itemsPerRequest`,
-            {
-              nombre_solicitud: this.solicitud.nombre_solicitud,
-              items: this.listaSolicitudItems,
-            },
-            {
-              headers: {
-                authorization: this.token,
-              },
-            }
-          );
+
+          await this.envioItems();
+
           this.alert("success", "Solicitud enviada");
           //borrar todos los campos del fomrulario
 
@@ -488,16 +609,15 @@ export default {
         this.listaCategorias.push(categ[i].nombre_categoriaespecifica);
       }
     },
-
-    async obtenerItems() {
+    async verificarCategoriaDistinta() {
       if (
         this.solicitud.categoria != null &&
         this.listaSolicitudItems.length > 0
       ) {
         let categoriaLista = this.listaSolicitudItems[
           this.listaSolicitudItems.length - 1
-        ].categoria;
-        if (categoriaLista != this.solicitud.categoria) {
+        ].categoria_general; //categoria anterior
+        if (categoriaLista != this.solicitud.categoria_general) {
           //si la categoria cambia
           this.alertConfirmation(
             "warning",
@@ -505,8 +625,11 @@ export default {
           );
         }
       }
+    },
+    async obtenerItems() {
+      await this.verificarCategoriaDistinta();
 
-      if (this.solicitud.categoria == "Servicios") {
+      if (this.solicitud.categoria_general == "Servicios") {
         this.disabled = false;
         this.elemento.cantidad = null;
       } else {
@@ -514,6 +637,7 @@ export default {
       }
 
       this.listItems = [];
+      //this.solicitud.nombre_item = "Seleccione una opcion";
 
       let listaItems = (
         await this.$http.get(
@@ -534,43 +658,71 @@ export default {
     eliminarItems: function(index) {
       this.$store.commit("setEliminar", index);
     },
-    agregarItem: function() {
-      this.obtenerItems();
-
+    async verificarSiEstaEnLista() {
+      if (this.listaSolicitudItems.length > 0) {
+        let respuesta = false;
+        for (let i = 0; i < this.listaSolicitudItems.length; i++) {
+          let nombreLista;
+          let nombre;
+          nombreLista = this.listaSolicitudItems[i].nombre_item;
+          nombre = this.solicitud.nombre_item;
+          if (nombreLista === nombre) {
+            respuesta = true;
+            this.alert("warning", "Ya ingreso este item");
+            break;
+          }
+        }
+        return respuesta;
+      }
+    },
+    async agregarItem() {
+      await this.obtenerItems();
+      let mismoItem = await this.verificarSiEstaEnLista();
+      console.log(mismoItem);
       if (
         this.solicitud.nombre_item != "Seleccione una opcion" &&
-        this.solicitud.categoria === "Servicios"
+        this.solicitud.categoria_general === "Servicios" &&
+        !this.$v.descripcionItem.$invalid
       ) {
-        const item = {
-          nombre_item: this.solicitud.nombre_item,
-          cantidad: 1,
-          categoria: this.solicitud.categoria,
-          unidad_solicitud: this.solicitud.nombre_item,
-          detalle_solicitud: this.descripcionItem,
-        };
-        // this.listaPeticion.push(item);
-
-        this.$store.commit("setlistaSolicitudItems", item);
-
-        this.solicitud.nombre_item = "Seleccione una opcion";
-        this.elemento.cantidad = null;
-      } else {
-        if (
-          this.solicitud.nombre_item != "Seleccione una opcion" &&
-          !this.$v.elemento.cantidad.$invalid
-        ) {
+        if (!mismoItem) {
           const item = {
             nombre_item: this.solicitud.nombre_item,
-            cantidad: this.elemento.cantidad,
-            categoria: this.solicitud.categoria,
+            cantidad: 1,
+            categoria: this.solicitud.categoria, //especifica
+            categoria_general: this.solicitud.categoria_general,
             unidad_solicitud: this.solicitud.nombre_item,
             detalle_solicitud: this.descripcionItem,
           };
-          // this.listaPeticion.push(item);
           this.$store.commit("setlistaSolicitudItems", item);
-
           this.solicitud.nombre_item = "Seleccione una opcion";
           this.elemento.cantidad = null;
+          //aqui
+        } else {
+          console.log("MISMOOOO ITEMM");
+        }
+      } else {
+        if (
+          this.solicitud.nombre_item != "Seleccione una opcion" &&
+          !this.$v.elemento.cantidad.$invalid &&
+          !this.$v.descripcionItem.$invalid
+        ) {
+          if (!mismoItem) {
+            const item = {
+              nombre_item: this.solicitud.nombre_item,
+              cantidad: this.elemento.cantidad,
+              categoria: this.solicitud.categoria,
+              categoria_general: this.solicitud.categoria_general,
+              unidad_solicitud: this.solicitud.nombre_item,
+              detalle_solicitud: this.descripcionItem,
+            };
+            this.$store.commit("setlistaSolicitudItems", item);
+            this.solicitud.nombre_item = "Seleccione una opcion";
+            this.elemento.cantidad = null;
+            this.mismoNombre = false;
+            this.agregarVer = false;
+          } else {
+            console.log("MISMO ITEM!!!");
+          }
         } else {
           this.alert("warning", "Rellene correctamente la seccion de items");
         }
@@ -579,19 +731,20 @@ export default {
       if (this.listaSolicitudItems.length > 1) {
         let anteriorCat = this.listaSolicitudItems[
           this.listaSolicitudItems.length - 2
-        ].categoria;
+        ].categoria_general;
         let actual = this.listaSolicitudItems[
           this.listaSolicitudItems.length - 1
-        ].categoria;
+        ].categoria_general;
 
         if (anteriorCat != actual) {
           for (let i = 0; i < this.listaSolicitudItems.length; i++) {
-            if (this.listaSolicitudItems[i].categoria === actual) {
+            if (this.listaSolicitudItems[i].categoria_general === actual) {
               this.$store.commit("setEliminar", i);
             }
           }
         }
       }
+      //hasta aqui
     },
     alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
@@ -655,8 +808,15 @@ export default {
   font-weight: bold;
 }
 .container__list {
-  font-size: 14px;
+  font-size: 16px;
   width: 86%;
+  color: #576574;
+  padding: 6px;
+  background: #ecf0f1;
+}
+.container__listNuevo {
+  font-size: 16px;
+  width: 100%;
   color: #576574;
   padding: 6px;
   background: #ecf0f1;
@@ -709,13 +869,13 @@ export default {
   display: flex;
 }
 .izquierda {
-  width: 65%;
+  width: 75%;
 }
 .derecha {
   font-size: 20px;
   float: right;
-  width: 35%;
-  display: flex;
+  width: 30%;
+
   justify-content: right;
   align-items: rigth;
   text-align: right;
@@ -732,17 +892,23 @@ export default {
   margin-top: 20px;
 }
 .seccion__Izq {
-  width: 60%;
+  width: 70%;
 }
 .seccion__Izq-fila1 {
   display: flex;
   margin-top: 20px;
 }
+.categoriaGeneral {
+  width: 45%;
+  margin-right: 30px;
+}
 .form__categoria {
+  margin-top: 20px;
   width: 50%;
 }
 .container-nombre-item {
-  width: 50%;
+  width: 100%;
+  margin-top: 70px;
 }
 .seccion__Izq-fila2 {
   display: flex;
@@ -753,7 +919,7 @@ export default {
   width: 50%;
 }
 .seccion__Der {
-  width: 40%;
+  width: 30%;
 }
 .form__boton {
   width: 40%;
@@ -809,5 +975,11 @@ export default {
 }
 .contenedor-select {
   width: 100%;
+}
+.tamaño {
+  resize: none;
+}
+.mensaje {
+  display: block;
 }
 </style>
