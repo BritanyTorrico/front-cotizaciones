@@ -3,22 +3,21 @@
     <div class="card-head">
       <h3>{{ name }}</h3>
     </div>
-    <div class="card-body">
-      <div class="card-status">Usuarios:</div>
-      <div class="card-description">{{ quant }}</div>
-    </div>
+    <div class="card-status">{{ attendant }}</div>
+    <div class="card-description">{{ description }}</div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "RolCard",
+  name: "UnitCard",
   data() {
     return {};
   },
   props: {
     name: String,
-    quant: Number,
+    attendant: String,
+    description: String,
   },
 };
 </script>
@@ -63,21 +62,21 @@ h3 {
   align-self: flex-start;
   font-weight: 550;
   text-align: left;
+  margin: 5px 0 10px 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    padding-right: 0.4%;
 }
 .card-description {
   align-self: flex-start;
   font-size: 15px;
   color: #626262 !important;
+  margin: 10px 0 0 0;
+  line-height: 1.5em;
+  height: 4.5em;
+  word-wrap: break-word;
   overflow: hidden;
   text-align: left;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-.card-body{
-  display: flex;
-  align-items: baseline;
 }
 </style>

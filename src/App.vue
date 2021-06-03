@@ -17,14 +17,14 @@
             <b-nav-item v-if="permisoCrearRol" to="/roles"
               >Roles</b-nav-item
             >
-            <b-nav-item v-if="permisoUnidadDeGasto" to="/registro_unidad"
-              >Nueva Unidad</b-nav-item
+            <b-nav-item v-if="permisoUnidadDeGasto" to="/unidades"
+              >Unidades</b-nav-item
             >
-            <b-nav-item v-if="permisoItemDeGasto" to="/registro_item"
-              >Nuevo Item</b-nav-item
+            <b-nav-item v-if="permisoItemDeGasto" to="/items"
+              >Items</b-nav-item
             >
-            <b-nav-item v-if="permisoEmpresa" to="/crear_empresa"
-              >Registrar empresas</b-nav-item
+            <b-nav-item v-if="permisoEmpresa" to="/empresas"
+              >Empresas</b-nav-item
             >
             <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
               >Solicitudes</b-nav-item

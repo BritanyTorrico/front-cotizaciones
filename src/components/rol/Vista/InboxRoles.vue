@@ -16,6 +16,7 @@
                         >
                             <RolCard
                                 :name="rol.nombre_rol"
+                                :quant="rol.cantidad"
                             />
                         </div>
                     </div>
@@ -88,7 +89,15 @@ export default {
                 ).data.datos
                     const functs=[]
                     for (let j of rpf){
-                        functs.push(j.nombre_funcion)
+                        if(!j.nombre_funcion.includes('Gestionar')){
+                            if (j.nombre_funcion.includes('Vista_')){
+                                let nf=j.nombre_funcion.replace(/_/g, " ")
+                                nf= nf.slice(6)
+                                functs.push(nf)
+                            }else{
+                                functs.push(j.nombre_funcion)
+                            }
+                        }
                     }
                     this.inboxData[i].funciones=functs
                     const usrs=[]
@@ -106,8 +115,8 @@ export default {
                         usrs.push(k)
                     }
                     this.inboxData[i].usuarios=usrs
+                    this.inboxData[i].cantidad=usrs.length
             }
-            console.log(this.inboxData[0]);
         },
         async startTransition(i){
           this.changeRole=true;

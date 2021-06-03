@@ -4,23 +4,23 @@
             <button class="new-user" v-on:click="newUser()">Nuevo Usuario</button>
         </div>
         <div class="container-facu">
-                <div class="container__label">Facultad:</div>
-                <select
+            <div class="container__label">Facultad:</div>
+            <select
                   v-model="facultad"
                   @change="getData()"
                   class="container__list"
-                >
-                  <option disabled="true">{{ facultad }}</option>
-                  <option
+            >
+                <option disabled="true">{{ facultad }}</option>
+                <option
                     class="container__list__option"
                     v-for="(item, index) in listfacultad"
                     :key="index"
                     :value="item"
-                  >
-                    {{ item }}</option
-                  >
-                </select>
-              </div>
+                >
+                {{ item }}</option
+                >
+            </select>
+        </div>
         <div class="inbox-container">
             <div class="list-cards" :class="selectedUser.name === '' ? 'full-screen' : 'side-view'">
                 <div class="card-side">
@@ -69,7 +69,7 @@ export default {
     components: { UserCard, UserView },
     data() {
         return {
-            facultad: "Seleccione una opcion",
+            facultad: "Seleccione una opción",
             inboxData: [],
             changeUser: false,
             selectedUser: {
@@ -117,7 +117,6 @@ export default {
         async startTransition(i){
           this.changeUser=true;
           await this.showUser(i);
-          console.log(this.selectedUser);
           this.changeUser=false;
         },
         async showUser(i) {
@@ -132,17 +131,17 @@ export default {
             this.$router.push('/register')
         },
         async obtenerFacultades() {
-      const listaFacultades = (
-        await this.$http.get("faculty", {
-          headers: {
-            authorization: this.token,
-          },
-        })
-      ).data;
-        for (let i of listaFacultades){
-            this.listfacultad.push(i.nombre_facultad)
-        }
-    },
+            const listaFacultades = (
+                await this.$http.get("faculty", {
+                headers: {
+                    authorization: this.token,
+                },
+                })
+            ).data;
+                for (let i of listaFacultades){
+                    this.listfacultad.push(i.nombre_facultad)
+                }
+        },
     },
     mounted() {
         this.obtenerFacultades()
@@ -166,7 +165,7 @@ export default {
     position: relative;
     align-items: baseline;
     padding: 2.5% 2.5%;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #9b9b9b;
     margin-bottom: 10px;
     width: 100%;
 }

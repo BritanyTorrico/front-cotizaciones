@@ -19,7 +19,7 @@ const routes = [{
             import ( /* webpackChunkName: "about" */ "../views/About.vue"),
     },
     {
-        path: "/registro_item",
+        path: "/item/nuevo",
         name: "RegistroItemGasto",
         component: () =>
             import ("@/views/RegItem.vue"),
@@ -29,7 +29,7 @@ const routes = [{
         },
     },
     {
-        path: "/registro_unidad",
+        path: "/unidad/nueva",
         name: "RegistroUnidadGasto",
         component: () =>
             import ("@/views/RegUnidad.vue"),
@@ -91,7 +91,7 @@ const routes = [{
     },
 
     {
-        path: "/crear_empresa",
+        path: "/empresa/nueva",
         name: "creaEmpresa",
         component: () =>
             import ("../views/creaEmpresa.vue"),
@@ -131,6 +131,33 @@ const routes = [{
         name: "Roles",
         component: () =>
             import ("../views/Roles.vue"),
+        meta: {
+                rutaProtegida: true,
+        }
+    },
+    {
+        path: "/unidades",
+        name: "Unidades",
+        component: () =>
+            import ("../views/Units.vue"),
+        meta: {
+                rutaProtegida: true,
+        }
+    },
+    {
+        path: "/items",
+        name: "Items",
+        component: () =>
+            import ("../views/Items.vue"),
+        meta: {
+                rutaProtegida: true,
+        }
+    },
+    {
+        path: "/empresas",
+        name: "Empresas",
+        component: () =>
+            import ("../views/Companies.vue"),
         meta: {
                 rutaProtegida: true,
         }
