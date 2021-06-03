@@ -5,7 +5,7 @@
       type="dark"
       class="navbar navbar-dark bg-primary"
     >
-      <b-navbar-brand tag="h1" class="mb-0 umss" href="/">UMSS </b-navbar-brand>
+      <b-navbar-brand id="logotipo" href="/">UMSS </b-navbar-brand>
       <b-navbar-toggle target="navbar-toggle-collapse">
         <template #default="{ expanded }">
           <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
@@ -54,10 +54,15 @@
       </b-collapse>
     </b-navbar>
     <!--otro-->
-    <b-navbar v-else toggleable type="dark " class="bg-primary">
-      <b-navbar-brand href="#">UMSS</b-navbar-brand>
+    <b-navbar
+      v-else
+      toggleable
+      type="dark"
+      class="navbar navbar-dark bg-primary"
+    >
+      <b-navbar-brand id="logotipo" href="/">UMSS</b-navbar-brand>
 
-      <b-navbar-toggle target="navbar-toggle-collapse">
+      <b-navbar-toggle id="icono-toggle" target="navbar-toggle-collapse">
         <template #default="{ expanded }">
           <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
           <b-icon v-else icon="chevron-bar-down"></b-icon>
@@ -216,5 +221,12 @@ a.navbar-brand {
 }
 :root {
   --animate-duration: 550ms;
+}
+#logotipo {
+  margin-left: 45px;
+}
+#icono-toggle {
+  margin-right: 30px;
+  border: 1px solid;
 }
 </style>
