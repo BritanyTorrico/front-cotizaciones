@@ -1,52 +1,115 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="lg" type="dark" class="navbar navbar-dark bg-primary">
-      <b-container>
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-        <b-navbar-brand tag="h1" class="mb-0 umss" href="/"
-          >UMSS
-        </b-navbar-brand>
-        <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav id="nav">
-            <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
-            <b-nav-item to="/about">About</b-nav-item>
-            <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
-            <b-nav-item v-if="permisoCrearUsuario" to="/register"
-              >Registrar Usuario</b-nav-item
-            >
-            <b-nav-item v-if="permisoCrearRol" to="/creaRol"
-              >Crear Rol</b-nav-item
-            >
-            <b-nav-item v-if="permisoUnidadDeGasto" to="/registro_unidad"
-              >Nueva Unidad</b-nav-item
-            >
-            <b-nav-item v-if="permisoItemDeGasto" to="/registro_item"
-              >Nuevo Item</b-nav-item
-            >
-            <b-nav-item v-if="permisoEmpresa" to="/crear_empresa"
-              >Registrar empresas</b-nav-item
-            >
-            <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
-              >Solicitudes</b-nav-item
-            >
-            <b-nav-item
-              v-if="permisoRevisionSolicitudes"
-              to="/revisar_solicitudes"
-              >Revisar solicitudes</b-nav-item
-            >
-            <b-nav-item v-if="permisoCotizacion" to="/cotizacion"
-              >Cotizaciones</b-nav-item
-            >
-            <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
-              >Filtro de Cotizaciones</b-nav-item
-            >
-            <b-nav-item v-if="username" @click="cerrar()"
-              >Cerrar Sesion</b-nav-item
-            >
-          </b-navbar-nav>
-        </b-collapse>
-      </b-container>
+    <b-navbar
+      v-if="contador < 5"
+      type="dark"
+      class="navbar navbar-dark bg-primary"
+    >
+      <b-navbar-brand id="logotipo" href="/">UMSS </b-navbar-brand>
+      <b-navbar-toggle target="navbar-toggle-collapse">
+        <template #default="{ expanded }">
+          <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
+          <b-icon v-else icon="chevron-bar-down"></b-icon>
+        </template>
+      </b-navbar-toggle>
+
+      <b-collapse id="navbar-toggle-collapse" is-nav>
+        <b-navbar-nav id="nav">
+          <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
+          <b-nav-item to="/about">About</b-nav-item>
+          <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
+          <b-nav-item v-if="permisoCrearUsuario" to="/register"
+            >Registrar Usuario</b-nav-item
+          >
+          <b-nav-item v-if="permisoCrearRol" to="/creaRol"
+            >Crear Rol</b-nav-item
+          >
+          <b-nav-item v-if="permisoUnidadDeGasto" to="/registro_unidad"
+            >Nueva Unidad</b-nav-item
+          >
+          <b-nav-item v-if="permisoItemDeGasto" to="/registro_item"
+            >Nuevo Item</b-nav-item
+          >
+          <b-nav-item v-if="permisoEmpresa" to="/crear_empresa"
+            >Registrar empresas</b-nav-item
+          >
+          <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
+            >Solicitudes</b-nav-item
+          >
+          <b-nav-item
+            v-if="permisoRevisionSolicitudes"
+            to="/revisar_solicitudes"
+            >Revisar solicitudes</b-nav-item
+          >
+          <b-nav-item v-if="permisoCotizacion" to="/cotizacion"
+            >Cotizaciones</b-nav-item
+          >
+          <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
+            >Filtro de Cotizaciones</b-nav-item
+          >
+          <b-nav-item v-if="username" @click="cerrar()"
+            >Cerrar Sesion</b-nav-item
+          >
+        </b-navbar-nav>
+      </b-collapse>
     </b-navbar>
+    <!--otro-->
+    <b-navbar
+      v-else
+      toggleable
+      type="dark"
+      class="navbar navbar-dark bg-primary"
+    >
+      <b-navbar-brand id="logotipo" href="/">UMSS</b-navbar-brand>
+
+      <b-navbar-toggle id="icono-toggle" target="navbar-toggle-collapse">
+        <template #default="{ expanded }">
+          <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
+          <b-icon v-else icon="chevron-bar-down"></b-icon>
+        </template>
+      </b-navbar-toggle>
+
+      <b-collapse id="navbar-toggle-collapse" is-nav>
+        <b-navbar-nav id="nav">
+          <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
+          <b-nav-item to="/about">About</b-nav-item>
+          <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
+          <b-nav-item v-if="permisoCrearUsuario" to="/register"
+            >Registrar Usuario</b-nav-item
+          >
+          <b-nav-item v-if="permisoCrearRol" to="/creaRol"
+            >Crear Rol</b-nav-item
+          >
+          <b-nav-item v-if="permisoUnidadDeGasto" to="/registro_unidad"
+            >Nueva Unidad</b-nav-item
+          >
+          <b-nav-item v-if="permisoItemDeGasto" to="/registro_item"
+            >Nuevo Item</b-nav-item
+          >
+          <b-nav-item v-if="permisoEmpresa" to="/crear_empresa"
+            >Registrar empresas</b-nav-item
+          >
+          <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
+            >Solicitudes</b-nav-item
+          >
+          <b-nav-item
+            v-if="permisoRevisionSolicitudes"
+            to="/revisar_solicitudes"
+            >Revisar solicitudes</b-nav-item
+          >
+          <b-nav-item v-if="permisoCotizacion" to="/cotizacion"
+            >Cotizaciones</b-nav-item
+          >
+          <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
+            >Filtro de Cotizaciones</b-nav-item
+          >
+          <b-nav-item v-if="username" @click="cerrar()"
+            >Cerrar Sesion</b-nav-item
+          >
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
+    <!--Hasta aqui-->
     <transition
       mode="out-in"
       enter-active-class="animate__animated animate__fadeIn"
@@ -77,6 +140,7 @@ export default {
       "permisoRevisionSolicitudes",
       "permisoCotizacion",
       "permisoFiltroCotizacion",
+      "contador",
     ]),
   },
   methods: {
@@ -98,6 +162,8 @@ export default {
       this.$store.commit("setLista");
       this.$store.commit("setToken", null);
       this.$store.commit("setDelete");
+      this.$store.commit("borrarContador");
+
       //nuevos
 
       this.$store.commit("setPermisoCotizacion", false);
@@ -112,6 +178,7 @@ export default {
       localStorage.removeItem("facu");
       localStorage.removeItem("depto");
       this.$router.push("/login");
+      localStorage.removeItem("facultadPresupuesto");
     },
   },
 };
@@ -153,7 +220,14 @@ a.navbar-brand {
   font-size: 22px !important;
   font-family: "Times New Roman", Times, serifs;
 }
-:root{
+:root {
   --animate-duration: 550ms;
+}
+#logotipo {
+  margin-left: 45px;
+}
+#icono-toggle {
+  margin-right: 30px;
+  border: 1px solid;
 }
 </style>
