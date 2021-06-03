@@ -14,7 +14,7 @@
       </b-navbar-toggle>
 
       <b-collapse id="navbar-toggle-collapse" is-nav>
-        <b-navbar-nav id="nav" class="ml-auto">
+        <b-navbar-nav id="nav">
           <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
           <b-nav-item to="/about">About</b-nav-item>
           <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
@@ -178,6 +178,7 @@ export default {
       localStorage.removeItem("facu");
       localStorage.removeItem("depto");
       this.$router.push("/login");
+      localStorage.removeItem("facultadPresupuesto");
     },
   },
 };

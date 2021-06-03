@@ -6,96 +6,134 @@
         Ingrese el presupuesto anual para cada unidad de gasto
       </div>
     </label>
-    <div class="form__datos">
-      <div class="listas__desplegables">
-        <div class="form__facultad">
-          <div class="container__label">Facultad:</div>
-          <select
-            v-model="presupuesto.facultad"
-            @change="obtenerDepartamentos(), forceRerender()"
-            class="container__list"
-          >
-            <option disabled="true">{{ presupuesto.facultad }}</option>
-            <option
-              v-for="(item, index) in listfacultad"
-              :key="index"
-              :value="item"
+    <form @submit.prevent="submitForm">
+      <div class="form__datos">
+        <div class="listas__desplegables">
+          <div class="form__facultad">
+            <div class="container__label">Facultad:</div>
+            <select
+              v-model="presupuesto.facultad"
+              @change="
+                obtenerDepartamentos(), forceRerender(), cambiaFacultad()
+              "
+              class="container__list"
             >
-              {{ item }}</option
+              <option disabled="true">{{ presupuesto.facultad }}</option>
+              <option
+                v-for="(item, index) in listfacultad"
+                :key="index"
+                :value="item"
+              >
+                {{ item }}</option
+              >
+            </select>
+            <div
+              class="form_check-error"
+              v-if="!$v.presupuesto.facultad.validate_requerido_listas"
             >
-          </select>
-          <div
-            class="form_check-error"
-            v-if="!$v.presupuesto.facultad.validate_requerido_listas"
-          >
-            Campo Obligatorio.
+              Campo Obligatorio.
+            </div>
+          </div>
+          <div class="form__departamento" :key="componentKey">
+            <lista-desplegable-change
+              required
+              v-model="presupuesto.departamento"
+              nombreLista="Departamento:"
+              :lista="listDepartament"
+              :value="presupuesto.departamento"
+              v-on:change="getObtenerUnidadesDeGasto()"
+            ></lista-desplegable-change>
+            <div
+              class="form_check-error"
+              v-if="!$v.presupuesto.departamento.validate_requerido_listas"
+            >
+              Campo Obligatorio.
+            </div>
           </div>
         </div>
-        <div class="form__departamento" :key="componentKey">
-          <lista-desplegable-change
-            required
-            v-model="presupuesto.departamento"
-            nombreLista="Departamento:"
-            :lista="listDepartament"
-            :value="presupuesto.departamento"
-            v-on:change="getObtenerUnidadesDeGasto()"
-          ></lista-desplegable-change>
-          <div
-            class="form_check-error"
-            v-if="!$v.presupuesto.departamento.validate_requerido_listas"
-          >
-            Campo Obligatorio.
-          </div>
-        </div>
-      </div>
-      <div class="form__unidadesGasto ">
-        <table class="table table-hove table-bordered">
-          <thead>
-            <tr class="primera-fila ">
-              <th>Nombre de unidad</th>
-              <th colspan="2">Descripcion</th>
-              <th>Jefe de unidad</th>
-              <th>Presupuesto</th>
-            </tr>
-          </thead>
+        <div
+          v-if="this.listaUnidadesDeGasto.length > 0"
+          class="form__unidadesGasto "
+        >
+          <table class="table table-hove table-bordered">
+            <thead>
+              <tr class="primera-fila ">
+                <th>Nombre de unidad</th>
+                <th colspan="2">Descripcion</th>
+                <th>Jefe de unidad</th>
+                <th>Presupuesto</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            <tr v-for="(item, index) in this.listaUnidadesDeGasto" :key="index">
-              <div class="col-8">
-                <td>
-                  {{ item.nombre_unidadgasto }}
+            <tbody>
+              <tr
+                v-for="(item, index) in this.listaUnidadesDeGasto"
+                :key="index"
+              >
+                <div class="col-8">
+                  <td>
+                    {{ item.nombre_unidadgasto }}
+                  </td>
+                </div>
+
+                <td colspan="2">
+                  {{ item.descripcion_unidadgasto }}
                 </td>
-              </div>
 
-              <td colspan="2">
-                {{ item.descripcion_unidadgasto }}
-              </td>
+                <td>
+                  {{ item.jefe_unidad }}
+                </td>
 
-              <td>
-                {{ item.jefe_unidad }}
-              </td>
+                <td>
+                  <div>
+                    <input
+                      class="input-tables"
+                      type="text"
+                      placeholder="Ingrese valor"
+                      v-model="presupuesto.presupuestoValor[index]"
+                    />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
-              <td>
-                <input
-                  class="input-tables"
-                  type="text"
-                  placeholder="Ingrese valor"
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!--  {{ this.listaUnidadesDeGasto }}-->
+          <div class="botoncito">
+            <button
+              :disabled="$v.presupuesto.$invalid"
+              :class="
+                $v.presupuesto.$invalid ? 'button-disabled' : 'form_button'
+              "
+            >
+              Registrar
+            </button>
+          </div>
+        </div>
+        <div v-else>
+          <p class="form_check-error mensaje">
+            (*) Seleccione un departamento por facultad.
+          </p>
+        </div>
       </div>
-    </div>
+      <alert-2
+        ref="alert2"
+        aceptar="Aceptar"
+        mensajeSub="(Se borrara la lista de presupuestos si presiona aceptar.)"
+        @escucharHijo="variableHijo"
+      ></alert-2>
+      <Alert ref="alert"></Alert>
+      {{ presupuesto }}
+      {{ presupuesto.presupuestoValor.length }}
+    </form>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import { helpers } from "vuelidate/lib/validators";
+import { helpers, required } from "vuelidate/lib/validators";
 import ListaDesplegableChange from "../Presupuestos/ListaDesplegableChange.vue";
+import Alert2 from "@/Alert2.vue";
+import Alert from "@/components/User/Alert.vue";
 
 const validate_requerido_listas = (value) => {
   const datovalue = String(value);
@@ -106,7 +144,7 @@ const validate_requerido_listas = (value) => {
   }
 };
 export default {
-  components: { ListaDesplegableChange },
+  components: { ListaDesplegableChange, Alert2, Alert },
   computed: {
     ...mapState(["token"]),
   },
@@ -117,9 +155,11 @@ export default {
       listDepartament: [],
       listaUnidadesDeGasto: [],
       componentKey: 0,
+      variableRecibida: null,
       presupuesto: {
         facultad: "Seleccione una opcion",
         departamento: "Seleccione una opcion",
+        presupuestoValor: [],
       },
     };
   },
@@ -134,10 +174,31 @@ export default {
       departamento: {
         validate_requerido_listas,
       },
+      presupuestoValor: {
+        required,
+      },
     },
   },
 
   methods: {
+    variableHijo(value) {
+      this.variableRecibida = value;
+      if (this.variableRecibida) {
+        this.listaUnidadesDeGasto = [];
+      }
+    },
+    async submitForm() {
+      try {
+        if (
+          !this.$v.presupuesto.$invalid &&
+          this.listaUnidadesDeGasto.length > 0
+        ) {
+          localStorage.removeItem("facultadPresupuesto");
+        }
+      } catch (error) {
+        this.alert("warning", "Rellene todos los datos correctamente");
+      }
+    },
     async obtenerFacultades() {
       try {
         const listaFacultades = (
@@ -152,6 +213,7 @@ export default {
           this.listfacultad.push(listaFacultades[i].nombre_facultad);
         }
       } catch (error) {
+        this.alert("warning", "Algo salio mal");
         console.log(error);
       }
     },
@@ -174,20 +236,49 @@ export default {
     forceRerender() {
       this.componentKey += 1;
     },
+    alert2(alertType, alertMessage) {
+      this.$refs.alert2.showAlert(alertType, alertMessage);
+    },
+    alert(alertType, alertMessage) {
+      this.$refs.alert.showAlert(alertType, alertMessage);
+    },
     async getObtenerUnidadesDeGasto() {
-      const unidadGastoPorDepartamento = (
-        await this.$http.get(
-          `spendingUnit?type=name&departamento=${this.presupuesto.departamento}`,
-          {
-            headers: {
-              authorization: this.token,
-            },
-          }
-        )
-      ).data;
+      try {
+        if (this.presupuesto.facultad != "Seleccione una opcion") {
+          localStorage.setItem(
+            "facultadPresupuesto",
+            this.presupuesto.facultad
+          );
+        }
 
-      for (let i = 0; i < unidadGastoPorDepartamento.datos.length; i++) {
-        this.listaUnidadesDeGasto.push(unidadGastoPorDepartamento.datos[i]);
+        const unidadGastoPorDepartamento = (
+          await this.$http.get(
+            `spendingUnit?type=name&departamento=${this.presupuesto.departamento}`,
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          )
+        ).data;
+        for (let i = 0; i < unidadGastoPorDepartamento.datos.length; i++) {
+          this.listaUnidadesDeGasto.push(unidadGastoPorDepartamento.datos[i]);
+
+          this.presupuesto.presupuestoValor.push("");
+        }
+      } catch (error) {
+        this.alert("warning", "Algo salio mal");
+        console.log(error);
+      }
+    },
+    cambiaFacultad() {
+      let facuAnterior = localStorage.getItem("facultadPresupuesto");
+      if (facuAnterior != null) {
+        //si no hay nada todavia
+        let facuActual = this.presupuesto.facultad;
+        if (facuAnterior != facuActual) {
+          this.alert2("warning", "Esta seguro que quiere cambiar de Facultad");
+        }
       }
     },
   },
@@ -201,6 +292,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
 }
 .item_title {
   text-align: left;
@@ -240,6 +332,11 @@ export default {
   font-size: 13px;
   text-align: left;
   margin-left: 20px;
+}
+.form_check-errorCambio {
+  color: grey;
+  font-size: 10px;
+  text-align: left;
 }
 .form__datos {
 }
@@ -296,5 +393,39 @@ table {
 #miTablaPersonalizada22 td {
   overflow: auto;
   border: 1px solid;
+}
+.button-disabled {
+  display: block;
+  background: #999999;
+  padding: 12px 115px 12px 115px;
+  border-radius: 22px;
+  color: #fafafa;
+  font-size: 22px;
+  font-weight: bold;
+  border: 0px;
+}
+.form_button {
+  display: block;
+  background-color: #0c59cf;
+  padding: 12px 115px 12px 115px;
+  border-radius: 22px;
+  color: #fafafa;
+  font-size: 22px;
+  font-weight: bold;
+  border: 0px;
+}
+.botoncito {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+}
+.mensaje {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 16px;
+  height: 260px;
+  margin-right: 20px;
 }
 </style>
