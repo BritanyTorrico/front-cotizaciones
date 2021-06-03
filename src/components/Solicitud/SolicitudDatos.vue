@@ -176,14 +176,37 @@
               >
                 Ingrese valores entre 1-100.
               </div>
-            </div>
-            <div class="form__boton">
-              <a
-                class="btn btn-success boton-agregar"
-                @click="agregarItem()"
-                id="agregar"
-                >Agregar</a
+              <div
+                class="form_check-error"
+                v-if="!$v.elemento.cantidad.integer"
               >
+                Solo valores enteros.
+              </div>
+            </div>
+            <div
+              v-if="this.solicitud.categoria_general != 'Servicios'"
+              class="form__cantidad"
+            >
+              <div class="formulario_label">
+                Unidad:
+              </div>
+              <div class="cantidad-input">
+                <input
+                  :class="
+                    $v.elemento.unidad.$invalid
+                      ? 'form_check-input-error'
+                      : 'form__input'
+                  "
+                  :required="!habilitar"
+                  :disabled="!disabled"
+                  type="text"
+                  v-model="elemento.unidad"
+                  name="unidad"
+                />
+                <div class="form_check-error" v-if="!$v.elemento.unidad.alpha3">
+                  No se permite esos caracteres.
+                </div>
+              </div>
             </div>
           </div>
           <!--Agregue categorias generales-->
@@ -192,39 +215,50 @@
         </div>
 
         <div class="seccion__Der">
-          <div class="container-nombre-item">
-            <div
-              class="container__label"
-              v-if="this.solicitud.categoria_general != 'Servicios'"
-            >
-              Items de gasto:
-            </div>
-            <div
-              class="container__label"
-              v-if="this.solicitud.categoria_general == 'Servicios'"
-            >
-              Nombre del Servicio:
-            </div>
-            <div class="contenedor-select">
-              <select
-                required
-                class="container__listNuevo"
-                v-model="solicitud.nombre_item"
-                @change="obtenerDescripcion()"
-                name="item"
+          <div>
+            <div class="container-nombre-item">
+              <div
+                class="container__label"
+                v-if="this.solicitud.categoria_general != 'Servicios'"
               >
-                <option disabled="true">{{ solicitud.nombre_item }}</option>
+                Items de gasto:
+              </div>
+              <div
+                class="container__label"
+                v-if="this.solicitud.categoria_general == 'Servicios'"
+              >
+                Nombre del Servicio:
+              </div>
+              <div class="contenedor-select">
+                <select
+                  required
+                  class="container__listNuevo"
+                  v-model="solicitud.nombre_item"
+                  @change="obtenerDescripcion()"
+                  name="item"
+                >
+                  <option disabled="true">{{ solicitud.nombre_item }}</option>
 
-                <option
-                  class="container__list__option"
-                  v-for="(item, index) in listItems"
-                  :key="index"
-                  :value="item"
-                >
-                  {{ item }}</option
-                >
-              </select>
+                  <option
+                    class="container__list__option"
+                    v-for="(item, index) in listItems"
+                    :key="index"
+                    :value="item"
+                  >
+                    {{ item }}</option
+                  >
+                </select>
+              </div>
             </div>
+          </div>
+
+          <div class="form__boton">
+            <a
+              class="btn btn-success boton-agregar"
+              @click="agregarItem()"
+              id="agregar"
+              >Agregar</a
+            >
           </div>
         </div>
       </div>
@@ -278,7 +312,11 @@
             <thead>
               <tr class="primera-fila">
                 <th>Cantidad</th>
-                <th>Nombre de item</th>
+                <th>Unidad</th>
+                <th v-if="this.solicitud.categoria_general != 'Servicios'">
+                  Nombre de item
+                </th>
+                <th v-else>Nombre de sevicio</th>
                 <th>Eliminar</th>
               </tr>
             </thead>
@@ -289,6 +327,9 @@
               >
                 <td>
                   {{ item.cantidad }}
+                </td>
+                <td>
+                  {{ item.unidad_solicitud }}
                 </td>
                 <td>
                   {{ item.nombre_item }}
@@ -357,10 +398,9 @@
           />
         </div>
       </div>
-
-      <!-- {{ this.listaSolicitudItems }}
+      {{ this.listaSolicitudItems }}
       <p>datos</p>
-      {{ solicitud }}-->
+      {{ solicitud }}
     </form>
   </div>
 </template>
@@ -372,10 +412,12 @@ import {
   minLength,
   helpers,
   between,
+  integer,
 } from "vuelidate/lib/validators";
 import Alert from "@/components/User/Alert.vue";
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
-const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
+const alpha2 = helpers.regex("alpha2", /^[0-9,.\s]*$/);
+const alpha3 = helpers.regex("alpha3", /^[a-zA-ZñÑ+áéíóúÁÉÍÓÚ.\s]*$/);
 import ListaDesplegable from "@/components/User/ListaDesplegable.vue";
 import AlertConfirmation from "@/components/Solicitud/AlertConfirmation.vue";
 import { mapState, mapActions } from "vuex";
@@ -424,6 +466,7 @@ export default {
       },
       elemento: {
         cantidad: null,
+        unidad: null,
       },
       listaCategorias: [],
       listaCategorias1: [],
@@ -472,6 +515,11 @@ export default {
       cantidad: {
         required,
         between: between(1, 100),
+        integer,
+      },
+      unidad: {
+        required,
+        alpha3,
       },
     },
     descripcionItem: {
@@ -683,12 +731,14 @@ export default {
             cantidad: 1,
             categoria: this.solicitud.categoria, //especifica
             categoria_general: this.solicitud.categoria_general,
-            unidad_solicitud: this.solicitud.nombre_item,
+            unidad_solicitud: 1,
             detalle_solicitud: this.descripcionItem,
+            nombre_itemgasto: this.solicitud.nombre_item,
           };
           this.$store.commit("setlistaSolicitudItems", item);
           this.solicitud.nombre_item = "Seleccione una opcion";
           this.elemento.cantidad = null;
+          this.elemento.unidad = null;
           //aqui
         } else {
           console.log("MISMOOOO ITEMM");
@@ -697,6 +747,7 @@ export default {
         if (
           this.solicitud.nombre_item != "Seleccione una opcion" &&
           !this.$v.elemento.cantidad.$invalid &&
+          !this.$v.elemento.unidad.$invalid &&
           !this.$v.descripcionItem.$invalid
         ) {
           if (!mismoItem) {
@@ -705,12 +756,14 @@ export default {
               cantidad: this.elemento.cantidad,
               categoria: this.solicitud.categoria,
               categoria_general: this.solicitud.categoria_general,
-              unidad_solicitud: this.solicitud.nombre_item,
+              unidad_solicitud: this.elemento.unidad,
               detalle_solicitud: this.descripcionItem,
+              nombre_itemgasto: this.solicitud.nombre_item,
             };
             this.$store.commit("setlistaSolicitudItems", item);
             this.solicitud.nombre_item = "Seleccione una opcion";
             this.elemento.cantidad = null;
+            this.elemento.unidad = null;
             this.mismoNombre = false;
             this.agregarVer = false;
           } else {
@@ -913,15 +966,22 @@ export default {
 }
 .seccion__Der {
   width: 30%;
+
+  display: flex;
+  flex-direction: column;
 }
+
 .form__boton {
-  width: 40%;
+  width: 70%;
 }
 .boton-agregar {
-  margin-top: 30px;
+  margin-top: 53px;
   width: 100%;
   background: #033076;
   font-weight: bold;
+  text-align: center;
+
+  padding: 6px 6px;
 }
 .boton-agregar:hover {
   background: #0c59cf;
