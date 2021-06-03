@@ -104,6 +104,7 @@ export default {
                         detalle_solicitud: j.detalle_solicitud,
                         nombre_itemgasto: idg[0].nombre_itemgasto
                     }
+                    if (it.cantidad_solicitud==-1){it.cantidad_solicitud="-"}
                     currentItems.push(it)
                 }
                 this.items.push(currentItems)
