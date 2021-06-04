@@ -176,6 +176,7 @@ export default {
                         valor_unitario: j.valor_unitario,
                         precio_total: j.precio_total
                     }
+                    if (it.cantidad_solicitud==-1){it.cantidad_solicitud="-"}
                             currentItems.push(it)
                         }
                         this.filteredItems.push(currentItems)

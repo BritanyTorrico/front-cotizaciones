@@ -95,7 +95,26 @@ export default {
                 ).data.datos
                 let currentItems = []
                 for (let j of reqItems) {
-                    currentItems.push(j)
+                    const idg=(
+                        await this.$http.get(
+                            `expenseItem/${j.cod_itemgasto}`,
+                            {
+                                headers: {
+                                    authorization: this.token,
+                                },
+                            }
+                        )
+                    ).data.datos
+                    const it={
+                        cod_solicitud: j.cod_solicitud,
+                        cod_itemgasto: j.cod_itemgasto,
+                        cantidad_solicitud: j.cantidad_solicitud,
+                        unidad_solicitud: j.unidad_solicitud,
+                        detalle_solicitud: j.detalle_solicitud,
+                        nombre_itemgasto: idg[0].nombre_itemgasto
+                    }
+                    if (it.cantidad_solicitud==-1){it.cantidad_solicitud="-"}
+                    currentItems.push(it)
                 }
                 this.items.push(currentItems)
             }
