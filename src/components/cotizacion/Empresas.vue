@@ -13,21 +13,34 @@
               <th style="border:1px solid; width:50px;">Unidad</th>
               <th style="border:1px solid; width:70px;">Item</th>
               <th style="border:1px solid; width:500px;">Detalle</th>
-              <th style="border:1px solid; width:70px;" >Unitario</th>
-              <th style="border:1px solid; width:100px;" >Total</th>
+              <th style="border:1px solid; width:70px;">Unitario</th>
+              <th style="border:1px solid; width:100px;">Total</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in items" :key="index">
-              <td style="border:1px solid;" class="table-quantity">{{ item.cantidad_solicitud }}</td>
-              <td style="border:1px solid;" class="table-unity">{{ item.unidad_solicitud }}</td>
-              <td style="border:1px solid;" class="table-itemname">{{ item.nombre_itemgasto }}</td>
-              <td style="border:1px solid;" class="table-detail">{{ item.detalle_solicitud }}</td>
+              <td style="border:1px solid;" class="table-quantity">
+                {{ item.cantidad_solicitud }}
+              </td>
+              <td style="border:1px solid;" class="table-unity">
+                {{ item.unidad_solicitud }}
+              </td>
+              <td style="border:1px solid;" class="table-itemname">
+                {{ item.nombre_itemgasto }}
+              </td>
+              <td style="border:1px solid;" class="table-detail">
+                {{ item.detalle_solicitud }}
+              </td>
               <td style="border:1px solid;" class="table-unitprice"></td>
               <td style="border:1px solid;" class="table-totalprice"></td>
             </tr>
             <tr v-for="m in 5" :key="m">
-              <td class="empty-rows" v-for="n in 6" :key="n" style="border:1px solid; height:25px;"></td>
+              <td
+                class="empty-rows"
+                v-for="n in 6"
+                :key="n"
+                style="border:1px solid; height:25px;"
+              ></td>
             </tr>
           </tbody>
         </table>
@@ -102,12 +115,15 @@
           </div>
         </div>
         <div class="confirmed-companies">
-          <div v-if="this.confirmed.length>0" class="confirmed-title">Empresas confirmadas:</div>
-          <transition-group 
-            tag="ul" 
-            class="company-list" 
+          <div v-if="this.confirmed.length > 0" class="confirmed-title">
+            Empresas confirmadas:
+          </div>
+          <transition-group
+            tag="ul"
+            class="company-list"
             enter-active-class="animate__animated animate__fadeInRight"
-            leave-active-class="animate__animated animate__fadeOutRight">
+            leave-active-class="animate__animated animate__fadeOutRight"
+          >
             <li
               v-for="(company, index) in confirmed"
               :key="index"
@@ -129,9 +145,20 @@
                 </svg>
               </div>
               <div class="redirect-cot" v-on:click="printDiv(company, date)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
-                  <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
-                  <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-printer-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"
+                  />
+                  <path
+                    d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"
+                  />
                 </svg>
               </div>
             </li>
@@ -181,13 +208,13 @@ export default {
     },
   },
   watch: {
-    items: function(){
-      this.empresa.nombre=null;
-      this.listaEmpresas=[];
-      this.companiesData=[];
-      this.selectedCompany='';
-      this.confirmed=[];
-      this.confirmedData=[]
+    items: function() {
+      this.empresa.nombre = null;
+      this.listaEmpresas = [];
+      this.companiesData = [];
+      this.selectedCompany = "";
+      this.confirmed = [];
+      this.confirmedData = [];
       this.getCompanies();
     },
   },
@@ -214,43 +241,51 @@ export default {
       }, 10);
     },
     async getCompanies() {
-      const it = (await this.$http.get(`expenseItem/${this.items[0].cod_itemgasto}`,{
-        headers: {
+      const it = (
+        await this.$http.get(`expenseItem/${this.items[0].cod_itemgasto}`, {
+          headers: {
             authorization: this.token,
-        },
-      })).data.datos[0];
-       const esp = (await this.$http.get(`specificCategory/${it.cod_categoriaespecifica}`,{
-        headers: {
+          },
+        })
+      ).data.datos;
+      const esp = (
+        await this.$http.get(`specificCategory/${it[0].cod_categoriaespecifica}`, {
+          headers: {
             authorization: this.token,
-        },
-      })).data.datos[0];
-      let emp
-      if (this.items[0].cantidad_solicitud==-1){
+          },
+        })
+      ).data.datos[0];
+      let emp;
+      if (this.items[0].cantidad_solicitud === "-") {
         emp = (
-        await this.$http.get(`company?rubro=${esp.nombre_categoriaespecifica}`, {
-          headers: {
-            authorization: this.token,
-          },
-        })
-      ).data;
+          await this.$http.get(
+            `company?rubro=${esp.nombre_categoriaespecifica}`,
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          )
+        ).data;
+      } else {
+        const gen = (
+          await this.$http.get(`generalCategory/${esp.cod_categoriageneral}`, {
+            headers: {
+              authorization: this.token,
+            },
+          })
+        ).data.datos[0];
+        emp = (
+          await this.$http.get(`company?rubro=${gen.nombre_categoriageneral}`, {
+            headers: {
+              authorization: this.token,
+            },
+          })
+        ).data;
       }
-        else{  
-      const gen = (await this.$http.get(`generalCategory/${esp.cod_categoriageneral}`,{
-        headers: {
-            authorization: this.token,
-        },
-      })).data.datos[0];
-      emp = (
-        await this.$http.get(`company?rubro=${gen.nombre_categoriageneral}`, {
-          headers: {
-            authorization: this.token,
-          },
-        })
-      ).data;
-      }
-      for (let i of emp){
+      for (let i of emp) {
         this.listaEmpresas.push(i.nombre_empresa);
-        this.companiesData.push(i)
+        this.companiesData.push(i);
       }
     },
     async showData(i) {
@@ -283,7 +318,7 @@ export default {
         this.listaEmpresas.indexOf(this.empresa.nombre),
         1
       );
-      this.$emit("sendcompanies", this.confirmedData)
+      this.$emit("sendcompanies", this.confirmedData);
     },
     removeElement: function(index) {
       this.listaEmpresas.push(this.confirmed[index]);
@@ -427,7 +462,7 @@ export default {
 }
 .items-list {
   width: 100%;
-  border:none!important;
+  border: none !important;
 }
 .items thead {
   background-color: #c5c4c4;
@@ -445,26 +480,26 @@ export default {
   background: #999999;
   border: 0px;
 }
-.empty-rows{
-  height: 0px!important;
-  border: none!important;
+.empty-rows {
+  height: 0px !important;
+  border: none !important;
 }
-.table-quantity{
-  width: 11.5%!important;
+.table-quantity {
+  width: 11.5% !important;
 }
-.table-unity{
-  width: 12%!important;
+.table-unity {
+  width: 12% !important;
 }
-.table-detail{
-  width: 37%!important;
+.table-detail {
+  width: 37% !important;
 }
-.table-itemname{
-  width: 13%!important; 
+.table-itemname {
+  width: 13% !important;
 }
-.table-unitprice{
-  width: 10.5%!important; 
+.table-unitprice {
+  width: 10.5% !important;
 }
-.table-totalprice{
-  width: 9%!important; 
+.table-totalprice {
+  width: 9% !important;
 }
 </style>

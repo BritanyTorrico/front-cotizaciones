@@ -42,7 +42,7 @@
       </div>
       <div class="lista">
         <div class="izquierda"></div>
-        <div :key="componentKey" class="derecha" id="unidad">
+        <div :key="componentKey2" class="derecha" id="unidad">
           <lista-desplegable
             required
             v-model="solicitud.unidadgasto_solicitud"
@@ -98,20 +98,15 @@
 
       <div class="seccion2">
         <div class="seccion__Izq">
-          <div
-            v-if="this.solicitud.categoria_general != 'Servicios'"
-            class="formulario_label seccion__Izq-titulo"
-          >
+          <div class="formulario_label seccion__Izq-titulo">
             Agregar un nuevo item:
           </div>
-          <div
-            v-if="this.solicitud.categoria_general === 'Servicios'"
-            class="formulario_label seccion__Izq-titulo"
-          >
-            Agregar un Servicio:
-          </div>
           <div class="seccion__Izq-fila1">
-            <div class="categoriaGeneral" v-on:click="getSpeCategories">
+            <div
+              :key="componentKey"
+              class="categoriaGeneral"
+              v-on:click="getSpeCategories"
+            >
               <lista-desplegable-change
                 required
                 v-model="solicitud.categoria_general"
@@ -288,18 +283,10 @@
         class="form__lista col-sm-8 col-sm-offset-2"
         v-if="this.listaPeticion.length != 0"
       >
-        <div
-          class="formulario_label"
-          v-if="this.solicitud.categoria_general != 'Servicios'"
-        >
+        <div class="formulario_label">
           Lista de items:
         </div>
-        <div
-          class="formulario_label"
-          v-if="this.solicitud.categoria_general == 'Servicios'"
-        >
-          Lista de Servicios:
-        </div>
+
         <div class="form__tabla">
           <table class="table table-hove table-bordered">
             <thead>
@@ -378,7 +365,7 @@
             class="form_check-error"
             v-if="!$v.solicitud.estimado_solicitud.alpha2"
           >
-            Ingrese un valor numérico.
+            No se permite esos caracteres.
           </div>
         </div>
       </div>
@@ -389,7 +376,6 @@
         aceptar="Aceptar"
         mensajeSub="(Se borrara la lista de presupuestos si presiona aceptar.)"
         @escucharHijo="variableHijo"
-        @escucharHijo1="variableHijo1"
       ></alert-2>
       <div class="boton-contenedor">
         <div class="boton-contenedor-izq"></div>
@@ -402,10 +388,6 @@
           />
         </div>
       </div>
-      <!-- {{ this.listaPeticion }}
-      <p>datos</p>
-      {{ solicitud }}
-      {{ desabilitar }}-->
     </form>
   </div>
 </template>
@@ -421,7 +403,7 @@ import {
 } from "vuelidate/lib/validators";
 import Alert from "@/components/User/Alert.vue";
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
-const alpha2 = helpers.regex("alpha2", /^[0-9,.\s]*$/);
+const alpha2 = helpers.regex("alpha2", /^[0-9.\s]*$/);
 const alpha3 = helpers.regex("alpha3", /^[a-zA-ZñÑ+áéíóúÁÉÍÓÚ.\s]*$/);
 import ListaDesplegable from "@/components/User/ListaDesplegable.vue";
 import ListaDesplegableChange from "../Presupuestos/ListaDesplegableChange.vue";
@@ -453,7 +435,6 @@ export default {
   store,
   mounted() {
     this.getGenCategories();
-    this.getCategories(); //especifica
     this.getDepartamento();
   },
   computed: {
@@ -474,19 +455,20 @@ export default {
         cantidad: null,
         unidad: null,
       },
-      listaCategorias: [],
+
       listaCategorias1: [],
 
       listItems: [],
       listaPeticion: [], //aqui esta la lista de items que mandare
       variableRecibida: null,
-      variableRecibida1: true,
+
       item: "",
       disabled: true,
       habilitar: true,
       listaUnidadesDeGasto: [],
       descripcionItem: null,
       componentKey: 0,
+      componentKey2: 0,
       componentKey3: 0,
       componentKey4: 0,
       listaCatGen: [],
@@ -542,11 +524,11 @@ export default {
         this.desabilitar = false;
       }
     },
-    variableHijo1(value) {
-      this.variableRecibida1 = value;
-    },
-    forceRerender() {
+    async forceRerender() {
       this.componentKey += 1;
+    },
+    async forceRerender2() {
+      this.componentKey2 += 1;
     },
     async forceRerender3() {
       this.componentKey3 += 1;
@@ -643,6 +625,8 @@ export default {
           this.solicitud.nombre_solicitud = null;
           this.solicitud.detalle_solicitud = null;
           this.solicitud.categoria = "Seleccione una opcion";
+
+          this.solicitud.categoria_general = "Seleccione una opcion";
           this.solicitud.nombre_item = "Seleccione una opcion";
           this.solicitud.unidadgasto_solicitud = "Seleccione una opcion";
           this.solicitud.estimado_solicitud = null;
@@ -650,7 +634,8 @@ export default {
           this.listaPeticion = [];
           this.listaUnidadesDeGasto = [];
           this.getDepartamento();
-          this.forceRerender();
+          await this.forceRerender();
+          await this.forceRerender2();
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
@@ -659,18 +644,7 @@ export default {
         this.alert("warning", "Algo salio mal");
       }
     },
-    async getCategories() {
-      const categ = (
-        await this.$http.get("specificCategory", {
-          headers: {
-            authorization: this.token,
-          },
-        })
-      ).data;
-      for (let i = 0; i < categ.length; i++) {
-        this.listaCategorias.push(categ[i].nombre_categoriaespecifica);
-      }
-    },
+
     async verificarCategoriaDistinta() {
       if (this.solicitud.categoria != null && this.listaPeticion.length > 0) {
         let categoriaLista = this.listaPeticion[this.listaPeticion.length - 1]

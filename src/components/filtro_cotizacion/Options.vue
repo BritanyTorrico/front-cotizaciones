@@ -123,16 +123,15 @@ export default {
                     for (let i=0;i<response.length;i++){
                     this.filteredInbox[i]=new Object();
                     this.filteredInbox[i].nombre_cotizacion=response[i].titulo_cotizacion;
-                    this.filteredInbox[i].fecha_cotizacion=response[i].fecha_cotizacion
-                    this.filteredInbox[i].fecha_cotizacion=this.filteredInbox[i].fecha_cotizacion.substr(5, this.filteredInbox[i].fecha_cotizacion.indexOf('T'));
-                    this.filteredInbox[i].fecha_cotizacion=this.filteredInbox[i].fecha_cotizacion.substr(0, this.filteredInbox[i].fecha_cotizacion.indexOf('T'));
+                    const date = response[i].fecha_cotizacion
+                    this.filteredInbox[i].fecha_cotizacion=`${date.substr(8, 2)}/${date.substr(5, 2)}/${date.substr(0, 4)}`
                     const requests=(await this.$http.get(`request?type=All&from=depto&nombre=${localStorage.getItem('depto')}`, {
                             headers: {
                                 authorization: this.token,
                             },
                         })).data;
                         for (let r of requests){
-                            if (r.cod_solicitud==response[i].cod_solicitud)
+                            if (r.cod_solicitud===response[i].cod_solicitud)
                                 {this.filteredInbox[i].autor_solicitud=r.nombrecompleto_solicitante}
                         }
                         this.filteredInbox[i].estado_cotizacion=response[i].estado_cotizacion;
@@ -149,36 +148,35 @@ export default {
                             headers: {
                                 authorization: this.token,
                             },
-                        })).data;
+                        })).data.datos;
                         let currentItems=[]
-                        for (let j of reqItems.datos){
+                        for (let j of reqItems){
                             const idg=(
-                        await this.$http.get(
-                            `expenseItem/${j.cod_item}`,
-                            {
-                                headers: {
-                                    authorization: this.token,
-                                },
+                                await this.$http.get(
+                                    `expenseItem/${j.cod_itemgasto}`,
+                                    {
+                                        headers: {
+                                            authorization: this.token,
+                                        },
+                                    }
+                                )
+                            ).data.datos
+                            const it={
+                                cod_cotizacion: response[i].cod_cotizacion,
+                                cod_item: j.cod_itemgasto,
+                                cantidad: j.cantidad_solicitud,
+                                unidad: j.unidad_solicitud,
+                                detalle: j.detalle_solicitud,
+                                nombre: idg[0].nombre_itemgasto,
+                                valor_unitario: "",
+                                precio_total: ""
                             }
-                        )
-                    ).data.datos
-                    const it={
-                        cod_cotizacion: j.cod_cotizacion,
-                        cod_item: j.cod_itemgasto,
-                        cantidad: j.cantidad,
-                        unidad: j.unidad,
-                        detalle: j.detalle,
-                        nombre: idg[0].nombre_itemgasto,
-                        valor_unitario: j.valor_unitario,
-                        precio_total: j.precio_total
-                    }
-                    if (it.cantidad_solicitud==-1){it.cantidad_solicitud="-"}
-                            currentItems.push(it)
+                            if (it.cantidad==-1){it.cantidad="-"}
+                                    currentItems.push(it)
                         }
                         this.filteredItems.push(currentItems)
                 }
-                this.filteredInbox=this.filteredInbox.reverse()
-                this.filteredItems=this.filteredItems.reverse()
+                console.log(this.filteredItems);
             }
           }
           

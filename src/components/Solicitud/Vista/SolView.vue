@@ -46,6 +46,10 @@
         </table>
     </div>
     <div class="report" v-if="request.report!=''">
+      <div class="reviewer">
+        <h5>Revisado por:</h5>
+        <div class="reviewer-name">{{ request.reviewer }}</div>
+      </div>
       <h5>Informe de revisión:</h5>
       <p>{{ request.report }}</p>
     </div>
@@ -70,6 +74,7 @@ export default {
           description: String,
           budget: Number,
           report: String,
+          reviewer: String,
           itemList: Array
       },
   },
@@ -245,5 +250,18 @@ p {
 }
 .report h5{
   font-size: 22px;
+}
+.reviewer {
+  word-break: keep-all;
+  color: #626262;
+  font-size: 18px;
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.reviewer-name{
+  padding-left: 1%;
 }
 </style>
