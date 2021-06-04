@@ -161,7 +161,6 @@ export default {
       this.$store.commit("setPermisoEmpresa", false);
       this.$store.commit("setLista");
       this.$store.commit("setToken", null);
-      this.$store.commit("setDelete");
       this.$store.commit("borrarContador");
 
       //nuevos

@@ -42,9 +42,8 @@
       </div>
       <div class="lista">
         <div class="izquierda"></div>
-        <div class="derecha" id="unidad">
+        <div :key="componentKey2" class="derecha" id="unidad">
           <lista-desplegable
-            :key="componentKey"
             required
             v-model="solicitud.unidadgasto_solicitud"
             nombreLista="Unidad de gasto:"
@@ -99,38 +98,32 @@
 
       <div class="seccion2">
         <div class="seccion__Izq">
-          <div
-            v-if="this.solicitud.categoria_general != 'Servicios'"
-            class="formulario_label seccion__Izq-titulo"
-          >
+          <div class="formulario_label seccion__Izq-titulo">
             Agregar un nuevo item:
           </div>
-          <div
-            v-if="this.solicitud.categoria_general === 'Servicios'"
-            class="formulario_label seccion__Izq-titulo"
-          >
-            Agregar un Servicio:
-          </div>
           <div class="seccion__Izq-fila1">
-            <div class="categoriaGeneral" v-on:click="getSpeCategories">
-              <lista-desplegable
+            <div
+              :key="componentKey"
+              class="categoriaGeneral"
+              v-on:click="getSpeCategories"
+            >
+              <lista-desplegable-change
                 required
                 v-model="solicitud.categoria_general"
                 nombreLista="Categoria General:"
                 :lista="listaCatGen"
-                Mensaje="Campo Obligatorio"
                 :value="solicitud.categoria_general"
-              ></lista-desplegable>
+                v-on:change="verificarCategoriaDistinta()"
+              ></lista-desplegable-change>
             </div>
 
             <div class="form__categoria">
               <div class="container__label">Categoria especifica:</div>
-              <div class="contenedor-select">
+              <div :key="componentKey3" class="contenedor-select">
                 <select
-                  :key="componentKey3"
                   v-model="solicitud.categoria"
                   class="container__list"
-                  @change="obtenerItems()"
+                  @change="obtenerItems(), forceRerender4()"
                   name="categoria"
                 >
                   <option disabled="true">{{ solicitud.categoria }}</option>
@@ -176,59 +169,88 @@
               >
                 Ingrese valores entre 1-100.
               </div>
-            </div>
-            <div class="form__boton">
-              <a
-                class="btn btn-success boton-agregar"
-                @click="agregarItem()"
-                id="agregar"
-                >Agregar</a
+              <div
+                class="form_check-error"
+                v-if="!$v.elemento.cantidad.integer"
               >
+                Solo valores enteros.
+              </div>
+            </div>
+            <div
+              v-if="this.solicitud.categoria_general != 'Servicios'"
+              class="form__cantidad"
+            >
+              <div class="formulario_label">
+                Unidad:
+              </div>
+              <div class="cantidad-input">
+                <input
+                  :class="
+                    $v.elemento.unidad.$invalid
+                      ? 'form_check-input-error'
+                      : 'form__input'
+                  "
+                  :required="!habilitar"
+                  :disabled="!disabled"
+                  type="text"
+                  v-model="elemento.unidad"
+                  name="unidad"
+                />
+                <div class="form_check-error" v-if="!$v.elemento.unidad.alpha3">
+                  No se permite esos caracteres.
+                </div>
+              </div>
             </div>
           </div>
-          <!--Agregue categorias generales-->
-
-          <!---->
         </div>
 
         <div class="seccion__Der">
-          <div class="container-nombre-item">
-            <div
-              class="container__label"
-              v-if="this.solicitud.categoria_general != 'Servicios'"
-            >
-              Items de gasto:
-            </div>
-            <div
-              class="container__label"
-              v-if="this.solicitud.categoria_general == 'Servicios'"
-            >
-              Nombre del Servicio:
-            </div>
-            <div class="contenedor-select">
-              <select
-                required
-                class="container__listNuevo"
-                v-model="solicitud.nombre_item"
-                @change="obtenerDescripcion()"
-                name="item"
-              >
-                <option disabled="true">{{ solicitud.nombre_item }}</option>
+          <div>
+            <div class="container-nombre-item">
+              <div class="container__label">
+                Item:
+              </div>
 
-                <option
-                  class="container__list__option"
-                  v-for="(item, index) in listItems"
-                  :key="index"
-                  :value="item"
+              <div :key="componentKey4" class="contenedor-select">
+                <select
+                  :key="componentKey4"
+                  required
+                  class="container__listNuevo"
+                  v-model="solicitud.nombre_item"
+                  @change="obtenerDescripcion()"
+                  name="item"
                 >
-                  {{ item }}</option
-                >
-              </select>
+                  <option disabled="true">{{ solicitud.nombre_item }}</option>
+
+                  <option
+                    class="container__list__option"
+                    v-for="(item, index) in listItems"
+                    :key="index"
+                    :value="item"
+                  >
+                    {{ item }}</option
+                  >
+                </select>
+              </div>
             </div>
+          </div>
+
+          <div class="form__boton">
+            <a
+              :disabled="desabilitar"
+              :class="
+                desabilitar
+                  ? 'btn btn-success button-disabled'
+                  : 'btn btn-success boton-agregar'
+              "
+              @click="agregarItem()"
+              id="agregar"
+              >Agregar</a
+            >
           </div>
         </div>
       </div>
-      <h4 class="form_check-error" v-if="this.listaSolicitudItems.length == 0">
+      <h4 class="form_check-error" v-if="this.listaPeticion.length == 0">
         (*) Agregue un item
       </h4>
       <div class="seccion3">
@@ -259,42 +281,45 @@
 
       <div
         class="form__lista col-sm-8 col-sm-offset-2"
-        v-if="this.listaSolicitudItems.length != 0"
+        v-if="this.listaPeticion.length != 0"
       >
-        <div
-          class="formulario_label"
-          v-if="this.solicitud.categoria_general != 'Servicios'"
-        >
+        <div class="formulario_label">
           Lista de items:
         </div>
-        <div
-          class="formulario_label"
-          v-if="this.solicitud.categoria_general == 'Servicios'"
-        >
-          Lista de Servicios:
-        </div>
+
         <div class="form__tabla">
-          <table class="table table-striped tabla ">
+          <table class="table table-hove table-bordered">
             <thead>
               <tr class="primera-fila">
                 <th>Cantidad</th>
-                <th>Nombre de item</th>
+                <th>Unidad</th>
+                <th>Item</th>
+                <th>Categoria</th>
+                <th>Detalle</th>
                 <th>Eliminar</th>
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(item, index) in this.listaSolicitudItems"
-                :key="index"
-              >
+              <tr v-for="(item, index) in this.listaPeticion" :key="index">
                 <td>
                   {{ item.cantidad }}
+                </td>
+                <td>
+                  {{ item.unidad_solicitud }}
                 </td>
                 <td>
                   {{ item.nombre_item }}
                 </td>
                 <td>
-                  <a class="btn btn-danger" @click="eliminarItems(index)"
+                  {{ item.categoria_general }}
+                </td>
+                <td>
+                  {{ item.detalle_solicitud }}
+                </td>
+                <td>
+                  <a
+                    class="btn btn-danger eliminarBoton"
+                    @click="eliminarItems(index)"
                     >Eliminar</a
                   >
                 </td>
@@ -340,12 +365,18 @@
             class="form_check-error"
             v-if="!$v.solicitud.estimado_solicitud.alpha2"
           >
-            Ingrese un valor numérico.
+            No se permite esos caracteres.
           </div>
         </div>
       </div>
       <Alert ref="alert"></Alert>
-      <AlertConfirmation ref="alertConfirmation"></AlertConfirmation>
+
+      <alert-2
+        ref="alert2"
+        aceptar="Aceptar"
+        mensajeSub="(Se borrara la lista de presupuestos si presiona aceptar.)"
+        @escucharHijo="variableHijo"
+      ></alert-2>
       <div class="boton-contenedor">
         <div class="boton-contenedor-izq"></div>
         <div class="boton-contenedor-der">
@@ -357,10 +388,6 @@
           />
         </div>
       </div>
-
-      <!-- {{ this.listaSolicitudItems }}
-      <p>datos</p>
-      {{ solicitud }}-->
     </form>
   </div>
 </template>
@@ -372,14 +399,17 @@ import {
   minLength,
   helpers,
   between,
+  integer,
 } from "vuelidate/lib/validators";
 import Alert from "@/components/User/Alert.vue";
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
-const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
+const alpha2 = helpers.regex("alpha2", /^[0-9.\s]*$/);
+const alpha3 = helpers.regex("alpha3", /^[a-zA-ZñÑ+áéíóúÁÉÍÓÚ.\s]*$/);
 import ListaDesplegable from "@/components/User/ListaDesplegable.vue";
-import AlertConfirmation from "@/components/Solicitud/AlertConfirmation.vue";
-import { mapState, mapActions } from "vuex";
+import ListaDesplegableChange from "../Presupuestos/ListaDesplegableChange.vue";
+import { mapState } from "vuex";
 import { store } from "@/store/index.js";
+import Alert2 from "../../Alert2.vue";
 const validate_requerido_listas = (value) => {
   const datovalue = String(value);
   if (datovalue === "Seleccione una opcion") {
@@ -400,16 +430,15 @@ const validate_decimales = (value) => {
 };
 
 export default {
-  components: { Alert, ListaDesplegable, AlertConfirmation },
+  components: { Alert, ListaDesplegable, Alert2, ListaDesplegableChange },
   name: "SolicitudDatos",
   store,
   mounted() {
     this.getGenCategories();
-    this.getCategories(); //especifica
     this.getDepartamento();
   },
   computed: {
-    ...mapState(["token", "listaSolicitudItems"]),
+    ...mapState(["token"]),
   },
   data() {
     return {
@@ -424,24 +453,27 @@ export default {
       },
       elemento: {
         cantidad: null,
+        unidad: null,
       },
-      listaCategorias: [],
+
       listaCategorias1: [],
 
       listItems: [],
       listaPeticion: [], //aqui esta la lista de items que mandare
+      variableRecibida: null,
+
       item: "",
       disabled: true,
       habilitar: true,
       listaUnidadesDeGasto: [],
       descripcionItem: null,
       componentKey: 0,
+      componentKey2: 0,
       componentKey3: 0,
       componentKey4: 0,
       listaCatGen: [],
       listaCodGen: [],
-      agregarVer: false,
-      mismoNombre: false,
+      desabilitar: false,
     };
   },
   validations: {
@@ -472,6 +504,11 @@ export default {
       cantidad: {
         required,
         between: between(1, 100),
+        integer,
+      },
+      unidad: {
+        required,
+        alpha3,
       },
     },
     descripcionItem: {
@@ -480,14 +517,24 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["setlistaSolicitudItems"]),
-    forceRerender() {
+    variableHijo(value) {
+      this.variableRecibida = value;
+      if (this.variableRecibida) {
+        this.listaPeticion = [];
+        this.desabilitar = false;
+      }
+    },
+    async forceRerender() {
       this.componentKey += 1;
+    },
+    async forceRerender2() {
+      this.componentKey2 += 1;
     },
     async forceRerender3() {
       this.componentKey3 += 1;
     },
     async forceRerender4() {
+      this.solicitud.nombre_item = "Seleccione una opcion";
       this.componentKey4 += 1;
     },
     async getGenCategories() {
@@ -529,11 +576,17 @@ export default {
     },
     async envioItems() {
       try {
+        if (this.solicitud.categoria_general === "Servicios") {
+          for (let i of this.listaPeticion) {
+            i.cantidad = -1;
+          }
+        }
+
         await this.$http.post(
           `itemsPerRequest`,
           {
             nombre_solicitud: this.solicitud.nombre_solicitud,
-            items: this.listaSolicitudItems,
+            items: this.listaPeticion,
           },
           {
             headers: {
@@ -547,10 +600,7 @@ export default {
     },
     async submitForm() {
       try {
-        if (
-          !this.$v.solicitud.$invalid &&
-          this.listaSolicitudItems.length > 0
-        ) {
+        if (!this.$v.solicitud.$invalid && this.listaPeticion.length > 0) {
           await this.$http.post(
             `request`,
             {
@@ -575,13 +625,17 @@ export default {
           this.solicitud.nombre_solicitud = null;
           this.solicitud.detalle_solicitud = null;
           this.solicitud.categoria = "Seleccione una opcion";
+
+          this.solicitud.categoria_general = "Seleccione una opcion";
           this.solicitud.nombre_item = "Seleccione una opcion";
           this.solicitud.unidadgasto_solicitud = "Seleccione una opcion";
           this.solicitud.estimado_solicitud = null;
-          this.$store.commit("setDelete");
+          //this.$store.commit("setDelete");
+          this.listaPeticion = [];
           this.listaUnidadesDeGasto = [];
           this.getDepartamento();
-          this.forceRerender();
+          await this.forceRerender();
+          await this.forceRerender2();
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
@@ -590,38 +644,26 @@ export default {
         this.alert("warning", "Algo salio mal");
       }
     },
-    async getCategories() {
-      const categ = (
-        await this.$http.get("specificCategory", {
-          headers: {
-            authorization: this.token,
-          },
-        })
-      ).data;
-      for (let i = 0; i < categ.length; i++) {
-        this.listaCategorias.push(categ[i].nombre_categoriaespecifica);
-      }
-    },
+
     async verificarCategoriaDistinta() {
-      if (
-        this.solicitud.categoria != null &&
-        this.listaSolicitudItems.length > 0
-      ) {
-        let categoriaLista = this.listaSolicitudItems[
-          this.listaSolicitudItems.length - 1
-        ].categoria_general; //categoria anterior
+      if (this.solicitud.categoria != null && this.listaPeticion.length > 0) {
+        let categoriaLista = this.listaPeticion[this.listaPeticion.length - 1]
+          .categoria_general; //categoria anterior
+
         if (categoriaLista != this.solicitud.categoria_general) {
           //si la categoria cambia
-          this.alertConfirmation(
+          this.alert2(
             "warning",
-            "No puede seleccionar Items de distinta categoria"
+            "No puede seleccionar items de distinta categoria."
           );
+          this.desabilitar = true;
+        } else {
+          this.desabilitar = false;
         }
+        return this.desabilitar;
       }
     },
     async obtenerItems() {
-      await this.verificarCategoriaDistinta();
-
       if (this.solicitud.categoria_general == "Servicios") {
         this.disabled = false;
         this.elemento.cantidad = null;
@@ -649,15 +691,16 @@ export default {
     },
 
     eliminarItems: function(index) {
-      this.$store.commit("setEliminar", index);
+      //this.$store.commit("setEliminar", index);
+      this.listaPeticion.splice(index, 1);
     },
     async verificarSiEstaEnLista() {
-      if (this.listaSolicitudItems.length > 0) {
+      if (this.listaPeticion.length > 0) {
         let respuesta = false;
-        for (let i = 0; i < this.listaSolicitudItems.length; i++) {
+        for (let i = 0; i < this.listaPeticion.length; i++) {
           let nombreLista;
           let nombre;
-          nombreLista = this.listaSolicitudItems[i].nombre_item;
+          nombreLista = this.listaPeticion[i].nombre_item;
           nombre = this.solicitud.nombre_item;
           if (nombreLista === nombre) {
             respuesta = true;
@@ -670,8 +713,9 @@ export default {
     },
     async agregarItem() {
       await this.obtenerItems();
+
       let mismoItem = await this.verificarSiEstaEnLista();
-      console.log(mismoItem);
+
       if (
         this.solicitud.nombre_item != "Seleccione una opcion" &&
         this.solicitud.categoria_general === "Servicios" &&
@@ -680,23 +724,24 @@ export default {
         if (!mismoItem) {
           const item = {
             nombre_item: this.solicitud.nombre_item,
-            cantidad: 1,
+            cantidad: "-",
             categoria: this.solicitud.categoria, //especifica
             categoria_general: this.solicitud.categoria_general,
-            unidad_solicitud: this.solicitud.nombre_item,
+            unidad_solicitud: "-",
             detalle_solicitud: this.descripcionItem,
+            nombre_itemgasto: this.solicitud.nombre_item,
           };
-          this.$store.commit("setlistaSolicitudItems", item);
+          this.listaPeticion.push(item);
           this.solicitud.nombre_item = "Seleccione una opcion";
+          await this.forceRerender4();
           this.elemento.cantidad = null;
-          //aqui
-        } else {
-          console.log("MISMOOOO ITEMM");
+          this.elemento.unidad = null;
         }
       } else {
         if (
           this.solicitud.nombre_item != "Seleccione una opcion" &&
           !this.$v.elemento.cantidad.$invalid &&
+          !this.$v.elemento.unidad.$invalid &&
           !this.$v.descripcionItem.$invalid
         ) {
           if (!mismoItem) {
@@ -705,34 +750,35 @@ export default {
               cantidad: this.elemento.cantidad,
               categoria: this.solicitud.categoria,
               categoria_general: this.solicitud.categoria_general,
-              unidad_solicitud: this.solicitud.nombre_item,
+              unidad_solicitud: this.elemento.unidad,
               detalle_solicitud: this.descripcionItem,
+              nombre_itemgasto: this.solicitud.nombre_item,
             };
-            this.$store.commit("setlistaSolicitudItems", item);
+            //this.$store.commit("setlistaSolicitudItems", item);
+            this.listaPeticion.push(item);
             this.solicitud.nombre_item = "Seleccione una opcion";
+            await this.forceRerender4();
             this.elemento.cantidad = null;
-            this.mismoNombre = false;
-            this.agregarVer = false;
-          } else {
-            console.log("MISMO ITEM!!!");
+            this.elemento.unidad = null;
           }
         } else {
-          this.alert("warning", "Rellene correctamente la seccion de items");
+          if (!this.desabilitar) {
+            this.alert("warning", "Rellene correctamente la seccion de items");
+          }
         }
       }
       //SEGUNDA VERIFICACION
-      if (this.listaSolicitudItems.length > 1) {
-        let anteriorCat = this.listaSolicitudItems[
-          this.listaSolicitudItems.length - 2
-        ].categoria_general;
-        let actual = this.listaSolicitudItems[
-          this.listaSolicitudItems.length - 1
-        ].categoria_general;
+      if (this.listaPeticion.length > 1) {
+        let anteriorCat = this.listaPeticion[this.listaPeticion.length - 2]
+          .categoria_general;
+        let actual = this.listaPeticion[this.listaPeticion.length - 1]
+          .categoria_general;
 
         if (anteriorCat != actual) {
-          for (let i = 0; i < this.listaSolicitudItems.length; i++) {
-            if (this.listaSolicitudItems[i].categoria_general === actual) {
-              this.$store.commit("setEliminar", i);
+          for (let i = 0; i < this.listaPeticion.length; i++) {
+            if (this.listaPeticion[i].categoria_general === actual) {
+              //this.$store.commit("setEliminar", i);
+              this.listaPeticion.splice(i, 1);
             }
           }
         }
@@ -742,8 +788,9 @@ export default {
     alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
-    alertConfirmation(alertType, alertMessage) {
-      this.$refs.alertConfirmation.showAlert(alertType, alertMessage);
+
+    alert2(alertType, alertMessage) {
+      this.$refs.alert2.showAlert(alertType, alertMessage);
     },
     async getDepartamento() {
       const unidadGastoPorDepartamento = (
@@ -874,8 +921,7 @@ export default {
   text-align: right;
 }
 .primera-fila {
-  background: #033076;
-  color: white;
+  background: #dcdde1;
 }
 .form__lista {
   width: 100%;
@@ -913,15 +959,22 @@ export default {
 }
 .seccion__Der {
   width: 30%;
+
+  display: flex;
+  flex-direction: column;
 }
+
 .form__boton {
-  width: 40%;
+  width: 70%;
 }
 .boton-agregar {
-  margin-top: 30px;
+  margin-top: 53px;
   width: 100%;
   background: #033076;
   font-weight: bold;
+  text-align: center;
+
+  padding: 6px 6px;
 }
 .boton-agregar:hover {
   background: #0c59cf;
@@ -974,5 +1027,17 @@ export default {
 }
 .mensaje {
   display: block;
+}
+.eliminarBoton {
+  padding: 5px 6px;
+}
+.button-disabled {
+  background: #dcdde1;
+  margin-top: 53px;
+  width: 100%;
+  font-weight: bold;
+  text-align: center;
+  padding: 6px 6px;
+  border: none;
 }
 </style>

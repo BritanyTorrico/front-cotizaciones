@@ -17,7 +17,7 @@
               <Card
                 :name="req.nombre_solicitud"
                 :date="req.fecha_solicitud"
-                :author="req.usuario_solicitante_name"
+                :author="req.nombrecompleto_solicitante"
                 :description="req.detalle_solicitud"
               />
             </div>
@@ -86,9 +86,6 @@ export default {
       for (let i = 0; i < response.length; i++) {
         this.inboxData.push(response[i]);
         const date= this.inboxData[i].fecha_solicitud;
-        console.log(`%c${date.substr(0,4)}`,"font-size: 20px; color:red;");
-        console.log(`%c${date.substr(5,2)}`,"font-size: 17px; color:green;");
-        console.log(`%c${date.substr(8,2)}`,"font-size: 12px; color:blue;");
         this.inboxData[i].fecha_solicitud = `${date.substr(8,2)}/${date.substr(5,2)}/${date.substr(0,4)}`
         const reqItems = (
           await this.$http.get(
@@ -102,16 +99,37 @@ export default {
         ).data.datos;
         let currentItems = [];
         for (let j of reqItems){
-          currentItems.push(j)
+          const idg=(
+                        await this.$http.get(
+                            `expenseItem/${j.cod_itemgasto}`,
+                            {
+                                headers: {
+                                    authorization: this.token,
+                                },
+                            }
+                        )
+                    ).data.datos
+                    const it={
+                        cod_solicitud: j.cod_solicitud,
+                        cod_itemgasto: j.cod_itemgasto,
+                        cantidad_solicitud: j.cantidad_solicitud,
+                        unidad_solicitud: j.unidad_solicitud,
+                        detalle_solicitud: j.detalle_solicitud,
+                        nombre_itemgasto: idg[0].nombre_itemgasto
+                    }
+                    if (it.cantidad_solicitud==-1){it.cantidad_solicitud="-"}
+                    currentItems.push(it)
         }
         this.items.push(currentItems);
       }
+      this.inboxData=this.inboxData.reverse()
+      this.items=this.items.reverse()
     },
     async showRequest(i) {
       this.selectedRequest.cod = this.inboxData[i].cod_solicitud;
       this.selectedRequest.name = this.inboxData[i].nombre_solicitud;
       this.selectedRequest.date = this.inboxData[i].fecha_solicitud;
-      this.selectedRequest.author = this.inboxData[i].usuario_solicitante_name;
+      this.selectedRequest.author = this.inboxData[i].nombrecompleto_solicitante;
       this.selectedRequest.unit = this.inboxData[i].unidadgasto_solicitud;
       this.selectedRequest.description = this.inboxData[i].detalle_solicitud;
       this.selectedRequest.budget = this.inboxData[i].estimado_solicitud;
