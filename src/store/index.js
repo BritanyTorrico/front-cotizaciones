@@ -64,8 +64,6 @@ export default new Vuex.Store({
                     state.contador = state.contador + 1;
                 }
             }
-            console.log("HOLAAAAAAAAA");
-            console.log(state.contador);
         },
 
         borrarContador(state) {

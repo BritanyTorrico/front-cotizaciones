@@ -762,8 +762,6 @@ export default {
           await this.forceRerender4();
           this.elemento.cantidad = null;
           this.elemento.unidad = null;
-        } else {
-          console.log("MISMOOOO ITEMM");
         }
       } else {
         if (
@@ -788,8 +786,6 @@ export default {
             await this.forceRerender4();
             this.elemento.cantidad = null;
             this.elemento.unidad = null;
-          } else {
-            console.log("MISMO ITEM!!!");
           }
         } else {
           if (!this.desabilitar) {

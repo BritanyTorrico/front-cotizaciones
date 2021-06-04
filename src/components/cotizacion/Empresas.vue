@@ -182,8 +182,6 @@ export default {
   },
   watch: {
     items: function(newItems, oldItems){
-      console.log(`past item cat was ${oldItems[0].unidad_solicitud}
-but now new item cat was ${newItems[0].unidad_solicitud}`);
       this.empresa.nombre=null;
       this.listaEmpresas=[];
       this.companiesData=[];

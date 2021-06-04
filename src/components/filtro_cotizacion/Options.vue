@@ -119,10 +119,6 @@ export default {
                         authorization: this.token,
                     },
                 })).data;
-            console.log(`%cquotation?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}%c${month}${tipo}${rubro}${empresa}`, 
-            "font-weight: bold; font-size: 17px;", 
-            "color: green; font-size: 14px;");
-            console.log(response.length);
             if (response.length>0){
                     for (let i=0;i<response.length;i++){
                     this.filteredInbox[i]=new Object();

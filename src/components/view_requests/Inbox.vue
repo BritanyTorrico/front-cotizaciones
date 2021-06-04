@@ -86,9 +86,6 @@ export default {
       for (let i = 0; i < response.length; i++) {
         this.inboxData.push(response[i]);
         const date= this.inboxData[i].fecha_solicitud;
-        console.log(`%c${date.substr(0,4)}`,"font-size: 20px; color:red;");
-        console.log(`%c${date.substr(5,2)}`,"font-size: 17px; color:green;");
-        console.log(`%c${date.substr(8,2)}`,"font-size: 12px; color:blue;");
         this.inboxData[i].fecha_solicitud = `${date.substr(8,2)}/${date.substr(5,2)}/${date.substr(0,4)}`
         const reqItems = (
           await this.$http.get(

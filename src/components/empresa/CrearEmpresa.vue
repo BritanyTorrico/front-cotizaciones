@@ -334,7 +334,6 @@ export default {
   methods: {
     forceRerender() {
       this.componentKey += 1;
-      console.log("cambio");
     },
     async obtenerRubros() {
       this.listRubros=[]
@@ -375,7 +374,6 @@ export default {
           await this.sendData();
           window.setInterval(window.location.reload(), 10000);
         } else {
-          console.log("llegoooo");
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
