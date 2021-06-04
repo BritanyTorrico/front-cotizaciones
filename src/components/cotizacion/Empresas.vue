@@ -216,8 +216,7 @@ but now new item cat was ${newItems[0].unidad_solicitud}`);
       }, 10);
     },
     async getCompanies() {
-      
-       const it = (await this.$http.get(`expenseItem/${this.items[0].cod_itemgasto}`,{
+      const it = (await this.$http.get(`expenseItem/${this.items[0].cod_itemgasto}`,{
         headers: {
             authorization: this.token,
         },
@@ -227,18 +226,30 @@ but now new item cat was ${newItems[0].unidad_solicitud}`);
             authorization: this.token,
         },
       })).data.datos[0];
+      let emp
+      if (this.items[0].cantidad_solicitud==-1){
+        emp = (
+        await this.$http.get(`company?rubro=${esp.nombre_categoriaespecifica}`, {
+          headers: {
+            authorization: this.token,
+          },
+        })
+      ).data;
+      }
+        else{  
       const gen = (await this.$http.get(`generalCategory/${esp.cod_categoriageneral}`,{
         headers: {
             authorization: this.token,
         },
       })).data.datos[0];
-      const emp = (
+      emp = (
         await this.$http.get(`company?rubro=${gen.nombre_categoriageneral}`, {
           headers: {
             authorization: this.token,
           },
         })
       ).data;
+      }
       for (let i of emp){
         this.listaEmpresas.push(i.nombre_empresa);
         this.companiesData.push(i)
