@@ -159,8 +159,10 @@ export default {
         this.$bvModal.hide("modal-prevent-closing");
       });
     },
-    async sendData() {
+    async sendReport(){
       try {
+        console.log(this.request);
+        console.log(this.response);
         await this.$http.post(
           "report?type=codigo",
           {
@@ -175,7 +177,12 @@ export default {
             },
           }
         );
-
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    async updateRequest(){
+      try {
         await this.$http.put(
           `request/${this.request.cod}?type=State`,
           {
@@ -187,9 +194,17 @@ export default {
             },
           }
         );
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    async sendData() {
+      try {
+        await this.sendReport()
+        await this.updateRequest()
         window.setInterval(window.location.reload(), 10000);
       } catch (error) {
-        throw new Error("Esta solicitud ya fue revisada");
+        throw new Error(error);
       }
     },
     async assert() {

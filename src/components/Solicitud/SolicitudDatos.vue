@@ -388,9 +388,6 @@
           />
         </div>
       </div>
-      {{ this.listaPeticion }}
-      <p>datos</p>
-      {{ solicitud }}
     </form>
   </div>
 </template>
