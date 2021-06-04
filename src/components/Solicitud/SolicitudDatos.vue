@@ -388,6 +388,12 @@
           />
         </div>
       </div>
+<<<<<<< HEAD
+=======
+      <!-- {{ this.listaPeticion }}
+      <p>datos</p>
+      {{ solicitud }}-->
+>>>>>>> 12800f6492e0e4a9e4e84881b75c3f32425a07bb
     </form>
   </div>
 </template>
