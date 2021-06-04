@@ -544,7 +544,6 @@ export default {
     },
     variableHijo1(value) {
       this.variableRecibida1 = value;
-      console.log(this.variableRecibida1);
     },
     forceRerender() {
       this.componentKey += 1;
@@ -555,7 +554,6 @@ export default {
     async forceRerender4() {
       this.solicitud.nombre_item = "Seleccione una opcion";
       this.componentKey4 += 1;
-      console.log("444444444444444");
     },
     async getGenCategories() {
       const gen = (
@@ -682,7 +680,7 @@ export default {
           //si la categoria cambia
           this.alert2(
             "warning",
-            "No puede seleccionar items de distinta categoriaaaa"
+            "No puede seleccionar items de distinta categoria."
           );
           this.desabilitar = true;
         } else {
@@ -743,7 +741,7 @@ export default {
       await this.obtenerItems();
 
       let mismoItem = await this.verificarSiEstaEnLista();
-      console.log(mismoItem);
+
       if (
         this.solicitud.nombre_item != "Seleccione una opcion" &&
         this.solicitud.categoria_general === "Servicios" &&
