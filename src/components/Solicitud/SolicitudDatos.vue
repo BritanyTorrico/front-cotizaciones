@@ -388,9 +388,9 @@
           />
         </div>
       </div>
-      {{ this.listaPeticion }}
+      <!-- {{ this.listaPeticion }}
       <p>datos</p>
-      {{ solicitud }}
+      {{ solicitud }}-->
     </form>
   </div>
 </template>
