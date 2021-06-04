@@ -181,7 +181,7 @@ export default {
     },
   },
   watch: {
-    items: function(newItems, oldItems){
+    items: function(){
       this.empresa.nombre=null;
       this.listaEmpresas=[];
       this.companiesData=[];
