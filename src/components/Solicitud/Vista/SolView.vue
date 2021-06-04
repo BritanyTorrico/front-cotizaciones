@@ -19,22 +19,31 @@
     </div>
     <h5>Items:</h5>
     <div class="items">
-      <table class="items-list">
-        <thead>
-          <tr>
-            <th>Cantidad</th>
-            <th>Item</th>
-            <th>Detalle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in request.itemList" :key="index">
-            <td>{{ item.cantidad_solicitud }}</td>
-            <td>{{ item.unidad_solicitud }}</td>
-            <td>{{ item.detalle_solicitud }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <table
+          class="items-list"
+          style="border:1px solid;border-collapse:collapse"
+        >
+          <thead>
+            <tr>
+              <th style="border:1px solid; width:50px;">Cantidad</th>
+              <th style="border:1px solid; width:50px;">Unidad</th>
+              <th style="border:1px solid; width:70px;">Item</th>
+              <th style="border:1px solid; width:500px;">Detalle</th>
+              <th style="border:1px solid; width:70px;" >Unitario</th>
+              <th style="border:1px solid; width:100px;" >Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in request.itemList" :key="index">
+              <td style="border:1px solid;" class="table-quantity">{{ item.cantidad_solicitud }}</td>
+              <td style="border:1px solid;" class="table-unity">{{ item.unidad_solicitud }}</td>
+              <td style="border:1px solid;" class="table-itemname">{{ item.nombre_itemgasto }}</td>
+              <td style="border:1px solid;" class="table-detail">{{ item.detalle_solicitud }}</td>
+              <td style="border:1px solid;" class="table-unitprice"></td>
+              <td style="border:1px solid;" class="table-totalprice"></td>
+            </tr>
+          </tbody>
+        </table>
     </div>
     <div class="options">
         <button class="accept-button">Editar</button>
@@ -146,24 +155,49 @@ p {
 }
 .items {
   align-self: center;
-  width: 90%;
+  width: 100%;
   padding: 0 0 5% 0;
   font-size: 17px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
+.items-list {
+  width: 100%;
+  border:none!important;
+}
 .items thead {
-  padding: 0.5% 2% 0.5% 2%;
-  background-color: #f1f2f6;
+  background-color: #c5c4c4;
+  text-align: center;
 }
 .items th {
   padding: 1% 2% 1% 2%;
-  border: 1px solid #c0c0c0;
-  width: 20%;
+  border: 1px solid #d1d0d0;
 }
 .items td {
   padding: 0.5% 1% 0.5% 1%;
   border: 1px solid #c0c0c0;
+}
+.empty-rows{
+  height: 0px!important;
+  border: none!important;
+}
+.table-quantity{
+  width: 11.5%!important;
+}
+.table-unity{
+  width: 12%!important;
+}
+.table-detail{
+  width: 37%!important;
+}
+.table-itemname{
+  width: 13%!important; 
+}
+.table-unitprice{
+  width: 10.5%!important; 
+}
+.table-totalprice{
+  width: 9%!important; 
 }
 .accept-button {
   margin: auto;
