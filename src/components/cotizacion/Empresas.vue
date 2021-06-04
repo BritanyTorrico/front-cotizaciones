@@ -247,16 +247,16 @@ export default {
             authorization: this.token,
           },
         })
-      ).data.datos[0];
+      ).data.datos;
       const esp = (
-        await this.$http.get(`specificCategory/${it.cod_categoriaespecifica}`, {
+        await this.$http.get(`specificCategory/${it[0].cod_categoriaespecifica}`, {
           headers: {
             authorization: this.token,
           },
         })
       ).data.datos[0];
       let emp;
-      if (this.items[0].cantidad_solicitud == -1) {
+      if (this.items[0].cantidad_solicitud === "-") {
         emp = (
           await this.$http.get(
             `company?rubro=${esp.nombre_categoriaespecifica}`,

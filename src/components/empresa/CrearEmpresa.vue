@@ -372,7 +372,6 @@ export default {
         if (!this.$v.dato.$invalid) {
           await this.manageMark();
           await this.sendData();
-          window.setInterval(window.location.reload(), 10000);
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }

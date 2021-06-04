@@ -138,7 +138,7 @@
                     type="checkbox"
                     id="filtrito"
                     name="funcion"
-                    value="Filtro de cotizaciones"
+                    value="Filtro cotizaciones"
                   />
                 </div>
                 <label for="filtrito">Filtro de cotizaciones</label><br />
@@ -229,7 +229,7 @@ export default {
         if (i=='Revisar solicitud') this.permiso6=i
         if (i=='Crear cotización') this.permiso7=i
         if (i=='Registro de empresas') this.permiso8=i
-        if (i=='Filtro de cotizaciones') this.permiso9=i
+        if (i=='Filtro cotizaciones') this.permiso9=i
       }
     },
     async submitForm() {
