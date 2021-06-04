@@ -6,7 +6,7 @@
       <button class="btn btn-primary botonBorrar" @click="EnviarPadre()">
         {{ aceptar }}
       </button>
-      <button class="btn btn-light" @click="hideAlert()">
+      <button class="btn btn-light" @click="hideAlert(), EnviarPadre1()">
         Cancelar
       </button>
     </div>
@@ -42,6 +42,9 @@ export default {
     EnviarPadre() {
       this.$emit("escucharHijo", true);
       this.show = false;
+    },
+    EnviarPadre1() {
+      this.$emit("escucharHijo1", true);
     },
   },
 };
