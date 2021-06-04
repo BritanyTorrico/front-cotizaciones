@@ -45,6 +45,10 @@
           </tbody>
         </table>
     </div>
+    <div class="report" v-if="request.report!=''">
+      <h5>Informe de revisión:</h5>
+      <p>{{ request.report }}</p>
+    </div>
     <div class="options">
         <button class="accept-button">Editar</button>
         <button class="reject-button">Eliminar</button>
@@ -65,6 +69,7 @@ export default {
           status: String,
           description: String,
           budget: Number,
+          report: String,
           itemList: Array
       },
   },
@@ -156,7 +161,7 @@ p {
 .items {
   align-self: center;
   width: 100%;
-  padding: 0 0 5% 0;
+  padding: 0 0 1% 0;
   font-size: 17px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -232,5 +237,13 @@ p {
 }
 .options{
     display: flex;
+}
+.report{
+  text-align: left;
+  margin: 25px 0 0;
+  padding-bottom: 5%;
+}
+.report h5{
+  font-size: 22px;
 }
 </style>
