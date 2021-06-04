@@ -69,7 +69,12 @@
         <!---->
 
         <div class="form__section">
-          <input class="form__section__boton" type="submit" value="Ingresar" name="ingresar"/>
+          <input
+            class="form__section__boton"
+            type="submit"
+            value="Ingresar"
+            name="ingresar"
+          />
         </div>
       </form>
       <Alert ref="alert"></Alert>
@@ -196,7 +201,7 @@ export default {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
-        this.alert("warning", error);
+        this.alert("warning", "Algo salio mal");
       }
     },
 
