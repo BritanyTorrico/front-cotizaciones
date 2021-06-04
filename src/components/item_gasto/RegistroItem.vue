@@ -293,6 +293,16 @@ export default {
                   authorization:this.token,
                 },
               });
+              if (this.item.categoria_general=="Servicios"){
+                await this.$http.post('market',{
+                nombre_rubro: this.item.categoria_especifica,
+              },
+              {
+                headers:{
+                  authorization:this.token,
+                },
+              });
+              }
             }
           } catch (error) {
             throw new Error("Categoría Inválida") 
