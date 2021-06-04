@@ -61,6 +61,7 @@ export default {
                 status: '',
                 description: '',
                 budget: '',
+                report: '',
                 itemList: [],
             },
         }
@@ -93,6 +94,42 @@ export default {
                         }
                     )
                 ).data.datos
+                this.inboxData[i].informe=''
+                if (this.inboxData[i].estado_solicitud!="ABIERTA"){
+                    if (this.inboxData[i].estado_solicitud=="RECHAZADA"){
+                        const repr=(
+                            await this.$http.get(
+                                `report?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}&status=false`,
+                                {
+                                    headers: {
+                                        authorization: this.token,
+                                    },
+                                }
+                            )
+                        ).data
+                        for (let k of repr){
+                            if (k.cod_solicitud==this.inboxData[i].cod_solicitud){
+                                this.inboxData[i].informe=k.justificacion_informe
+                            }
+                        }
+                    }else{
+                        const repa=(
+                            await this.$http.get(
+                                `report?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}&status=true`,
+                                {
+                                    headers: {
+                                        authorization: this.token,
+                                    },
+                                }
+                            )
+                        ).data 
+                        for (let l of repa){
+                            if (l.cod_solicitud==this.inboxData[i].cod_solicitud){
+                                this.inboxData[i].informe=l.justificacion_informe
+                            }
+                        }
+                    }
+                }
                 let currentItems = []
                 for (let j of reqItems) {
                     const idg=(
@@ -118,6 +155,8 @@ export default {
                 }
                 this.items.push(currentItems)
             }
+            this.inboxData=this.inboxData.reverse()
+            this.items=this.items.reverse()
         },
         async startTransition(i){
           this.changeReq=true;
@@ -131,6 +170,7 @@ export default {
             this.selectedRequest.status = this.inboxData[i].estado_solicitud
             this.selectedRequest.description = this.inboxData[i].detalle_solicitud
             this.selectedRequest.budget = this.inboxData[i].estimado_solicitud
+            this.selectedRequest.report = this.inboxData[i].informe
             this.selectedRequest.itemList = this.items[i]
         },
         async newRequest() {

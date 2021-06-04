@@ -17,7 +17,7 @@
               <Card
                 :name="req.nombre_solicitud"
                 :date="req.fecha_solicitud"
-                :author="req.usuario_solicitante_name"
+                :author="req.nombrecompleto_solicitante"
                 :description="req.detalle_solicitud"
               />
             </div>
@@ -122,12 +122,14 @@ export default {
         }
         this.items.push(currentItems);
       }
+      this.inboxData=this.inboxData.reverse()
+      this.items=this.items.reverse()
     },
     async showRequest(i) {
       this.selectedRequest.cod = this.inboxData[i].cod_solicitud;
       this.selectedRequest.name = this.inboxData[i].nombre_solicitud;
       this.selectedRequest.date = this.inboxData[i].fecha_solicitud;
-      this.selectedRequest.author = this.inboxData[i].usuario_solicitante_name;
+      this.selectedRequest.author = this.inboxData[i].nombrecompleto_solicitante;
       this.selectedRequest.unit = this.inboxData[i].unidadgasto_solicitud;
       this.selectedRequest.description = this.inboxData[i].detalle_solicitud;
       this.selectedRequest.budget = this.inboxData[i].estimado_solicitud;

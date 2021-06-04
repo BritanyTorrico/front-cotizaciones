@@ -133,7 +133,7 @@ export default {
                         })).data;
                         for (let r of requests){
                             if (r.cod_solicitud==response[i].cod_solicitud)
-                                {this.filteredInbox[i].autor_solicitud=r.usuario_solicitante_name}
+                                {this.filteredInbox[i].autor_solicitud=r.nombrecompleto_solicitante}
                         }
                         this.filteredInbox[i].estado_cotizacion=response[i].estado_cotizacion;
                         const emp=(await this.$http.get(`companiesperrequest/${response[i].cod_solicitud}`, {
@@ -177,6 +177,8 @@ export default {
                         }
                         this.filteredItems.push(currentItems)
                 }
+                this.filteredInbox=this.filteredInbox.reverse()
+                this.filteredItems=this.filteredItems.reverse()
             }
           }
           
