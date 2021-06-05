@@ -136,7 +136,6 @@ export default {
                     )
                 ).data.datos
                 let currentItems = []
-                console.log(reqItems);
                 for (let j of reqItems) {
                     const idg=(
                         await this.$http.get(

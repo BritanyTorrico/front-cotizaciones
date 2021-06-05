@@ -672,13 +672,11 @@ export default {
       }
     },
     async verificarCategoriaEpecifica() {
-      console.log("ENTROOOOOOOOOOOOOOOOOOOOOOsadsadsadO");
       if (
         this.solicitud.categoria != null &&
         this.listaPeticion.length > 0 &&
         this.solicitud.categoria_general === "Servicios"
       ) {
-        console.log("ENTROOOOOOOOOOOOOOOOOOOOOOO");
         let categoriaLista = this.listaPeticion[this.listaPeticion.length - 1]
           .categoria; //categoria anterior
 

@@ -176,7 +176,6 @@ export default {
                         }
                         this.filteredItems.push(currentItems)
                 }
-                console.log(this.filteredItems);
             }
           }
           
