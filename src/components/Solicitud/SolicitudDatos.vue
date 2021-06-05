@@ -123,7 +123,11 @@
                 <select
                   v-model="solicitud.categoria"
                   class="container__list"
-                  @change="obtenerItems(), forceRerender4()"
+                  @change="
+                    obtenerItems(),
+                      forceRerender4(),
+                      verificarCategoriaEpecifica()
+                  "
                   name="categoria"
                 >
                   <option disabled="true">{{ solicitud.categoria }}</option>
@@ -237,7 +241,7 @@
 
           <div class="form__boton">
             <a
-              :disabled="desabilitar"
+              v-bind:disabled="desabilitar"
               :class="
                 desabilitar
                   ? 'btn btn-success button-disabled'
@@ -310,9 +314,13 @@
                 <td>
                   {{ item.nombre_item }}
                 </td>
-                <td>
+                <td v-if="solicitud.categoria_general === 'Servicios'">
+                  {{ item.categoria }}
+                </td>
+                <td v-else>
                   {{ item.categoria_general }}
                 </td>
+
                 <td>
                   {{ item.detalle_solicitud }}
                 </td>
@@ -374,7 +382,7 @@
       <alert-2
         ref="alert2"
         aceptar="Aceptar"
-        mensajeSub="(Se borrara la lista de presupuestos si presiona aceptar.)"
+        mensajeSub="(Se borrara la lista de items si presiona aceptar.)"
         @escucharHijo="variableHijo"
       ></alert-2>
       <div class="boton-contenedor">
@@ -463,7 +471,7 @@ export default {
       variableRecibida: null,
 
       item: "",
-      disabled: true,
+      disabled: false,
       habilitar: true,
       listaUnidadesDeGasto: [],
       descripcionItem: null,
@@ -663,6 +671,28 @@ export default {
         return this.desabilitar;
       }
     },
+    async verificarCategoriaEpecifica() {
+      if (
+        this.solicitud.categoria != null &&
+        this.listaPeticion.length > 0 &&
+        this.solicitud.categoria_general === "Servicios"
+      ) {
+        let categoriaLista = this.listaPeticion[this.listaPeticion.length - 1]
+          .categoria; //categoria anterior
+
+        if (categoriaLista != this.solicitud.categoria) {
+          //si la categoria cambia
+          this.alert2(
+            "warning",
+            "No puede seleccionar servicios de distinta categoria."
+          );
+          this.desabilitar = true;
+        } else {
+          this.desabilitar = false;
+        }
+        return this.desabilitar;
+      }
+    },
     async obtenerItems() {
       if (this.solicitud.categoria_general == "Servicios") {
         this.disabled = false;
@@ -712,49 +742,26 @@ export default {
       }
     },
     async agregarItem() {
-      await this.obtenerItems();
+      if (!this.desabilitar) {
+        await this.obtenerItems();
 
-      let mismoItem = await this.verificarSiEstaEnLista();
+        let mismoItem = await this.verificarSiEstaEnLista();
 
-      if (
-        this.solicitud.nombre_item != "Seleccione una opcion" &&
-        this.solicitud.categoria_general === "Servicios" &&
-        !this.$v.descripcionItem.$invalid
-      ) {
-        if (!mismoItem) {
-          const item = {
-            nombre_item: this.solicitud.nombre_item,
-            cantidad: "-",
-            categoria: this.solicitud.categoria, //especifica
-            categoria_general: this.solicitud.categoria_general,
-            unidad_solicitud: "-",
-            detalle_solicitud: this.descripcionItem,
-            nombre_itemgasto: this.solicitud.nombre_item,
-          };
-          this.listaPeticion.push(item);
-          this.solicitud.nombre_item = "Seleccione una opcion";
-          await this.forceRerender4();
-          this.elemento.cantidad = null;
-          this.elemento.unidad = null;
-        }
-      } else {
         if (
           this.solicitud.nombre_item != "Seleccione una opcion" &&
-          !this.$v.elemento.cantidad.$invalid &&
-          !this.$v.elemento.unidad.$invalid &&
+          this.solicitud.categoria_general === "Servicios" &&
           !this.$v.descripcionItem.$invalid
         ) {
           if (!mismoItem) {
             const item = {
               nombre_item: this.solicitud.nombre_item,
-              cantidad: this.elemento.cantidad,
-              categoria: this.solicitud.categoria,
+              cantidad: "-",
+              categoria: this.solicitud.categoria, //especifica
               categoria_general: this.solicitud.categoria_general,
-              unidad_solicitud: this.elemento.unidad,
+              unidad_solicitud: "-",
               detalle_solicitud: this.descripcionItem,
               nombre_itemgasto: this.solicitud.nombre_item,
             };
-            //this.$store.commit("setlistaSolicitudItems", item);
             this.listaPeticion.push(item);
             this.solicitud.nombre_item = "Seleccione una opcion";
             await this.forceRerender4();
@@ -762,23 +769,51 @@ export default {
             this.elemento.unidad = null;
           }
         } else {
-          if (!this.desabilitar) {
-            this.alert("warning", "Rellene correctamente la seccion de items");
+          if (
+            this.solicitud.nombre_item != "Seleccione una opcion" &&
+            !this.$v.elemento.cantidad.$invalid &&
+            !this.$v.elemento.unidad.$invalid &&
+            !this.$v.descripcionItem.$invalid
+          ) {
+            if (!mismoItem) {
+              const item = {
+                nombre_item: this.solicitud.nombre_item,
+                cantidad: this.elemento.cantidad,
+                categoria: this.solicitud.categoria,
+                categoria_general: this.solicitud.categoria_general,
+                unidad_solicitud: this.elemento.unidad,
+                detalle_solicitud: this.descripcionItem,
+                nombre_itemgasto: this.solicitud.nombre_item,
+              };
+              //this.$store.commit("setlistaSolicitudItems", item);
+              this.listaPeticion.push(item);
+              this.solicitud.nombre_item = "Seleccione una opcion";
+              await this.forceRerender4();
+              this.elemento.cantidad = null;
+              this.elemento.unidad = null;
+            }
+          } else {
+            if (!this.desabilitar) {
+              this.alert(
+                "warning",
+                "Rellene correctamente la seccion de items"
+              );
+            }
           }
         }
-      }
-      //SEGUNDA VERIFICACION
-      if (this.listaPeticion.length > 1) {
-        let anteriorCat = this.listaPeticion[this.listaPeticion.length - 2]
-          .categoria_general;
-        let actual = this.listaPeticion[this.listaPeticion.length - 1]
-          .categoria_general;
+        //SEGUNDA VERIFICACION
+        if (this.listaPeticion.length > 1) {
+          let anteriorCat = this.listaPeticion[this.listaPeticion.length - 2]
+            .categoria_general;
+          let actual = this.listaPeticion[this.listaPeticion.length - 1]
+            .categoria_general;
 
-        if (anteriorCat != actual) {
-          for (let i = 0; i < this.listaPeticion.length; i++) {
-            if (this.listaPeticion[i].categoria_general === actual) {
-              //this.$store.commit("setEliminar", i);
-              this.listaPeticion.splice(i, 1);
+          if (anteriorCat != actual) {
+            for (let i = 0; i < this.listaPeticion.length; i++) {
+              if (this.listaPeticion[i].categoria_general === actual) {
+                //this.$store.commit("setEliminar", i);
+                this.listaPeticion.splice(i, 1);
+              }
             }
           }
         }

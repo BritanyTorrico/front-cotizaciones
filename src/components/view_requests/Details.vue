@@ -161,8 +161,6 @@ export default {
     },
     async sendReport(){
       try {
-        console.log(this.request);
-        console.log(this.response);
         await this.$http.post(
           "report?type=codigo",
           {
