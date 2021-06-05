@@ -29,7 +29,7 @@ export default new Vuex.Store({
         permisoFiltroCotizacion: false,
         username: false,
         token: null,
-        listaSolicitudItems: [], //para la parte de solicitud
+
         contador: 0,
     },
     mutations: {
@@ -64,12 +64,8 @@ export default new Vuex.Store({
                     state.contador = state.contador + 1;
                 }
             }
-            console.log("HOLAAAAAAAAA");
-            console.log(state.contador);
         },
-        incremento(state) {
-            state.contador = state.contador + 1;
-        },
+
         borrarContador(state) {
             state.contador = 0;
         },
@@ -114,15 +110,6 @@ export default new Vuex.Store({
         },
         setToken(state, payload) {
             state.token = payload;
-        },
-        setlistaSolicitudItems(state, payload) {
-            state.listaSolicitudItems.push(payload);
-        },
-        setDelete(state) {
-            state.listaSolicitudItems = [];
-        },
-        setEliminar(state, index) {
-            state.listaSolicitudItems.splice(index, 1);
         },
     },
     actions: {

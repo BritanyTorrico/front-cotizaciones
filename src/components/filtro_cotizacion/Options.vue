@@ -119,10 +119,6 @@ export default {
                         authorization: this.token,
                     },
                 })).data;
-            console.log(`%cquotation?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}%c${month}${tipo}${rubro}${empresa}`, 
-            "font-weight: bold; font-size: 17px;", 
-            "color: green; font-size: 14px;");
-            console.log(response.length);
             if (response.length>0){
                     for (let i=0;i<response.length;i++){
                     this.filteredInbox[i]=new Object();
@@ -137,7 +133,7 @@ export default {
                         })).data;
                         for (let r of requests){
                             if (r.cod_solicitud==response[i].cod_solicitud)
-                                {this.filteredInbox[i].autor_solicitud=r.usuario_solicitante_name}
+                                {this.filteredInbox[i].autor_solicitud=r.nombrecompleto_solicitante}
                         }
                         this.filteredInbox[i].estado_cotizacion=response[i].estado_cotizacion;
                         const emp=(await this.$http.get(`companiesperrequest/${response[i].cod_solicitud}`, {
@@ -154,13 +150,32 @@ export default {
                                 authorization: this.token,
                             },
                         })).data;
-                        console.log(`itemsPerRequest?searchby=solicitud&typeinput=codigo&inputdata=${response[i].cod_solicitud}`)
                         let currentItems=[]
                         for (let j of reqItems.datos){
-                            currentItems.push(j)
+                            const idg=(
+                        await this.$http.get(
+                            `expenseItem/${j.cod_item}`,
+                            {
+                                headers: {
+                                    authorization: this.token,
+                                },
+                            }
+                        )
+                    ).data.datos
+                    const it={
+                        cod_cotizacion: j.cod_cotizacion,
+                        cod_item: j.cod_itemgasto,
+                        cantidad: j.cantidad,
+                        unidad: j.unidad,
+                        detalle: j.detalle,
+                        nombre: idg[0].nombre_itemgasto,
+                        valor_unitario: j.valor_unitario,
+                        precio_total: j.precio_total
+                    }
+                    if (it.cantidad_solicitud==-1){it.cantidad_solicitud="-"}
+                            currentItems.push(it)
                         }
                         this.filteredItems.push(currentItems)
-                        console.log(this.filteredItems[i])
                 }
             }
           }

@@ -1,6 +1,6 @@
 .DS_Store
 node_modules
-/dist
+dist
 .hystory/src
 .history
 
@@ -22,3 +22,4 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+server.js

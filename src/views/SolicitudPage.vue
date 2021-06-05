@@ -18,7 +18,7 @@ export default {
 
 <style scoped>
 .soli_container {
-  padding: 50px 300px 50px 300px;
+  padding: 50px 200px 50px 200px;
   background-color: #46b1c95b;
   margin-top: 0;
 }

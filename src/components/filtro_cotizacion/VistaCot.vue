@@ -21,6 +21,7 @@
             <tr>
               <th>Cantidad</th>
               <th>Unidad</th>
+              <th>Item</th>
               <th>Detalle</th>
               <th>Unitario</th>
               <th>Total</th>
@@ -28,11 +29,12 @@
           </thead>
           <tbody>
             <tr v-for="(item, index) in cot.itemList" :key="index">
-              <td >{{ item.cantidad }}</td>
-              <td >{{ item.unidad }}</td>
-              <td >{{ item.detalle }}</td>
-              <td ></td>
-              <td ></td>
+              <td style="border:1px solid;" class="table-quantity" >{{ item.cantidad }}</td>
+              <td style="border:1px solid;" class="table-unity" >{{ item.unidad }}</td>
+              <td style="border:1px solid;" class="table-itemname" >{{ item.nombre }}</td>
+              <td style="border:1px solid;" class="table-detail" >{{ item.detalle }}</td>
+              <td style="border:1px solid;" class="table-unitprice" >{{ item.valor_unitario }}</td>
+              <td style="border:1px solid;" class="table-totalprice" >{{ item.precio_total }}</td>
             </tr>
           </tbody>
         </table>
@@ -109,18 +111,17 @@ h5 {
 }
 .items {
   align-self: center;
-  width: 90%;
+  width: 100%;
   padding: 0 0 5% 0;
   font-size: 17px;
 }
 .items thead {
-  padding: 0.5% 2% 0.5% 2%;
+  padding: 0.5% 1% 0.5% 1%;
   background-color: #f1f2f6;
 }
 .items th {
-  padding: 1% 2% 1% 2%;
+  padding: 1% 1% 1% 1%;
   border: 1px solid #c0c0c0;
-  width: 20%;
 }
 .items td {
   padding: 0.5% 1% 0.5% 1%;
@@ -150,5 +151,23 @@ h5 {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: 420;
     width: 100%;
+}
+.table-quantity{
+  width: 11.5%!important;
+}
+.table-unity{
+  width: 12%!important;
+}
+.table-detail{
+  width: 37%!important;
+}
+.table-itemname{
+  width: 13%!important; 
+}
+.table-unitprice{
+  width: 10.5%!important; 
+}
+.table-totalprice{
+  width: 9%!important; 
 }
 </style>
