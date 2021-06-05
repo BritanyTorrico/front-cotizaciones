@@ -85,16 +85,7 @@ export default {
                 this.inboxData.push(response[i])
                 const date = this.inboxData[i].fecha_solicitud
                 this.inboxData[i].fecha_solicitud = `${date.substr(8, 2)}/${date.substr(5, 2)}/${date.substr(0, 4)}`
-                const reqItems = (
-                    await this.$http.get(
-                        `itemsPerRequest?searchby=solicitud&typeinput=nombre&inputdata=${this.inboxData[i].nombre_solicitud}`,
-                        {
-                            headers: {
-                                authorization: this.token,
-                            },
-                        }
-                    )
-                ).data.datos
+                
                 this.inboxData[i].informe=''
                 this.inboxData[i].revisado=''
                 if (this.inboxData[i].estado_solicitud!="ABIERTA"){
@@ -134,7 +125,18 @@ export default {
                         }
                     }
                 }
+                const reqItems = (
+                    await this.$http.get(
+                        `itemsPerRequest?searchby=solicitud&typeinput=nombre&inputdata=${this.inboxData[i].nombre_solicitud}`,
+                        {
+                            headers: {
+                                authorization: this.token,
+                            },
+                        }
+                    )
+                ).data.datos
                 let currentItems = []
+                console.log(reqItems);
                 for (let j of reqItems) {
                     const idg=(
                         await this.$http.get(

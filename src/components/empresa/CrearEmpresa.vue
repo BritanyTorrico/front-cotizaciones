@@ -372,7 +372,6 @@ export default {
         if (!this.$v.dato.$invalid) {
           await this.manageMark();
           await this.sendData();
-          window.setInterval(window.location.reload(), 10000);
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
@@ -385,6 +384,7 @@ export default {
         await this.sendEmpData();
         // si sale bien recien puede registrar compania por rubro
         await this.sendCompMark();
+        window.setInterval(window .location.reload(), 10000); 
       } catch (error) {
         this.alert("warning", "Algo salio mal");
       }
