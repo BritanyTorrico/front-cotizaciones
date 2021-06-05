@@ -55,7 +55,7 @@
             Solo se aceptan valores numericos.
           </div>
           <div class="form_check-error" v-if="!$v.dato.nit_empresa.maxLength">
-            Maximo 19 digitos.
+            Maximo 13 digitos.
           </div>
         </div>
 
@@ -195,7 +195,7 @@
             class="form_check-error"
             v-if="!$v.dato.cuenta_bancaria.maxLength"
           >
-            Maximo 19 digitos.
+            Maximo 13 digitos.
           </div>
         </div>
         <div class="form_section">
@@ -321,7 +321,7 @@ export default {
       nit_empresa: {
         required,
         integer,
-        maxLength: maxLength(19),
+        maxLength: maxLength(13),
       },
       representante_empresa: {
         required,
@@ -350,7 +350,7 @@ export default {
       cuenta_bancaria: {
         required,
         integer,
-        maxLength: maxLength(19),
+        maxLength: maxLength(13),
       },
     },
   },
