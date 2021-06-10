@@ -1,11 +1,11 @@
 <template>
   <div class="contenedor__pres">
-    <h2 class="item_title">Registrar Presupuesto</h2>
-    <label>
-      <div class="form_desc">
-        Ingrese el presupuesto anual para cada unidad de gasto
-      </div>
-    </label>
+    <h2 class="item_title">Presupuesto</h2>
+
+    <div class="form_desc">
+      Ingrese el presupuesto anual para cada unidad de gasto
+    </div>
+
     <form @submit.prevent="submitForm">
       <div class="form__datos">
         <div class="listas__desplegables">
@@ -87,11 +87,17 @@
                 <td>
                   <div>
                     <input
+                      required
                       class="input-tables"
-                      type="text"
+                      type="number"
+                      step="0.01"
                       placeholder="Ingrese valor"
                       v-model="presupuesto.presupuestoValor[index]"
+                      @change="validador(presupuesto.presupuestoValor[index])"
                     />
+                  </div>
+                  <div class="form_check-error">
+                    {{ validador(presupuesto.presupuestoValor[index]) }}
                   </div>
                 </td>
               </tr>
@@ -109,9 +115,18 @@
             </button>
           </div>
         </div>
-        <div v-else>
+        <div
+          v-if="this.listaUnidadesDeGasto.length == 0 && !this.mostrarMensaje"
+        >
           <p class="form_check-error mensaje">
             (*) Seleccione un departamento por facultad.
+          </p>
+        </div>
+        <div
+          v-if="this.listaUnidadesDeGasto.length == 0 && this.mostrarMensaje"
+        >
+          <p class="form_check-error mensaje">
+            No existen unidades de gasto en este departamento.
           </p>
         </div>
       </div>
@@ -122,15 +137,19 @@
         @escucharHijo="variableHijo"
       ></alert-2>
       <Alert ref="alert"></Alert>
-      {{ presupuesto }}
-      {{ presupuesto.presupuestoValor.length }}
     </form>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import { helpers, required } from "vuelidate/lib/validators";
+import {
+  helpers,
+  required,
+  minLength,
+  minValue,
+  maxValue,
+} from "vuelidate/lib/validators";
 import ListaDesplegableChange from "../Presupuestos/ListaDesplegableChange.vue";
 import Alert2 from "@/Alert2.vue";
 import Alert from "@/components/User/Alert.vue";
@@ -139,6 +158,16 @@ const validate_requerido_listas = (value) => {
   const datovalue = String(value);
   if (datovalue === "Seleccione una opcion") {
     return !helpers.req(value) || datovalue != "Seleccione una opcion";
+  } else {
+    return true;
+  }
+};
+const validate_decimales = (value) => {
+  const datovalue = String(value);
+  if (datovalue.indexOf(".") > 0) {
+    const parts = datovalue.split(".");
+    const dato = String(parts[1]);
+    return !helpers.req(value) || !(dato.length > 2);
   } else {
     return true;
   }
@@ -156,6 +185,9 @@ export default {
       listaUnidadesDeGasto: [],
       componentKey: 0,
       variableRecibida: null,
+      presupuestosCaja: [],
+      codUnidadDeGasto: [],
+      mostrarMensaje: false,
       presupuesto: {
         facultad: "Seleccione una opcion",
         departamento: "Seleccione una opcion",
@@ -176,16 +208,74 @@ export default {
       },
       presupuestoValor: {
         required,
+        $each: {
+          required,
+          minLength: minLength(2),
+          minValue: minValue(100),
+          maxValue: maxValue(1000000),
+          validate_decimales,
+        },
       },
     },
   },
 
   methods: {
+    validador(value) {
+      const datovalue = String(value);
+      let cantidad = parseFloat(value);
+      console.log(cantidad);
+      if (cantidad < 100) {
+        return "Mínimo  100 bs.";
+      } else if (cantidad > 1000000) {
+        return "Máximo  1.000.000 bs.";
+      } else if (datovalue.indexOf(".") > 0) {
+        const parts = datovalue.split(".");
+        const dato = String(parts[1]);
+        if (dato.length > 2) {
+          return "Máximo 2 decimales";
+        }
+      }
+    },
     variableHijo(value) {
       this.variableRecibida = value;
       if (this.variableRecibida) {
         this.listaUnidadesDeGasto = [];
+        this.presupuesto.presupuestoValor = [];
+        this.presupuestosCaja = [];
+        this.codUnidadDeGasto = [];
       }
+    },
+    async actualizarPresupuesto(codigoUnidad, presupuestoUnidad) {
+      try {
+        console.log("actualizo presupuesto");
+        await this.$http.put(
+          `spendingUnitBudget/${codigoUnidad}`,
+          {
+            presupuesto_unidad: presupuestoUnidad,
+          },
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        );
+      } catch (error) {
+        this.alert("warning", "Algo salio mal");
+      }
+    },
+    async verificarMensaje() {
+      let mensaje = false;
+      let comparador = localStorage.getItem("presupuestosLista");
+      let parts = comparador.split(",");
+      for (let i = 0; i < this.presupuesto.presupuestoValor.length; i++) {
+        if (this.presupuesto.presupuestoValor[i] != parts[i]) {
+          //actual - anterior
+          mensaje = true;
+          break;
+        }
+      }
+      console.log(mensaje + "del metodo");
+      return mensaje;
     },
     async submitForm() {
       try {
@@ -193,7 +283,29 @@ export default {
           !this.$v.presupuesto.$invalid &&
           this.listaUnidadesDeGasto.length > 0
         ) {
-          localStorage.removeItem("facultadPresupuesto");
+          let comparador = localStorage.getItem("presupuestosLista");
+          let parts = comparador.split(",");
+          for (let i = 0; i < this.presupuesto.presupuestoValor.length; i++) {
+            if (this.presupuesto.presupuestoValor[i] != parts[i]) {
+              //actual - anterior
+              await this.actualizarPresupuesto(
+                this.codUnidadDeGasto[i],
+                this.presupuesto.presupuestoValor[i]
+              );
+            } else {
+              console.log("son iguales");
+            }
+          }
+          //verifica que mensaje mandar
+          let mensaje1 = await this.verificarMensaje();
+          if (!mensaje1) {
+            this.alert("warning", "No realizo ningun cambio.");
+          } else {
+            this.alert("success", "Presupuesto guardado exitosamente.");
+            localStorage.removeItem("facultadPresupuesto");
+            localStorage.removeItem("presupuestosLista");
+            window.setInterval(window.location.reload(), 10000);
+          }
         }
       } catch (error) {
         this.alert("warning", "Rellene todos los datos correctamente");
@@ -244,6 +356,12 @@ export default {
     },
     async getObtenerUnidadesDeGasto() {
       try {
+        this.listaUnidadesDeGasto = []; //actualizo la lista cada vez que cambia de departameno
+        this.presupuesto.presupuestoValor = [];
+        this.codUnidadDeGasto = [];
+        this.presupuestosCaja = [];
+        this.mostrarMensaje = false;
+        localStorage.removeItem("presupuestosLista");
         if (this.presupuesto.facultad != "Seleccione una opcion") {
           localStorage.setItem(
             "facultadPresupuesto",
@@ -261,10 +379,36 @@ export default {
             }
           )
         ).data;
+        console.log(unidadGastoPorDepartamento);
         for (let i = 0; i < unidadGastoPorDepartamento.datos.length; i++) {
           this.listaUnidadesDeGasto.push(unidadGastoPorDepartamento.datos[i]);
 
           this.presupuesto.presupuestoValor.push("");
+          this.presupuestosCaja.push("");
+          this.codUnidadDeGasto.push(
+            unidadGastoPorDepartamento.datos[i].cod_unidadgasto
+          );
+        }
+
+        if (this.listaUnidadesDeGasto.length > 0) {
+          for (let i = 0; i < this.listaUnidadesDeGasto.length; i++) {
+            if (this.listaUnidadesDeGasto[i].presupuesto_unidad === "0.00") {
+              this.presupuestosCaja[i] = "";
+            } else {
+              this.presupuesto.presupuestoValor[i] = this.listaUnidadesDeGasto[
+                i
+              ].presupuesto_unidad;
+              this.presupuestosCaja[i] = this.listaUnidadesDeGasto[
+                i
+              ].presupuesto_unidad;
+            }
+          }
+          localStorage.setItem(
+            "presupuestosLista",
+            this.presupuesto.presupuestoValor
+          );
+        } else {
+          this.mostrarMensaje = true;
         }
       } catch (error) {
         this.alert("warning", "Algo salio mal");
@@ -363,6 +507,8 @@ table {
   padding: 0;
   width: 100%;
   height: 100%;
+  margin-top: 40px;
+  margin-bottom: 40px;
 }
 #miTablaPersonalizada {
   max-width: 110px;
