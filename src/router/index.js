@@ -115,7 +115,7 @@ const routes = [{
             import ("../views/Solicitudes.vue"),
         meta: {
             rutaProtegida: true,
-        }
+        },
     },
     {
         path: "/usuarios",
@@ -123,8 +123,8 @@ const routes = [{
         component: () =>
             import ("../views/Users.vue"),
         meta: {
-                rutaProtegida: true,
-        }
+            rutaProtegida: true,
+        },
     },
     {
         path: "/roles",
@@ -132,8 +132,8 @@ const routes = [{
         component: () =>
             import ("../views/Roles.vue"),
         meta: {
-                rutaProtegida: true,
-        }
+            rutaProtegida: true,
+        },
     },
     {
         path: "/unidades",
@@ -141,8 +141,8 @@ const routes = [{
         component: () =>
             import ("../views/Units.vue"),
         meta: {
-                rutaProtegida: true,
-        }
+            rutaProtegida: true,
+        },
     },
     {
         path: "/items",
@@ -150,8 +150,8 @@ const routes = [{
         component: () =>
             import ("../views/Items.vue"),
         meta: {
-                rutaProtegida: true,
-        }
+            rutaProtegida: true,
+        },
     },
     {
         path: "/empresas",
@@ -159,14 +159,20 @@ const routes = [{
         component: () =>
             import ("../views/Companies.vue"),
         meta: {
-                rutaProtegida: true,
-        }
+            rutaProtegida: true,
+        },
     },
     {
         path: "/presupuestos",
         name: "RegistrarPresupuestos",
         component: () =>
             import ("../views/RegistrarPresupuestos.vue"),
+    },
+    {
+        path: "/historial_presupuestos",
+        name: "HistorialPresupuestosPage",
+        component: () =>
+            import ("../views/HistorialPresupuestosPage.vue"),
     },
 ];
 

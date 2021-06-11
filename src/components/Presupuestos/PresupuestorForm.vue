@@ -59,7 +59,7 @@
             <thead>
               <tr class="primera-fila ">
                 <th>Nombre de unidad</th>
-                <th colspan="2">Descripcion</th>
+                <th colspan="2">Descripción</th>
                 <th>Jefe de unidad</th>
                 <th>Presupuesto</th>
               </tr>
