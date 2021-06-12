@@ -379,7 +379,7 @@ export default {
             }
           )
         ).data;
-        console.log(unidadGastoPorDepartamento);
+
         for (let i = 0; i < unidadGastoPorDepartamento.datos.length; i++) {
           this.listaUnidadesDeGasto.push(unidadGastoPorDepartamento.datos[i]);
 
@@ -482,8 +482,7 @@ export default {
   font-size: 10px;
   text-align: left;
 }
-.form__datos {
-}
+
 .listas__desplegables {
   display: flex;
   width: 100%;
