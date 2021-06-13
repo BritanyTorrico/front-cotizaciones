@@ -1,15 +1,20 @@
 <template>
-  <div class="card mb-3" style="max-width: 400px;">
+  <div class="card mb-3 " style="max-width:300px;  max-height: 200px;">
     <div class="row g-0">
-      <div class="col-md-4" :style="styles1">
-        <font-awesome-icon class="iconito" :icon="['fas', `${nombreIcono}`]" />
+      <div
+        class="col-md-4"
+        :style="styles1"
+        style="max-width:350px;  max-height: 300px;"
+      >
+        <b-icon :icon="nombreIcono" class="iconito"></b-icon>
       </div>
+
       <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title">{{ titulo }}</h5>
-          <p class="card-text">{{ contenido }}''</p>
-          <p class="card-text">
-            <small class="text-muted">Last updated 3 mins ago</small>
+        <div class="card-body" style="max-width:350px;  max-height: 300px;">
+          <h5 class="card-title titulo">{{ titulo }}</h5>
+          <hr class="linea" />
+          <p class="card-text contenido">
+            {{ contenido }}
           </p>
         </div>
       </div>
@@ -18,9 +23,6 @@
 </template>
 
 <script>
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEnvelopeOpenText } from "@fortawesome/free-solid-svg-icons";
-library.add(faEnvelopeOpenText);
 export default {
   name: "CardPermiso",
   props: {
@@ -44,15 +46,22 @@ export default {
 </script>
 
 <style scoped>
-.permiso-contenedor {
-  width: 100%;
-
-  border: 3px solid;
-  display: flex;
-}
 .iconito {
   height: 100%;
   border: 1px solid;
   width: 100%;
+}
+.linea {
+  padding: 0;
+  margin: 0;
+  background: grey;
+  height: 2px;
+}
+.contenido {
+  font-size: 12px;
+}
+.titulo {
+  font-size: 15px;
+  font-weight: bold;
 }
 </style>

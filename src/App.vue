@@ -173,8 +173,9 @@ export default {
       localStorage.removeItem("roleCod");
       localStorage.removeItem("facu");
       localStorage.removeItem("depto");
-      this.$router.push("/login");
       localStorage.removeItem("facultadPresupuesto");
+      localStorage.removeItem("presupuestoLista");
+      this.$router.push("/login");
     },
   },
 };
