@@ -9,7 +9,12 @@ const routes = [{
         component: () =>
             import ("@/views/PaginaPrincipalPage.vue"),
     },
-
+    {
+        path: "/principal",
+        name: "PaginaPermisos",
+        component: () =>
+            import ("@/views/PaginaPermisos.vue"),
+    },
     {
         path: "/item/nuevo",
         name: "RegistroItemGasto",
