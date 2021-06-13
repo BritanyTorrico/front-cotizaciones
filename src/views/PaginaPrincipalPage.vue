@@ -1,20 +1,19 @@
 <template>
   <div class="contenedor-paginal">
-    <div class="seccion1">
-      <v-portada></v-portada>
-    </div>
-    <div class="seccion2">
-      <pagina-principal></pagina-principal>
-    </div>
-    <div class="seccion3"></div>
+    <v-portada></v-portada>
+    <pagina-principal></pagina-principal>
+    <avisos></avisos>
+    <contacto></contacto>
   </div>
 </template>
 
 <script>
 import PaginaPrincipal from "@/components/Pagina_Inicial/PaginaPrincipal.vue";
 import VPortada from "../components/Pagina_Inicial/VPortada.vue";
+import Avisos from "../components/Pagina_Inicial/Avisos.vue";
+import Contacto from "../components/Pagina_Inicial/Contacto.vue";
 export default {
-  components: { PaginaPrincipal, VPortada },
+  components: { PaginaPrincipal, VPortada, Avisos, Contacto },
   name: "PaginaPrincipalPage",
 };
 </script>

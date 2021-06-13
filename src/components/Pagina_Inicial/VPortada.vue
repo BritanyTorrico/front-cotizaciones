@@ -17,19 +17,23 @@ export default {
 </script>
 
 <style scoped>
+.portada {
+  width: 100%;
+  height: 500px;
+}
 .portada__umss {
   text-align: left;
   margin-left: 30px;
 }
 .portada__imagen {
   width: 180px;
-  height: 90px;
+  height: 80px;
   object-fit: contain;
 }
 
 .portada__imagen__fondo {
   width: 80%;
-  height: 400px;
+  height: 340px;
 }
 
 .portada__titulo {

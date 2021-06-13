@@ -3,7 +3,7 @@
     <b-navbar
       v-if="contador < 5"
       type="dark"
-      class="navbar navbar-dark bg-primary"
+      class="navbar navbar-dark bg-primary ms-auto"
     >
       <b-navbar-brand id="logotipo" href="/">UMSS </b-navbar-brand>
       <b-navbar-toggle target="navbar-toggle-collapse">
@@ -13,10 +13,8 @@
         </template>
       </b-navbar-toggle>
 
-      <b-collapse id="navbar-toggle-collapse" is-nav>
-        <b-navbar-nav id="nav">
-          <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
-          <b-nav-item to="/about">About</b-nav-item>
+      <b-collapse id="navbar-toggle-collapse" is-nav align-rigth>
+        <b-navbar-nav id="nav" class="ms-auto">
           <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
           <b-nav-item v-if="permisoCrearUsuario" to="/register"
             >Registrar Usuario</b-nav-item
@@ -69,45 +67,39 @@
         </template>
       </b-navbar-toggle>
 
-      <b-collapse id="navbar-toggle-collapse" is-nav>
-          <b-navbar-nav id="nav">
-            <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
-            <b-nav-item to="/about">About</b-nav-item>
-            <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
-            <b-nav-item v-if="permisoCrearUsuario" to="/usuarios"
-              >Usuarios</b-nav-item
-            >
-            <b-nav-item v-if="permisoCrearRol" to="/roles"
-              >Roles</b-nav-item
-            >
-            <b-nav-item v-if="permisoUnidadDeGasto" to="/unidades"
-              >Unidades</b-nav-item
-            >
-            <b-nav-item v-if="permisoItemDeGasto" to="/items"
-              >Items</b-nav-item
-            >
-            <b-nav-item v-if="permisoEmpresa" to="/empresas"
-              >Empresas</b-nav-item
-            >
-            <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
-              >Solicitudes</b-nav-item
-            >
-            <b-nav-item
-              v-if="permisoRevisionSolicitudes"
-              to="/revisar_solicitudes"
-              >Revisar solicitudes</b-nav-item
-            >
-            <b-nav-item v-if="permisoCotizacion" to="/cotizacion"
-              >Cotizaciones</b-nav-item
-            >
-            <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
-              >Filtro de Cotizaciones</b-nav-item
-            >
-            <b-nav-item v-if="username" @click="cerrar()"
-              >Cerrar Sesion</b-nav-item
-            >
-          </b-navbar-nav>
-        </b-collapse>
+      <b-collapse id="navbar-toggle-collapse" is-nav right>
+        <b-navbar-nav id="nav" class="ml-auto">
+          <b-nav-item v-if="!username" to="/login" id="inciio"
+            >Iniciar Sesion</b-nav-item
+          >
+          <b-nav-item v-if="permisoCrearUsuario" to="/usuarios"
+            >Usuarios</b-nav-item
+          >
+          <b-nav-item v-if="permisoCrearRol" to="/roles">Roles</b-nav-item>
+          <b-nav-item v-if="permisoUnidadDeGasto" to="/unidades"
+            >Unidades</b-nav-item
+          >
+          <b-nav-item v-if="permisoItemDeGasto" to="/items">Items</b-nav-item>
+          <b-nav-item v-if="permisoEmpresa" to="/empresas">Empresas</b-nav-item>
+          <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
+            >Solicitudes</b-nav-item
+          >
+          <b-nav-item
+            v-if="permisoRevisionSolicitudes"
+            to="/revisar_solicitudes"
+            >Revisar solicitudes</b-nav-item
+          >
+          <b-nav-item v-if="permisoCotizacion" to="/cotizacion"
+            >Cotizaciones</b-nav-item
+          >
+          <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
+            >Filtro de Cotizaciones</b-nav-item
+          >
+          <b-nav-item v-if="username" @click="cerrar()"
+            >Cerrar Sesion</b-nav-item
+          >
+        </b-navbar-nav>
+      </b-collapse>
     </b-navbar>
     <!--Hasta aqui-->
     <transition
@@ -117,6 +109,11 @@
     >
       <router-view />
     </transition>
+    <footer class="bg-primary text-center text-white text-lg-start">
+      <div class="text-center p-3">
+        Derechos reservados © 2021 UMSS-TH.
+      </div>
+    </footer>
   </div>
 </template>
 <script>
@@ -128,7 +125,7 @@ export default {
   },
   computed: {
     ...mapState([
-      "permisoHome",
+      "username",
       "permisoItemDeGasto",
       "permisoUnidadDeGasto",
       "permisoCrearUsuario",
@@ -228,5 +225,9 @@ a.navbar-brand {
 #icono-toggle {
   margin-right: 30px;
   border: 1px solid;
+}
+#dereee {
+  border: 2px solid;
+  text-align: rigth;
 }
 </style>
