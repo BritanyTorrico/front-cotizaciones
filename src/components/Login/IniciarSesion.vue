@@ -196,7 +196,7 @@ export default {
           this.$store.commit("setUser", true);
           localStorage.setItem("username", this.username);
           await this.storeLocalData();
-          this.$router.push("/");
+          this.$router.push("/principal");
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }

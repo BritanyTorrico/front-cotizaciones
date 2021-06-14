@@ -5,7 +5,9 @@
       type="dark"
       class="navbar navbar-dark bg-primary ms-auto"
     >
-      <b-navbar-brand id="logotipo" href="/">UMSS </b-navbar-brand>
+      <b-navbar-brand id="logotipo" @click="paginaPrincipal()"
+        >UMSS
+      </b-navbar-brand>
       <b-navbar-toggle target="navbar-toggle-collapse">
         <template #default="{ expanded }">
           <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
@@ -58,7 +60,9 @@
       type="dark"
       class="navbar navbar-dark bg-primary"
     >
-      <b-navbar-brand id="logotipo" href="/">UMSS</b-navbar-brand>
+      <b-navbar-brand id="logotipo" @click="paginaPrincipal()"
+        >UMSS</b-navbar-brand
+      >
 
       <b-navbar-toggle id="icono-toggle" target="navbar-toggle-collapse">
         <template #default="{ expanded }">
@@ -177,6 +181,13 @@ export default {
       localStorage.removeItem("presupuestoLista");
       this.$router.push("/login");
     },
+    paginaPrincipal() {
+      if (this.username) {
+        this.$router.push("/principal");
+      } else {
+        this.$router.push("/");
+      }
+    },
   },
 };
 </script>
@@ -222,6 +233,7 @@ a.navbar-brand {
 }
 #logotipo {
   margin-left: 45px;
+  cursor: pointer;
 }
 #icono-toggle {
   margin-right: 30px;
