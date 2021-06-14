@@ -51,7 +51,7 @@
           </a>
         </div>
         <div class="col-sm-3" v-if="permisoItemDeGasto">
-          <a class="redireccion" href="/registro_item">
+          <a class="redireccion" href="/items">
             <card-permiso
               colorIcono="#FFFFFF"
               colorFondo=" #20bf6b"
