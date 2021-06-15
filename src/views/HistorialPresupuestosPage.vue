@@ -18,5 +18,6 @@ export default {
   padding: 50px 150px 50px 150px;
   background-color: #46b1c95b;
   margin-top: 0;
+  min-height: 600px;
 }
 </style>

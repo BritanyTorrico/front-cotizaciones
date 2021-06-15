@@ -47,6 +47,7 @@
           nombreLista="Unidades de gasto:"
           :lista="listaUnidadesDeGasto"
           :value="historial.unidadDeGasto"
+          v-on:change="forceRerender2()"
         ></lista-desplegable-change>
         <div
           class="form_check-error"
@@ -58,6 +59,7 @@
       <div class="cuadrado">
         <lista-desplegable-change
           required
+          :key="componentKey2"
           v-model="historial.year"
           nombreLista="Año:"
           :lista="listaAños"
@@ -73,7 +75,6 @@
       </div>
     </div>
 
-    {{ historial }}
     <div
       v-if="
         !this.mostrarMensaje &&
@@ -82,16 +83,29 @@
       "
     >
       <p class="form_check-error mensaje">
-        (*) Para poder ver el historial seleccione una año.
+        (*) Para poder ver el historial debe seleccionar una opción de los 4
+        campos.
       </p>
     </div>
 
     <div v-if="this.mostrarMensaje && this.listaHistorialDatos.length == 0">
-      <p class="form_check-error mensaje">
+      <p
+        class="form_check-error mensaje"
+        v-if="
+          historial.year != 'Seleccione una opcion' &&
+            historial.facultad != 'Seleccione una opcion' &&
+            historial.depto != 'Seleccione una opcion' &&
+            historial.unidadDeGasto != 'Seleccione una opcion'
+        "
+      >
         No existe un historial de este año.
       </p>
     </div>
-    <div v-if="this.listaHistorialDatos.length > 0" class="tabla-historial">
+    <div
+      v-if="this.listaHistorialDatos.length > 0"
+      class="tabla-historial"
+      id="tablaH"
+    >
       <b-table
         light
         hover
@@ -99,6 +113,7 @@
         fixed
         :items="listaHistorialDatos"
         :fields="fields"
+        thead-class="bg-dark text-white"
       >
       </b-table>
     </div>
@@ -133,9 +148,8 @@ export default {
         unidadDeGasto: "Seleccione una opcion",
       },
       fields: [
-        "Departamento",
         "Unidad_gasto",
-        "Usuario",
+        "Nombre_usuario",
         "Fecha_Modificacion",
         "Presupuesto_Anterior",
         "Presupuesto_Actual",
@@ -151,6 +165,7 @@ export default {
       mostrarMensaje: false,
       componentKey: 0,
       componentKey1: 1,
+      componentKey2: 0,
     };
   },
   validations: {
@@ -208,6 +223,7 @@ export default {
     },
     async obtenerUnidadesDeGasto() {
       this.historial.unidadDeGasto = "Seleccione una opcion";
+
       this.listaUnidadesDeGasto = [];
       this.listaCodUnidad = [];
       const unidadGastoPorDepartamento = (
@@ -250,20 +266,6 @@ export default {
       const fechaNormal = ddvalue + "-" + mmvalue + "-" + yyvalue;
       return fechaNormal;
     },
-    async getNombreDep(value) {
-      try {
-        const infoDep = (
-          await this.$http.get(`department/${value}`, {
-            headers: {
-              authorization: this.token,
-            },
-          })
-        ).data.datos[0].nombre_departamento;
-        return infoDep;
-      } catch (error) {
-        console.log(error);
-      }
-    },
     async obtenerCodDepartamento() {
       for (let i = 0; i < this.listDepartament.length; i++) {
         if (
@@ -282,6 +284,38 @@ export default {
         ) {
           return this.listaCodUnidad[i].cod_unidadgasto;
         }
+      }
+    },
+    async transformarNombreUsuario(value) {
+      try {
+        const nombreUsuario = (
+          await this.$http.get(`users/name/${value}`, {
+            headers: {
+              authorization: this.token,
+            },
+          })
+        ).data.datos[0];
+
+        return nombreUsuario.cod_usuario;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async obtenerNombrePorCod(value) {
+      try {
+        const nombreUsuario = (
+          await this.$http.get(`users/${value}`, {
+            headers: {
+              authorization: this.token,
+            },
+          })
+        ).data.datos[0];
+        const nombreU = nombreUsuario.nombres;
+        const apellidoU = nombreUsuario.apellidos;
+        const nombreCompleto = nombreU + " " + apellidoU;
+        return nombreCompleto;
+      } catch (error) {
+        console.log(error);
       }
     },
     async getHistorialAnual() {
@@ -303,26 +337,22 @@ export default {
           )
         ).data;
         console.log(historialAnual);
-        /*
+
         for (let i = 0; i < historialAnual.length; i++) {
-         // let usuarioModifico = historialAnual[i].usuario;
-         // let fechaModificacion = historialAnual[i].fecha;
-          //let fechaFormato = await this.transformarFecha(fechaModificacion);
-          let datoNuevoNombreUnidad =
-            historialAnual[i].dato_nuevo.nombre_unidadgasto;
-          let datoNuevoCodDepartamento =
-            historialAnual[i].dato_nuevo.cod_departamento;
-          let nombreDepartamento = await this.getNombreDep(
-            datoNuevoCodDepartamento
-          );
-          let datoNuevoPresupuesto =
-            historialAnual[i].dato_nuevo.presupuesto_unidad;
+          let usuarioModifico = historialAnual[i].usuarioResponsable;
+          let codUsuario = await this.transformarNombreUsuario(usuarioModifico);
+          let nombreUser = await this.obtenerNombrePorCod(codUsuario);
+
+          let fechaModificacion = historialAnual[i].fechaCambio;
+          let fechaFormato = await this.transformarFecha(fechaModificacion);
+          let datoNuevoNombreUnidad = historialAnual[i].nombreUnidad;
+
+          let datoNuevoPresupuesto = historialAnual[i].presupuestoUnidadNuevo;
           let datoViejoPresupuesto =
-            historialAnual[i].dato_viejo.presupuesto_unidad;
+            historialAnual[i].presupuestoUnidadAnterior;
           const dato = {
-            Departamento: nombreDepartamento,
             Unidad_gasto: datoNuevoNombreUnidad,
-            Usuario: usuarioModifico,
+            Nombre_usuario: nombreUser,
             Fecha_Modificacion: fechaFormato,
             Presupuesto_Actual: datoNuevoPresupuesto,
             Presupuesto_Anterior: datoViejoPresupuesto,
@@ -331,7 +361,7 @@ export default {
         }
         if (this.listaHistorialDatos.length == 0) {
           this.mostrarMensaje = true;
-        }*/
+        }
       } catch (error) {
         console.log(error);
       }
@@ -341,6 +371,11 @@ export default {
     },
     forceRerender1() {
       this.componentKey1 += 1;
+    },
+    forceRerender2() {
+      this.historial.year = "Seleccione una opcion";
+      console.log("hola");
+      this.componentKey2 += 1;
     },
   },
 };
@@ -353,7 +388,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  min-height: 500px;
 }
 .item_title {
   text-align: left;
@@ -380,6 +415,9 @@ export default {
 .tabla-historial {
   margin-top: 40px;
   text-align: left;
+}
+table thead tr th {
+  background: red;
 }
 .form_check-error {
   color: red;
@@ -413,5 +451,8 @@ export default {
 .cuadrado {
   width: 50%;
   padding-right: 70px;
+}
+.green-bg {
+  background-color: green;
 }
 </style>
