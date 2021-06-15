@@ -115,8 +115,14 @@ const routes = [{
             import ("../views/Solicitudes.vue"),
         meta: {
             rutaProtegida: true,
-        }
-    }
+        },
+    },
+    {
+        path: "/presupuestos",
+        name: "RegistrarPresupuestos",
+        component: () =>
+            import ("../views/RegistrarPresupuestos.vue"),
+    },
 ];
 
 const router = new VueRouter({

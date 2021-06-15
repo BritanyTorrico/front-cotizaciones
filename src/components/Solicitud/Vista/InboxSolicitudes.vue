@@ -61,6 +61,8 @@ export default {
                 status: '',
                 description: '',
                 budget: '',
+                report: '',
+                reviewer: '',
                 itemList: [],
             },
         }
@@ -83,6 +85,46 @@ export default {
                 this.inboxData.push(response[i])
                 const date = this.inboxData[i].fecha_solicitud
                 this.inboxData[i].fecha_solicitud = `${date.substr(8, 2)}/${date.substr(5, 2)}/${date.substr(0, 4)}`
+                
+                this.inboxData[i].informe=''
+                this.inboxData[i].revisado=''
+                if (this.inboxData[i].estado_solicitud!="ABIERTA"){
+                    if (this.inboxData[i].estado_solicitud=="RECHAZADA"){
+                        const repr=(
+                            await this.$http.get(
+                                `report?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}&status=false`,
+                                {
+                                    headers: {
+                                        authorization: this.token,
+                                    },
+                                }
+                            )
+                        ).data
+                        for (let k of repr){
+                            if (k.cod_solicitud==this.inboxData[i].cod_solicitud){
+                                this.inboxData[i].informe=k.justificacion_informe
+                                this.inboxData[i].revisado=k.nombrecompleto_informe
+                            }
+                        }
+                    }else{
+                        const repa=(
+                            await this.$http.get(
+                                `report?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}&status=true`,
+                                {
+                                    headers: {
+                                        authorization: this.token,
+                                    },
+                                }
+                            )
+                        ).data 
+                        for (let l of repa){
+                            if (l.cod_solicitud==this.inboxData[i].cod_solicitud){
+                                this.inboxData[i].informe=l.justificacion_informe
+                                this.inboxData[i].revisado=l.nombrecompleto_informe
+                            }
+                        }
+                    }
+                }
                 const reqItems = (
                     await this.$http.get(
                         `itemsPerRequest?searchby=solicitud&typeinput=nombre&inputdata=${this.inboxData[i].nombre_solicitud}`,
@@ -95,10 +137,31 @@ export default {
                 ).data.datos
                 let currentItems = []
                 for (let j of reqItems) {
-                    currentItems.push(j)
+                    const idg=(
+                        await this.$http.get(
+                            `expenseItem/${j.cod_itemgasto}`,
+                            {
+                                headers: {
+                                    authorization: this.token,
+                                },
+                            }
+                        )
+                    ).data.datos
+                    const it={
+                        cod_solicitud: j.cod_solicitud,
+                        cod_itemgasto: j.cod_itemgasto,
+                        cantidad_solicitud: j.cantidad_solicitud,
+                        unidad_solicitud: j.unidad_solicitud,
+                        detalle_solicitud: j.detalle_solicitud,
+                        nombre_itemgasto: idg[0].nombre_itemgasto
+                    }
+                    if (it.cantidad_solicitud==-1){it.cantidad_solicitud="-"}
+                    currentItems.push(it)
                 }
                 this.items.push(currentItems)
             }
+            this.inboxData=this.inboxData.reverse()
+            this.items=this.items.reverse()
         },
         async startTransition(i){
           this.changeReq=true;
@@ -112,6 +175,8 @@ export default {
             this.selectedRequest.status = this.inboxData[i].estado_solicitud
             this.selectedRequest.description = this.inboxData[i].detalle_solicitud
             this.selectedRequest.budget = this.inboxData[i].estimado_solicitud
+            this.selectedRequest.report = this.inboxData[i].informe
+            this.selectedRequest.reviewer = this.inboxData[i].revisado
             this.selectedRequest.itemList = this.items[i]
         },
         async newRequest() {

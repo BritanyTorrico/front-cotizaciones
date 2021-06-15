@@ -23,16 +23,18 @@
       <table class="items-list">
         <thead>
           <tr>
-            <th>Cantidad</th>
-            <th>Item</th>
-            <th>Detalle</th>
+            <th style="border:1px solid; width:50px;">Cantidad</th>
+              <th style="border:1px solid; width:50px;">Unidad</th>
+              <th style="border:1px solid; width:70px;">Item</th>
+              <th style="border:1px solid; width:500px;">Detalle</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(item, index) in request.itemList" :key="index">
-            <td>{{ item.cantidad_solicitud }}</td>
-            <td>{{ item.unidad_solicitud }}</td>
-            <td>{{ item.detalle_solicitud }}</td>
+            <td style="border:1px solid;" class="table-quantity">{{ item.cantidad_solicitud }}</td>
+              <td style="border:1px solid;" class="table-unity">{{ item.unidad_solicitud }}</td>
+              <td style="border:1px solid;" class="table-itemname">{{ item.nombre_itemgasto }}</td>
+              <td style="border:1px solid;" class="table-detail">{{ item.detalle_solicitud }}</td>
           </tr>
         </tbody>
       </table>
@@ -157,7 +159,7 @@ export default {
         this.$bvModal.hide("modal-prevent-closing");
       });
     },
-    async sendData() {
+    async sendReport(){
       try {
         await this.$http.post(
           "report?type=codigo",
@@ -173,7 +175,12 @@ export default {
             },
           }
         );
-
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    async updateRequest(){
+      try {
         await this.$http.put(
           `request/${this.request.cod}?type=State`,
           {
@@ -185,9 +192,17 @@ export default {
             },
           }
         );
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    async sendData() {
+      try {
+        await this.sendReport()
+        await this.updateRequest()
         window.setInterval(window.location.reload(), 10000);
       } catch (error) {
-        throw new Error("Esta solicitud ya fue revisada");
+        throw new Error(error);
       }
     },
     async assert() {
@@ -288,7 +303,7 @@ p {
 }
 .items {
   align-self: center;
-  width: 90%;
+  width: 100%;
   padding: 0 0 5% 0;
   font-size: 17px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
@@ -306,6 +321,18 @@ p {
 .items td {
   padding: 0.5% 1% 0.5% 1%;
   border: 1px solid #c0c0c0;
+}
+.table-quantity{
+  width: 11.5%!important;
+}
+.table-unity{
+  width: 12%!important;
+}
+.table-detail{
+  width: 37%!important;
+}
+.table-itemname{
+  width: 13%!important; 
 }
 .response {
   display: flex;

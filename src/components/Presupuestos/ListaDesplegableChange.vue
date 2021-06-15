@@ -2,6 +2,7 @@
   <div class="container-lista">
     <div class="container__label">{{ nombreLista }}</div>
     <select
+      v-on:change="$emit('change', $event.target.value)"
       required
       v-on:input="$emit('input', $event.target.value)"
       class="container__list"
@@ -26,7 +27,7 @@
 import { required } from "vuelidate/lib/validators";
 
 export default {
-  name: "ListaDesplegable",
+  name: "ListaDesplegableChange",
   data() {
     return {
       inicial: "Seleccione",

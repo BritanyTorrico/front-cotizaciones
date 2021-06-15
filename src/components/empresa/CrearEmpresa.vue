@@ -54,6 +54,9 @@
           <div class="form_check-error" v-if="!$v.dato.nit_empresa.integer">
             Solo se aceptan valores numericos.
           </div>
+          <div class="form_check-error" v-if="!$v.dato.nit_empresa.maxLength">
+            Maximo 13 digitos.
+          </div>
         </div>
 
         <div class="form_section">
@@ -188,6 +191,40 @@
           <div class="form_check-error" v-if="!$v.dato.cuenta_bancaria.integer">
             Solo se aceptan valores numericos.
           </div>
+          <div
+            class="form_check-error"
+            v-if="!$v.dato.cuenta_bancaria.maxLength"
+          >
+            Maximo 13 digitos.
+          </div>
+        </div>
+        <div class="form_section">
+          <div class="form_name">Tipo de Item:</div>
+          <div class="form-radios">
+            <div class="item-set">
+              <input
+                type="radio"
+                class="item-type"
+                value="Products"
+                v-model="items"
+                @change="obtenerRubros"
+              />
+              <div class="item-label">Productos</div>
+            </div>
+            <div class="item-set">
+              <input
+                type="radio"
+                class="item-type"
+                value="Services"
+                v-model="items"
+                @change="obtenerRubros"
+              />
+              <div class="item-label">Servicios</div>
+            </div>
+          </div>
+          <div class="form_check-error" v-if="!$v.items.required">
+            Campo obligatorio.
+          </div>
         </div>
         <div class="form_section">
           <div class="form_name">Rubro:</div>
@@ -268,9 +305,13 @@ export default {
       },
       listRubros: [],
       componentKey: 0,
+      items: null,
     };
   },
   validations: {
+    items: {
+      required,
+    },
     dato: {
       nombre_empresa: {
         required,
@@ -280,6 +321,7 @@ export default {
       nit_empresa: {
         required,
         integer,
+        maxLength: maxLength(13),
       },
       representante_empresa: {
         required,
@@ -308,24 +350,43 @@ export default {
       cuenta_bancaria: {
         required,
         integer,
+        maxLength: maxLength(13),
       },
     },
   },
   methods: {
     forceRerender() {
       this.componentKey += 1;
-      console.log("cambio");
     },
     async obtenerRubros() {
-      const listaRubros = (
-        await this.$http.get("market", {
-          headers: {
-            authorization: this.token,
-          },
-        })
-      ).data.datos;
-      for (let i of listaRubros) {
-        this.listRubros.push(i.nombre_rubro);
+      this.listRubros = [];
+      if (this.items == "Products") {
+        const listaRubros = (
+          await this.$http.get("generalCategory", {
+            headers: {
+              authorization: this.token,
+            },
+          })
+        ).data;
+        for (let i of listaRubros) {
+          if (i.nombre_categoriageneral != "Servicios") {
+            this.listRubros.push(i.nombre_categoriageneral);
+          }
+        }
+      }
+      if (this.items == "Services") {
+        const listaRubros = (
+          await this.$http.get("specificCategory", {
+            headers: {
+              authorization: this.token,
+            },
+          })
+        ).data;
+        for (let j of listaRubros) {
+          if (j.cod_categoriageneral == 4) {
+            this.listRubros.push(j.nombre_categoriaespecifica);
+          }
+        }
       }
     },
     async submitForm() {
@@ -333,18 +394,7 @@ export default {
         if (!this.$v.dato.$invalid) {
           await this.manageMark();
           await this.sendData();
-
-          this.dato.nombre_empresa = null;
-          this.dato.nit_empresa = null;
-          this.dato.representante_empresa = null;
-          this.dato.telf_empresa = null;
-          this.dato.direccion_empresa = null;
-          this.dato.correo_empresa = null;
-          this.dato.rubro_empresa = null;
-          this.dato.cuenta_bancaria = null;
-          window.setInterval(window.location.reload(), 10000);
         } else {
-          console.log("llegoooo");
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
@@ -356,6 +406,7 @@ export default {
         await this.sendEmpData();
         // si sale bien recien puede registrar compania por rubro
         await this.sendCompMark();
+        window.setInterval(window.location.reload(), 10000);
       } catch (error) {
         this.alert("warning", "Algo salio mal");
       }
@@ -371,7 +422,6 @@ export default {
             telf_empresa: this.dato.telf_empresa,
             direccion_empresa: this.dato.direccion_empresa,
             correo_empresa: this.dato.correo_empresa,
-            // rubro_empresa: this.dato.rubro_empresa,
             cuenta_bancaria: this.dato.cuenta_bancaria,
           },
           {
@@ -429,17 +479,33 @@ export default {
               },
             }
           );
-          await this.$http.post(
-            "generalCategory",
-            {
-              nombre_categoriageneral: this.dato.rubro_empresa,
-            },
-            {
-              headers: {
-                authorization: this.token,
+          if (this.items == "Products") {
+            await this.$http.post(
+              "generalCategory",
+              {
+                nombre_categoriageneral: this.dato.rubro_empresa,
               },
-            }
-          );
+              {
+                headers: {
+                  authorization: this.token,
+                },
+              }
+            );
+          }
+          if (this.items == "Services") {
+            await this.$http.post(
+              "specificCategory",
+              {
+                cod_categoriageneral: 4,
+                nombre_categoriaespecifica: this.dato.rubro_empresa,
+              },
+              {
+                headers: {
+                  authorization: this.token,
+                },
+              }
+            );
+          }
         }
       } catch (error) {
         throw new Error("Rubro Inválido");
@@ -450,7 +516,6 @@ export default {
     },
   },
   mounted() {
-    this.obtenerRubros();
     var validCodesName = [
       32,
       48,
@@ -919,5 +984,21 @@ export default {
   justify-content: center;
   align-content: center;
   text-align: center;
+}
+.item-set {
+  display: flex;
+  align-items: baseline;
+  padding-left: 2.5%;
+  padding-top: 7%;
+}
+.item-label {
+  color: #030303;
+  padding: 2% 0 0 7px;
+  font-size: 14px;
+}
+.form-radios {
+  display: flex;
+  justify-content: space-between;
+  width: 30%;
 }
 </style>
