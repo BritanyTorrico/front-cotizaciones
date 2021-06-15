@@ -15,7 +15,7 @@
       <p>{{ item.justification }}</p>
     </div>
     <div class="options">
-        <button class="accept-button">Editar</button>
+        <button class="accept-button" v-on:click="editItem()">Editar</button>
         <button class="reject-button">Eliminar</button>
     </div>
   </div>
@@ -35,6 +35,12 @@ export default {
         description: String,
         justification: String,
       }
+  },
+  methods: {
+    editItem(){
+      const id = this.item.cod;
+      this.$router.push(`/item/editar/${id}`)
+    }
   }
 }
 </script>

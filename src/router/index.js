@@ -168,6 +168,26 @@ const routes = [{
         component: () =>
             import ("../views/RegistrarPresupuestos.vue"),
     },
+    {
+        path: "/item/editar/:id",
+        name: "EditarItemGasto",
+        component: () =>
+            import ("@/views/EditItem.vue"),
+
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/unidad/editar/:id",
+        name: "EditarUnidadGasto",
+        component: () =>
+            import ("@/views/EditUnit.vue"),
+
+        meta: {
+            rutaProtegida: true,
+        },
+    },
 ];
 
 const router = new VueRouter({

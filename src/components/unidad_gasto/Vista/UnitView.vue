@@ -17,7 +17,7 @@
       <p>{{ unit.description }}</p>
     </div>
     <div class="options">
-        <button class="accept-button">Editar</button>
+        <button class="accept-button" v-on:click="editUnit()">Editar</button>
         <button class="reject-button">Eliminar</button>
     </div>
   </div>
@@ -37,6 +37,12 @@ export default {
         budget: Number,
         description: String,
       }
+  },
+  methods: {
+    editUnit(){
+      const id = this.unit.cod;
+      this.$router.push(`/unidad/editar/${id}`)
+    }
   }
 }
 </script>
