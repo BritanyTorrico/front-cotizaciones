@@ -111,7 +111,7 @@
                 $v.presupuesto.$invalid ? 'button-disabled' : 'form_button'
               "
             >
-              Registrar
+              Confirmar
             </button>
           </div>
         </div>
