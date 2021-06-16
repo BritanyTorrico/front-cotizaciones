@@ -166,10 +166,10 @@ const routes = [{
             import ("../views/RegistrarPresupuestos.vue"),
     },
     {
-        path: "/historial_presupuestos",
-        name: "HistorialPresupuestosPage",
+        path: "/presupuestoDep",
+        name: "RegistrarPresupuestoDepto",
         component: () =>
-            import ("../views/HistorialPresupuestosPage.vue"),
+            import ("../views/RegistrarPresupuestoDepto.vue"),
     },
 ];
 

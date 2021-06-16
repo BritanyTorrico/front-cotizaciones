@@ -452,10 +452,4 @@ table thead tr th {
   width: 50%;
   padding-right: 70px;
 }
-.green-bg {
-  background-color: green;
-}
-.hola {
-  background: red;
-}
 </style>
