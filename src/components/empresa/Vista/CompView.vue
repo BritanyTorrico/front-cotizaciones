@@ -26,7 +26,7 @@
       <p>{{ company.address }}</p>
     </div>
     <div class="options">
-        <button class="accept-button">Editar</button>
+        <button class="accept-button" v-on:click="editCompany()">Editar</button>
         <button class="reject-button">Eliminar</button>
     </div>
   </div>
@@ -49,6 +49,12 @@ export default {
         mail: String,
         bank: Number,
       }
+  },
+  methods: {
+    editCompany(){
+      const id = this.company.cod;
+      this.$router.push(`/empresa/editar/${id}`)
+    }
   }
 }
 </script>

@@ -21,7 +21,10 @@
                 >
             </select>
         </div>
-        <div class="inbox-container">
+        <div v-if="inboxData.length===0">
+            <div class="desc">No hay usuarios registrados en esta facultad</div>
+        </div>
+        <div v-else class="inbox-container">
             <div class="list-cards" :class="selectedUser.name === '' ? 'full-screen' : 'side-view'">
                 <div class="card-side">
                     <div class="desc">Usuarios registrados:</div>

@@ -1,8 +1,8 @@
 <template>
   <div class="edit_unit">
-    <h2 class="unit_title">Registrar Unidad de Gasto</h2>
+    <h2 class="unit_title">Editar Unidad de Gasto</h2>
     <label>
-      <div class="form_desc">Ingrese los datos de la nueva unidad de gasto</div>
+      <div class="form_desc">Puede cambiar los datos de la unidad de gasto</div>
     </label>
     <form class="form_unitreg" @submit.prevent="submitForm" autocomplete="off">
       <div class="form_section">
@@ -156,8 +156,8 @@ export default {
       try {
         if (!this.$v.unit.$invalid) {
           await this.sendData();
-          this.alert("success", "Unidad creada exitosamente");
-          window.setInterval(window.location.reload(), 10000);
+          this.alert("success", "Unidad editada exitosamente");
+          this.$router.push(`/unidades`)
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }

@@ -21,7 +21,10 @@
                 >
             </select>
         </div>
-        <div class="inbox-container">
+        <div v-if="inboxData.length===0">
+            <div class="desc">No hay empresas registradas en este rubro</div>
+        </div>
+        <div v-else class="inbox-container">
             <div class="inbox-cards" :class="selectedCompany.name === '' ? 'full-screen' : 'side-view'">
                 <div class="card-side">
                     <div class="desc">Empresas registradas:</div>
@@ -86,6 +89,7 @@ export default {
   },
   methods: {
       async getData(){
+          this.inboxData= []
           const emp = (
             await this.$http.get(`company?rubro=${this.rubro}`, {
             headers: {

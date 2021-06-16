@@ -1,9 +1,9 @@
 <template>
   <section class="crear_empresa">
-    <h2 class="empresa_title">Registrar empresa</h2>
+    <h2 class="empresa_title">Editar empresa</h2>
 
     <div class="form_desc">
-      Ingrese los datos correspondientes a la nueva empresa
+      Puede cambiar los datos correspondientes a la empresa
     </div>
 
     <form @submit.prevent="submitForm" autocomplete="off">
@@ -264,7 +264,7 @@ const alpha1 = helpers.regex("alpha1", /^[a-zA-ZÑñ+áéíóúÁÉÍÓÚ\s]*$/)
 const alpha2 = helpers.regex("alpha2", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.-_@\s]*$/);
 const alpha3 = helpers.regex("alpha3", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ\s]*$/);
 export default {
-  name: "CrearEmpresa",
+  name: "EditarEmpresa",
   computed: {
     ...mapState(["token"]),
   },
@@ -283,6 +283,7 @@ export default {
         cuenta_bancaria: null,
       },
       listRubros: [],
+      rubro_empresa_original: null,
       componentKey: 0,
       items: null,
     };
@@ -383,15 +384,18 @@ export default {
       try {
         await this.sendEmpData();
         // si sale bien recien puede registrar compania por rubro
-        await this.sendCompMark();
+        if (this.dato.rubro_empresa!=this.rubro_empresa_original){
+            await this.sendCompMark();
+        }
+        this.$router.push(`/empresas`)
       } catch (error) {
         this.alert("warning", "Algo salio mal");
       }
     },
     async sendEmpData() {
       try {
-        await this.$http.post(
-          "company",
+        await this.$http.put(
+          `company/${this.$route.params.id}`,
           {
             nombre_empresa: this.dato.nombre_empresa,
             nit_empresa: this.dato.nit_empresa,
@@ -415,11 +419,29 @@ export default {
     },
     async sendCompMark() {
       try {
-        await this.$http.post(
-          "companiesPerMarket",
+          const markets = (
+          await this.$http.get("market", {
+            headers: {
+              authorization: this.token,
+            },
+          })
+        ).data.datos;
+        let oldMarket=null
+        let newMarket=null
+        for (let i of markets) {
+          if (i.nombre_rubro == this.rubro_empresa_original){
+              oldMarket = i.cod_rubro
+          }
+          if (i.nombre_rubro == this.dato.rubro_empresa){
+              newMarket = i.cod_rubro
+          }
+        }
+        if (oldMarket!=null && newMarket!=null){
+        await this.$http.put(
+          `companiesPerMarket/${this.$route.params.id}`,
           {
-            nombre_rubro: this.dato.rubro_empresa,
-            nombre_empresa: this.dato.nombre_empresa,
+            cod_rubroOriginal: oldMarket,
+            cod_rubroNuevo: newMarket,
           },
           {
             headers: {
@@ -427,6 +449,7 @@ export default {
             },
           }
         );
+        }
       } catch (error) {
         throw new Error("El rubro es inválido");
       }
@@ -492,7 +515,40 @@ export default {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
-  mounted() {
+  mounted: async function(){
+    const response = (await this.$http.get(`company/${this.$route.params.id}`,{
+                headers:{
+                  authorization:this.token,
+                },
+              })).data.datos[0]        
+    this.dato.nombre_empresa=response.nombre_empresa
+    this.dato.nit_empresa=response.nit_empresa
+    this.dato.representante_empresa=response.representante_empresa
+    this.dato.telf_empresa=response.telf_empresa
+    this.dato.direccion_empresa=response.direccion_empresa
+    this.dato.correo_empresa=response.correo_empresa
+    this.dato.cuenta_bancaria=response.cuenta_bancaria
+    const rubro = (await this.$http.get(`companiesPerMarket?empresa=${response.nombre_empresa}`,{
+                headers:{
+                  authorization:this.token,
+                },
+              })).data.datos[0]  
+    const cat = (await this.$http.get(`specificCategory`,{
+                headers:{
+                  authorization:this.token,
+                },
+              })).data
+    for (let i of cat){
+        if ((i.nombre_categoriaespecifica==rubro.nombre_rubro) && (i.cod_categoriageneral==4)){
+            this.items="Services"
+        }
+    }
+    if (this.items==null){
+        this.items="Products"
+    }
+    this.dato.rubro_empresa=rubro.nombre_rubro
+    this.rubro_empresa_original=rubro.nombre_rubro
+
     var validCodesName = [
       32,
       48,

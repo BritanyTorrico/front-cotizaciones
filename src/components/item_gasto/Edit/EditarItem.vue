@@ -2,7 +2,7 @@
   <section class="edit_item">
     <h2 class="item_title">Editar Item de Gasto</h2>
     <label>
-      <div class="form_desc">Ingrese los datos de un nuevo item de gasto</div>
+      <div class="form_desc">Puede cambiar los datos del item de gasto</div>
     </label>
     <form class="form_itemreg" @submit.prevent="submitForm" autocomplete="off">
       <div class="form_section">

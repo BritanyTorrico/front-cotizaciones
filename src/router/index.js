@@ -188,6 +188,26 @@ const routes = [{
             rutaProtegida: true,
         },
     },
+    {
+        path: "/empresa/editar/:id",
+        name: "EditarEmpresas",
+        component: () =>
+            import ("@/views/EditCompany.vue"),
+
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/usuario/editar/:id",
+        name: "EditarUsuarios",
+        component: () =>
+            import ("@/views/EditUser.vue"),
+
+        meta: {
+            rutaProtegida: true,
+        },
+    },
 ];
 
 const router = new VueRouter({

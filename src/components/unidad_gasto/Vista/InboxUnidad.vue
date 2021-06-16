@@ -3,7 +3,10 @@
       <div class="btn">
             <button class="new-unit" v-on:click="newUnit()">Nueva Unidad</button>
         </div>
-        <div class="inbox-container">
+        <div v-if="inboxData.length===0">
+            <div class="desc">No hay unidades registradas en este departamento</div>
+        </div>
+        <div v-else class="inbox-container">
             <div class="inbox-cards" :class="selectedUnit.name === '' ? 'full-screen' : 'side-view'">
                 <div class="card-side">
                     <div class="desc">Unidades registradas:</div>

@@ -3,7 +3,10 @@
         <div class="btn">
             <button class="new-request" v-on:click="newRequest()">Nueva Solicitud</button>
         </div>
-        <div class="inbox-container">
+        <div v-if="inboxData.length===0">
+            <div class="desc">No tiene solicitudes realizadas</div>
+        </div>
+        <div v-else class="inbox-container">
             <div class="inbox-cards" :class="selectedRequest.name === '' ? 'full-screen' : 'side-view'">
                 <div class="card-side">
                     <div class="desc">Mis solicitudes:</div>

@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="options">
-            <button class="accept-button">Editar</button>
+            <button class="accept-button" v-on:click="editUser()">Editar</button>
             <button class="reject-button">Eliminar</button>
         </div>
     </div>
@@ -45,6 +45,12 @@ export default {
             cell: Number,
         },
     },
+    methods: {
+    editUser(){
+      const id = this.user.cod;
+      this.$router.push(`/usuario/editar/${id}`)
+    }
+  }
 }
 </script>
 

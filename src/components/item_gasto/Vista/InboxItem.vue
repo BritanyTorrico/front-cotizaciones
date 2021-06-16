@@ -21,7 +21,10 @@
                 >
             </select>
         </div>
-        <div class="inbox-container">
+        <div v-if="inboxData.length===0">
+            <div class="desc">No hay items registrados en esta categoría</div>
+        </div>
+        <div v-else class="inbox-container">
             <div class="inbox-cards" :class="selectedItem.name === '' ? 'full-screen' : 'side-view'">
                 <div class="card-side">
                     <div class="desc">Items registrados:</div>
