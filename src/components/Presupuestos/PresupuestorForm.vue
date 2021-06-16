@@ -214,7 +214,6 @@ export default {
         }
       } catch (error) {
         this.alert("warning", "Algo salio mal");
-        console.log(error);
       }
     },
     async obtenerDepartamentos() {
@@ -268,7 +267,6 @@ export default {
         }
       } catch (error) {
         this.alert("warning", "Algo salio mal");
-        console.log(error);
       }
     },
     cambiaFacultad() {
