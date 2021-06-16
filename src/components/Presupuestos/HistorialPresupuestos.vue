@@ -113,7 +113,7 @@
         fixed
         :items="listaHistorialDatos"
         :fields="fields"
-        thead-class="bg-dark text-white"
+        thead-class="bg-secondary hola text-white"
       >
       </b-table>
     </div>
@@ -454,5 +454,8 @@ table thead tr th {
 }
 .green-bg {
   background-color: green;
+}
+.hola {
+  background: red;
 }
 </style>
