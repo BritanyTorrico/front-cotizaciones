@@ -14,10 +14,10 @@
 
         <div class="form__datos">
           <div class="titulo">
-            <div class="tii"><h2 class="item_title">Registrar Usuario</h2></div>
+            <div class="tii"><h2 class="item_title">Editar Usuario</h2></div>
 
             <div class="form_desc">
-              Ingrese los datos del usuario.
+              Puede editar los datos del usuario.
             </div>
           </div>
           <div class="form__section">
@@ -158,80 +158,6 @@
               </div>
             </div>
           </div>
-          <div class="form__section2">
-            <div class="formulario_label">
-              Contraseña:
-            </div>
-            <div class="flex__contraseña">
-              <input
-                type="password"
-                id="password"
-                :class="
-                  $v.users.contrasena.$invalid
-                    ? 'form_check-input-error'
-                    : 'form__input'
-                "
-                placeholder="Ingrese su contraseña"
-                v-model="users.contrasena"
-              />
-              <div class="flex__contraseña__icon">
-                <i @click="mostrarContrasena()" class="fas fa-eye"></i>
-              </div>
-            </div>
-
-            <div class="form_check-error" v-if="!$v.users.contrasena.valid">
-              La contraseña debe contener al menos una mayuscula, minuscula un
-              número y un caracter especial de las siguientes opciones:
-              ?!@$%^&*-
-            </div>
-            <div class="form_check-error" v-if="!$v.users.contrasena.minLength">
-              Minimo 8 caracteres
-            </div>
-            <div class="form_check-error" v-if="!$v.users.contrasena.maxLength">
-              Contraseña muy larga máximo
-              {{ $v.users.contrasena.$params.maxLength.max }} caracteres.
-            </div>
-          </div>
-          <div class="form__section2">
-            <div class="formulario_label">Confirmar Contraseña:</div>
-            <div class="flex__contraseña">
-              <input
-                type="password"
-                id="password2"
-                :class="
-                  $v.users.confirmarContraseña.$invalid
-                    ? 'form_check-input-error'
-                    : 'form__input'
-                "
-                placeholder="Ingrese su contraseña"
-                v-model="users.confirmarContraseña"
-              />
-              <div class="flex__contraseña__icon">
-                <i @click="mostrarContrasena2()" class="fas fa-eye"></i>
-              </div>
-            </div>
-
-            <div
-              class="form_check-error"
-              v-if="!$v.users.confirmarContraseña.required"
-            >
-              Campo obligatorio.
-            </div>
-            <div
-              class="form_check-error"
-              v-if="!$v.users.confirmarContraseña.sameAsPassword"
-            >
-              Las contraseñas debe coincidir.
-            </div>
-            <div
-              class="form_check-error"
-              v-if="!$v.users.confirmarContraseña.maxLength"
-            >
-              Contraseña muy larga maximo
-              {{ $v.users.confirmarContraseña.$params.maxLength.max }}
-              caracteres.
-            </div>
-          </div>
           <div class="form__section3">
             <div class="fomrm__section__item">
               <div class="container-facu">
@@ -307,7 +233,6 @@ import {
   required,
   minLength,
   maxLength,
-  sameAs,
   integer,
   helpers,
 } from "vuelidate/lib/validators";
@@ -334,8 +259,6 @@ export default {
       requerido: true,
       users: {
         nombre_usuario: null,
-        contrasena: null,
-        confirmarContraseña: null,
         nombres: null,
         apellidos: null,
         celular: null,
@@ -372,29 +295,6 @@ export default {
         minLength: minLength(3),
         maxLength: maxLength(20),
         alpha1,
-      },
-      contrasena: {
-        required,
-        minLength: minLength(8),
-        maxLength: maxLength(20),
-        valid: function(value) {
-          const containsUppercase = /[A-Z]/.test(value);
-          const containsNumber = /[0-9]/.test(value);
-          const containsLowercase = /[a-z]/.test(value);
-          const containsSpecial = /[?!@$%^&*-]/.test(value);
-          return (
-            containsUppercase &&
-            containsLowercase &&
-            containsNumber &&
-            containsSpecial
-          );
-        },
-      },
-      confirmarContraseña: {
-        required,
-        minLength: minLength(8),
-        maxLength: maxLength(20),
-        sameAsPassword: sameAs("contrasena"),
       },
       celular: {
         required,
@@ -600,10 +500,9 @@ export default {
     async sendDataUsers() {
       try {
         await this.$http.put(
-          `users/${this.$route.params.id}`,
+          `users/${this.$route.params.id}?type=noPass`,
           {
             nombre_usuario: this.users.nombre_usuario,
-            contrasena: this.users.contrasena,
             nombres: this.users.nombres,
             apellidos: this.users.apellidos,
             celular: this.users.celular,
