@@ -97,12 +97,12 @@
                 class="confirm-company"
                 @click="confirmCompany()"
                 :disabled="
-                  this.confirmed.length === 3 ||
+                  this.confirmed.length === 5 ||
                     this.confirmed[this.confirmed.length - 1] ===
                       this.empresa.nombre
                 "
                 :class="
-                  this.confirmed.length === 3 ||
+                  this.confirmed.length === 5 ||
                   this.confirmed[this.confirmed.length - 1] ===
                     this.empresa.nombre
                     ? 'button-disabled'
@@ -203,7 +203,7 @@ export default {
   validations: {
     confirmed: {
       required,
-      maxLength: maxLength(3),
+      maxLength: maxLength(5),
       minLength: minLength(3),
     },
   },

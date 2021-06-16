@@ -1,9 +1,9 @@
 <template>
   <section class="crear_empresa">
-    <h2 class="empresa_title">Registrar empresa</h2>
+    <h2 class="empresa_title">Editar empresa</h2>
 
     <div class="form_desc">
-      Ingrese los datos correspondientes a la nueva empresa
+      Puede cambiar los datos correspondientes a la empresa
     </div>
 
     <form @submit.prevent="submitForm" autocomplete="off">
@@ -53,9 +53,6 @@
           </div>
           <div class="form_check-error" v-if="!$v.dato.nit_empresa.integer">
             Solo se aceptan valores numericos.
-          </div>
-          <div class="form_check-error" v-if="!$v.dato.nit_empresa.maxLength">
-            Maximo 13 digitos.
           </div>
         </div>
 
@@ -191,36 +188,18 @@
           <div class="form_check-error" v-if="!$v.dato.cuenta_bancaria.integer">
             Solo se aceptan valores numericos.
           </div>
-          <div
-            class="form_check-error"
-            v-if="!$v.dato.cuenta_bancaria.maxLength"
-          >
-            Maximo 13 digitos.
-          </div>
         </div>
         <div class="form_section">
           <div class="form_name">Tipo de Item:</div>
           <div class="form-radios">
             <div class="item-set">
-              <input
-                type="radio"
-                class="item-type"
-                value="Products"
-                v-model="items"
-                @change="obtenerRubros"
-              />
-              <div class="item-label">Productos</div>
-            </div>
-            <div class="item-set">
-              <input
-                type="radio"
-                class="item-type"
-                value="Services"
-                v-model="items"
-                @change="obtenerRubros"
-              />
-              <div class="item-label">Servicios</div>
-            </div>
+                  <input type="radio" class="item-type" value="Products" v-model="items" @change="obtenerRubros">
+                  <div class="item-label">Productos</div>
+              </div>
+              <div class="item-set">
+                  <input type="radio" class="item-type" value="Services" v-model="items" @change="obtenerRubros">
+                  <div class="item-label">Servicios</div>
+              </div>
           </div>
           <div class="form_check-error" v-if="!$v.items.required">
             Campo obligatorio.
@@ -285,7 +264,7 @@ const alpha1 = helpers.regex("alpha1", /^[a-zA-ZÑñ+áéíóúÁÉÍÓÚ\s]*$/)
 const alpha2 = helpers.regex("alpha2", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.-_@\s]*$/);
 const alpha3 = helpers.regex("alpha3", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ\s]*$/);
 export default {
-  name: "CrearEmpresa",
+  name: "EditarEmpresa",
   computed: {
     ...mapState(["token"]),
   },
@@ -304,13 +283,14 @@ export default {
         cuenta_bancaria: null,
       },
       listRubros: [],
+      rubro_empresa_original: null,
       componentKey: 0,
       items: null,
     };
   },
   validations: {
     items: {
-      required,
+      required
     },
     dato: {
       nombre_empresa: {
@@ -321,7 +301,6 @@ export default {
       nit_empresa: {
         required,
         integer,
-        maxLength: maxLength(13),
       },
       representante_empresa: {
         required,
@@ -350,7 +329,6 @@ export default {
       cuenta_bancaria: {
         required,
         integer,
-        maxLength: maxLength(13),
       },
     },
   },
@@ -359,35 +337,36 @@ export default {
       this.componentKey += 1;
     },
     async obtenerRubros() {
-      this.listRubros = [];
-      if (this.items == "Products") {
+      this.listRubros=[]
+      if(this.items=="Products"){
         const listaRubros = (
-          await this.$http.get("generalCategory", {
-            headers: {
-              authorization: this.token,
-            },
-          })
-        ).data;
-        for (let i of listaRubros) {
-          if (i.nombre_categoriageneral != "Servicios") {
-            this.listRubros.push(i.nombre_categoriageneral);
-          }
+        await this.$http.get("generalCategory", {
+          headers: {
+            authorization: this.token,
+          },
+        })
+      ).data;
+      for (let i of listaRubros) {
+        if (i.nombre_categoriageneral!="Servicios"){
+          this.listRubros.push(i.nombre_categoriageneral);
         }
       }
-      if (this.items == "Services") {
+      }
+      if(this.items=="Services"){
         const listaRubros = (
-          await this.$http.get("specificCategory", {
-            headers: {
-              authorization: this.token,
-            },
-          })
-        ).data;
-        for (let j of listaRubros) {
-          if (j.cod_categoriageneral == 4) {
-            this.listRubros.push(j.nombre_categoriaespecifica);
-          }
+        await this.$http.get("specificCategory", {
+          headers: {
+            authorization: this.token,
+          },
+        })
+      ).data;
+      for (let j of listaRubros) {
+        if(j.cod_categoriageneral==4){
+          this.listRubros.push(j.nombre_categoriaespecifica);
         }
       }
+      }
+      
     },
     async submitForm() {
       try {
@@ -405,16 +384,18 @@ export default {
       try {
         await this.sendEmpData();
         // si sale bien recien puede registrar compania por rubro
-        await this.sendCompMark();
-        window.setInterval(window.location.reload(), 10000);
+        if (this.dato.rubro_empresa!=this.rubro_empresa_original){
+            await this.sendCompMark();
+        }
+        this.$router.push(`/empresas`)
       } catch (error) {
         this.alert("warning", "Algo salio mal");
       }
     },
     async sendEmpData() {
       try {
-        await this.$http.post(
-          "company",
+        await this.$http.put(
+          `company/${this.$route.params.id}`,
           {
             nombre_empresa: this.dato.nombre_empresa,
             nit_empresa: this.dato.nit_empresa,
@@ -438,11 +419,29 @@ export default {
     },
     async sendCompMark() {
       try {
-        await this.$http.post(
-          "companiesPerMarket",
+          const markets = (
+          await this.$http.get("market", {
+            headers: {
+              authorization: this.token,
+            },
+          })
+        ).data.datos;
+        let oldMarket=null
+        let newMarket=null
+        for (let i of markets) {
+          if (i.nombre_rubro == this.rubro_empresa_original){
+              oldMarket = i.cod_rubro
+          }
+          if (i.nombre_rubro == this.dato.rubro_empresa){
+              newMarket = i.cod_rubro
+          }
+        }
+        if (oldMarket!=null && newMarket!=null){
+        await this.$http.put(
+          `companiesPerMarket/${this.$route.params.id}`,
           {
-            nombre_rubro: this.dato.rubro_empresa,
-            nombre_empresa: this.dato.nombre_empresa,
+            cod_rubroOriginal: oldMarket,
+            cod_rubroNuevo: newMarket,
           },
           {
             headers: {
@@ -450,6 +449,7 @@ export default {
             },
           }
         );
+        }
       } catch (error) {
         throw new Error("El rubro es inválido");
       }
@@ -479,32 +479,32 @@ export default {
               },
             }
           );
-          if (this.items == "Products") {
+          if (this.items=="Products"){
             await this.$http.post(
-              "generalCategory",
-              {
-                nombre_categoriageneral: this.dato.rubro_empresa,
+            "generalCategory",
+            {
+              nombre_categoriageneral: this.dato.rubro_empresa,
+            },
+            {
+              headers: {
+                authorization: this.token,
               },
-              {
-                headers: {
-                  authorization: this.token,
-                },
-              }
-            );
+            }
+          );
           }
-          if (this.items == "Services") {
+          if (this.items=="Services"){
             await this.$http.post(
-              "specificCategory",
-              {
-                cod_categoriageneral: 4,
-                nombre_categoriaespecifica: this.dato.rubro_empresa,
+            "specificCategory",
+            {
+              cod_categoriageneral: 4,
+              nombre_categoriaespecifica: this.dato.rubro_empresa,
+            },
+            {
+              headers: {
+                authorization: this.token,
               },
-              {
-                headers: {
-                  authorization: this.token,
-                },
-              }
-            );
+            }
+          );
           }
         }
       } catch (error) {
@@ -515,7 +515,40 @@ export default {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
-  mounted() {
+  mounted: async function(){
+    const response = (await this.$http.get(`company/${this.$route.params.id}`,{
+                headers:{
+                  authorization:this.token,
+                },
+              })).data.datos[0]        
+    this.dato.nombre_empresa=response.nombre_empresa
+    this.dato.nit_empresa=response.nit_empresa
+    this.dato.representante_empresa=response.representante_empresa
+    this.dato.telf_empresa=response.telf_empresa
+    this.dato.direccion_empresa=response.direccion_empresa
+    this.dato.correo_empresa=response.correo_empresa
+    this.dato.cuenta_bancaria=response.cuenta_bancaria
+    const rubro = (await this.$http.get(`companiesPerMarket?empresa=${response.nombre_empresa}`,{
+                headers:{
+                  authorization:this.token,
+                },
+              })).data.datos[0]  
+    const cat = (await this.$http.get(`specificCategory`,{
+                headers:{
+                  authorization:this.token,
+                },
+              })).data
+    for (let i of cat){
+        if ((i.nombre_categoriaespecifica==rubro.nombre_rubro) && (i.cod_categoriageneral==4)){
+            this.items="Services"
+        }
+    }
+    if (this.items==null){
+        this.items="Products"
+    }
+    this.dato.rubro_empresa=rubro.nombre_rubro
+    this.rubro_empresa_original=rubro.nombre_rubro
+
     var validCodesName = [
       32,
       48,
@@ -985,20 +1018,20 @@ export default {
   align-content: center;
   text-align: center;
 }
-.item-set {
-  display: flex;
-  align-items: baseline;
-  padding-left: 2.5%;
-  padding-top: 7%;
+.item-set{
+    display: flex;
+    align-items: baseline;
+    padding-left: 2.5%;
+    padding-top: 7%;
 }
-.item-label {
-  color: #030303;
-  padding: 2% 0 0 7px;
-  font-size: 14px;
+.item-label{
+    color: #030303;
+    padding: 2% 0 0 7px;
+    font-size: 14px;
 }
-.form-radios {
+.form-radios{
   display: flex;
   justify-content: space-between;
-  width: 30%;
+  width: 30%
 }
 </style>

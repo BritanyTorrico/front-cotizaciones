@@ -138,7 +138,6 @@ h3 {
 h5 {
   font-size: 18px;
   color: #030303 !important;
-  line-height: 1.8;
   font-weight: 600;
   text-align: left;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
