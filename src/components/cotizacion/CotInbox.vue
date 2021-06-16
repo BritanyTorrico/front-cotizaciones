@@ -1,6 +1,9 @@
 <template>
     <div class="inbox">
-        <div class="inbox-container">
+        <div v-if="inboxData.length===0">
+            <div class="desc">No hay solicitudes aceptadas pendientes</div>
+        </div>
+        <div v-else class="inbox-container">
             <div class="inbox-cards" :class="selectedRequest.name === '' ? 'full-screen' : 'side-view'">
                 <div class="card-side">
                     <div class="desc">Solicitudes aceptadas:</div>
