@@ -217,6 +217,12 @@ const routes = [{
         component: () =>
             import ("../views/HistorialPresupuestosPage.vue"),
     },
+    {
+        path: "/historial_presupuestos_dep",
+        name: "HistorialPresupuestoDepPage",
+        component: () =>
+            import ("../views/HistorialPresupuestoDepPage.vue"),
+    },
 ];
 
 const router = new VueRouter({

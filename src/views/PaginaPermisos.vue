@@ -112,9 +112,57 @@
             <card-permiso
               colorIcono="#FFFFFF"
               colorFondo=" #84817a"
-              nombreIcono="book"
+              nombreIcono="layout-split"
               titulo="Ver cotizaciones"
               contenido="Usted puede ver todas las cotizaciones por diferentes filtros ya sea popr fechas,item/servicios , por el rubro de una empresa y mas."
+            >
+            </card-permiso>
+          </a>
+        </div>
+        <div class="col-sm-3">
+          <a class="redireccion" href="/presupuestoDep">
+            <card-permiso
+              colorIcono="#FFFFFF"
+              colorFondo=" #ff6348"
+              nombreIcono="graph-up"
+              titulo="Presupuestos por departamento"
+              contenido="Usted puede registrar todos los presupuestos por departamento y editar los mismos si ya existe algun registro."
+            >
+            </card-permiso>
+          </a>
+        </div>
+        <div class="col-sm-3">
+          <a class="redireccion" href="/presupuestos">
+            <card-permiso
+              colorIcono="#FFFFFF"
+              colorFondo=" #70a1ff"
+              nombreIcono="pencil"
+              titulo="Presupuestos Unidad gasto"
+              contenido="Usted puede registrar todos los presupuestos por unidad de gasto y editar los mismos si ya existe algun registro."
+            >
+            </card-permiso>
+          </a>
+        </div>
+        <div class="col-sm-3">
+          <a class="redireccion" href="/historial_presupuestos_dep">
+            <card-permiso
+              colorIcono="#FFFFFF"
+              colorFondo=" #7bed9f"
+              nombreIcono="receipt"
+              titulo="Historial de presupuestos por departamento"
+              contenido="Usted puede ver todo el historial de cambios sobre el presupuesto por departamento."
+            >
+            </card-permiso>
+          </a>
+        </div>
+        <div class="col-sm-3">
+          <a class="redireccion" href="/historial_presupuestos">
+            <card-permiso
+              colorIcono="#FFFFFF"
+              colorFondo=" #fbc531"
+              nombreIcono="file-check"
+              titulo="Historial de presupuestos por unidad"
+              contenido="Usted puede ver todo el historial de cambios sobre el presupuesto por Unidad de gasto."
             >
             </card-permiso>
           </a>
