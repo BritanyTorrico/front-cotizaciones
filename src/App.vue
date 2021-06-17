@@ -247,7 +247,7 @@ footer {
    position:absolute;
    bottom:0;
    width:100%;
-   height:60px;   /* Height of the footer */
+   height:60px;
    background:#6cf;
 }
 </style>
