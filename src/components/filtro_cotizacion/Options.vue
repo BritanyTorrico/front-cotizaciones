@@ -1,7 +1,11 @@
 <template>
   <div class="cot-filters">
-      <div class="filter-title">Filtros</div>
-      <div class="filter-categories">
+      <div class="filter-title" v-on:click="showFilters = !showFilters">Filtros</div>
+      <transition class="animation"
+                      enter-active-class="animate__animated animate__fadeInDown"
+                      leave-active-class="animate__animated animate__fadeOutUp"
+                    >
+      <div v-if="showFilters" class="filter-categories">
           <div class="filter-date">
               <div class="option-title">Fecha</div>
               <div class="date-set">
@@ -58,6 +62,7 @@
                 </div>
           </div>
       </div>
+      </transition>
   </div>
 </template>
 
@@ -77,7 +82,8 @@ export default {
           marketsList: ["Todos"],
           companiesList: ["Todas"],
           filteredInbox: [],
-          filteredItems: []
+          filteredItems: [],
+          showFilters: false
       }
   },
   methods: {
@@ -218,6 +224,32 @@ export default {
     display: flex;
     justify-content: space-between;
     padding: 0 10% 5% 3%;
+}
+.animate__fadeInDown{
+    animation-name: infil;
+}
+@keyframes infil {
+  from {
+    transform: translateY(-11%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+.animate__fadeOutUp{
+    animation-name: outfil;
+}
+@keyframes outfil {
+  from {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-11%);
+    opacity: 0;
+  }
 }
 .option-title{
     text-align: left;
