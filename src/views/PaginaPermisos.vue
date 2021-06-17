@@ -163,12 +163,11 @@ export default {
     async obtenerDatos() {
       try {
         const datos = (
-          await this.$http.get(`users/${localStorage.getItem("userID")}`, {
-            headers: {
-              authorization: this.token,
-            },
-          })
-        ).data.datos[0];
+          await this.$http.get(
+            `getFullName?usuario=${localStorage.getItem("nombreUsuario")}`
+          )
+        ).data[0];
+        console.log(datos);
         this.nombre = datos.nombres;
         this.apellido = datos.apellidos;
       } catch (error) {
@@ -178,12 +177,11 @@ export default {
     async obtenerRol() {
       try {
         const datos = (
-          await this.$http.get(`roles/${localStorage.getItem("roleCod")}`, {
-            headers: {
-              authorization: this.token,
-            },
-          })
-        ).data.datos[0];
+          await this.$http.get(
+            `getRoleName?usuario=${localStorage.getItem("nombreUsuario")}`
+          )
+        ).data[0];
+
         this.rol = datos.nombre_rol;
       } catch (error) {
         console.log(error);

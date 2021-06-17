@@ -31,7 +31,10 @@
         </div>
       </div>
 
-      <div class="tablaDepartamentos">
+      <div
+        class="tablaDepartamentos"
+        v-if="presupuesto.facultad != 'Seleccione una opcion'"
+      >
         <table class="table table-hove table-bordered">
           <thead>
             <tr class="primera-fila ">
@@ -65,16 +68,20 @@
             </tr>
           </tbody>
         </table>
+        <div class="botoncito">
+          <button
+            :disabled="$v.presupuesto.$invalid"
+            :class="$v.presupuesto.$invalid ? 'button-disabled' : 'form_button'"
+          >
+            Confirmar
+          </button>
+        </div>
+      </div>
+      <div class="form_check-error mensaje" v-else>
+        Seleccione una facultad para que se muestren los departamentos
+        correspondientes.
       </div>
 
-      <div class="botoncito">
-        <button
-          :disabled="$v.presupuesto.$invalid"
-          :class="$v.presupuesto.$invalid ? 'button-disabled' : 'form_button'"
-        >
-          Confirmar
-        </button>
-      </div>
       <alert-2
         ref="alert2"
         aceptar="Aceptar"
@@ -316,16 +323,6 @@ export default {
               console.log("son iguales");
             }
           }
-          //verifica que mensaje mandar
-          /*let mensaje1 = await this.verificarMensaje();
-          if (!mensaje1) {
-            this.alert("warning", "No realizo ningun cambio.");
-          } else {
-            this.alert("success", "Presupuesto guardado exitosamente.");
-            localStorage.removeItem("facultadPresupuesto");
-            localStorage.removeItem("presupuestosLista");
-            window.setInterval(window.location.reload(), 10000);
-          }*/
         }
       } catch (error) {
         console.log(error);
@@ -423,5 +420,12 @@ export default {
   width: 100%;
   padding: 10px;
   border: none;
+}
+.primera-fila {
+  background: #dfe4ea;
+}
+.mensaje {
+  margin: 20px;
+  text-align: center;
 }
 </style>
