@@ -19,34 +19,28 @@
         <b-navbar-nav id="nav" class="ms-auto">
           <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
           <b-nav-item v-if="permisoCrearUsuario" to="/usuarios"
-              >Usuarios</b-nav-item
-            >
-            <b-nav-item v-if="permisoCrearRol" to="/roles"
-              >Roles</b-nav-item
-            >
-            <b-nav-item v-if="permisoUnidadDeGasto" to="/unidades"
-              >Unidades</b-nav-item
-            >
-            <b-nav-item v-if="permisoItemDeGasto" to="/items"
-              >Items</b-nav-item
-            >
-            <b-nav-item v-if="permisoEmpresa" to="/empresas"
-              >Empresas</b-nav-item
-            >
-            <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
-              >Solicitudes</b-nav-item
-            >
-            <b-nav-item
-              v-if="permisoRevisionSolicitudes"
-              to="/revisar_solicitudes"
-              >Revisar solicitudes</b-nav-item
-            >
-            <b-nav-item v-if="permisoCotizacion" to="/cotizacion"
-              >Cotizaciones</b-nav-item
-            >
-            <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
-              >Filtro de Cotizaciones</b-nav-item
-            >
+            >Usuarios</b-nav-item
+          >
+          <b-nav-item v-if="permisoCrearRol" to="/roles">Roles</b-nav-item>
+          <b-nav-item v-if="permisoUnidadDeGasto" to="/unidades"
+            >Unidades</b-nav-item
+          >
+          <b-nav-item v-if="permisoItemDeGasto" to="/items">Items</b-nav-item>
+          <b-nav-item v-if="permisoEmpresa" to="/empresas">Empresas</b-nav-item>
+          <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
+            >Solicitudes</b-nav-item
+          >
+          <b-nav-item
+            v-if="permisoRevisionSolicitudes"
+            to="/revisar_solicitudes"
+            >Revisar solicitudes</b-nav-item
+          >
+          <b-nav-item v-if="permisoCotizacion" to="/cotizacion"
+            >Cotizaciones</b-nav-item
+          >
+          <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
+            >Filtro de Cotizaciones</b-nav-item
+          >
           <b-nav-item v-if="username" @click="cerrar()"
             >Cerrar Sesion</b-nav-item
           >
@@ -113,11 +107,13 @@
     >
       <router-view />
     </transition>
-    <footer class="bg-primary text-center text-white text-lg-start">
-      <div class="text-center p-3">
-        Derechos reservados © 2021 UMSS-TH.
-      </div>
-    </footer>
+    <div class="claseFooter">
+      <footer class="bg-primary text-center text-white text-lg-start">
+        <div class="text-center p-3">
+          Derechos reservados © 2021 UMSS-TH.
+        </div>
+      </footer>
+    </div>
   </div>
 </template>
 <script>
@@ -203,7 +199,7 @@ export default {
   --color-line: #c0c0c0;
   --fondo-gris-claro: #f7f6f6;
 }
-.app{
+.app {
   min-height: 100%;
 }
 #app {
@@ -254,5 +250,8 @@ footer {
   background-color: red;
   color: white;
   text-align: center;
+}
+.claseFooter {
+  min-height: 56px;
 }
 </style>
