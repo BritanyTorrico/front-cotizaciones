@@ -108,7 +108,9 @@
       <router-view />
     </transition>
     <div class="claseFooter">
-      <footer class="bg-primary text-center text-white text-lg-start">
+      <footer
+        class="bg-primary text-center text-white text-lg-start footerClase"
+      >
         <div class="text-center p-3">
           Derechos reservados © 2021 UMSS-TH.
         </div>
@@ -242,7 +244,8 @@ a.navbar-brand {
   border: 2px solid;
   text-align: rigth;
 }
-footer {
+
+.footerClase {
   position: fixed;
   left: 0;
   bottom: 0;
