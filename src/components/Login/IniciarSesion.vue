@@ -201,7 +201,7 @@ export default {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
-        this.alert("warning", "Algo salio mal");
+        this.alert("warning", "Datos invalidos");
       }
     },
 
