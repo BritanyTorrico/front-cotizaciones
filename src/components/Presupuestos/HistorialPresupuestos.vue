@@ -141,6 +141,8 @@ export default {
 
   data() {
     return {
+      sortBy: "Unidad_gasto",
+      sortDesc: false,
       historial: {
         year: "Seleccione una opcion",
         facultad: "Seleccione una opcion",
@@ -416,9 +418,7 @@ export default {
   margin-top: 40px;
   text-align: left;
 }
-table thead tr th {
-  background: red;
-}
+
 .form_check-error {
   color: red;
   font-size: 13px;
@@ -451,5 +451,16 @@ table thead tr th {
 .cuadrado {
   width: 50%;
   padding-right: 70px;
+}
+.sr-only {
+  display: none;
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
 }
 </style>

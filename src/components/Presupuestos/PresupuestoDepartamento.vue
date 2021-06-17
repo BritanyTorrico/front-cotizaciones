@@ -36,7 +36,7 @@
           <thead>
             <tr class="primera-fila ">
               <th colspan="2">Departamento</th>
-              <th>Presupuesto</th>
+              <th>Presupuesto (Bs.)</th>
             </tr>
           </thead>
 
@@ -182,6 +182,7 @@ export default {
         console.log(error);
       }
     },
+
     async obtenerDepartamentos() {
       if (!this.cambioFacu) {
         console.log("Imprimp");
@@ -204,6 +205,7 @@ export default {
             listaDepartamentos[i].presupuesto_departamento
           );
         }
+
         console.log(this.listDepartament);
         this.presupuesto.departamento = "Seleccione una opcion";
 
@@ -289,13 +291,13 @@ export default {
           }
         );
         this.alert("success", "Presupuesto actualizado exitosamente");
+        window.setInterval(window.location.reload(), 10000);
       } catch (error) {
         this.alert("warning", "Algo salio mal");
       }
     },
     async submitForm() {
       try {
-        console.log(this.presupuestoSinModificar.length);
         if (!this.$v.presupuesto.$invalid) {
           for (let i = 0; i < this.presupuesto.presupuestoValor.length; i++) {
             if (
