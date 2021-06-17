@@ -203,6 +203,9 @@ export default {
   --color-line: #c0c0c0;
   --fondo-gris-claro: #f7f6f6;
 }
+.app{
+  min-height: 100%;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -244,10 +247,12 @@ a.navbar-brand {
   text-align: rigth;
 }
 footer {
-   position:absolute;
-   bottom:0;
-   width:100%;
-   height:60px;
-   background:#6cf;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center;
 }
 </style>
