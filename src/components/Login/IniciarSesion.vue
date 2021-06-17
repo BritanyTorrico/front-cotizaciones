@@ -196,7 +196,7 @@ export default {
           this.$store.commit("setUser", true);
           localStorage.setItem("username", this.username);
           await this.storeLocalData();
-          this.$router.push("/");
+          this.$router.push("/principal");
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
@@ -221,13 +221,14 @@ export default {
   height: 640px;
 }
 .container {
-  margin-top: 30px;
+  margin-top: 40px;
   border: 1px solid;
   width: 390px;
   padding: 20px;
   border-radius: 30px;
   background: var(--fondo-gris-claro);
   border: none;
+  margin-bottom: 40px;
 }
 .form__img {
   width: 250px;
