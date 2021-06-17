@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="inicio">
     <iniciar-sesion />
   </div>
 </template>
@@ -14,4 +14,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.inicio {
+  padding: 0;
+  margin: 0;
+}
+</style>

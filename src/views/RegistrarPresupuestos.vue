@@ -1,20 +1,20 @@
 <template>
   <div class="contenedor-presupuestos">
-    <presupuestor-form></presupuestor-form>
+    <presupuesto-unidad></presupuesto-unidad>
   </div>
 </template>
 
 <script>
-import PresupuestorForm from "../components/Presupuestos/PresupuestorForm.vue";
+import PresupuestoUnidad from "../components/Presupuestos/PresupuestoUnidad.vue";
 export default {
   name: "RegistrarPresupuestos",
-  components: { PresupuestorForm },
+  components: { PresupuestoUnidad },
 };
 </script>
 
 <style scoped>
 .contenedor-presupuestos {
-  padding: 50px 200px 50px 200px;
+  padding: 50px 100px 50px 100px;
   background-color: #46b1c95b;
   margin-top: 0;
 }

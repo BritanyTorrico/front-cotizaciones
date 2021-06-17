@@ -15,7 +15,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     plugins: [vuexPersist.plugin],
     state: {
-        permisoHome: true,
         permisoItemDeGasto: false,
         permisoUnidadDeGasto: false,
         permisoCrearUsuario: false,

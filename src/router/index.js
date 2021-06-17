@@ -1,22 +1,19 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
 const routes = [{
         path: "/",
-        name: "Home",
-        component: Home,
+        name: "PaginaPrincipalPage",
+        component: () =>
+            import ("@/views/PaginaPrincipalPage.vue"),
     },
     {
-        path: "/about",
-        name: "About",
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
+        path: "/principal",
+        name: "PaginaPermisos",
         component: () =>
-            import ( /* webpackChunkName: "about" */ "../views/About.vue"),
+            import ("@/views/PaginaPermisos.vue"),
     },
     {
         path: "/item/nuevo",
@@ -115,7 +112,7 @@ const routes = [{
             import ("../views/Solicitudes.vue"),
         meta: {
             rutaProtegida: true,
-        }
+        },
     },
     {
         path: "/usuarios",
@@ -123,8 +120,8 @@ const routes = [{
         component: () =>
             import ("../views/Users.vue"),
         meta: {
-                rutaProtegida: true,
-        }
+            rutaProtegida: true,
+        },
     },
     {
         path: "/roles",
@@ -132,8 +129,8 @@ const routes = [{
         component: () =>
             import ("../views/Roles.vue"),
         meta: {
-                rutaProtegida: true,
-        }
+            rutaProtegida: true,
+        },
     },
     {
         path: "/unidades",
@@ -141,8 +138,8 @@ const routes = [{
         component: () =>
             import ("../views/Units.vue"),
         meta: {
-                rutaProtegida: true,
-        }
+            rutaProtegida: true,
+        },
     },
     {
         path: "/items",
@@ -150,8 +147,8 @@ const routes = [{
         component: () =>
             import ("../views/Items.vue"),
         meta: {
-                rutaProtegida: true,
-        }
+            rutaProtegida: true,
+        },
     },
     {
         path: "/empresas",
@@ -159,8 +156,8 @@ const routes = [{
         component: () =>
             import ("../views/Companies.vue"),
         meta: {
-                rutaProtegida: true,
-        }
+            rutaProtegida: true,
+        },
     },
     {
         path: "/presupuestos",
@@ -207,6 +204,24 @@ const routes = [{
         meta: {
             rutaProtegida: true,
         },
+    },
+    {
+        path: "/presupuestoDep",
+        name: "RegistrarPresupuestoDepto",
+        component: () =>
+            import ("../views/RegistrarPresupuestoDepto.vue"),
+    },
+    {
+        path: "/historial_presupuestos",
+        name: "HistorialPresupuestosPage",
+        component: () =>
+            import ("../views/HistorialPresupuestosPage.vue"),
+    },
+    {
+        path: "/historial_presupuestos_dep",
+        name: "HistorialPresupuestoDepPage",
+        component: () =>
+            import ("../views/HistorialPresupuestoDepPage.vue"),
     },
 ];
 

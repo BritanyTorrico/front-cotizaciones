@@ -8,10 +8,6 @@
     />
     <form @submit.prevent="submitForm">
       <div class="flex-container">
-        <div class="form__image">
-          <img src="@/assets/edificioUMSS.jpg" alt="" />
-        </div>
-
         <div class="form__datos">
           <div class="titulo">
             <div class="tii"><h2 class="item_title">Editar Usuario</h2></div>
@@ -158,6 +154,7 @@
               </div>
             </div>
           </div>
+
           <div class="form__section3">
             <div class="fomrm__section__item">
               <div class="container-facu">
@@ -218,6 +215,100 @@
               </div>
             </div>
           </div>
+          <div class="contenedor-cuadro">
+            <div class="cuadro_contra" @click="muestro = !muestro">
+              <b-icon
+                icon="key-fill"
+                aria-hidden="true"
+                class="iconito"
+              ></b-icon>
+              Cambiar contraseña <label v-if="muestro">( Si )</label>
+              <label v-if="!muestro">( No )</label>
+            </div>
+            <div class="muestroOpciones" v-if="muestro">
+              <div class="form__section2">
+                <div class="formulario_label">
+                  Contraseña:
+                </div>
+                <div class="flex__contraseña">
+                  <input
+                    type="password"
+                    id="password"
+                    :class="
+                      $v.nuevo.contrasena.$invalid
+                        ? 'form_check-input-error'
+                        : 'form__input'
+                    "
+                    placeholder="Ingrese su contraseña"
+                    v-model="nuevo.contrasena"
+                  />
+                  <div class="flex__contraseña__icon">
+                    <i @click="mostrarContrasena()" class="fas fa-eye"></i>
+                  </div>
+                </div>
+
+                <div class="form_check-error" v-if="!$v.nuevo.contrasena.valid">
+                  La contraseña debe contener al menos una mayuscula, minuscula
+                  un número y un caracter especial de las siguientes opciones:
+                  ?!@$%^&*-
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.nuevo.contrasena.minLength"
+                >
+                  Minimo 8 caracteres
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.nuevo.contrasena.maxLength"
+                >
+                  Contraseña muy larga máximo
+                  {{ $v.nuevo.contrasena.$params.maxLength.max }} caracteres.
+                </div>
+              </div>
+              <div class="form__section2">
+                <div class="formulario_label">Confirmar Contraseña:</div>
+                <div class="flex__contraseña">
+                  <input
+                    type="password"
+                    id="password2"
+                    :class="
+                      $v.nuevo.confirmarContraseña.$invalid
+                        ? 'form_check-input-error'
+                        : 'form__input'
+                    "
+                    placeholder="Ingrese su contraseña"
+                    v-model="nuevo.confirmarContraseña"
+                  />
+                  <div class="flex__contraseña__icon">
+                    <i @click="mostrarContrasena2()" class="fas fa-eye"></i>
+                  </div>
+                </div>
+
+                <div
+                  class="form_check-error"
+                  v-if="!$v.nuevo.confirmarContraseña.required"
+                >
+                  Campo obligatorio.
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.nuevo.confirmarContraseña.sameAsPassword"
+                >
+                  Las contraseñas debe coincidir.
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.nuevo.confirmarContraseña.maxLength"
+                >
+                  Contraseña muy larga maximo
+                  {{ $v.nuevo.confirmarContraseña.$params.maxLength.max }}
+                  caracteres.
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="boton">
             <input type="submit" value="Confirmar" class="boton__input" />
           </div>
@@ -235,6 +326,7 @@ import {
   maxLength,
   integer,
   helpers,
+  sameAs,
 } from "vuelidate/lib/validators";
 import ListaDesplegable from "../ListaDesplegable.vue";
 import { mapState, mapActions } from "vuex";
@@ -257,6 +349,7 @@ export default {
   data() {
     return {
       requerido: true,
+      muestro: false,
       users: {
         nombre_usuario: null,
         nombres: null,
@@ -266,13 +359,14 @@ export default {
         departamento: "Seleccione una opcion",
         nombre_rol: "Seleccione una opcion",
       },
+      nuevo: { contrasena: null, confirmarContraseña: null },
       listDepartament: [],
       listfacultad: [],
       listRoles: [],
       componentKey: 0,
       componentKey1: 0,
-      old_department:null,
-      old_role:null,
+      old_department: null,
+      old_role: null,
     };
   },
 
@@ -314,35 +408,66 @@ export default {
         validate_requerido_listas,
       },
     },
+    nuevo: {
+      contrasena: {
+        required,
+        minLength: minLength(8),
+        maxLength: maxLength(20),
+        valid: function(value) {
+          const containsUppercase = /[A-Z]/.test(value);
+          const containsNumber = /[0-9]/.test(value);
+          const containsLowercase = /[a-z]/.test(value);
+          const containsSpecial = /[?!@$%^&*-]/.test(value);
+          return (
+            containsUppercase &&
+            containsLowercase &&
+            containsNumber &&
+            containsSpecial
+          );
+        },
+      },
+      confirmarContraseña: {
+        required,
+        minLength: minLength(8),
+        maxLength: maxLength(20),
+        sameAsPassword: sameAs("contrasena"),
+      },
+    },
   },
   mounted: async function() {
     this.obtenerFacultades();
     this.obtenerRoles();
-    const userData=(await this.$http.get(`users/${this.$route.params.id}`,{
-                headers:{
-                  authorization:this.token,
-                },
-              })).data.datos[0]
-    this.users.nombre_usuario=userData.nombre_usuario
-    this.users.nombres=userData.nombres
-    this.users.apellidos=userData.apellidos
-    this.users.celular=userData.celular
-    this.users.facultad=userData.facultad
-    this.users.departamento=userData.departamento
-    const codrol=(await this.$http.get(`usersPerRole/${this.$route.params.id}`,{
-                headers:{
-                  authorization:this.token,
-                },
-              })).data.datos[0]
-    const rolname=(await this.$http.get(`roles/${codrol.cod_rol}`,{
-                headers:{
-                  authorization:this.token,
-                },
-              })).data.datos[0]
-    this.users.nombre_rol=rolname.nombre_rol
+    const userData = (
+      await this.$http.get(`users/${this.$route.params.id}`, {
+        headers: {
+          authorization: this.token,
+        },
+      })
+    ).data.datos[0];
+    this.users.nombre_usuario = userData.nombre_usuario;
+    this.users.nombres = userData.nombres;
+    this.users.apellidos = userData.apellidos;
+    this.users.celular = userData.celular;
+    this.users.facultad = userData.facultad;
+    this.users.departamento = userData.departamento;
+    const codrol = (
+      await this.$http.get(`usersPerRole/${this.$route.params.id}`, {
+        headers: {
+          authorization: this.token,
+        },
+      })
+    ).data.datos[0];
+    const rolname = (
+      await this.$http.get(`roles/${codrol.cod_rol}`, {
+        headers: {
+          authorization: this.token,
+        },
+      })
+    ).data.datos[0];
+    this.users.nombre_rol = rolname.nombre_rol;
 
-    this.old_department=userData.departamento
-    this.old_role=rolname.nombre_rol
+    this.old_department = userData.departamento;
+    this.old_role = rolname.nombre_rol;
   },
 
   methods: {
@@ -404,16 +529,37 @@ export default {
     async submitForm() {
       try {
         if (!this.$v.users.$invalid) {
-          await this.sendDataUsers();
-          if (this.old_department!=this.users.departamento){
+          if (!this.muestro) {
+            //sin contraseña
+            await this.sendDataUsers();
+            if (this.old_department != this.users.departamento) {
               await this.sendUserDepartment();
-          }
-          if (this.old_role!=this.users.nombre_rol){
+            }
+            if (this.old_role != this.users.nombre_rol) {
               await this.sendUsernameRol();
+            }
+            this.alert("success", "Usuario editado exitosamente");
+            //restablecer variables
+            this.$router.push(`/usuarios`);
+          } else {
+            //con contraseña
+            if (this.muestro && !this.$v.nuevo.$invalid) {
+              await this.sendDataUsersContra();
+              if (this.old_department != this.users.departamento) {
+                await this.sendUserDepartment();
+              }
+              if (this.old_role != this.users.nombre_rol) {
+                await this.sendUsernameRol();
+              }
+              this.alert("success", "Usuario editado exitosamente");
+              console.log("CAMBIO CONTRASEÑA");
+            } else {
+              this.alert(
+                "warning",
+                "Rellene la seccion de contraseña correctamente"
+              );
+            }
           }
-          this.alert("success", "Usuario editado exitosamente");
-          //restablecer variables
-          this.$router.push(`/usuarios`)
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
@@ -423,36 +569,38 @@ export default {
     },
     async sendUserDepartment() {
       try {
-            let orig_dep=null
-            let nuevo_dep=null
-          const codep=(await this.$http.get(`department?facu=${this.users.facultad}`,{
-                headers:{
-                  authorization:this.token,
-                },
-              })).data
-        for (let i of codep){
-            if (i.nombre_departamento==this.users.departamento){
-                nuevo_dep=i.cod_departamento
-            }
-            if (i.nombre_departamento==this.old_department){
-                orig_dep=i.cod_departamento
-            }
-        }
-        if (nuevo_dep!=null){
-        await this.$http.put(
-          `usersPerDeparment/${this.$route.params.id}`,
-          {
-              cod_departamentoNuevo: nuevo_dep,
-              cod_departamentoOriginal: orig_dep,
-              cod_usuarioNuevo: this.$route.params.id,
-              estado: true
-          },
-          {
+        let orig_dep = null;
+        let nuevo_dep = null;
+        const codep = (
+          await this.$http.get(`department?facu=${this.users.facultad}`, {
             headers: {
               authorization: this.token,
             },
+          })
+        ).data;
+        for (let i of codep) {
+          if (i.nombre_departamento == this.users.departamento) {
+            nuevo_dep = i.cod_departamento;
           }
-        );
+          if (i.nombre_departamento == this.old_department) {
+            orig_dep = i.cod_departamento;
+          }
+        }
+        if (nuevo_dep != null) {
+          await this.$http.put(
+            `usersPerDeparment/${this.$route.params.id}`,
+            {
+              cod_departamentoNuevo: nuevo_dep,
+              cod_departamentoOriginal: orig_dep,
+              cod_usuarioNuevo: this.$route.params.id,
+              estado: true,
+            },
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          );
         }
       } catch (error) {
         //borra usario
@@ -462,35 +610,37 @@ export default {
     },
     async sendUsernameRol() {
       try {
-          let vie_rol=null
-          let nue_rol=null
-          const corol=(await this.$http.get(`roles`,{
-                headers:{
-                  authorization:this.token,
-                },
-              })).data.datos
-        for (let i of corol){
-            if (i.nombre_rol==this.users.nombre_rol){
-                nue_rol=i.cod_rol
-            }
-            if (i.nombre_rol==this.old_role){
-                vie_rol=i.cod_rol
-            }
-        }
-        if (nue_rol!=null){
-        await this.$http.put(
-          `usersPerRole/${this.$route.params.id}`,
-          {
-            cod_rolOriginal: vie_rol,
-            cod_rolNuevo: nue_rol,
-            estado: true
-          },
-          {
+        let vie_rol = null;
+        let nue_rol = null;
+        const corol = (
+          await this.$http.get(`roles`, {
             headers: {
               authorization: this.token,
             },
+          })
+        ).data.datos;
+        for (let i of corol) {
+          if (i.nombre_rol == this.users.nombre_rol) {
+            nue_rol = i.cod_rol;
           }
-        );
+          if (i.nombre_rol == this.old_role) {
+            vie_rol = i.cod_rol;
+          }
+        }
+        if (nue_rol != null) {
+          await this.$http.put(
+            `usersPerRole/${this.$route.params.id}`,
+            {
+              cod_rolOriginal: vie_rol,
+              cod_rolNuevo: nue_rol,
+              estado: true,
+            },
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          );
         }
       } catch (error) {
         //borrar un usuario  y departamento modulo departamento
@@ -503,6 +653,29 @@ export default {
           `users/${this.$route.params.id}?type=noPass`,
           {
             nombre_usuario: this.users.nombre_usuario,
+            nombres: this.users.nombres,
+            apellidos: this.users.apellidos,
+            celular: this.users.celular,
+            facultad: this.users.facultad,
+            departamento: this.users.departamento,
+          },
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        );
+      } catch (error) {
+        throw new Error("El nombre de usuario ya fue registrado");
+      }
+    },
+    async sendDataUsersContra() {
+      try {
+        await this.$http.put(
+          `users/${this.$route.params.id}?type=All`,
+          {
+            nombre_usuario: this.users.nombre_usuario,
+            contrasena: this.nuevo.contrasena,
             nombres: this.users.nombres,
             apellidos: this.users.apellidos,
             celular: this.users.celular,
@@ -549,10 +722,13 @@ export default {
 }
 .flex-container {
   display: flex;
-  background-color: #ecf0f1;
+
   justify-content: center;
   align-content: center;
   align-items: center;
+  padding: 50px 100px 50px 100px;
+  background-color: #46b1c95b;
+  margin-top: 0;
 }
 .form__image {
   width: 45%;
@@ -567,6 +743,9 @@ export default {
   width: 70%;
   margin-left: 40px;
   margin-right: 40px;
+
+  padding: 40px;
+  background-color: #ecf0f1;
 }
 
 .form__input {
@@ -719,5 +898,32 @@ export default {
 .tii {
   margin: 0;
   padding: 0;
+}
+.contenedor-cuadro {
+  width: 100%;
+  min-height: 100px;
+}
+
+.cuadro_contra {
+  width: 50%;
+  height: 50px;
+  border: 1px solid #f5f6fa;
+  text-decoration: none;
+  padding: 10px;
+  margin-top: 40px;
+  background: #a4b0be;
+  font-weight: bold;
+  color: white;
+}
+
+.iconito {
+  width: 50px;
+}
+.muestroOpciones {
+  width: 100%;
+  height: 350px;
+  border: 1px solid transparent;
+  padding: 0px 20px;
+  background: #dfe4ea;
 }
 </style>
