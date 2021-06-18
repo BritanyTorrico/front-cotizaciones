@@ -32,28 +32,99 @@
     </div>
     <div class="body-part">
       <h5>Observaciones:</h5>
-      <textarea 
-      placeholder="Ingrese observaciones correspondientes a la tabla"
-      cols="50"
-          rows="5"
-          maxlength="240"
-          required
-      v-model="observations"></textarea>
+      <p>{{ request.obs }}</p>
     </div>
     <div class="head-subject"><h3>Unidad de gasto:</h3>{{ request.unit }}</div>
     <div class="head-subject"><h3>Encargado de unidad:</h3>{{ request.incharge }}</div>
+    <div class="head-subject"><h3>Cotizador:</h3>{{ request.quotizer }}</div>
     <div class="head-subject"><h3>Jefe de departamento:</h3>{{ request.boss }}</div>
     <div class="response">
-      <button
+      <b-button
         class="accept-button"
-        v-on:click="assert()"
-        >Aceptar</button
+        v-on:click="accept()"
+        v-b-modal.modal-acceptance
+        >Aceptar</b-button
       >
-      <button
+      <b-modal
+        id="modal-acceptance"
+        ref="modal"
+        title="Reporte"
+        ok-title="Enviar"
+        cancel-title="Cerrar"
+        hide-header-close
+        @show="resetModal"
+        @hidden="resetModal"
+        @ok="handleOk"
+      >
+        <form ref="form" @submit.stop.prevent="handleSubmit">
+          <b-form-group 
+            invalid-feedback="Seleccione una empresa"
+            :state="resState"
+          >
+          <h5>Empresa: </h5>
+            <b-form-select 
+              v-model="selectedCompany" 
+              :options="this.request.companyList" 
+              :state="resState"
+            ></b-form-select>
+          </b-form-group>
+          <b-form-group
+            invalid-feedback="Justifique su respuesta"
+            :state="resState"
+          >
+          <h5>Justificación: </h5>
+            <b-form-textarea
+              id="response-textarea"
+              class="report-just"
+              v-model="response"
+              placeholder="Ingrese su reporte de aceptación"
+              cols="50"
+              rows="10"
+              maxlength="1000"
+              :state="resState"
+              required
+            ></b-form-textarea>
+          </b-form-group>
+        </form>
+        <Alert ref="alert"></Alert>
+      </b-modal>
+      <b-button
         class="reject-button"
         v-on:click="reject()"
-        >Rechazar</button
+        v-b-modal.modal-rejection
+        >Rechazar</b-button
       >
+      <b-modal
+        id="modal-rejection"
+        ref="modal"
+        title="Reporte"
+        ok-title="Enviar"
+        cancel-title="Cerrar"
+        hide-header-close
+        @show="resetModal"
+        @hidden="resetModal"
+        @ok="handleOk"
+      >
+        <form ref="form" @submit.stop.prevent="handleSubmit">
+          <b-form-group
+            invalid-feedback="Justifique su respuesta"
+            :state="resState"
+          >
+            <b-form-textarea
+              id="response-textarea"
+              class="report-just"
+              v-model="response"
+              placeholder="Ingrese su reporte de rechazo"
+              cols="50"
+              rows="10"
+              maxlength="1000"
+              :state="resState"
+              required
+            ></b-form-textarea>
+          </b-form-group>
+        </form>
+        <Alert ref="alert"></Alert>
+      </b-modal>
     </div>
     <Alert ref="alert"></Alert>
   </div>
@@ -62,15 +133,20 @@
 <script>
 import { mapState } from "vuex";
 import Alert from '../Alert.vue';
+import { BButton, BModal, BFormGroup, BFormTextarea, BFormSelect } from "bootstrap-vue";
 export default {
-  components: { Alert },
+  components: { Alert, BButton, BModal, BFormGroup, BFormTextarea, BFormSelect },
   name: "ReportForm",
   computed: {
     ...mapState(["token"]),
   },
   data() {
     return {
-      observations: ""
+      valid: null,
+      response: "",
+      resState: null,
+      status: "",
+      selectedCompany:""
     };
   },
   props: {
@@ -82,80 +158,195 @@ export default {
         unit: String,
         incharge: String,
         boss: String,
+        quotizer: String,
         companyList: Array,
         itemList: Array,
+        obs: String
     },
-    
+  },
+  watch:{
+    response: function(){
+      if (this.response!=''){
+        this.resState=null;
+      }
+    }
   },
   methods: {
-    async send() {
+    checkFormValidity() {
+      const v = this.$refs.form.checkValidity();
+      this.resState = v;
+      return v;
+    },
+    resetModal() {
+      this.response = "";
+      this.resState = null;
+    },
+    handleOk(bvModalEvt) {
+      bvModalEvt.preventDefault();
+      this.handleSubmit();
+    },
+    async handleSubmit() {
       try {
-        if (this.observations!=""){
-        const table=(
-                          await this.$http.get(`tableData?nombre=${this.request.name}`,{
-                              headers: {
-                                              authorization: this.token,
-                                          }})
-                      ).data
-        
-          console.log(table.cotizaciones);
-          console.log(this.request.name);
-          console.log(this.observations);
-          await this.$http.post(`table`,{
-            nombre_solicitud: this.request.name,
-            observaciones_tabla: this.observations,
-            cotizaciones: table.cotizaciones
-          },{
-                              headers: {
-                                              authorization: this.token,
-                                          }})
-        }else{
-          this.alert("warning", "Ingrese observaciones");
+        if (!this.checkFormValidity()) {
+          return;
         }
+        if(this.response.trim().length<1){
+          this.response=this.response.trim()
+          this.resState=false;
+          return;
+        }
+        await this.sendData();
+        this.alert("success", "Informe enviado");
       } catch (error) {
-        this.alert("success", "Cuadro enviado exitosamente");
-            window.setInterval(window .location.reload(), 10000); 
+        this.alert("warning", error);
+        return;
+      }
+
+      this.$nextTick(() => {
+        this.$bvModal.hide("modal-rejection");
+        this.$bvModal.hide("modal-acceptance");
+      });
+    },
+    async sendReport(){
+      try {
+        const repr=(
+                  await this.$http.get(
+                      `report?type=criteria&from=soloUnidad&nombre=${this.request.unit}`,
+                      {
+                          headers: {
+                              authorization: this.token,
+                          },
+                      }
+                  )
+              ).data
+            for (let i of repr){
+              if (i.cod_solicitud==this.request.cod){
+                const inf=i.cod_informe
+                await this.$http.put(
+                  `report/${inf}`,
+                  {
+                    cod_solicitud: this.request.cod,
+                    titulo_informe: "Informe final" + this.request.name,
+                    justificacion_informe: this.response,
+                    aceptacion: this.valid,
+                  },
+                  {
+                    headers: {
+                      authorization: this.token,
+                    },
+                  }
+                );
+
+              }
+            }
+        
+      } catch (error) {
+        throw new Error(error);
       }
     },
-    async print() {
-      const myName = (
-          await this.$http.get(
-            `getFullName?usuario=${localStorage.getItem("nombreUsuario")}`
-          )
-        ).data[0];
-      let nombres = this.request.unit;
-      let nombres2 = this.request.incharge;
-      let nombres3 = `${myName.nombres} ${myName.apellidos}`;
-      let nombres4 = this.request.boss;
-      let observaciones = this.observations
-      let today=new Date;
-      const day=today.getDate()
-      const month=today.getMonth()
-      const year=today.getFullYear().toString().substr(-2)
-      console.log(nombres, nombres2, nombres3, nombres4);
-      var divToPrint = document.getElementById("DivIdToPrint");
-      var newWin = window.open("", "Print-Window");
-      newWin.document.open();
-      newWin.document.write(
-        '<html><body onload="window.print()"><div class="contenedor-imp"><div class="seccion1"><h2 class="titulo">UNIVERSIDAD MAYOR DE SAN SIMON</h2><h2 >FACULTAD DE CIENCIAS Y TECNOLOGÍA</h2><h2>SECCIÓN ADQUISICIONES</h2><h3 class="depa">COCHABAMBA-BOLIVIA</h3></div><div class="seccion-medio"><p></p></div><div class="seccion-2"><table><tr><th colspan="3">  EMISION </th></tr><tr><td>'+day+'</td><td>'+month+'</td><td>'+year+'</td></tr></table></div></div><div class="conteedor-title"><h1>CUADRO COMPARATIVO DE COTIZACIONES</h1></div>' +
-          "<p>TABLA</p>" +
-          divToPrint.innerHTML +
-          '<p class="mensaje">Observaciones:'+observaciones+'</p>' +
-          '<div class="seccion_personal"><table><tr><th style="width:200px">SECCION ADQUISIONES</th><th style="width:200px">JEFE DE UNIDAD</th><th style="width:220px">TECNICO RESPONSABLE</th><th style="width:200px">JEFE ADMINISTRATIVO</th></tr><tr><td>' +
-          nombres +
-          "</td><td>" +
-          nombres2 +
-          "</td><td>" +
-          nombres3 +
-          "</td><td>" +
-          nombres4 +
-          "</td></tr></table></div>" +
-          "</body></html> <style>.contenedor-imp{display:flex;width:100%} .seccion1{width:60%;font-size:14px} h2{margin:0;padding:0;text-align:center} .seccion-medio{width:30%;} .seccion-2{width:10%;text-align:right;} p{margin:0;padding:0;} h1{text-align:center;text-decoration:underline} .empresa-der{display:inline;margin-left:350px;} .mensaje{font-style:italic;font-size:13px;margin-top:10px;margin-bottom:20px;} .Subtitulo{font-weigth:bold} .conteedor-title{margin-top:40px;margin-bottom:10px}.depa{font-size:13px;margin:0;padding:0;text-align:center} table{table-layout:fixed;width:80px;height:80px}table, th, td {border:1px solid black;border-collapse: collapse;height:40px;text-align:center} .seccion_personal{width:100%,border:1px solid}</style> "
-      );
-      newWin.document.close();
-      setTimeout(function() {
-        newWin.close();
-      }, 10);
+    async updateRequest(){
+      try {
+        await this.$http.put(
+          `request/${this.request.cod}?type=State`,
+          {
+            estado_solicitud: this.status,
+          },
+          {
+            headers: {
+              authorization: this.token,
+            },
+          }
+        );
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    async updateQuotations(){
+      try {
+        const quots=(
+          await this.$http.get(`tableData?nombre=${this.request.name}`,{
+              headers: {
+                authorization: this.token,
+              },
+            })
+        ).data.cotizaciones
+        for (let i of quots){
+          await this.setQuotStatus(i.cod_cotizacion)
+        }  
+        if (this.valid){
+            await this.setCompany()
+          }
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    async setQuotStatus(id){
+      try {
+        await this.$http.put(`quotation/${id}?type=Status`,{
+          estado_cotizacion: 'CERRADO'
+        },{
+          headers: {
+                authorization: this.token,
+              },
+        })
+      } catch (error) {
+        this.alert("warning", 'No se puede actualizar el estado de la cotización');
+      }
+    },
+    async setCompany(){
+      try {
+        for (let i=0;i<this.request.companyList.length;i++){
+          if (this.request.companyList[i]==this.selectedCompany){
+            const quots=(
+                        await this.$http.get(`tableData?nombre=${this.request.name}`,{
+                            headers: {
+                                            authorization: this.token,
+                                        }})
+                    ).data.cotizaciones
+            await this.$http.put(`quotation/${quots[i].cod_cotizacion}?type=Answers`,{
+              puesto_obra: 'SI'
+            },{
+              headers: {
+                authorization: this.token,
+              },
+            })
+          }else{
+            const quots=(
+                        await this.$http.get(`tableData?nombre=${this.request.name}`,{
+                            headers: {
+                                            authorization: this.token,
+                                        }})
+                    ).data.cotizaciones
+            await this.$http.put(`quotation/${quots[i].cod_cotizacion}?type=Answers`,{
+              puesto_obra: 'NO'
+            },{
+              headers: {
+                authorization: this.token,
+              },
+            })
+          }
+        }
+      } catch (error) {
+        this.alert("warning", 'No se puede actualizar la cotización');
+      }
+    },
+    async sendData() {
+      try {
+        await this.sendReport() //actualiza reporte
+        await this.updateRequest() // actualiza estado de solicitud
+        await this.updateQuotations() //actualiza estados de cotizaciones y puesto_obra 
+        //window.setInterval(window.location.reload(), 10000);
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    async accept() {
+      this.valid = true;
+      this.status = "ACEPTADA";
+    },
+    async reject() {
+      this.valid = false;
+      this.status = "RECHAZADA";
     },
     alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
@@ -201,6 +392,7 @@ h2 {
   font-weight: 600;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  text-align: left;
 }
 .time {
   font-size: 16px;
@@ -312,7 +504,7 @@ p {
 .reject-button {
   margin: auto;
   display: block;
-  background-color: #444444;
+  background-color: #b70d0d;
   padding: 1.2% 11.5% 1.2% 11.5%;
   border-radius: 22px;
   color: #fafafa;

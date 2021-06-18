@@ -67,6 +67,7 @@ export default {
         unit:"",
         incharge: "",
         boss: "",
+        quotizer:"",
         companyList: [],
         itemList: [],
         obs:''
@@ -93,8 +94,10 @@ export default {
       this.selectedRequest.unit = this.inboxData[i].unidadgasto_solicitud;
       this.selectedRequest.incharge = this.inboxData[i].encargado_unidad;
       this.selectedRequest.boss = this.inboxData[i].jefe_depto;
+      this.selectedRequest.quotizer = this.inboxData[i].cotizador
       this.selectedRequest.itemList = this.tableData[i]
       this.selectedRequest.companyList = this.companiesData[i]
+      this.selectedRequest.obs = this.inboxData[i].observaciones
     },
     async startTransition(i){
           this.changeReq=true;

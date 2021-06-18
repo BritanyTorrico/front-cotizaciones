@@ -168,7 +168,7 @@
           </a>
         </div>
         <div class="col-sm-3" v-if="permisoInformeFinal">
-          <a class="redireccion" href="#">
+          <a class="redireccion" href="/informe_final">
             <card-permiso
               colorIcono="#FFFFFF"
               colorFondo="#f1c40f"

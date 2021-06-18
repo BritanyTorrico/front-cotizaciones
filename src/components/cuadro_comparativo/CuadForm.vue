@@ -109,12 +109,13 @@ export default {
                               headers: {
                                               authorization: this.token,
                                           }})
+          this.alert("success", "Cuadro enviado exitosamente");
+            window.setInterval(window .location.reload(), 10000); 
         }else{
           this.alert("warning", "Ingrese observaciones");
         }
       } catch (error) {
-        this.alert("success", "Cuadro enviado exitosamente");
-            window.setInterval(window .location.reload(), 10000); 
+        this.alert("warning", error);
       }
     },
     async print() {
@@ -201,6 +202,7 @@ h2 {
   font-weight: 600;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  text-align: left;
 }
 .time {
   font-size: 16px;

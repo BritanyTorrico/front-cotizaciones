@@ -78,14 +78,14 @@ export default {
             
             let companies=[]
             let items=[]
-            for (let k=0; k < table.cotizaciones[0].items_cotizacion.length; k++){
+            for (let k=0; k < table.cotizaciones[0].items.length; k++){
                 let item=new Object
-                item.cantidad=table.cotizaciones[0].items_cotizacion[k].cantidad
-                item.unidad=table.cotizaciones[0].items_cotizacion[k].unidad
-                item.descripcion=table.cotizaciones[0].items_cotizacion[k].detalle
+                item.cantidad=table.cotizaciones[0].items[k].cantidad
+                item.unidad=table.cotizaciones[0].items[k].unidad
+                item.descripcion=table.cotizaciones[0].items[k].detalle
                 item.precios=[]
                 for (let l of table.cotizaciones){
-                    item.precios.push(l.items_cotizacion[k].precio_total)
+                    item.precios.push(l.items[k].precio_total)
                 }
                 items.push(item)
             }
