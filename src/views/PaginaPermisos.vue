@@ -97,7 +97,7 @@
           </a>
         </div>
         <div class="col-sm-3" v-if="permisoCotizacion">
-          <a class="redireccion" href="/cotizacion">
+          <a class="redireccion" href="/cotizaciones">
             <card-permiso
               colorIcono="#FFFFFF"
               colorFondo=" #f1c40f"
@@ -144,7 +144,7 @@
           </a>
         </div>
         <div class="col-sm-3">
-          <a class="redireccion" href="#">
+          <a class="redireccion" href="/cuadro_comparativo">
             <card-permiso
               colorIcono="#FFFFFF"
               colorFondo=" #7bed9f"

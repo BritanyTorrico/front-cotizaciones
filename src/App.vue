@@ -35,7 +35,7 @@
             to="/revisar_solicitudes"
             >Revisar solicitudes</b-nav-item
           >
-          <b-nav-item v-if="permisoCotizacion" to="/cotizacion"
+          <b-nav-item v-if="permisoCotizacion" to="/cotizaciones"
             >Cotizaciones</b-nav-item
           >
           <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
@@ -87,7 +87,7 @@
             to="/revisar_solicitudes"
             >Revisar solicitudes</b-nav-item
           >
-          <b-nav-item v-if="permisoCotizacion" to="/cotizacion"
+          <b-nav-item v-if="permisoCotizacion" to="/cotizaciones"
             >Cotizaciones</b-nav-item
           >
           <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
@@ -99,7 +99,7 @@
           <b-nav-item v-if="permisoPresupuestoUnidad" to="/presupuestos"
             >Presupuesto Unidad de gasto</b-nav-item
           >
-          <b-nav-item v-if="permisoCuadroComparativo" to="/"
+          <b-nav-item v-if="permisoCuadroComparativo" to="/cuadro_comparativo"
             >Cuadro comparativo</b-nav-item
           >
           <b-nav-item v-if="username" @click="cerrar()"

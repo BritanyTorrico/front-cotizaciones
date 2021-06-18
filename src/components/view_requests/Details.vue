@@ -57,7 +57,8 @@
         ref="modal"
         title="Justificación"
         ok-title="Enviar"
-        ok-only
+        cancel-title="Cerrar"
+        hide-header-close
         @show="resetModal"
         @hidden="resetModal"
         @ok="handleOk"

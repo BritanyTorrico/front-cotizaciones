@@ -71,7 +71,7 @@ export default {
   },
   data(){
       return{
-          rubro: "Seleccione una opción",
+          rubro: "Todos",
           inboxData: [],
           changeComp: false,
           selectedCompany: {
@@ -90,13 +90,24 @@ export default {
   methods: {
       async getData(){
           this.inboxData= []
-          const emp = (
+          let emp=[]
+          if (this.rubro=='Todos'){
+              emp = (
+            await this.$http.get(`company?rubro=All`, {
+            headers: {
+                authorization: this.token,
+            },
+            })
+        ).data;
+          }else{
+              emp = (
             await this.$http.get(`company?rubro=${this.rubro}`, {
             headers: {
                 authorization: this.token,
             },
             })
         ).data;
+          }
         for (let i of emp){
             this.inboxData.push(i)
         }
@@ -133,7 +144,9 @@ export default {
     },
   },
   mounted(){
+      this.listrubro.push("Todos")
       this.obtenerRubros()
+      this.getData()
   }
 }
 </script>
