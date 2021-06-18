@@ -6,6 +6,11 @@
       <div class="form_desc">
         Ingrese el presupuesto anual para cada unidad de gasto
       </div>
+      <div class="historial">
+        <a href="/historial_presupuestos" class="btn btn-primary"
+          >Ver Historial</a
+        >
+      </div>
       <div class="listas__desplegables">
         <div class="form__facultad">
           <div class="container__label">Facultad:</div>
@@ -683,5 +688,9 @@ export default {
   font-size: 16px;
   height: 260px;
   margin-right: 20px;
+}
+.historial {
+  text-align: right;
+  margin-top: 20px;
 }
 </style>

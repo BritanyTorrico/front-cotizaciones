@@ -5,6 +5,11 @@
       <div class="form_desc">
         Ingrese el presupuesto anual para cada departamento.
       </div>
+      <div class="historial">
+        <a href="/historial_presupuestos_dep" class="btn btn-primary"
+          >Ver Historial</a
+        >
+      </div>
       <div>
         <div class="container__label">Facultad:</div>
         <select
@@ -427,5 +432,9 @@ export default {
 .mensaje {
   margin: 20px;
   text-align: center;
+}
+.historial {
+  text-align: right;
+  margin-top: 20px;
 }
 </style>

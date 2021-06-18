@@ -93,6 +93,15 @@
           <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
             >Filtro de Cotizaciones</b-nav-item
           >
+          <b-nav-item v-if="permisoPresupuestoDep" to="/presupuestoDep"
+            >Presupuesto Departamento</b-nav-item
+          >
+          <b-nav-item v-if="permisoPresupuestoUnidad" to="/presupuestos"
+            >Presupuesto Unidad de gasto</b-nav-item
+          >
+          <b-nav-item v-if="permisoCuadroComparativo" to="/"
+            >Cuadro comparativo</b-nav-item
+          >
           <b-nav-item v-if="username" @click="cerrar()"
             >Cerrar Sesion</b-nav-item
           >
@@ -140,6 +149,11 @@ export default {
       "permisoCotizacion",
       "permisoFiltroCotizacion",
       "contador",
+      "permisoPresupuestoDep",
+      "permisoHistorialPresupuestoDep",
+      "permisoPresupuestoUnidad",
+      "permisoHistorialPresupuestoUnidad",
+      "permisoCuadroComparativo",
     ]),
   },
   methods: {
@@ -167,7 +181,13 @@ export default {
       this.$store.commit("setPermisoCotizacion", false);
       this.$store.commit("setPermisoRevisarCotizaciones", false);
       this.$store.commit("setPermisoFiltroCotizaciones", false);
-
+      //tercer sprint
+      this.$store.commit("setPermisoPresupuestoDep", false);
+      this.$store.commit("setPermisoPresupuestoUnidad", false);
+      this.$store.commit("setPermisoPresupuestoHistorialDep", false);
+      this.$store.commit("setPermisoPresupuestoHistorialUnidad", false);
+      this.$store.commit("setPermisoCuadroComparativo", false);
+      //localstorage
       sessionStorage.removeItem("my-app");
 
       localStorage.removeItem("my-app");

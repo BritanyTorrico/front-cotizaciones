@@ -3,6 +3,7 @@
     <h2 class="item_title">Historial de Presupuestos por departamento</h2>
 
     <div class="form_desc"></div>
+
     <div class="seccion">
       <div class="cuadrado">
         <lista-desplegable-change
@@ -129,7 +130,7 @@ export default {
         depto: "Seleccione una opcion",
       },
       fields: [
-        // "Nombre_usuario",
+        //"Nombre_usuario",
         //"Fecha_Modificacion",
         "Departamento",
         "Presupuesto_Anterior",

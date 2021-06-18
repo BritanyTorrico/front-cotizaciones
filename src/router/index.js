@@ -164,6 +164,9 @@ const routes = [{
         name: "RegistrarPresupuestos",
         component: () =>
             import ("../views/RegistrarPresupuestos.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
     },
     {
         path: "/item/editar/:id",
@@ -210,18 +213,33 @@ const routes = [{
         name: "RegistrarPresupuestoDepto",
         component: () =>
             import ("../views/RegistrarPresupuestoDepto.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
     },
     {
         path: "/historial_presupuestos",
         name: "HistorialPresupuestosPage",
         component: () =>
             import ("../views/HistorialPresupuestosPage.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
     },
     {
         path: "/historial_presupuestos_dep",
         name: "HistorialPresupuestoDepPage",
         component: () =>
             import ("../views/HistorialPresupuestoDepPage.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/logss",
+        name: "LogPage",
+        component: () =>
+            import ("../views/LogPage.vue"),
     },
 ];
 

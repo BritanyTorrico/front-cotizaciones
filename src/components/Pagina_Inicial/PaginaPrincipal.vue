@@ -3,23 +3,14 @@
     <div class="descripcion__info">
       <h2 class="subtitulo">Descripción del sistema</h2>
       <hr class="linea" />
-      <p>
-        E Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, quis
-        in doloribus, recusandae explicabo id maiores labore incidunt ipsum quia
-        dignissimos nihil accusamus tempore natus ea neque repellat, quam eos?
-        Lorem Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem
-        assumenda ratione optio saepe, consectetur iste nostrum, ipsum
-        aspernatur, impedit natus harum magni accusamus! Dignissimos labore,
-        modi dolore aut necessitatibus explicabo.
-      </p>
-      <p>
-        E Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, quis
-        in doloribus, recusandae explicabo id maiores labore incidunt ipsum quia
-        dignissimos nihil accusamus tempore natus ea neque repellat, quam eos?
-        Lorem Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem
-        assumenda ratione optio saepe, consectetur iste nostrum, ipsum
-        aspernatur, impedit natus harum magni accusamus! Dignissimos labore,
-        modi dolore aut necessitatibus explicabo.
+      <p class="contenido_des">
+        Bienvenido al sistema de cotizaciones de la Universidad Mayor de San
+        Simon,donde usted podra manejar de manera mas practica cotizaciones de
+        toda la universidad , El sistema de cotizaciones: Es un sistema web para
+        que puedas administrar cotizaciones. Tu puedes facilmente administrar: /
+        Solicitudes / Unidades de gasto / items / servicios / usuarios /
+        Empresas / Presupuestos / Cotizaciones y hasta realizar un cuadro
+        comparativo para la cotización de manera mas sencilla y rapida.
       </p>
     </div>
     <div class="desripcion__imagenes">
@@ -69,5 +60,9 @@ export default {
 .imagen__transhumant {
   width: 80%;
   height: 100px;
+}
+.contenido_des {
+  font-size: 18px;
+  padding: 20px;
 }
 </style>
