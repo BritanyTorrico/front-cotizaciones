@@ -33,6 +33,9 @@ export default new Vuex.Store({
         permisoHistorialPresupuestoDep: false,
         permisoHistorialPresupuestoUnidad: false,
         permisoCuadroComparativo: false,
+        permisoBitacora: false,
+        permisoBackup: false,
+        permisoInformeFinal: false,
         contador: 0,
     },
     mutations: {
@@ -89,6 +92,18 @@ export default new Vuex.Store({
                     state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Gestionar Tabla") {
                     state.permisoCuadroComparativo = true;
+                    state.contador = state.contador + 1;
+                    //BORRAR ESTO
+                    state.permisoInformeFinal = true;
+                    state.contador = state.contador + 1;
+                } else if (state.listaPermisos[i] == "Gestionar Bitacora") {
+                    state.permisoBitacora = true;
+                    state.contador = state.contador + 1;
+                } else if (state.listaPermisos[i] == "Gestionar Backup") {
+                    state.permisoBackup = true;
+                    state.contador = state.contador + 1;
+                } else if (state.listaPermisos[i] == "Gestionar Tabla") {
+                    state.permisoInformeFinal = true;
                     state.contador = state.contador + 1;
                 }
             }
@@ -154,6 +169,15 @@ export default new Vuex.Store({
         },
         setPermisoCuadroComparativo(state, dato2) {
             state.permisoCuadroComparativo = dato2;
+        },
+        setPermisoBitacora(state, dato2) {
+            state.permisoBitacora = dato2;
+        },
+        setPermisoBackup(state, dato2) {
+            state.permisoBackup = dato2;
+        },
+        setPermisoInformeFinal(state, dato2) {
+            state.permisoInformeFinal = dato2;
         },
     },
     actions: {

@@ -2,7 +2,7 @@
   <div class="contendor_mayor">
     <div class="backs">
       <h2 class="item_title">
-        Creacion de backUps y restauracion de la base de datos
+        Respaldos y restauracion de la base de datos
       </h2>
 
       <div class="form_desc"></div>

@@ -119,7 +119,7 @@
             </card-permiso>
           </a>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3" v-if="permisoPresupuestoDep">
           <a class="redireccion" href="/presupuestoDep">
             <card-permiso
               colorIcono="#FFFFFF"
@@ -131,7 +131,7 @@
             </card-permiso>
           </a>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3" v-if="permisoPresupuestoUnidad">
           <a class="redireccion" href="/presupuestos">
             <card-permiso
               colorIcono="#FFFFFF"
@@ -143,7 +143,7 @@
             </card-permiso>
           </a>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3" v-if="permisoCuadroComparativo">
           <a class="redireccion" href="/cuadro_comparativo">
             <card-permiso
               colorIcono="#FFFFFF"
@@ -155,14 +155,38 @@
             </card-permiso>
           </a>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3" v-if="permisoBitacora">
           <a class="redireccion" href="/logss">
             <card-permiso
               colorIcono="#FFFFFF"
               colorFondo="#9c88ff"
               nombreIcono="cloud-check"
-              titulo="Logs"
+              titulo="Bitacoras"
               contenido="Usted puede revisar todas los modificaciones de todo el sistema "
+            >
+            </card-permiso>
+          </a>
+        </div>
+        <div class="col-sm-3" v-if="permisoInformeFinal">
+          <a class="redireccion" href="#">
+            <card-permiso
+              colorIcono="#FFFFFF"
+              colorFondo="#f1c40f"
+              nombreIcono="card-list"
+              titulo="Informe final"
+              contenido="Usted puede revisar ,crear y restaurar las informacion del sistema "
+            >
+            </card-permiso>
+          </a>
+        </div>
+        <div class="col-sm-3" v-if="permisoBackup">
+          <a class="redireccion" href="/back">
+            <card-permiso
+              colorIcono="#FFFFFF"
+              colorFondo="#3498db"
+              nombreIcono="check"
+              titulo="Respaldo y Restauracion"
+              contenido="Usted puede revisar ,crear y restaurar las informacion del sistema "
             >
             </card-permiso>
           </a>
@@ -194,6 +218,14 @@ export default {
       "permisoCotizacion",
       "permisoFiltroCotizacion",
       "contador",
+      "permisoPresupuestoDep",
+      "permisoHistorialPresupuestoDep",
+      "permisoPresupuestoUnidad",
+      "permisoHistorialPresupuestoUnidad",
+      "permisoCuadroComparativo",
+      "permisoBitacora",
+      "permisoBackup",
+      "permisoInformeFinal",
     ]),
   },
   data() {
