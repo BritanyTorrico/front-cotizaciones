@@ -57,8 +57,6 @@ export default {
   components: { CuadForm, CardCuad },
   data() {
     return {
-        tableData: [],
-        companiesData: [],
       today: null,
       changeReq: false,
       selectedRequest: {
@@ -75,7 +73,9 @@ export default {
     };
   },
   props: {
-        inboxData: Array
+        inboxData: Array,
+        tableData: Array,
+        companiesData: Array,
     },
   methods: {
       async curentDate() {
@@ -83,52 +83,7 @@ export default {
       const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
       this.today = date;
     },
-    async getData() {
-        for (let i of this.inboxData){
-            console.log(`tableData?nombre=${i.nombre_solicitud}`);
-            const table=(
-                        await this.$http.get(`tableData?nombre=${i.nombre_solicitud}`,{
-                            headers: {
-                                            authorization: this.token,
-                                        }})
-                    ).data
-            
-            let companies=[]
-            let items=[]
-            if (table.cotizaciones.length>0){
-            for (let k=0; k < table.cotizaciones[0].items_cotizacion.length; k++){
-                console.log(table);
-                let item=new Object
-                item.cantidad=table.cotizaciones[0].items_cotizacion[k].cantidad
-                item.unidad=table.cotizaciones[0].items_cotizacion[k].unidad
-                item.descripcion=table.cotizaciones[0].items_cotizacion[k].detalle
-                item.precios=[]
-                for (let l of table.cotizaciones){
-                    item.precios.push(l.items_cotizacion[k].precio_total)
-                }
-                items.push(item)
-            }
-               
-            for (let j of table.cotizaciones){
-                const empcod=(
-                    await this.$http.get(`quotation/${j.cod_cotizacion}`,{
-                            headers: {
-                                            authorization: this.token,
-                                        }})
-                ).data.datos[0].cod_empresa
-                const comp=(
-                    await this.$http.get(`company/${empcod}`,{
-                            headers: {
-                                            authorization: this.token,
-                                        }})
-                ).data.datos[0].nombre_empresa
-                companies.push(comp)
-            }
-            this.companiesData.push(companies)
-            this.tableData.push(items)
-            }
-        }
-    },
+    
     async showRequest(i) {
       this.selectedRequest.cod = this.inboxData[i].cod_solicitud;
       this.selectedRequest.name = this.inboxData[i].nombre_solicitud;
@@ -146,9 +101,9 @@ export default {
           this.changeReq=false;
     },
   },
-  mounted() {
-    this.getData();
-    this.curentDate();
+  mounted: async function() {
+      await this.curentDate();
+    
   },
 };
 </script>

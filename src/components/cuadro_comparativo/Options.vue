@@ -60,29 +60,72 @@ export default {
           unit: "Todas",
           filteredInbox: [],
           showFilters: false,
-          unitsList: []
+          unitsList: ["Todas"],
+          tableData:[],
+          companiesData:[]
       }
   },
   methods: {
+      async getTableData(){
+          for (let i of this.filteredInbox){
+            const table=(
+                        await this.$http.get(`tableData?nombre=${i.nombre_solicitud}`,{
+                            headers: {
+                                            authorization: this.token,
+                                        }})
+                    ).data
+            
+            let companies=[]
+            let items=[]
+            for (let k=0; k < table.cotizaciones[0].items_cotizacion.length; k++){
+                let item=new Object
+                item.cantidad=table.cotizaciones[0].items_cotizacion[k].cantidad
+                item.unidad=table.cotizaciones[0].items_cotizacion[k].unidad
+                item.descripcion=table.cotizaciones[0].items_cotizacion[k].detalle
+                item.precios=[]
+                for (let l of table.cotizaciones){
+                    item.precios.push(l.items_cotizacion[k].precio_total)
+                }
+                items.push(item)
+            }
+               
+            for (let j of table.cotizaciones){
+                const empcod=(
+                    await this.$http.get(`quotation/${j.cod_cotizacion}`,{
+                            headers: {
+                                            authorization: this.token,
+                                        }})
+                ).data.datos[0].cod_empresa
+                const comp=(
+                    await this.$http.get(`company/${empcod}`,{
+                            headers: {
+                                            authorization: this.token,
+                                        }})
+                ).data.datos[0].nombre_empresa
+                companies.push(comp)
+            }
+            this.companiesData.push(companies)
+            this.tableData.push(items)
+        }
+        
+      },
       async getData(){
           this.filteredInbox=[]
 
           let month=''
+          let unid=''
           if (this.months!=100){
               month='&month='+this.months
           }
-          let response=[]
-          if (this.unit=='Todas'){
-              response=(await this.$http.get(`request?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}${month}`,{
-          headers: {
-                        authorization: this.token,
-                    }})).data;
+          if (this.unit=="Todas"){
+              unid=`&from=depto&nombre=${localStorage.getItem('depto')}`
           }else{
-              response=(await this.$http.get(`request?type=criteria&from=soloUnidad&nombre=${this.unit}${month}`,{
+              unid=`&from=soloUnidad&nombre=${this.unit}`
+          }
+          const response=(await this.$http.get(`request?type=criteria${unid}${month}`,{
           headers: {
                         authorization: this.token,
                     }})).data;
-          }
             if (response.length>0){
                 for (let i = 0; i < response.length; i++) {
                     const table=(
@@ -92,11 +135,13 @@ export default {
                                         }})
                     ).data
                     let valid=true
+                    if (table.cotizaciones.length==0) {valid=false}
                     for (let j of table.cotizaciones){
                         if (j.estado_cotizacion!='COTIZACION_OBTENIDA'){
                             valid=false
                         }
                     }
+                    if (table.datos_tabla.length>0){valid=false}
                     if (valid){
                         this.filteredInbox.push(response[i])
 
@@ -104,10 +149,15 @@ export default {
                     }
             }
             }
+            await this.getTableData();
 
             this.$emit("sendinboxdata", this.filteredInbox)
+            this.$emit("sendtabledata", this.tableData)
+            this.$emit("sendcompaniesdata", this.companiesData)
       },
       async getUnits(){
+          this.unitsList=["Todas"]
+          this.unit="Todas"
           const resp=(
               await this.$http.get(`spendingUnit?type=name&departamento=${localStorage.getItem('depto')}`,{
                                 headers: {

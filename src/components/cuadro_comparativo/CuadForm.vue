@@ -24,7 +24,7 @@
           <tr v-for="(item, ind) in request.itemList" :key="ind">
             <td style="border:1px solid;" class="table-quantity">{{ item.cantidad }}</td>
               <td style="border:1px solid;" class="table-unity">{{ item.unidad }}</td>
-              <td style="border:1px solid;" class="table-detail">{{ item.detalle }}</td>
+              <td style="border:1px solid;" class="table-detail">{{ item.descripcion }}</td>
               <td v-for="(price, index) in item.precios" :key="index" style="border:1px solid;" class="table-itemname">{{ price }}</td>
           </tr>
         </tbody>
@@ -35,7 +35,7 @@
       <textarea 
       placeholder="Ingrese una descripción del ítem"
       cols="50"
-          rows="10"
+          rows="5"
           maxlength="1000"
           required
       v-model="observations"></textarea>
@@ -47,7 +47,7 @@
       <button
         class="accept-button"
         v-on:click="send()"
-        >Aceptar</button
+        >Enviar</button
       >
       <button
         class="reject-button"
@@ -55,12 +55,15 @@
         >Imprimir</button
       >
     </div>
+    <Alert ref="alert"></Alert>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import Alert from '../Alert.vue';
 export default {
+  components: { Alert },
   name: "CuadForm",
   computed: {
     ...mapState(["token"]),
@@ -86,7 +89,32 @@ export default {
   },
   methods: {
     async send() {
-      console.log("send");
+      try {
+        if (this.observations!=""){
+        const table=(
+                          await this.$http.get(`tableData?nombre=${this.request.name}`,{
+                              headers: {
+                                              authorization: this.token,
+                                          }})
+                      ).data
+        
+          console.log(table.cotizaciones);
+          console.log(this.request.name);
+          console.log(this.observations);
+          await this.$http.post(`table`,{
+            nombre_solicitud: this.request.name,
+            observaciones_tabla: this.observations,
+            cotizaciones: table.cotizaciones
+          },{
+                              headers: {
+                                              authorization: this.token,
+                                          }})
+        }else{
+          this.alert("warning", "Ingrese observaciones");
+        }
+      } catch (error) {
+        this.alert("warning", error);
+      }
     },
     async print() {
         console.log("print");
@@ -113,15 +141,14 @@ export default {
   resize: none;
   word-wrap: break-word;
   overflow-y: auto;
-}
-
-.single-request-details textarea {
   background-color: #f7f6f6;
   border-radius: 3px;
   padding: 8px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  width: 100%;
 }
+
 .head-top {
   display: flex;
   align-items: center;
@@ -150,7 +177,7 @@ h2 {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   display: flex;
   align-items: baseline;
-  width: 50%;
+  width: 100%;
 }
 h3 {
   color: #030303 !important;

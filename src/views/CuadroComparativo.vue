@@ -1,10 +1,10 @@
 <template>
   <div class="review">
       <div class="filter">
-          <Options @sendinboxdata="passData($event)"/>
+          <Options @sendinboxdata="passData($event)" @sendtabledata="passTable($event)" @sendcompaniesdata="passCompanies($event)"/>
       </div>
       <div class="inbox">
-          <CuadInbox :inboxData="inboxData"/>
+          <CuadInbox :inboxData="inboxData" :tableData="tableData" :companiesData="companiesData"/>
       </div>
   </div>
 </template>
@@ -17,12 +17,20 @@ export default {
 data(){
       return{
         inboxData: [],
+        tableData: [],
+        companiesData: []
       };
   },
   methods: {
     passData(inbox){
       this.inboxData= inbox;
     },
+    passTable(table){
+      this.tableData=table;
+    },
+    passCompanies(comp){
+      this.companiesData=comp
+    }
   },
   name: "CuadroComparativo",
 }

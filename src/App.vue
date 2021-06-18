@@ -99,7 +99,7 @@
           <b-nav-item v-if="permisoPresupuestoUnidad" to="/presupuestos"
             >Presupuesto Unidad de gasto</b-nav-item
           >
-          <b-nav-item v-if="permisoCuadroComparativo" to="/"
+          <b-nav-item v-if="permisoCuadroComparativo" to="/cuadro_comparativo"
             >Cuadro comparativo</b-nav-item
           >
           <b-nav-item v-if="username" @click="cerrar()"
