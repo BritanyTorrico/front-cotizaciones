@@ -93,16 +93,13 @@ export default new Vuex.Store({
                 } else if (state.listaPermisos[i] == "Gestionar Tabla") {
                     state.permisoCuadroComparativo = true;
                     state.contador = state.contador + 1;
-                    //BORRAR ESTO
-                    state.permisoInformeFinal = true;
-                    state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Gestionar Bitacora") {
                     state.permisoBitacora = true;
                     state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Gestionar Backup") {
                     state.permisoBackup = true;
                     state.contador = state.contador + 1;
-                } else if (state.listaPermisos[i] == "Gestionar Tabla") {
+                } else if (state.listaPermisos[i] == "Vista_ReporteFinal") {
                     state.permisoInformeFinal = true;
                     state.contador = state.contador + 1;
                 }
