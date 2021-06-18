@@ -1,47 +1,237 @@
 <template>
-    <div class="inbox">
-        <div class="inbox-container">
-            <div class="inbox-cards" :class="selectedRequest.name === '' ? 'full-screen' : 'side-view'">
-                <div class="card-side">
-                    <div class="desc">Solicitudes aceptadas:</div>
-                    <div class="card-index" v-for="(req, i) in inboxData" :key="i">
-                        <div
-                            class="single-card-container "
-                            v-on:click="startTransition(i)"
-                            :class="selectedRequest.name == req.nombre_solicitud ? 'selected-card' : ''"
-                        >
-                            <CardCot
-                                :name="req.nombre_solicitud"
-                                :date="req.fecha_solicitud"
-                                :author="req.nombrecompleto_solicitante"
-                                :description="req.detalle_solicitud"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="inbox-form" :class="selectedRequest.name === '' ? 'no-selected' : ''">
-              <div v-if="selectedRequest.name!=''">
-              <transition
-                enter-active-class="animate__animated animate__fadeInRight"
-                leave-active-class="animate__animated animate__fadeOutRight"
-              >
-                  <div v-if="!changeCot">
-                      <CotForm :request="selectedRequest" />
-                  </div>
-              </transition>
-              </div>
-            </div>
+  <div class="inbox">
+    <div v-if="inboxData.length===0">
+            <div class="desc">No hay solicitudes pendientes</div>
         </div>
+    <div v-else class="inbox-container">
+      <div class="inbox-cards" :class="selectedRequest.name === '' ? 'full-screen' : 'side-view'" >
+        <div class="card-side">
+          <div class="desc">Solicitudes entrantes:</div>
+          <div class="card-index" v-for="(req, i) in inboxData" :key="i">
+            <div
+              class="single-card-container "
+              v-on:click="startTransition(i)"
+              :class="
+                selectedRequest.name == req.nombre_solicitud
+                  ? 'selected-card'
+                  : ''
+              "
+            >
+              <CardCuad
+                :name="req.nombre_solicitud"
+                :date="req.fecha_solicitud"
+                :author="req.nombrecompleto_solicitante"
+                :quotizer="req.nombre_completo_cotizador"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="inbox-details" :class="selectedRequest.name === '' ? 'no-selected' :''">
+        <transition name="slide-fade">
+        <div v-if="selectedRequest.name != ''">
+          <transition
+            enter-active-class="animate__animated animate__fadeInRight"
+            leave-active-class="animate__animated animate__fadeOutRight"
+          >
+            <div v-if="!changeReq">
+              <CuadForm :request="selectedRequest" />
+            </div>
+          </transition>
+        </div>
+        </transition>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
+import CardCuad from "./CardCuad.vue";
+import CuadForm from "./CuadForm.vue";
+import { mapState } from "vuex";
 export default {
-
-}
+  name: "CuadInbox",
+  computed: {
+    ...mapState(["token"]),
+  },
+  components: { CuadForm, CardCuad },
+  data() {
+    return {
+        tableData: [],
+        companiesData: [],
+      today: null,
+      changeReq: false,
+      selectedRequest: {
+        cod: null,
+        name: "",
+        date: "",
+        author: "",
+        unit:"",
+        incharge: "",
+        boss: "",
+        companyList: [],
+        itemList: [],
+      },
+    };
+  },
+  props: {
+        inboxData: Array
+    },
+  methods: {
+      async curentDate() {
+      const current = new Date();
+      const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+      this.today = date;
+    },
+    async getData() {
+        for (let i of this.inboxData){
+            console.log(`tableData?nombre=${i.nombre_solicitud}`);
+            const table=(
+                        await this.$http.get(`tableData?nombre=${i.nombre_solicitud}`,{
+                            headers: {
+                                            authorization: this.token,
+                                        }})
+                    ).data
+            
+            let companies=[]
+            let items=[]
+            if (table.cotizaciones.length>0){
+            for (let k=0; k < table.cotizaciones[0].items_cotizacion.length; k++){
+                console.log(table);
+                let item=new Object
+                item.cantidad=table.cotizaciones[0].items_cotizacion[k].cantidad
+                item.unidad=table.cotizaciones[0].items_cotizacion[k].unidad
+                item.descripcion=table.cotizaciones[0].items_cotizacion[k].detalle
+                item.precios=[]
+                for (let l of table.cotizaciones){
+                    item.precios.push(l.items_cotizacion[k].precio_total)
+                }
+                items.push(item)
+            }
+               
+            for (let j of table.cotizaciones){
+                const empcod=(
+                    await this.$http.get(`quotation/${j.cod_cotizacion}`,{
+                            headers: {
+                                            authorization: this.token,
+                                        }})
+                ).data.datos[0].cod_empresa
+                const comp=(
+                    await this.$http.get(`company/${empcod}`,{
+                            headers: {
+                                            authorization: this.token,
+                                        }})
+                ).data.datos[0].nombre_empresa
+                companies.push(comp)
+            }
+            this.companiesData.push(companies)
+            this.tableData.push(items)
+            }
+        }
+    },
+    async showRequest(i) {
+      this.selectedRequest.cod = this.inboxData[i].cod_solicitud;
+      this.selectedRequest.name = this.inboxData[i].nombre_solicitud;
+      this.selectedRequest.date = this.today
+      this.selectedRequest.author = this.inboxData[i].nombrecompleto_solicitante;
+      this.selectedRequest.unit = this.inboxData[i].unidadgasto_solicitud;
+      this.selectedRequest.incharge = "Fernando Zapata";
+      this.selectedRequest.boss = "Maria Oporto";
+      this.selectedRequest.itemList = this.tableData[i]
+      this.selectedRequest.companyList = this.companiesData[i]
+    },
+    async startTransition(i){
+          this.changeReq=true;
+          await this.showRequest(i);
+          this.changeReq=false;
+    },
+  },
+  mounted() {
+    this.getData();
+    this.curentDate();
+  },
+};
 </script>
 
 <style scoped>
-
+.inbox {
+  position: relative;
+}
+.inbox-container {
+  padding: 0px !important;
+  gap: 2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.card-index {
+  position: relative;
+  align-items: baseline;
+  padding: 2.5% 2.5%;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+  width: 100%;
+}
+.inbox-cards {
+  display: flex;
+  height: 42rem;
+  overflow: auto;
+}
+.full-screen{
+  width: 100%!important;
+}
+.side-view{
+  width: 40%!important;
+}
+.inbox-details {
+  padding: 0 5% 5% 0;
+  margin: 10px;
+  background: #a7c8ee;
+  width: 100%;
+}
+.no-selected{
+  padding: 0!important;
+  margin:0;
+  width: 0%!important;
+}
+.selected-enable{
+  width: 100%!important;
+}
+.single-card-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 1% 1% 1% 1%;
+}
+.card-side {
+  width: 100%;
+}
+.selected-card {
+  background: #a7c8ee;
+  border: 3px solid #030303;
+  border-radius: 10px;
+}
+.desc{
+  font-size: 29px;
+  text-align: left;
+  font-weight: 600;
+  padding: 2.5% 1% 1% 1%;
+  background: #dddfe7;
+  border: 1px solid #dddfe7;
+  border-radius: 0 0 10% 10%;
+  width: 75%;
+}
+.slide-fade-enter-active {
+  transition: all .8s ease;
+}
+.slide-fade-enter{
+  transform: translateX(10px);
+  opacity: 0;
+}
+:root{
+  --animate-duration: 1000ms;
+}
 </style>

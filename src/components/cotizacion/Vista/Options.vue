@@ -61,6 +61,25 @@
                     </div>
                 </div>
           </div>
+          <div class="filter-date">
+              <div class="option-title">Estado</div>
+              <div class="date-set">
+                  <input type="radio" class="time-set" value="ESPERANDO_RESPUESTAS" v-model="status" @change="getData">
+                  <div class="date-label">Esperando respuestas</div>
+              </div>
+              <div class="date-set">
+                  <input type="radio" class="time-set" value="COTIZACION_OBTENIDA" v-model="status" @change="getData">
+                  <div class="date-label">Cotización obtenida</div>
+              </div>
+              <div class="date-set">
+                  <input type="radio" class="time-set" value="CERRADO" v-model="status" @change="getData">
+                  <div class="date-label">Cerrado</div>
+              </div>
+              <div class="date-set">
+                  <input type="radio" class="time-set" value="ALL" v-model="status" @change="getData">
+                  <div class="date-label">Todas</div>
+              </div>
+          </div>
       </div>
       </transition>
   </div>
@@ -77,6 +96,7 @@ export default {
       return{
           months: 100,
           items: ["Products", "Services"],
+          status: "ALL",
           market: "Todos",
           company: "Todas",
           marketsList: ["Todos"],
@@ -101,7 +121,7 @@ export default {
               }
           }
           
-            this.getData()
+            await this.getData()
       }, 
       async getData(){
           this.filteredInbox=[]
@@ -110,36 +130,39 @@ export default {
           if(this.items.length>0){
               let month='' 
           let tipo=''
+          let state=''
           let rubro=''
           let empresa=''
           if (this.months!=100)
               {month='&month='+this.months}
           if(this.items.length==1)
               {tipo='&items='+this.items[0]}
+          if (this.status!="ALL")
+              {state='&status='+this.status}
           if (this.market!="Todos")
               {rubro='&rubro='+this.market}
           if(this.company!="Todas")
               {empresa='&empresa='+this.company}
-          const response=(await this.$http.get(`quotation?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}${month}${tipo}${rubro}${empresa}`, {
+          const response=(await this.$http.get(`quotation?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}${month}${tipo}${rubro}${empresa}${state}`, {
                     headers: {
                         authorization: this.token,
                     },
                 })).data;
             if (response.length>0){
                     for (let i=0;i<response.length;i++){
-                    this.filteredInbox[i]=new Object();
-                    this.filteredInbox[i].nombre_cotizacion=response[i].titulo_cotizacion;
-                    const date = response[i].fecha_cotizacion
-                    this.filteredInbox[i].fecha_cotizacion=`${date.substr(8, 2)}/${date.substr(5, 2)}/${date.substr(0, 4)}`
-                    const requests=(await this.$http.get(`request?type=All&from=depto&nombre=${localStorage.getItem('depto')}`, {
+                        const request=(await this.$http.get(`request/${response[i].cod_solicitud}`, {
                             headers: {
                                 authorization: this.token,
                             },
-                        })).data;
-                        for (let r of requests){
-                            if (r.cod_solicitud===response[i].cod_solicitud)
-                                {this.filteredInbox[i].autor_solicitud=r.nombrecompleto_solicitante}
-                        }
+                        })).data.datos[0];
+                    if (request.cotizador_responsable==localStorage.getItem('nombreUsuario')){
+                    this.filteredInbox[i]=new Object();
+                    this.filteredInbox[i].cod_cotizacion=response[i].cod_cotizacion
+                    this.filteredInbox[i].nombre_cotizacion=response[i].titulo_cotizacion;
+                    const date = response[i].fecha_cotizacion
+                    this.filteredInbox[i].fecha_cotizacion=`${date.substr(8, 2)}/${date.substr(5, 2)}/${date.substr(0, 4)}`
+                    
+                        this.filteredInbox[i].autor_solicitud=request.nombrecompleto_solicitante
                         this.filteredInbox[i].estado_cotizacion=response[i].estado_cotizacion;
                         const emp=(await this.$http.get(`companiesperrequest/${response[i].cod_solicitud}`, {
                             headers: {
@@ -182,11 +205,13 @@ export default {
                         }
                         this.filteredItems.push(currentItems)
                 }
+                }
             }
           }
-          
-          this.$emit("sendinboxdata", this.filteredInbox,)
-          this.$emit("senditems", this.filteredItems)
+          let finalInbox = this.filteredInbox.filter(el => Object.keys(el).length)
+          let finalItems = this.filteredItems.filter(el => Object.keys(el).length)
+          this.$emit("sendinboxdata", finalInbox)
+          this.$emit("senditems", finalItems)
       }, 
       async setMarketList(){
           const resp= (await this.$http.get('market', {
@@ -197,7 +222,7 @@ export default {
         for (let i of resp.datos){
             this.marketsList.push(i.nombre_rubro)
         }
-        this.getData()
+        await this.getData()
       }, 
   },
   mounted(){
