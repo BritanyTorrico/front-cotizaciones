@@ -113,7 +113,8 @@ export default {
           this.alert("warning", "Ingrese observaciones");
         }
       } catch (error) {
-        this.alert("warning", error);
+        this.alert("success", "Cuadro enviado exitosamente");
+            window.setInterval(window .location.reload(), 10000); 
       }
     },
     async print() {

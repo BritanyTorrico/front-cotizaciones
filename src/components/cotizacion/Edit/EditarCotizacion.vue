@@ -97,7 +97,7 @@ export default {
               await this.sendQuotData()
               await this.updateStatus()
               this.alert("success", "Cotización actualizada exitosamente");
-              //this.$router.push(`/cotizaciones`)
+              this.$router.push(`/cotizaciones`)
 
           } catch (error) {
               this.alert("warning", error);
@@ -214,16 +214,27 @@ export default {
 </script>
 
 <style scoped>
-.single-quotation-details{
+.cot-edit{
     background: #fff;
     margin: 40px;
     padding: 10px 10px 20px 10px;
     box-shadow: 0px 0px 30px 0px rgba(0, 143, 216, 0.15);
-    width: 100%;
+    width: 90%;
     border: 1px solid #808C8F;
     border-radius: 3px;
     display: flex;
     flex-direction: column;
+}
+.cot-edit textarea {
+  resize: none;
+  word-wrap: break-word;
+  overflow-y: auto;
+  background-color: #f7f6f6;
+  border-radius: 3px;
+  padding: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  width: 100%;
 }
 .head-top {
   text-align: left;
@@ -320,7 +331,7 @@ h5 {
   margin: auto;
   display: block;
   background-color: #003570;
-  padding: 1.2% 2.5% 1.2% 2.5%;
+  padding: 0.5% 2.5% 0.5% 2.5%;
   border-radius: 22px;
   color: #fafafa;
   font-size: 22px;
@@ -350,6 +361,7 @@ h5 {
   justify-content: center;
   align-content: center;
   text-align: center;
+  padding: 2%;
 }
 .form-title {
   text-align: left;
