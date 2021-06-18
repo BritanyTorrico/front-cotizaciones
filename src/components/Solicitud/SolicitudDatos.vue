@@ -51,6 +51,7 @@
             Mensaje="Campo Obligatorio"
             :value="solicitud.unidadgasto_solicitud"
           ></lista-desplegable>
+
           <div
             class="form_check-error mensaje"
             v-if="!$v.solicitud.unidadgasto_solicitud.validate_requerido_listas"
@@ -482,6 +483,8 @@ export default {
       listaCatGen: [],
       listaCodGen: [],
       desabilitar: false,
+      listaCodigosUnidad: false,
+      presupuesto: null,
     };
   },
   validations: {
@@ -525,6 +528,19 @@ export default {
     },
   },
   methods: {
+    async obtenerPresupuestoUnidad() {
+      let presu = 0;
+      for (let i = 0; i < this.listaCodigosUnidad.length; i++) {
+        if (
+          this.solicitud.unidadgasto_solicitud ==
+          this.listaCodigosUnidad[i].nombre_unidadgasto
+        ) {
+          presu = this.listaCodigosUnidad[i].presupuesto_unidad;
+        }
+      }
+      return presu;
+    },
+
     variableHijo(value) {
       this.variableRecibida = value;
       if (this.variableRecibida) {
@@ -608,42 +624,54 @@ export default {
     },
     async submitForm() {
       try {
+        let presupuestoUnidad = await this.obtenerPresupuestoUnidad();
         if (!this.$v.solicitud.$invalid && this.listaPeticion.length > 0) {
-          await this.$http.post(
-            `request`,
-            {
-              nombre_solicitud: this.solicitud.nombre_solicitud,
-              detalle_solicitud: this.solicitud.detalle_solicitud,
-              estimado_solicitud: this.solicitud.estimado_solicitud,
-              unidadgasto_solicitud: this.solicitud.unidadgasto_solicitud,
-            },
-
-            {
-              headers: {
-                authorization: this.token,
+          let cantidad1 = parseFloat(this.solicitud.estimado_solicitud);
+          let cantidad2 = parseFloat(presupuestoUnidad);
+          console.log(cantidad1);
+          console.log(cantidad2);
+          if (cantidad1 > cantidad2) {
+            this.alert(
+              "warning",
+              "El presupuesto sobrepasa el tope del presupuesto de unidad de gasto"
+            );
+          } else {
+            await this.$http.post(
+              `request`,
+              {
+                nombre_solicitud: this.solicitud.nombre_solicitud,
+                detalle_solicitud: this.solicitud.detalle_solicitud,
+                estimado_solicitud: this.solicitud.estimado_solicitud,
+                unidadgasto_solicitud: this.solicitud.unidadgasto_solicitud,
               },
-            }
-          );
 
-          await this.envioItems();
+              {
+                headers: {
+                  authorization: this.token,
+                },
+              }
+            );
 
-          this.alert("success", "Solicitud enviada");
-          //borrar todos los campos del fomrulario
+            await this.envioItems();
 
-          this.solicitud.nombre_solicitud = null;
-          this.solicitud.detalle_solicitud = null;
-          this.solicitud.categoria = "Seleccione una opcion";
+            this.alert("success", "Solicitud enviada");
+            //borrar todos los campos del fomrulario
 
-          this.solicitud.categoria_general = "Seleccione una opcion";
-          this.solicitud.nombre_item = "Seleccione una opcion";
-          this.solicitud.unidadgasto_solicitud = "Seleccione una opcion";
-          this.solicitud.estimado_solicitud = null;
-          //this.$store.commit("setDelete");
-          this.listaPeticion = [];
-          this.listaUnidadesDeGasto = [];
-          this.getDepartamento();
-          await this.forceRerender();
-          await this.forceRerender2();
+            this.solicitud.nombre_solicitud = null;
+            this.solicitud.detalle_solicitud = null;
+            this.solicitud.categoria = "Seleccione una opcion";
+
+            this.solicitud.categoria_general = "Seleccione una opcion";
+            this.solicitud.nombre_item = "Seleccione una opcion";
+            this.solicitud.unidadgasto_solicitud = "Seleccione una opcion";
+            this.solicitud.estimado_solicitud = null;
+            //this.$store.commit("setDelete");
+            this.listaPeticion = [];
+            this.listaUnidadesDeGasto = [];
+            this.getDepartamento();
+            await this.forceRerender();
+            await this.forceRerender2();
+          }
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
@@ -828,6 +856,7 @@ export default {
       this.$refs.alert2.showAlert(alertType, alertMessage);
     },
     async getDepartamento() {
+      this.listaCodigosUnidad = [];
       const unidadGastoPorDepartamento = (
         await this.$http.get(
           `spendingUnit?type=name&departamento=${localStorage.getItem(
@@ -845,6 +874,7 @@ export default {
         this.listaUnidadesDeGasto.push(
           unidadGastoPorDepartamento.datos[i].nombre_unidadgasto
         );
+        this.listaCodigosUnidad.push(unidadGastoPorDepartamento.datos[i]);
       }
     },
     async obtenerDescripcion() {

@@ -241,6 +241,12 @@ const routes = [{
         component: () =>
             import ("../views/LogPage.vue"),
     },
+    {
+        path: "/back",
+        name: "vistaBack",
+        component: () =>
+            import ("../views/vistaBack.vue"),
+    },
 ];
 
 const router = new VueRouter({

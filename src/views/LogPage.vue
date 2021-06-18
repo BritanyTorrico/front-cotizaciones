@@ -1,6 +1,13 @@
 <template>
   <div class="mayor">
     <div class="contenedor__log">
+      <h2 class="item_title">
+        Historial de modificaciones del sistema
+        <b-icon icon="check-circle-fill" aria-hidden="true"></b-icon>
+      </h2>
+
+      <div class="form_desc"></div>
+
       <div class="lista">
         <lista-desplegable-change
           required
@@ -260,5 +267,24 @@ export default {
 }
 .form__tabla {
   margin-top: 30px;
+}
+.item_title {
+  text-align: left;
+  color: #3d8af7;
+  font-size: 36px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.form_desc {
+  text-align: left;
+  color: #0d58cf;
+  font-size: 18px;
+  font-weight: 400;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #0d58cf;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 </style>

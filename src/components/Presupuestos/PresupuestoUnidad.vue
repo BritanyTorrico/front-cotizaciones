@@ -530,8 +530,6 @@ export default {
             },
           }
         );
-        this.alert("success", "Presupuesto actualizado exitosamente");
-        window.setInterval(window.location.reload(), 10000);
       } catch (error) {
         this.alert("warning", "Algo salio mal");
       }
@@ -565,6 +563,8 @@ export default {
                 console.log("son iguales");
               }
             }
+            this.alert("success", "Presupuesto actualizado exitosamente");
+            window.setInterval(window.location.reload(), 10000);
           } else {
             this.alert("warning", "El presupuesto sobrepasa el tope.");
           }
@@ -665,7 +665,7 @@ export default {
 .presupuesto__total {
   text-align: left;
   margin-top: 20px;
-  font-style: italic;
+  font-weight: bold;
   color: #003975;
 }
 .form_check-error {

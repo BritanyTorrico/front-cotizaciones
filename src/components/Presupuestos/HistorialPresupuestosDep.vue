@@ -130,8 +130,8 @@ export default {
         depto: "Seleccione una opcion",
       },
       fields: [
-        //"Nombre_usuario",
-        //"Fecha_Modificacion",
+        "Nombre_usuario",
+        "Fecha_Modificacion",
         "Departamento",
         "Presupuesto_Anterior",
         "Presupuesto_Actual",
@@ -296,20 +296,20 @@ export default {
         ).data;
 
         for (let i = 0; i < historialAnual.length; i++) {
-          // let usuarioModifico = historialAnual[i].usuarioResponsable;
-          //  let codUsuario = await this.transformarNombreUsuario(usuarioModifico);
-          //  let nombreUser = await this.obtenerNombrePorCod(codUsuario);
+          let usuarioModifico = historialAnual[i].usuarioResponsable;
+          let codUsuario = await this.transformarNombreUsuario(usuarioModifico);
+          let nombreUser = await this.obtenerNombrePorCod(codUsuario);
 
-          //  let fechaModificacion = historialAnual[i].fechaCambio;
-          //  let fechaFormato = await this.transformarFecha(fechaModificacion);
+          let fechaModificacion = historialAnual[i].fechaCambio;
+          let fechaFormato = await this.transformarFecha(fechaModificacion);
           let nombreDep = historialAnual[i].nombreDepartamento;
           let datoNuevoPresupuesto =
             historialAnual[i].presupuestoDepartamentoNuevo;
           let datoViejoPresupuesto =
             historialAnual[i].presupuestoDepartamentoAnterior;
           const dato = {
-            //Nombre_usuario: nombreUser,
-            //Fecha_Modificacion: fechaFormato,
+            Nombre_usuario: nombreUser,
+            Fecha_Modificacion: fechaFormato,
             Departamento: nombreDep,
             Presupuesto_Actual: datoNuevoPresupuesto,
             Presupuesto_Anterior: datoViejoPresupuesto,
