@@ -54,6 +54,9 @@
           ><b-nav-item v-if="permisoBackup" to="/back"
             >Respaldo y retauracion
           </b-nav-item>
+          <b-nav-item v-if="permisoInformeFinal" to="#"
+            >Informe Final
+          </b-nav-item>
           <b-nav-item v-if="username" @click="cerrar()"
             >Cerrar Sesion</b-nav-item
           >
@@ -120,6 +123,9 @@
             >Respaldo y retauracion
           </b-nav-item>
 
+          <b-nav-item v-if="permisoInformeFinal" to="#"
+            >Informe Final
+          </b-nav-item>
           <b-nav-item v-if="username" @click="cerrar()"
             >Cerrar Sesion</b-nav-item
           >
@@ -174,6 +180,7 @@ export default {
       "permisoCuadroComparativo",
       "permisoBitacora",
       "permisoBackup",
+      "permisoInformeFinal",
     ]),
   },
   methods: {
@@ -209,6 +216,7 @@ export default {
       this.$store.commit("setPermisoCuadroComparativo", false);
       this.$store.commit("setPermisoBitacora", false);
       this.$store.commit("setPermisoBackup", false);
+      this.$store.commit("setPermisoInformeFinal", false);
       //localstorage
       sessionStorage.removeItem("my-app");
 

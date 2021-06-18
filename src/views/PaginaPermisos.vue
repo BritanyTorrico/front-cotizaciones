@@ -161,8 +161,20 @@
               colorIcono="#FFFFFF"
               colorFondo="#9c88ff"
               nombreIcono="cloud-check"
-              titulo="Logs"
+              titulo="Bitacoras"
               contenido="Usted puede revisar todas los modificaciones de todo el sistema "
+            >
+            </card-permiso>
+          </a>
+        </div>
+        <div class="col-sm-3" v-if="permisoInformeFinal">
+          <a class="redireccion" href="#">
+            <card-permiso
+              colorIcono="#FFFFFF"
+              colorFondo="#f1c40f"
+              nombreIcono="card-list"
+              titulo="Informe final"
+              contenido="Usted puede revisar ,crear y restaurar las informacion del sistema "
             >
             </card-permiso>
           </a>
@@ -213,6 +225,7 @@ export default {
       "permisoCuadroComparativo",
       "permisoBitacora",
       "permisoBackup",
+      "permisoInformeFinal",
     ]),
   },
   data() {
