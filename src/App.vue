@@ -54,7 +54,7 @@
           ><b-nav-item v-if="permisoBackup" to="/back"
             >Respaldo y retauracion
           </b-nav-item>
-          <b-nav-item v-if="permisoInformeFinal" to="#"
+          <b-nav-item v-if="permisoInformeFinal" to="/informe_final"
             >Informe Final
           </b-nav-item>
           <b-nav-item v-if="username" @click="cerrar()"
