@@ -112,9 +112,45 @@
             <card-permiso
               colorIcono="#FFFFFF"
               colorFondo=" #84817a"
-              nombreIcono="book"
+              nombreIcono="layout-split"
               titulo="Ver cotizaciones"
               contenido="Usted puede ver todas las cotizaciones por diferentes filtros ya sea popr fechas,item/servicios , por el rubro de una empresa y mas."
+            >
+            </card-permiso>
+          </a>
+        </div>
+        <div class="col-sm-3">
+          <a class="redireccion" href="/presupuestoDep">
+            <card-permiso
+              colorIcono="#FFFFFF"
+              colorFondo=" #ff6348"
+              nombreIcono="graph-up"
+              titulo="Presupuestos por departamento"
+              contenido="Usted puede registrar todos los presupuestos por departamento y editar los mismos si ya existe algun registro."
+            >
+            </card-permiso>
+          </a>
+        </div>
+        <div class="col-sm-3">
+          <a class="redireccion" href="/presupuestos">
+            <card-permiso
+              colorIcono="#FFFFFF"
+              colorFondo=" #70a1ff"
+              nombreIcono="pencil"
+              titulo="Presupuestos Unidad gasto"
+              contenido="Usted puede registrar todos los presupuestos por unidad de gasto y editar los mismos si ya existe algun registro."
+            >
+            </card-permiso>
+          </a>
+        </div>
+        <div class="col-sm-3">
+          <a class="redireccion" href="#">
+            <card-permiso
+              colorIcono="#FFFFFF"
+              colorFondo=" #7bed9f"
+              nombreIcono="receipt"
+              titulo="Cuadro Comparativo"
+              contenido="Usted puede realizar un cuadro compartivo sobre una respectiva cotización "
             >
             </card-permiso>
           </a>
@@ -163,12 +199,11 @@ export default {
     async obtenerDatos() {
       try {
         const datos = (
-          await this.$http.get(`users/${localStorage.getItem("userID")}`, {
-            headers: {
-              authorization: this.token,
-            },
-          })
-        ).data.datos[0];
+          await this.$http.get(
+            `getFullName?usuario=${localStorage.getItem("nombreUsuario")}`
+          )
+        ).data[0];
+        console.log(datos);
         this.nombre = datos.nombres;
         this.apellido = datos.apellidos;
       } catch (error) {
@@ -178,12 +213,11 @@ export default {
     async obtenerRol() {
       try {
         const datos = (
-          await this.$http.get(`roles/${localStorage.getItem("roleCod")}`, {
-            headers: {
-              authorization: this.token,
-            },
-          })
-        ).data.datos[0];
+          await this.$http.get(
+            `getRoleName?usuario=${localStorage.getItem("nombreUsuario")}`
+          )
+        ).data[0];
+
         this.rol = datos.nombre_rol;
       } catch (error) {
         console.log(error);

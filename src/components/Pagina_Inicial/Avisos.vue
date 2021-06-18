@@ -8,21 +8,20 @@
 
     <div class="avisos">
       <div class="avisos__seccion">
-        <h3 class="aviso__titulo">Politicas del sistema</h3>
+        <h3 class="aviso__titulo">Politicas de Cotizaciones</h3>
         <p class="aviso__contenido">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda,
-          dolorem. Sequi ullam repellendus voluptatem adipisci, facere, eum,
-          eaque molestiae laborum enim odit minus deserunt expedita quo veniam
-          soluta quod ipsum?
+          Para poder realizar una cotización esta debe ser previamente revisada
+          y aceptada ,cabe mencionar que tenemos como politica enviar a tres
+          empresas de manera obligatoria que participan en el proceso de
+          cotizacion y el periodo maximo de confirmacion de una cotizacion por
+          empresa es de tres dias.
         </p>
       </div>
       <div class="avisos__seccion">
         <h3 class="aviso__titulo">Inicio de Sesión</h3>
-        <p class="aviso__contenido">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda,
-          dolorem. Sequi ullam repellendus voluptatem adipisci, facere, eum,
-          eaque molestiae laborum enim odit minus deserunt expedita quo veniam
-          soluta quod ipsum?
+        <p class="aviso__contenido ">
+          Para poder acceder al sistema de cotizacion es necesario que ingrese
+          con una cuenta proporsionada por la universidad.
         </p>
       </div>
     </div>
@@ -68,5 +67,8 @@ export default {
   width: 90px;
   height: 40px;
   margin-top: 15px;
+}
+.aviso__contenido {
+  font-size: 18px;
 }
 </style>

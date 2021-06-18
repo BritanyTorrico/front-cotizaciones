@@ -28,7 +28,11 @@ export default new Vuex.Store({
         permisoFiltroCotizacion: false,
         username: false,
         token: null,
-
+        permisoPresupuestoDep: false,
+        permisoPresupuestoUnidad: false,
+        permisoHistorialPresupuestoDep: false,
+        permisoHistorialPresupuestoUnidad: false,
+        permisoCuadroComparativo: false,
         contador: 0,
     },
     mutations: {
@@ -60,6 +64,31 @@ export default new Vuex.Store({
                     state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Vista_Filtro_Cotizaciones") {
                     state.permisoFiltroCotizacion = true;
+                    state.contador = state.contador + 1;
+                } else if (state.listaPermisos[i] == "Gestionar departamento") {
+                    //registrar presupuesto
+                    state.permisoPresupuestoDep = true;
+                    state.contador = state.contador + 1;
+                } else if (state.listaPermisos[i] == "Gestionar unidadDeGasto") {
+                    for (let a = 0; a < state.listaPermisos.length; a++) {
+                        if (
+                            state.listaPermisos[a] == "Actualizar presupuesto unidad de gasto"
+                        ) {
+                            //HISTORIAL POR UNIDA DE GASTO
+                            state.permisoHistorialPresupuestoUnidad = true;
+                            state.contador = state.contador + 1;
+                        } else if (state.listaPermisos[a] == "Gestionar departamento") {
+                            //HISTORIAL POR DEPARTAMENTO
+
+                            state.permisoHistorialPresupuestoDep = true;
+                            state.contador = state.contador + 1;
+                        }
+                    }
+                    //registrar presupuesto
+                    state.permisoPresupuestoUnidad = true;
+                    state.contador = state.contador + 1;
+                } else if (state.listaPermisos[i] == "Gestionar Tabla") {
+                    state.permisoCuadroComparativo = true;
                     state.contador = state.contador + 1;
                 }
             }
@@ -109,6 +138,22 @@ export default new Vuex.Store({
         },
         setToken(state, payload) {
             state.token = payload;
+        },
+        //tercer sprint
+        setPermisoPresupuestoDep(state, dato2) {
+            state.permisoPresupuestoDep = dato2;
+        },
+        setPermisoPresupuestoUnidad(state, dato2) {
+            state.permisoPresupuestoUnidad = dato2;
+        },
+        setPermisoPresupuestoHistorialDep(state, dato2) {
+            state.permisoHistorialPresupuestoDep = dato2;
+        },
+        setPermisoPresupuestoHistorialUnidad(state, dato2) {
+            state.permisoHistorialPresupuestoUnidad = dato2;
+        },
+        setPermisoCuadroComparativo(state, dato2) {
+            state.permisoCuadroComparativo = dato2;
         },
     },
     actions: {
