@@ -1,11 +1,14 @@
 <template>
   <div class="single-item-details">
-      <div class="head-part">
+    <div class="head-part">
       <div class="head-top">
         <h2>{{ item.name }}</h2>
       </div>
       <div class="head-info">
-        <div class="head-subject"><h3>Categoría:</h3>{{ item.category }}</div>
+        <div class="head-subject">
+          <h3>Categoría:</h3>
+          {{ item.category }}
+        </div>
       </div>
     </div>
     <div class="body-part">
@@ -15,34 +18,34 @@
       <p>{{ item.justification }}</p>
     </div>
     <div class="options">
-        <button class="accept-button" v-on:click="editItem()">Editar</button>
-        <button class="reject-button">Eliminar</button>
+      <button class="accept-button" v-on:click="editItem()">Editar</button>
+      <!--<button class="reject-button">Eliminar</button>-->
     </div>
   </div>
 </template>
 
 <script>
 export default {
-    name: "ItemView",
-  data(){
-      return{};
+  name: "ItemView",
+  data() {
+    return {};
   },
   props: {
-      item: {
-        cod: Number,
-        name: String,
-        category: String,
-        description: String,
-        justification: String,
-      }
+    item: {
+      cod: Number,
+      name: String,
+      category: String,
+      description: String,
+      justification: String,
+    },
   },
   methods: {
-    editItem(){
+    editItem() {
       const id = this.item.cod;
-      this.$router.push(`/item/editar/${id}`)
-    }
-  }
-}
+      this.$router.push(`/item/editar/${id}`);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -135,12 +138,12 @@ p {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
-.head-info{
+.head-info {
   display: flex;
   width: 100%;
   justify-content: space-between;
 }
-.options{
-    display: flex;
+.options {
+  display: flex;
 }
 </style>
