@@ -10,11 +10,11 @@
       </div>
     </div>
     <h5>Items:</h5>
-    <div class="items">
+    <div id="DivIdToPrint" class="items">
       <table class="items-list">
         <thead>
           <tr>
-            <th style="border:1px solid; width:10px;">Cant</th>
+            <th style="border:1px solid; width:50px;">Cant</th>
               <th style="border:1px solid; width:50px;">Unidad</th>
               <th style="border:1px solid; width:500px;">Descripción</th>
               <th style="border:1px solid; width:100px;" v-for="(comp, i) in request.companyList" :key="i">{{ comp }}</th>
@@ -33,10 +33,10 @@
     <div class="body-part">
       <h5>Observaciones:</h5>
       <textarea 
-      placeholder="Ingrese una descripción del ítem"
+      placeholder="Ingrese observaciones correspondientes a la tabla"
       cols="50"
           rows="5"
-          maxlength="1000"
+          maxlength="240"
           required
       v-model="observations"></textarea>
     </div>
@@ -117,12 +117,52 @@ export default {
       }
     },
     async print() {
-        console.log("print");
+      const myName = (
+          await this.$http.get(
+            `getFullName?usuario=${localStorage.getItem("nombreUsuario")}`
+          )
+        ).data[0];
+      let nombres = this.request.unit;
+      let nombres2 = this.request.incharge;
+      let nombres3 = `${myName.nombres} ${myName.apellidos}`;
+      let nombres4 = this.request.boss;
+      let observaciones = this.observations
+      let today=new Date;
+      const day=today.getDate()
+      const month=today.getMonth()
+      const year=today.getFullYear().toString().substr(-2)
+      console.log(nombres, nombres2, nombres3, nombres4);
+      var divToPrint = document.getElementById("DivIdToPrint");
+      var newWin = window.open("", "Print-Window");
+      newWin.document.open();
+      newWin.document.write(
+        '<html><body onload="window.print()"><div class="contenedor-imp"><div class="seccion1"><h2 class="titulo">UNIVERSIDAD MAYOR DE SAN SIMON</h2><h2 >FACULTAD DE CIENCIAS Y TECNOLOGÍA</h2><h2>SECCIÓN ADQUISICIONES</h2><h3 class="depa">COCHABAMBA-BOLIVIA</h3></div><div class="seccion-medio"><p></p></div><div class="seccion-2"><table><tr><th colspan="3">  EMISION </th></tr><tr><td>'+day+'</td><td>'+month+'</td><td>'+year+'</td></tr></table></div></div><div class="conteedor-title"><h1>CUADRO COMPARATIVO DE COTIZACIONES</h1></div>' +
+          "<p>TABLA</p>" +
+          divToPrint.innerHTML +
+          '<p class="mensaje">Observaciones:'+observaciones+'</p>' +
+          '<div class="seccion_personal"><table><tr><th style="width:200px">SECCION ADQUISIONES</th><th style="width:200px">JEFE DE UNIDAD</th><th style="width:220px">TECNICO RESPONSABLE</th><th style="width:200px">JEFE ADMINISTRATIVO</th></tr><tr><td>' +
+          nombres +
+          "</td><td>" +
+          nombres2 +
+          "</td><td>" +
+          nombres3 +
+          "</td><td>" +
+          nombres4 +
+          "</td></tr></table></div>" +
+          "</body></html> <style>.contenedor-imp{display:flex;width:100%} .seccion1{width:60%;font-size:14px} h2{margin:0;padding:0;text-align:center} .seccion-medio{width:30%;} .seccion-2{width:10%;text-align:right;} p{margin:0;padding:0;} h1{text-align:center;text-decoration:underline} .empresa-der{display:inline;margin-left:350px;} .mensaje{font-style:italic;font-size:13px;margin-top:10px;margin-bottom:20px;} .Subtitulo{font-weigth:bold} .conteedor-title{margin-top:40px;margin-bottom:10px}.depa{font-size:13px;margin:0;padding:0;text-align:center} table{table-layout:fixed;width:80px;height:80px}table, th, td {border:1px solid black;border-collapse: collapse;height:40px;text-align:center} .seccion_personal{width:100%,border:1px solid}</style> "
+      );
+      newWin.document.close();
+      setTimeout(function() {
+        newWin.close();
+      }, 10);
     },
     alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
+  mounted(){
+    
+  }
 };
 </script>
 <style scoped>

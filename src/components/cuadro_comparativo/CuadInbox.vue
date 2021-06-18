@@ -90,8 +90,8 @@ export default {
       this.selectedRequest.date = this.today
       this.selectedRequest.author = this.inboxData[i].nombrecompleto_solicitante;
       this.selectedRequest.unit = this.inboxData[i].unidadgasto_solicitud;
-      this.selectedRequest.incharge = "Fernando Zapata";
-      this.selectedRequest.boss = "Maria Oporto";
+      this.selectedRequest.incharge = this.inboxData[i].encargado_unidad;
+      this.selectedRequest.boss = this.inboxData[i].jefe_depto;
       this.selectedRequest.itemList = this.tableData[i]
       this.selectedRequest.companyList = this.companiesData[i]
     },

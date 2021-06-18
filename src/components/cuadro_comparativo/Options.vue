@@ -67,6 +67,7 @@ export default {
   },
   methods: {
       async getTableData(){
+          console.log(this.filteredInbox);
           for (let i of this.filteredInbox){
             const table=(
                         await this.$http.get(`tableData?nombre=${i.nombre_solicitud}`,{
@@ -143,12 +144,37 @@ export default {
                     }
                     if (table.datos_tabla.length>0){valid=false}
                     if (valid){
-                        this.filteredInbox.push(response[i])
-
-                        
+                        this.filteredInbox[i]=new Object
+                        this.filteredInbox[i].cod_solicitud=response[i].cod_solicitud
+                        this.filteredInbox[i].nombre_solicitud=response[i].nombre_solicitud
+                        this.filteredInbox[i].nombrecompleto_solicitante=response[i].nombrecompleto_solicitante
+                        this.filteredInbox[i].unidadgasto_solicitud=response[i].unidadgasto_solicitud
+                        this.filteredInbox[i].encargado_unidad=''
+                        this.filteredInbox[i].jefe_depto=''
+                        const uns=(
+                            await this.$http.get(`spendingUnit?type=name&departamento=${localStorage.getItem('depto')}`,{
+                                                headers: {
+                                                    authorization: this.token,
+                                                },
+                                            })
+                        ).data.datos
+                        for (let k of uns){
+                            if (k.nombre_unidadgasto==response[i].unidadgasto_solicitud){
+                                this.filteredInbox[i].encargado_unidad=k.jefe_unidad
+                            }
+                        }
+                        const jd=(
+                            await this.$http.get(`departmentBoss?depto=${localStorage.getItem('depto')}`,{
+                                                headers: {
+                                                    authorization: this.token,
+                                                },
+                                            })
+                        ).data[0]
+                        this.filteredInbox[i].jefe_depto=`${jd.nombres} ${jd.apellidos}`
                     }
             }
             }
+            this.filteredInbox=this.filteredInbox.filter(el => Object.keys(el).length)
             await this.getTableData();
 
             this.$emit("sendinboxdata", this.filteredInbox)
@@ -168,7 +194,7 @@ export default {
           for (let i of resp){
               this.unitsList.push(i.nombre_unidadgasto)
           }
-          this.getData()
+          await this.getData()
       }
   },
   mounted(){
