@@ -73,23 +73,7 @@ export default new Vuex.Store({
                     state.permisoPresupuestoDep = true;
                     state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Gestionar unidadDeGasto") {
-                    for (let a = 0; a < state.listaPermisos.length; a++) {
-                        if (
-                            state.listaPermisos[a] == "Actualizar presupuesto unidad de gasto"
-                        ) {
-                            //HISTORIAL POR UNIDA DE GASTO
-                            state.permisoHistorialPresupuestoUnidad = true;
-                            state.contador = state.contador + 1;
-                        } else if (state.listaPermisos[a] == "Gestionar departamento") {
-                            //HISTORIAL POR DEPARTAMENTO
-
-                            state.permisoHistorialPresupuestoDep = true;
-                            state.contador = state.contador + 1;
-                        }
-                    }
-                    //registrar presupuesto
-                    state.permisoPresupuestoUnidad = true;
-                    state.contador = state.contador + 1;
+                    console.log("sad");
                 } else if (state.listaPermisos[i] == "Gestionar Tabla") {
                     state.permisoCuadroComparativo = true;
                     state.contador = state.contador + 1;
@@ -101,6 +85,8 @@ export default new Vuex.Store({
                     state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Vista_ReporteFinal") {
                     state.permisoInformeFinal = true;
+                    state.contador = state.contador + 1;
+                    state.permisoPresupuestoUnidad = true;
                     state.contador = state.contador + 1;
                 }
             }
