@@ -20,16 +20,39 @@
     <div class="options">
       <button class="accept-button" v-on:click="editItem()">Editar</button>
       <!--<button class="reject-button">Eliminar</button>-->
+      <button class="accept-button" v-on:click="editCompany()">Editar</button>
+      <b-button class="reject-button" v-b-modal.modal-prevent-closing
+        >Eliminar</b-button
+      >
+      <b-modal
+        id="modal-prevent-closing"
+        ref="modal"
+        title="Eliminar empresa"
+        ok-title="Si"
+        cancel-title="No"
+        hide-header-close
+        @ok="handleOk"
+      >
+        <p class="delete-message">¿Está seguro que desea eliminar este item?</p>
+        <Alert ref="alert"></Alert>
+      </b-modal>
     </div>
   </div>
 </template>
 
 <script>
+import Alert from "@/components/Alert.vue";
+import { mapState } from "vuex";
+import { BButton, BModal } from "bootstrap-vue";
 export default {
   name: "ItemView",
   data() {
     return {};
   },
+  computed: {
+    ...mapState(["token"]),
+  },
+  components: { Alert, BButton, BModal },
   props: {
     item: {
       cod: Number,
@@ -43,6 +66,28 @@ export default {
     editItem() {
       const id = this.item.cod;
       this.$router.push(`/item/editar/${id}`);
+    },
+    handleOk(bvModalEvt) {
+      bvModalEvt.preventDefault();
+      this.handleDelete();
+    },
+    async handleDelete() {
+      try {
+        const id = this.item.cod;
+        console.log(id);
+        await this.$http.delete(`expenseItem/${id}`, {
+          headers: {
+            authorization: this.token,
+          },
+        });
+        this.alert("success", "item eliminado");
+        window.setInterval(window.location.reload(), 10000);
+      } catch (error) {
+        this.alert("warning", error);
+      }
+    },
+    alert(alertType, alertMessage) {
+      this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
 };
