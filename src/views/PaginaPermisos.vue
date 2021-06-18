@@ -174,7 +174,7 @@
               colorFondo="#f1c40f"
               nombreIcono="card-list"
               titulo="Informe final"
-              contenido="Usted puede revisar ,crear y restaurar las informacion del sistema "
+              contenido="Usted puede revisar cuadros comparativos, realizar informes y aceptar o rechazar solicitudes"
             >
             </card-permiso>
           </a>
