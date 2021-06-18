@@ -48,6 +48,7 @@ export default {
   padding: 50px;
   background: #e9ecef;
   text-align: left;
+  width: 50%;
 }
 .avisos__nombre {
   display: flex;

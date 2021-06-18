@@ -155,6 +155,18 @@
             </card-permiso>
           </a>
         </div>
+        <div class="col-sm-3">
+          <a class="redireccion" href="/logss">
+            <card-permiso
+              colorIcono="#FFFFFF"
+              colorFondo="#9c88ff"
+              nombreIcono="cloud-check"
+              titulo="Logs"
+              contenido="Usted puede revisar todas los modificaciones de todo el sistema "
+            >
+            </card-permiso>
+          </a>
+        </div>
       </div>
     </div>
   </div>

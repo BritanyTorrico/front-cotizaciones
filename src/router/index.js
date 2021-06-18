@@ -242,6 +242,12 @@ const routes = [{
             import ("../views/LogPage.vue"),
     },
     {
+        path: "/back",
+        name: "vistaBack",
+        component: () =>
+            import ("../views/vistaBack.vue"),
+    },
+    {
         path: "/cotizaciones",
         name: "Cotizaciones",
         component: () =>
