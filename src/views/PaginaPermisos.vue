@@ -144,25 +144,13 @@
           </a>
         </div>
         <div class="col-sm-3">
-          <a class="redireccion" href="/historial_presupuestos_dep">
+          <a class="redireccion" href="#">
             <card-permiso
               colorIcono="#FFFFFF"
               colorFondo=" #7bed9f"
               nombreIcono="receipt"
-              titulo="Historial de presupuestos por departamento"
-              contenido="Usted puede ver todo el historial de cambios sobre el presupuesto por departamento."
-            >
-            </card-permiso>
-          </a>
-        </div>
-        <div class="col-sm-3">
-          <a class="redireccion" href="/historial_presupuestos">
-            <card-permiso
-              colorIcono="#FFFFFF"
-              colorFondo=" #fbc531"
-              nombreIcono="file-check"
-              titulo="Historial de presupuestos por unidad"
-              contenido="Usted puede ver todo el historial de cambios sobre el presupuesto por Unidad de gasto."
+              titulo="Cuadro Comparativo"
+              contenido="Usted puede realizar un cuadro compartivo sobre una respectiva cotización "
             >
             </card-permiso>
           </a>
