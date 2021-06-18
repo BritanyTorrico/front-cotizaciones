@@ -20,7 +20,7 @@
     <div class="options">
       <button class="accept-button" v-on:click="editItem()">Editar</button>
       <!--<button class="reject-button">Eliminar</button>-->
-      <button class="accept-button" v-on:click="editCompany()">Editar</button>
+
       <b-button class="reject-button" v-b-modal.modal-prevent-closing
         >Eliminar</b-button
       >
