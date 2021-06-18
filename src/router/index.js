@@ -274,6 +274,15 @@ const routes = [{
             rutaProtegida: true,
         },
     },
+    {
+        path: "/informe_final",
+        name: "InformeFinal",
+        component: () =>
+            import ("../views/InformeFinal.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
 ];
 
 const router = new VueRouter({

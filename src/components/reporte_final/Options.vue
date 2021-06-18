@@ -78,6 +78,7 @@ export default {
             
             let companies=[]
             let items=[]
+            console.log(table.cotizaciones[0]);
             for (let k=0; k < table.cotizaciones[0].items.length; k++){
                 let item=new Object
                 item.cantidad=table.cotizaciones[0].items[k].cantidad
@@ -142,13 +143,15 @@ export default {
                             valid=false
                         }
                     }
-                    if (table.datos_tabla.length>0){valid=false}
+                    if (table.datos_tabla.length==0){valid=false}
                     if (valid){
                         this.filteredInbox[i]=new Object
                         this.filteredInbox[i].cod_solicitud=response[i].cod_solicitud
                         this.filteredInbox[i].nombre_solicitud=response[i].nombre_solicitud
                         this.filteredInbox[i].nombrecompleto_solicitante=response[i].nombrecompleto_solicitante
                         this.filteredInbox[i].unidadgasto_solicitud=response[i].unidadgasto_solicitud
+                        this.filteredInbox[i].cotizador=response[i].nombre_completo_cotizador
+                        this.filteredInbox[i].observaciones=table.datos_tabla[0].observaciones_tabla
                         this.filteredInbox[i].encargado_unidad=''
                         this.filteredInbox[i].jefe_depto=''
                         const uns=(

@@ -2,64 +2,102 @@
   <div class="single-request-details">
     <div class="head-part">
       <div class="head-top">
-        <h2>{{ request.name }}</h2>
+        <h2>Informe de Cuadro comparativo para {{ request.name }}</h2>
         <div class="time">{{ request.date }}</div>
       </div>
       <div class="head-info">
         <div class="head-subject"><h3>Solicitante:</h3>{{ request.author }}</div>
-        <div class="head-subject"><h3>Unidad:</h3>{{ request.unit }}</div>
-      </div>
-    </div>
-    <div class="body-part">
-      <h5>Justificación:</h5>
-      <p>{{ request.description }}</p>
-      <div class="money">
-        <h5>Presupuesto:</h5>
-        Bs. {{ request.budget }}
-      </div>
-      <div class="money">
-        <h5>Presupuesto disponible en la unidad:</h5>
-        Bs. {{ unitbudget }}
       </div>
     </div>
     <h5>Items:</h5>
-    <div class="items">
+    <div id="DivIdToPrint" class="items">
       <table class="items-list">
         <thead>
           <tr>
-            <th style="border:1px solid; width:50px;">Cantidad</th>
+            <th style="border:1px solid; width:50px;">Cant</th>
               <th style="border:1px solid; width:50px;">Unidad</th>
-              <th style="border:1px solid; width:70px;">Item</th>
-              <th style="border:1px solid; width:500px;">Detalle</th>
+              <th style="border:1px solid; width:500px;">Descripción</th>
+              <th style="border:1px solid; width:100px;" v-for="(comp, i) in request.companyList" :key="i">{{ comp }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in request.itemList" :key="index">
-            <td style="border:1px solid;" class="table-quantity">{{ item.cantidad_solicitud }}</td>
-              <td style="border:1px solid;" class="table-unity">{{ item.unidad_solicitud }}</td>
-              <td style="border:1px solid;" class="table-itemname">{{ item.nombre_itemgasto }}</td>
-              <td style="border:1px solid;" class="table-detail">{{ item.detalle_solicitud }}</td>
+          <tr v-for="(item, ind) in request.itemList" :key="ind">
+            <td style="border:1px solid;" class="table-quantity">{{ item.cantidad }}</td>
+              <td style="border:1px solid;" class="table-unity">{{ item.unidad }}</td>
+              <td style="border:1px solid;" class="table-detail">{{ item.descripcion }}</td>
+              <td v-for="(price, index) in item.precios" :key="index" style="border:1px solid;" class="table-itemname">{{ price }}</td>
           </tr>
         </tbody>
       </table>
     </div>
+    <div class="body-part">
+      <h5>Observaciones:</h5>
+      <p>{{ request.obs }}</p>
+    </div>
+    <div class="head-subject"><h3>Unidad de gasto:</h3>{{ request.unit }}</div>
+    <div class="head-subject"><h3>Encargado de unidad:</h3>{{ request.incharge }}</div>
+    <div class="head-subject"><h3>Cotizador:</h3>{{ request.quotizer }}</div>
+    <div class="head-subject"><h3>Jefe de departamento:</h3>{{ request.boss }}</div>
     <div class="response">
       <b-button
         class="accept-button"
-        v-on:click="assert()"
-        v-b-modal.modal-prevent-closing
+        v-on:click="accept()"
+        v-b-modal.modal-acceptance
         >Aceptar</b-button
       >
+      <b-modal
+        id="modal-acceptance"
+        ref="modal"
+        title="Reporte"
+        ok-title="Enviar"
+        cancel-title="Cerrar"
+        hide-header-close
+        @show="resetModal"
+        @hidden="resetModal"
+        @ok="handleOk"
+      >
+        <form ref="form" @submit.stop.prevent="handleSubmit">
+          <b-form-group 
+            invalid-feedback="Seleccione una empresa"
+            :state="resState"
+          >
+          <h5>Empresa: </h5>
+            <b-form-select 
+              v-model="selectedCompany" 
+              :options="this.request.companyList" 
+              :state="resState"
+            ></b-form-select>
+          </b-form-group>
+          <b-form-group
+            invalid-feedback="Justifique su respuesta"
+            :state="resState"
+          >
+          <h5>Justificación: </h5>
+            <b-form-textarea
+              id="response-textarea"
+              class="report-just"
+              v-model="response"
+              placeholder="Ingrese su reporte de aceptación"
+              cols="50"
+              rows="10"
+              maxlength="1000"
+              :state="resState"
+              required
+            ></b-form-textarea>
+          </b-form-group>
+        </form>
+        <Alert ref="alert"></Alert>
+      </b-modal>
       <b-button
         class="reject-button"
-        v-on:click="deny()"
-        v-b-modal.modal-prevent-closing
+        v-on:click="reject()"
+        v-b-modal.modal-rejection
         >Rechazar</b-button
       >
       <b-modal
-        id="modal-prevent-closing"
+        id="modal-rejection"
         ref="modal"
-        title="Justificación"
+        title="Reporte"
         ok-title="Enviar"
         cancel-title="Cerrar"
         hide-header-close
@@ -76,7 +114,7 @@
               id="response-textarea"
               class="report-just"
               v-model="response"
-              placeholder="Ingrese su justificación"
+              placeholder="Ingrese su reporte de rechazo"
               cols="50"
               rows="10"
               maxlength="1000"
@@ -88,40 +126,43 @@
         <Alert ref="alert"></Alert>
       </b-modal>
     </div>
+    <Alert ref="alert"></Alert>
   </div>
 </template>
 
 <script>
-import Alert from "@/components/Alert.vue";
 import { mapState } from "vuex";
-import { BButton, BModal, BFormGroup, BFormTextarea } from "bootstrap-vue";
+import Alert from '../Alert.vue';
+import { BButton, BModal, BFormGroup, BFormTextarea, BFormSelect } from "bootstrap-vue";
 export default {
-  name: "Details",
+  components: { Alert, BButton, BModal, BFormGroup, BFormTextarea, BFormSelect },
+  name: "ReportForm",
   computed: {
     ...mapState(["token"]),
   },
-  components: { Alert, BButton, BModal, BFormGroup, BFormTextarea },
   data() {
     return {
       valid: null,
       response: "",
       resState: null,
       status: "",
-      unitbudget: null
+      selectedCompany:""
     };
   },
   props: {
     request: {
       cod: Number,
-      name: String,
-      date: String,
-      author: String,
-      unit: String,
-      description: String,
-      budget: Number,
-      itemList: Array,
+        name: String,
+        date: String,
+        author: String,
+        unit: String,
+        incharge: String,
+        boss: String,
+        quotizer: String,
+        companyList: Array,
+        itemList: Array,
+        obs: String
     },
-    
   },
   watch:{
     response: function(){
@@ -162,25 +203,43 @@ export default {
       }
 
       this.$nextTick(() => {
-        this.$bvModal.hide("modal-prevent-closing");
+        this.$bvModal.hide("modal-rejection");
+        this.$bvModal.hide("modal-acceptance");
       });
     },
     async sendReport(){
       try {
-        await this.$http.post(
-          "report?type=codigo",
-          {
-            cod_solicitud: this.request.cod,
-            titulo_informe: "Informe " + this.request.name,
-            justificacion_informe: this.response,
-            aceptacion: this.valid,
-          },
-          {
-            headers: {
-              authorization: this.token,
-            },
-          }
-        );
+        const repr=(
+                  await this.$http.get(
+                      `report?type=criteria&from=soloUnidad&nombre=${this.request.unit}`,
+                      {
+                          headers: {
+                              authorization: this.token,
+                          },
+                      }
+                  )
+              ).data
+            for (let i of repr){
+              if (i.cod_solicitud==this.request.cod){
+                const inf=i.cod_informe
+                await this.$http.put(
+                  `report/${inf}`,
+                  {
+                    cod_solicitud: this.request.cod,
+                    titulo_informe: "Informe final" + this.request.name,
+                    justificacion_informe: this.response,
+                    aceptacion: this.valid,
+                  },
+                  {
+                    headers: {
+                      authorization: this.token,
+                    },
+                  }
+                );
+
+              }
+            }
+        
       } catch (error) {
         throw new Error(error);
       }
@@ -202,20 +261,90 @@ export default {
         throw new Error(error);
       }
     },
-    async sendData() {
+    async updateQuotations(){
       try {
-        await this.sendReport()
-        await this.updateRequest()
-        window.setInterval(window.location.reload(), 10000);
+        const quots=(
+          await this.$http.get(`tableData?nombre=${this.request.name}`,{
+              headers: {
+                authorization: this.token,
+              },
+            })
+        ).data.cotizaciones
+        for (let i of quots){
+          await this.setQuotStatus(i.cod_cotizacion)
+        }  
+        if (this.valid){
+            await this.setCompany()
+          }
       } catch (error) {
         throw new Error(error);
       }
     },
-    async assert() {
-      this.valid = true;
-      this.status = "EN_COTIZACION";
+    async setQuotStatus(id){
+      try {
+        await this.$http.put(`quotation/${id}?type=Status`,{
+          estado_cotizacion: 'CERRADO'
+        },{
+          headers: {
+                authorization: this.token,
+              },
+        })
+      } catch (error) {
+        this.alert("warning", 'No se puede actualizar el estado de la cotización');
+      }
     },
-    async deny() {
+    async setCompany(){
+      try {
+        for (let i=0;i<this.request.companyList.length;i++){
+          if (this.request.companyList[i]==this.selectedCompany){
+            const quots=(
+                        await this.$http.get(`tableData?nombre=${this.request.name}`,{
+                            headers: {
+                                            authorization: this.token,
+                                        }})
+                    ).data.cotizaciones
+            await this.$http.put(`quotation/${quots[i].cod_cotizacion}?type=Answers`,{
+              puesto_obra: 'SI'
+            },{
+              headers: {
+                authorization: this.token,
+              },
+            })
+          }else{
+            const quots=(
+                        await this.$http.get(`tableData?nombre=${this.request.name}`,{
+                            headers: {
+                                            authorization: this.token,
+                                        }})
+                    ).data.cotizaciones
+            await this.$http.put(`quotation/${quots[i].cod_cotizacion}?type=Answers`,{
+              puesto_obra: 'NO'
+            },{
+              headers: {
+                authorization: this.token,
+              },
+            })
+          }
+        }
+      } catch (error) {
+        this.alert("warning", 'No se puede actualizar la cotización');
+      }
+    },
+    async sendData() {
+      try {
+        await this.sendReport() //actualiza reporte
+        await this.updateRequest() // actualiza estado de solicitud
+        await this.updateQuotations() //actualiza estados de cotizaciones y puesto_obra 
+        //window.setInterval(window.location.reload(), 10000);
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    async accept() {
+      this.valid = true;
+      this.status = "ACEPTADA";
+    },
+    async reject() {
       this.valid = false;
       this.status = "RECHAZADA";
     },
@@ -223,19 +352,8 @@ export default {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
-  mounted: async function(){
-    const units=(
-      await this.$http.get(`spendingUnit?type=name&departamento=${localStorage.getItem('depto')}`,{
-        headers: {
-              authorization: this.token,
-            },
-      })
-    ).data.datos
-    for (let i of units){
-      if (i.nombre_unidadgasto==this.request.unit){
-        this.unitbudget=i.presupuesto_unidad
-      }
-    }
+  mounted(){
+    
   }
 };
 </script>
@@ -251,6 +369,18 @@ export default {
   display: flex;
   flex-direction: column;
 }
+.single-request-details textarea {
+  resize: none;
+  word-wrap: break-word;
+  overflow-y: auto;
+  background-color: #f7f6f6;
+  border-radius: 3px;
+  padding: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  width: 100%;
+}
+
 .head-top {
   display: flex;
   align-items: center;
@@ -262,6 +392,7 @@ h2 {
   font-weight: 600;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  text-align: left;
 }
 .time {
   font-size: 16px;
@@ -279,7 +410,7 @@ h2 {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   display: flex;
   align-items: baseline;
-  width: 50%;
+  width: 100%;
 }
 h3 {
   color: #030303 !important;
@@ -316,7 +447,7 @@ p {
   font-size: 18px;
   display: flex;
   justify-content: space-between;
-  width: 50%;
+  width: 25%;
   align-items: baseline;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
