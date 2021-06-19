@@ -27,7 +27,7 @@
       <b-modal
         id="modal-prevent-closing"
         ref="modal"
-        title="Eliminar empresa"
+        title="Eliminar unidad"
         ok-title="Si"
         cancel-title="No"
         hide-header-close

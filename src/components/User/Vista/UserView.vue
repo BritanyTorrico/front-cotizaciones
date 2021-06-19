@@ -31,7 +31,7 @@
       <b-modal
         id="modal-prevent-closing"
         ref="modal"
-        title="Eliminar empresa"
+        title="Eliminar usuario"
         ok-title="Si"
         cancel-title="No"
         hide-header-close

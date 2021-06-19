@@ -243,7 +243,7 @@
           :class="$v.dato.$invalid ? 'button-disabled' : ''"
           class="form_button"
         >
-          Registrar
+          Editar
         </button>
       </div>
     </form>
