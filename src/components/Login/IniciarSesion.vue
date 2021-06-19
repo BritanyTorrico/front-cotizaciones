@@ -69,7 +69,12 @@
         <!---->
 
         <div class="form__section">
-          <input class="form__section__boton" type="submit" value="Ingresar" name="ingresar"/>
+          <input
+            class="form__section__boton"
+            type="submit"
+            value="Ingresar"
+            name="ingresar"
+          />
         </div>
       </form>
       <Alert ref="alert"></Alert>
@@ -191,12 +196,12 @@ export default {
           this.$store.commit("setUser", true);
           localStorage.setItem("username", this.username);
           await this.storeLocalData();
-          this.$router.push("/");
+          this.$router.push("/principal");
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
-        this.alert("warning", error);
+        this.alert("warning", "Datos invalidos");
       }
     },
 
@@ -213,10 +218,9 @@ export default {
   justify-content: center;
   align-items: center;
   background-color: #46b1c95b;
-  height: 640px;
+  height: 550px;
 }
 .container {
-  margin-top: 30px;
   border: 1px solid;
   width: 390px;
   padding: 20px;
@@ -224,9 +228,10 @@ export default {
   background: var(--fondo-gris-claro);
   border: none;
 }
+
 .form__img {
-  width: 250px;
-  height: 300px;
+  width: 210px;
+  height: 250px;
   text-align: center;
 }
 .form__name {
@@ -246,7 +251,6 @@ export default {
   border: none;
   width: 41%;
   margin-right: 50px;
-  margin-top: 10px;
 }
 .form__caja {
   padding: 5px;
@@ -277,7 +281,6 @@ export default {
   justify-content: center;
   align-content: center;
   align-items: center;
-
   text-align: center;
 }
 </style>

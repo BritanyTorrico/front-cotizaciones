@@ -3,7 +3,10 @@
         <div class="btn">
             <button class="new-request" v-on:click="newRequest()">Nueva Solicitud</button>
         </div>
-        <div class="inbox-container">
+        <div v-if="inboxData.length===0">
+            <div class="desc">No tiene solicitudes realizadas</div>
+        </div>
+        <div v-else class="inbox-container">
             <div class="inbox-cards" :class="selectedRequest.name === '' ? 'full-screen' : 'side-view'">
                 <div class="card-side">
                     <div class="desc">Mis solicitudes:</div>
@@ -51,8 +54,6 @@ export default {
     components: { SolCard, SolView },
     data() {
         return {
-            inboxData: [],
-            items: [],
             changeReq: false,
             selectedRequest: {
                 cod: null,
@@ -67,101 +68,11 @@ export default {
             },
         }
     },
+    props: {
+        inboxData: Array,
+        items: Array,
+    },
     methods: {
-        async getData() {
-            const response = (
-                await this.$http.get(
-                    `request?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}&petitioner=${localStorage.getItem(
-                        'nombreUsuario'
-                    )}`,
-                    {
-                        headers: {
-                            authorization: this.token,
-                        },
-                    }
-                )
-            ).data
-            for (let i = 0; i < response.length; i++) {
-                this.inboxData.push(response[i])
-                const date = this.inboxData[i].fecha_solicitud
-                this.inboxData[i].fecha_solicitud = `${date.substr(8, 2)}/${date.substr(5, 2)}/${date.substr(0, 4)}`
-                const reqItems = (
-                    await this.$http.get(
-                        `itemsPerRequest?searchby=solicitud&typeinput=nombre&inputdata=${this.inboxData[i].nombre_solicitud}`,
-                        {
-                            headers: {
-                                authorization: this.token,
-                            },
-                        }
-                    )
-                ).data.datos
-                this.inboxData[i].informe=''
-                this.inboxData[i].revisado=''
-                if (this.inboxData[i].estado_solicitud!="ABIERTA"){
-                    if (this.inboxData[i].estado_solicitud=="RECHAZADA"){
-                        const repr=(
-                            await this.$http.get(
-                                `report?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}&status=false`,
-                                {
-                                    headers: {
-                                        authorization: this.token,
-                                    },
-                                }
-                            )
-                        ).data
-                        for (let k of repr){
-                            if (k.cod_solicitud==this.inboxData[i].cod_solicitud){
-                                this.inboxData[i].informe=k.justificacion_informe
-                                this.inboxData[i].revisado=k.nombrecompleto_informe
-                            }
-                        }
-                    }else{
-                        const repa=(
-                            await this.$http.get(
-                                `report?type=criteria&from=depto&nombre=${localStorage.getItem('depto')}&status=true`,
-                                {
-                                    headers: {
-                                        authorization: this.token,
-                                    },
-                                }
-                            )
-                        ).data 
-                        for (let l of repa){
-                            if (l.cod_solicitud==this.inboxData[i].cod_solicitud){
-                                this.inboxData[i].informe=l.justificacion_informe
-                                this.inboxData[i].revisado=l.nombrecompleto_informe
-                            }
-                        }
-                    }
-                }
-                let currentItems = []
-                for (let j of reqItems) {
-                    const idg=(
-                        await this.$http.get(
-                            `expenseItem/${j.cod_itemgasto}`,
-                            {
-                                headers: {
-                                    authorization: this.token,
-                                },
-                            }
-                        )
-                    ).data.datos
-                    const it={
-                        cod_solicitud: j.cod_solicitud,
-                        cod_itemgasto: j.cod_itemgasto,
-                        cantidad_solicitud: j.cantidad_solicitud,
-                        unidad_solicitud: j.unidad_solicitud,
-                        detalle_solicitud: j.detalle_solicitud,
-                        nombre_itemgasto: idg[0].nombre_itemgasto
-                    }
-                    if (it.cantidad_solicitud==-1){it.cantidad_solicitud="-"}
-                    currentItems.push(it)
-                }
-                this.items.push(currentItems)
-            }
-            this.inboxData=this.inboxData.reverse()
-            this.items=this.items.reverse()
-        },
         async startTransition(i){
           this.changeReq=true;
           await this.showRequest(i);
@@ -181,9 +92,6 @@ export default {
         async newRequest() {
             this.$router.push('/solicitud/nueva')
         },
-    },
-    mounted() {
-        this.getData()
     },
 }
 </script>
