@@ -1,6 +1,6 @@
 <template>
   <section class="crear_empresa">
-    <h2 class="empresa_title">Registro de la empresa</h2>
+    <h2 class="empresa_title">Registrar empresa</h2>
 
     <div class="form_desc">
       Ingrese los datos correspondientes a la nueva empresa

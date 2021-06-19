@@ -62,7 +62,7 @@ export default {
     },
     async submitForm(){
       try {
-        if(this.companies.length==3){
+        if(this.companies.length>=3){
           await this.sendQuotData();
           await this.updateRequest();
           this.alert("success", "Cotizacion creada exitosamente");

@@ -1,25 +1,22 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
 const routes = [{
         path: "/",
-        name: "Home",
-        component: Home,
-    },
-    {
-        path: "/about",
-        name: "About",
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
+        name: "PaginaPrincipalPage",
         component: () =>
-            import ( /* webpackChunkName: "about" */ "../views/About.vue"),
+            import ("@/views/PaginaPrincipalPage.vue"),
     },
     {
-        path: "/registro_item",
+        path: "/principal",
+        name: "PaginaPermisos",
+        component: () =>
+            import ("@/views/PaginaPermisos.vue"),
+    },
+    {
+        path: "/item/nuevo",
         name: "RegistroItemGasto",
         component: () =>
             import ("@/views/RegItem.vue"),
@@ -29,7 +26,7 @@ const routes = [{
         },
     },
     {
-        path: "/registro_unidad",
+        path: "/unidad/nueva",
         name: "RegistroUnidadGasto",
         component: () =>
             import ("@/views/RegUnidad.vue"),
@@ -81,7 +78,7 @@ const routes = [{
         },
     },
     {
-        path: "/cotizacion",
+        path: "/cotizacion/nueva",
         name: "QuotationForm",
         component: () =>
             import ("@/views/QuotationForm.vue"),
@@ -91,7 +88,7 @@ const routes = [{
     },
 
     {
-        path: "/crear_empresa",
+        path: "/empresa/nueva",
         name: "creaEmpresa",
         component: () =>
             import ("../views/creaEmpresa.vue"),
@@ -118,10 +115,173 @@ const routes = [{
         },
     },
     {
+        path: "/usuarios",
+        name: "Usuarios",
+        component: () =>
+            import ("../views/Users.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/roles",
+        name: "Roles",
+        component: () =>
+            import ("../views/Roles.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/unidades",
+        name: "Unidades",
+        component: () =>
+            import ("../views/Units.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/items",
+        name: "Items",
+        component: () =>
+            import ("../views/Items.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/empresas",
+        name: "Empresas",
+        component: () =>
+            import ("../views/Companies.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
         path: "/presupuestos",
         name: "RegistrarPresupuestos",
         component: () =>
             import ("../views/RegistrarPresupuestos.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/item/editar/:id",
+        name: "EditarItemGasto",
+        component: () =>
+            import ("@/views/EditItem.vue"),
+
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/unidad/editar/:id",
+        name: "EditarUnidadGasto",
+        component: () =>
+            import ("@/views/EditUnit.vue"),
+
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/empresa/editar/:id",
+        name: "EditarEmpresas",
+        component: () =>
+            import ("@/views/EditCompany.vue"),
+
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/usuario/editar/:id",
+        name: "EditarUsuarios",
+        component: () =>
+            import ("@/views/EditUser.vue"),
+
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/presupuestoDep",
+        name: "RegistrarPresupuestoDepto",
+        component: () =>
+            import ("../views/RegistrarPresupuestoDepto.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/historial_presupuestos",
+        name: "HistorialPresupuestosPage",
+        component: () =>
+            import ("../views/HistorialPresupuestosPage.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/historial_presupuestos_dep",
+        name: "HistorialPresupuestoDepPage",
+        component: () =>
+            import ("../views/HistorialPresupuestoDepPage.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/logss",
+        name: "LogPage",
+        component: () =>
+            import ("../views/LogPage.vue"),
+    },
+    {
+        path: "/back",
+        name: "vistaBack",
+        component: () =>
+            import ("../views/vistaBack.vue"),
+    },
+    {
+        path: "/cotizaciones",
+        name: "Cotizaciones",
+        component: () =>
+            import ("../views/Cotizaciones.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/cotizacion/respuesta/:id",
+        name: "ActualizarRespuestas",
+        component: () =>
+            import ("../views/ActualizarRespuestas.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/cuadro_comparativo",
+        name: "CuadroComparativo",
+        component: () =>
+            import ("../views/CuadroComparativo.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/informe_final",
+        name: "InformeFinal",
+        component: () =>
+            import ("../views/InformeFinal.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
     },
 ];
 

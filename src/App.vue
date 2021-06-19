@@ -3,9 +3,11 @@
     <b-navbar
       v-if="contador < 5"
       type="dark"
-      class="navbar navbar-dark bg-primary"
+      class="navbar navbar-dark bg-primary ms-auto"
     >
-      <b-navbar-brand id="logotipo" href="/">UMSS </b-navbar-brand>
+      <b-navbar-brand id="logotipo" @click="paginaPrincipal()"
+        >UMSS
+      </b-navbar-brand>
       <b-navbar-toggle target="navbar-toggle-collapse">
         <template #default="{ expanded }">
           <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
@@ -13,26 +15,18 @@
         </template>
       </b-navbar-toggle>
 
-      <b-collapse id="navbar-toggle-collapse" is-nav>
-        <b-navbar-nav id="nav">
-          <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
-          <b-nav-item to="/about">About</b-nav-item>
+      <b-collapse id="navbar-toggle-collapse" is-nav align-rigth>
+        <b-navbar-nav id="nav" class="ms-auto">
           <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
-          <b-nav-item v-if="permisoCrearUsuario" to="/register"
-            >Registrar Usuario</b-nav-item
+          <b-nav-item v-if="permisoCrearUsuario" to="/usuarios"
+            >Usuarios</b-nav-item
           >
-          <b-nav-item v-if="permisoCrearRol" to="/creaRol"
-            >Crear Rol</b-nav-item
+          <b-nav-item v-if="permisoCrearRol" to="/roles">Roles</b-nav-item>
+          <b-nav-item v-if="permisoUnidadDeGasto" to="/unidades"
+            >Unidades</b-nav-item
           >
-          <b-nav-item v-if="permisoUnidadDeGasto" to="/registro_unidad"
-            >Nueva Unidad</b-nav-item
-          >
-          <b-nav-item v-if="permisoItemDeGasto" to="/registro_item"
-            >Nuevo Item</b-nav-item
-          >
-          <b-nav-item v-if="permisoEmpresa" to="/crear_empresa"
-            >Registrar empresas</b-nav-item
-          >
+          <b-nav-item v-if="permisoItemDeGasto" to="/items">Items</b-nav-item>
+          <b-nav-item v-if="permisoEmpresa" to="/empresas">Empresas</b-nav-item>
           <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
             >Solicitudes</b-nav-item
           >
@@ -41,12 +35,28 @@
             to="/revisar_solicitudes"
             >Revisar solicitudes</b-nav-item
           >
-          <b-nav-item v-if="permisoCotizacion" to="/cotizacion"
+          <b-nav-item v-if="permisoCotizacion" to="/cotizaciones"
             >Cotizaciones</b-nav-item
           >
           <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
             >Filtro de Cotizaciones</b-nav-item
           >
+          <b-nav-item v-if="permisoPresupuestoDep" to="/presupuestoDep"
+            >Presupuesto Departamento</b-nav-item
+          >
+          <b-nav-item v-if="permisoPresupuestoUnidad" to="/presupuestos"
+            >Presupuesto Unidad de gasto</b-nav-item
+          >
+          <b-nav-item v-if="permisoCuadroComparativo" to="/cuadro_comparativo"
+            >Cuadro comparativo</b-nav-item
+          >
+          <b-nav-item v-if="permisoBitacora" to="/logss">Bitacoras </b-nav-item
+          ><b-nav-item v-if="permisoBackup" to="/back"
+            >Respaldo y retauracion
+          </b-nav-item>
+          <b-nav-item v-if="permisoInformeFinal" to="/informe_final"
+            >Informe Final
+          </b-nav-item>
           <b-nav-item v-if="username" @click="cerrar()"
             >Cerrar Sesion</b-nav-item
           >
@@ -60,7 +70,9 @@
       type="dark"
       class="navbar navbar-dark bg-primary"
     >
-      <b-navbar-brand id="logotipo" href="/">UMSS</b-navbar-brand>
+      <b-navbar-brand id="logotipo" @click="paginaPrincipal()"
+        >UMSS</b-navbar-brand
+      >
 
       <b-navbar-toggle id="icono-toggle" target="navbar-toggle-collapse">
         <template #default="{ expanded }">
@@ -69,26 +81,20 @@
         </template>
       </b-navbar-toggle>
 
-      <b-collapse id="navbar-toggle-collapse" is-nav>
-        <b-navbar-nav id="nav">
-          <b-nav-item v-if="permisoHome" to="/" exact>Home</b-nav-item>
-          <b-nav-item to="/about">About</b-nav-item>
-          <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
-          <b-nav-item v-if="permisoCrearUsuario" to="/register"
-            >Registrar Usuario</b-nav-item
+      <b-collapse id="navbar-toggle-collapse" is-nav right>
+        <b-navbar-nav id="nav" class="ml-auto">
+          <b-nav-item v-if="!username" to="/login" id="inciio"
+            >Iniciar Sesion</b-nav-item
           >
-          <b-nav-item v-if="permisoCrearRol" to="/creaRol"
-            >Crear Rol</b-nav-item
+          <b-nav-item v-if="permisoCrearUsuario" to="/usuarios"
+            >Usuarios</b-nav-item
           >
-          <b-nav-item v-if="permisoUnidadDeGasto" to="/registro_unidad"
-            >Nueva Unidad</b-nav-item
+          <b-nav-item v-if="permisoCrearRol" to="/roles">Roles</b-nav-item>
+          <b-nav-item v-if="permisoUnidadDeGasto" to="/unidades"
+            >Unidades</b-nav-item
           >
-          <b-nav-item v-if="permisoItemDeGasto" to="/registro_item"
-            >Nuevo Item</b-nav-item
-          >
-          <b-nav-item v-if="permisoEmpresa" to="/crear_empresa"
-            >Registrar empresas</b-nav-item
-          >
+          <b-nav-item v-if="permisoItemDeGasto" to="/items">Items</b-nav-item>
+          <b-nav-item v-if="permisoEmpresa" to="/empresas">Empresas</b-nav-item>
           <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
             >Solicitudes</b-nav-item
           >
@@ -97,12 +103,29 @@
             to="/revisar_solicitudes"
             >Revisar solicitudes</b-nav-item
           >
-          <b-nav-item v-if="permisoCotizacion" to="/cotizacion"
+          <b-nav-item v-if="permisoCotizacion" to="/cotizaciones"
             >Cotizaciones</b-nav-item
           >
           <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
             >Filtro de Cotizaciones</b-nav-item
           >
+          <b-nav-item v-if="permisoPresupuestoDep" to="/presupuestoDep"
+            >Presupuesto Departamento</b-nav-item
+          >
+          <b-nav-item v-if="permisoPresupuestoUnidad" to="/presupuestos"
+            >Presupuesto Unidad de gasto</b-nav-item
+          >
+          <b-nav-item v-if="permisoCuadroComparativo" to="/cuadro_comparativo"
+            >Cuadro comparativo</b-nav-item
+          >
+          <b-nav-item v-if="permisoBitacora" to="/logss">Bitacoras </b-nav-item
+          ><b-nav-item v-if="permisoBackup" to="/back"
+            >Respaldo y retauracion
+          </b-nav-item>
+
+          <b-nav-item v-if="permisoInformeFinal" to="/informe_final"
+            >Informe Final
+          </b-nav-item>
           <b-nav-item v-if="username" @click="cerrar()"
             >Cerrar Sesion</b-nav-item
           >
@@ -117,6 +140,15 @@
     >
       <router-view />
     </transition>
+    <div class="claseFooter">
+      <footer
+        class="bg-primary text-center text-white text-lg-start footerClase"
+      >
+        <div class="text-center p-3">
+          Derechos reservados © 2021 UMSS-TH.
+        </div>
+      </footer>
+    </div>
   </div>
 </template>
 <script>
@@ -128,7 +160,7 @@ export default {
   },
   computed: {
     ...mapState([
-      "permisoHome",
+      "username",
       "permisoItemDeGasto",
       "permisoUnidadDeGasto",
       "permisoCrearUsuario",
@@ -141,6 +173,14 @@ export default {
       "permisoCotizacion",
       "permisoFiltroCotizacion",
       "contador",
+      "permisoPresupuestoDep",
+      "permisoHistorialPresupuestoDep",
+      "permisoPresupuestoUnidad",
+      "permisoHistorialPresupuestoUnidad",
+      "permisoCuadroComparativo",
+      "permisoBitacora",
+      "permisoBackup",
+      "permisoInformeFinal",
     ]),
   },
   methods: {
@@ -168,7 +208,16 @@ export default {
       this.$store.commit("setPermisoCotizacion", false);
       this.$store.commit("setPermisoRevisarCotizaciones", false);
       this.$store.commit("setPermisoFiltroCotizaciones", false);
-
+      //tercer sprint
+      this.$store.commit("setPermisoPresupuestoDep", false);
+      this.$store.commit("setPermisoPresupuestoUnidad", false);
+      this.$store.commit("setPermisoPresupuestoHistorialDep", false);
+      this.$store.commit("setPermisoPresupuestoHistorialUnidad", false);
+      this.$store.commit("setPermisoCuadroComparativo", false);
+      this.$store.commit("setPermisoBitacora", false);
+      this.$store.commit("setPermisoBackup", false);
+      this.$store.commit("setPermisoInformeFinal", false);
+      //localstorage
       sessionStorage.removeItem("my-app");
 
       localStorage.removeItem("my-app");
@@ -176,8 +225,16 @@ export default {
       localStorage.removeItem("roleCod");
       localStorage.removeItem("facu");
       localStorage.removeItem("depto");
-      this.$router.push("/login");
       localStorage.removeItem("facultadPresupuesto");
+      localStorage.removeItem("presupuestoLista");
+      this.$router.push("/login");
+    },
+    paginaPrincipal() {
+      if (this.username) {
+        this.$router.push("/principal");
+      } else {
+        this.$router.push("/");
+      }
     },
   },
 };
@@ -193,6 +250,9 @@ export default {
   --color-name: #3f4b5b;
   --color-line: #c0c0c0;
   --fondo-gris-claro: #f7f6f6;
+}
+.app {
+  min-height: 100%;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -224,9 +284,27 @@ a.navbar-brand {
 }
 #logotipo {
   margin-left: 45px;
+  cursor: pointer;
 }
 #icono-toggle {
   margin-right: 30px;
   border: 1px solid;
+}
+#dereee {
+  border: 2px solid;
+  text-align: rigth;
+}
+
+.footerClase {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center;
+}
+.claseFooter {
+  min-height: 56px;
 }
 </style>

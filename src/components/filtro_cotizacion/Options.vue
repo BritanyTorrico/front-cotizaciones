@@ -1,7 +1,11 @@
 <template>
   <div class="cot-filters">
-      <div class="filter-title">Filtros</div>
-      <div class="filter-categories">
+      <div class="filter-title" v-on:click="showFilters = !showFilters">Filtros</div>
+      <transition class="animation"
+                      enter-active-class="animate__animated animate__fadeInDown"
+                      leave-active-class="animate__animated animate__fadeOutUp"
+                    >
+      <div v-if="showFilters" class="filter-categories">
           <div class="filter-date">
               <div class="option-title">Fecha</div>
               <div class="date-set">
@@ -58,6 +62,7 @@
                 </div>
           </div>
       </div>
+      </transition>
   </div>
 </template>
 
@@ -77,7 +82,8 @@ export default {
           marketsList: ["Todos"],
           companiesList: ["Todas"],
           filteredInbox: [],
-          filteredItems: []
+          filteredItems: [],
+          showFilters: false
       }
   },
   methods: {
@@ -144,7 +150,7 @@ export default {
                             if (k.cod_empresa==response[i].cod_empresa)
                                 {this.filteredInbox[i].empresa=k.nombre_empresa}
                         }
-                        const reqItems = (await this.$http.get(`itemsPerRequest?searchby=solicitud&typeinput=codigo&inputdata=${response[i].cod_solicitud}`, {
+                        const reqItems = (await this.$http.get(`itemsPerQuotation?searchby=solicitud&typeinput=codigo&inputdata=${response[i].cod_cotizacion}`, {
                             headers: {
                                 authorization: this.token,
                             },
@@ -153,7 +159,7 @@ export default {
                         for (let j of reqItems){
                             const idg=(
                                 await this.$http.get(
-                                    `expenseItem/${j.cod_itemgasto}`,
+                                    `expenseItem/${j.cod_item}`,
                                     {
                                         headers: {
                                             authorization: this.token,
@@ -163,13 +169,13 @@ export default {
                             ).data.datos
                             const it={
                                 cod_cotizacion: response[i].cod_cotizacion,
-                                cod_item: j.cod_itemgasto,
-                                cantidad: j.cantidad_solicitud,
-                                unidad: j.unidad_solicitud,
-                                detalle: j.detalle_solicitud,
+                                cod_item: j.cod_item,
+                                cantidad: j.cantidad,
+                                unidad: j.unidad,
+                                detalle: j.detalle,
                                 nombre: idg[0].nombre_itemgasto,
-                                valor_unitario: "",
-                                precio_total: ""
+                                valor_unitario: j.valor_unitario,
+                                precio_total: j.precio_total
                             }
                             if (it.cantidad==-1){it.cantidad="-"}
                                     currentItems.push(it)
@@ -218,6 +224,32 @@ export default {
     display: flex;
     justify-content: space-between;
     padding: 0 10% 5% 3%;
+}
+.animate__fadeInDown{
+    animation-name: infil;
+}
+@keyframes infil {
+  from {
+    transform: translateY(-11%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+.animate__fadeOutUp{
+    animation-name: outfil;
+}
+@keyframes outfil {
+  from {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-11%);
+    opacity: 0;
+  }
 }
 .option-title{
     text-align: left;
