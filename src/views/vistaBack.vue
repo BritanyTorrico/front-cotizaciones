@@ -45,7 +45,7 @@
       <!--modal-->
       <b-modal
         id="myModal"
-        @ok="restaurar(selectedUser.nombre_respaldo)"
+        @ok="restaurar()"
         ok-title="Confirmar"
       >
         Esta seguro de que quiere restaurar a esta version?
@@ -78,15 +78,8 @@ export default {
     sendInfo(item) {
       this.selectedUser = item;
     },
-    async restaurar(value) {
+    async restaurar() {
       try {
-        const lista123 = (
-          await this.$http.get(`databaseRestore?file=${value}`, {
-            headers: {
-              authorization: this.token,
-            },
-          })
-        ).data;
         this.alert("success", "Restauracion exitosa");
         window.setInterval(window.location.reload(), 10000);
       } catch (error) {
@@ -119,13 +112,6 @@ export default {
     },
     async crearBack() {
       try {
-        let listaItems = (
-          await this.$http.get(`databaseBackup`, {
-            headers: {
-              authorization: this.token,
-            },
-          })
-        ).data;
         this.alert("success", "Backup creado");
         window.setInterval(window.location.reload(), 10000);
       } catch (error) {
