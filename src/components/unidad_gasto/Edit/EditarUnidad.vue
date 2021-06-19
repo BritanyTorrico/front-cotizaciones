@@ -77,7 +77,7 @@
           :class="$v.unit.$invalid ? 'button-disabled' : ''"
           class="form_button"
         >
-          <div class="button_tag">Crear</div>
+          <div class="button_tag">Editar</div>
         </button>
       </div>
     </form>

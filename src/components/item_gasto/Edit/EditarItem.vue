@@ -123,7 +123,7 @@
                 :class="$v.item.$invalid ? 'button-disabled' : ''"
                 class="form_button"
             >
-                Crear
+                Editar
             </button>
         </div>
     </form>

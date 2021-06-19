@@ -131,7 +131,7 @@ export default {
       let observaciones = this.observations
       let today=new Date;
       const day=today.getDate()
-      const month=today.getMonth()
+      const month=today.getMonth()+1
       const year=today.getFullYear().toString().substr(-2)
       console.log(nombres, nombres2, nombres3, nombres4);
       var divToPrint = document.getElementById("DivIdToPrint");
