@@ -247,11 +247,10 @@ export default {
             `getFullName?usuario=${localStorage.getItem("nombreUsuario")}`
           )
         ).data[0];
-        console.log(datos);
         this.nombre = datos.nombres;
         this.apellido = datos.apellidos;
       } catch (error) {
-        console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
     async obtenerRol() {
@@ -264,7 +263,7 @@ export default {
 
         this.rol = datos.nombre_rol;
       } catch (error) {
-        console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
   },

@@ -552,7 +552,6 @@ export default {
                 await this.sendUsernameRol();
               }
               this.alert("success", "Usuario editado exitosamente");
-              console.log("CAMBIO CONTRASEÑA");
             } else {
               this.alert(
                 "warning",

@@ -148,7 +148,6 @@ export default {
             },
           })
         ).data;
-        console.log(lista.length);
         for (let i = 0; i < lista.length; i++) {
           let usuarioModifico = lista[i].usuario;
           let codUsuario = await this.transformarNombreUsuario(usuarioModifico);
@@ -178,10 +177,9 @@ export default {
             datoNuevo: parts,
           };
           this.listaLog.push(dato);
-          console.log(parts1);
         }
       } catch (error) {
-        console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
     VerDetalleItems(index) {
@@ -199,7 +197,7 @@ export default {
 
         return nombreUsuario.cod_usuario;
       } catch (error) {
-        console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
     async obtenerNombrePorCod(value) {
@@ -216,7 +214,7 @@ export default {
         const nombreCompleto = nombreU + " " + apellidoU;
         return nombreCompleto;
       } catch (error) {
-        console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
     async transformarFecha(value) {

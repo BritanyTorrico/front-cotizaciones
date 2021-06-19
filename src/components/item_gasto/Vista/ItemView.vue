@@ -74,7 +74,6 @@ export default {
     async handleDelete() {
       try {
         const id = this.item.cod;
-        console.log(id);
         await this.$http.delete(`expenseItem/${id}`, {
           headers: {
             authorization: this.token,

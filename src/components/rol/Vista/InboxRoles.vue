@@ -74,9 +74,6 @@ export default {
             ).data.datos
             for (let i=0;i<resp.length;i++){
                 this.inboxData.push(resp[i])
-                console.log(`el rol %c${i} es %c${this.inboxData[i].nombre_rol}`,
-                "font-size: 19px",
-                "font-size: 24px");
                 const rpf=(
                 await this.$http.get(
                     `rolePerFunctions?rol=${this.inboxData[i].nombre_rol}`,

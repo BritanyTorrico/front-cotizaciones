@@ -67,7 +67,6 @@ export default {
   },
   methods: {
       async getTableData(){
-          console.log(this.filteredInbox);
           for (let i of this.filteredInbox){
             const table=(
                         await this.$http.get(`tableData?nombre=${i.nombre_solicitud}`,{

@@ -80,7 +80,6 @@ export default {
     },
     async restaurar(value) {
       try {
-        console.log(value);
         const lista123 = (
           await this.$http.get(`databaseRestore?file=${value}`, {
             headers: {
@@ -90,10 +89,8 @@ export default {
         ).data;
         this.alert("success", "Restauracion exitosa");
         window.setInterval(window.location.reload(), 10000);
-        console.log(lista123);
       } catch (error) {
         this.alert("warning", error);
-        console.log(error);
       }
     },
     hideModal() {
@@ -112,14 +109,12 @@ export default {
             },
           })
         ).data;
-        console.log(listaItems);
         for (let i = 0; i < listaItems.length; i++) {
           this.listaBack.push(listaItems[i]);
         }
         //console.log(this.listaBack);
       } catch (error) {
         this.alert("warning", error);
-        console.log(error);
       }
     },
     async crearBack() {
@@ -131,12 +126,10 @@ export default {
             },
           })
         ).data;
-        console.log(listaItems);
         this.alert("success", "Backup creado");
         window.setInterval(window.location.reload(), 10000);
       } catch (error) {
         this.alert("warning", error);
-        console.log(error);
       }
     },
   },

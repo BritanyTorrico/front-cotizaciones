@@ -191,13 +191,11 @@ export default {
         }
       } catch (error) {
         this.alert("warning", "Algo salio mal");
-        console.log(error);
       }
     },
 
     async obtenerDepartamentos() {
       if (!this.cambioFacu) {
-        console.log("Imprimp");
         this.listDepartament = [];
         this.presupuestoSinModificar = [];
         let listaDepartamentos = (
@@ -218,7 +216,6 @@ export default {
           );
         }
 
-        console.log(this.listDepartament);
         this.presupuesto.departamento = "Seleccione una opcion";
 
         if (this.presupuesto.facultad != "Seleccione una opcion") {
@@ -231,7 +228,6 @@ export default {
     variableHijo(value) {
       this.variableRecibida = value;
       if (this.variableRecibida) {
-        console.log("puso aceptar");
         this.listDepartament = [];
         this.presupuesto.presupuestoValor = [];
         this.cambioFacu = false;
@@ -244,7 +240,6 @@ export default {
       if (this.variableRecibida1) {
         this.cambioFacu = false;
         this.presupuesto.facultad = this.facultadAnterior;
-        console.log("puso cancelar");
       }
     },
     forceRerender() {
@@ -259,10 +254,8 @@ export default {
     async cambiaFacultad() {
       this.cambioFacu = false;
       if (this.facultadAnterior != null) {
-        console.log(this.facultadAnterior);
 
         let facuActual = this.presupuesto.facultad;
-        console.log(facuActual);
         if (this.facultadAnterior != facuActual) {
           this.cambioFacu = true;
           await this.obtenerDepartamentos();
@@ -290,7 +283,6 @@ export default {
     },
     async actualizarPresupuesto(codDep, presupuesto) {
       try {
-        console.log("actualizo presupuesto");
         await this.$http.put(
           `departmentBudget/${codDep}`,
           {
@@ -324,13 +316,11 @@ export default {
                 codigoDepartamento,
                 presupuestoEditado
               );
-            } else {
-              console.log("son iguales");
             }
           }
         }
       } catch (error) {
-        console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
   },

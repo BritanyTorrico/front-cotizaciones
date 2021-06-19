@@ -628,8 +628,6 @@ export default {
         if (!this.$v.solicitud.$invalid && this.listaPeticion.length > 0) {
           let cantidad1 = parseFloat(this.solicitud.estimado_solicitud);
           let cantidad2 = parseFloat(presupuestoUnidad);
-          console.log(cantidad1);
-          console.log(cantidad2);
           if (cantidad1 > cantidad2) {
             this.alert(
               "warning",

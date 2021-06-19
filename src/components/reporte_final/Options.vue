@@ -67,7 +67,6 @@ export default {
   },
   methods: {
       async getTableData(){
-          console.log(this.filteredInbox);
           for (let i of this.filteredInbox){
             const table=(
                         await this.$http.get(`tableData?nombre=${i.nombre_solicitud}`,{
@@ -78,7 +77,6 @@ export default {
             
             let companies=[]
             let items=[]
-            console.log(table.cotizaciones[0]);
             for (let k=0; k < table.cotizaciones[0].items.length; k++){
                 let item=new Object
                 item.cantidad=table.cotizaciones[0].items[k].cantidad

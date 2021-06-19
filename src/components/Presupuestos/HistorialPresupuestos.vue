@@ -300,7 +300,7 @@ export default {
 
         return nombreUsuario.cod_usuario;
       } catch (error) {
-        console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
     async obtenerNombrePorCod(value) {
@@ -317,15 +317,13 @@ export default {
         const nombreCompleto = nombreU + " " + apellidoU;
         return nombreCompleto;
       } catch (error) {
-        console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
     async getHistorialAnual() {
       try {
         const cod_dep = await this.obtenerCodDepartamento();
         const cod_unidad = await this.obtenerCodUnidades();
-        console.log(cod_dep);
-        console.log(cod_unidad);
         this.mostrarMensaje = false;
         this.listaHistorialDatos = [];
         const historialAnual = (
@@ -338,7 +336,6 @@ export default {
             }
           )
         ).data;
-        console.log(historialAnual);
 
         for (let i = 0; i < historialAnual.length; i++) {
           let usuarioModifico = historialAnual[i].usuarioResponsable;
@@ -365,7 +362,7 @@ export default {
           this.mostrarMensaje = true;
         }
       } catch (error) {
-        console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
     forceRerender() {
@@ -376,7 +373,6 @@ export default {
     },
     forceRerender2() {
       this.historial.year = "Seleccione una opcion";
-      console.log("hola");
       this.componentKey2 += 1;
     },
   },

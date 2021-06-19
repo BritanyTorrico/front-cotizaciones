@@ -86,9 +86,6 @@ export default {
             this.$router.push('/cotizacion/nueva')
         }
     },
-    mounted(){
-        console.log(this.inboxData);
-    }
 };
 </script>
 

@@ -98,9 +98,6 @@ export default {
                                           }})
                       ).data
         
-          console.log(table.cotizaciones);
-          console.log(this.request.name);
-          console.log(this.observations);
           await this.$http.post(`table`,{
             nombre_solicitud: this.request.name,
             observaciones_tabla: this.observations,
@@ -133,7 +130,6 @@ export default {
       const day=today.getDate()
       const month=today.getMonth()+1
       const year=today.getFullYear().toString().substr(-2)
-      console.log(nombres, nombres2, nombres3, nombres4);
       var divToPrint = document.getElementById("DivIdToPrint");
       var newWin = window.open("", "Print-Window");
       newWin.document.open();

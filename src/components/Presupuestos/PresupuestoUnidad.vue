@@ -259,7 +259,6 @@ export default {
         }
       } catch (error) {
         this.alert("warning", "Algo salio mal");
-        console.log(error);
       }
     },
     async obtenerDepartamentos() {
@@ -331,7 +330,6 @@ export default {
         }
       } catch (error) {
         this.alert("warning", "Algo salio mal");
-        console.log(error);
       }
     },
     async obtenerTope() {
@@ -348,7 +346,6 @@ export default {
         this.tope = topePresupuesto;
       } catch (error) {
         this.alert("warning", "Algo salio mal");
-        console.log(error);
       }
     },
     async getObtenerUnidadesDeGasto() {
@@ -389,16 +386,14 @@ export default {
           }
         }
       } catch (error) {
-        console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
     async cambiaFacultad() {
       this.cambioFacu = false;
       if (this.listaUnidadesDeGasto.length > 0) {
         if (this.facultadAnterior != null) {
-          console.log(this.facultadAnterior);
           let facuActual = this.presupuesto.facultad;
-          console.log(facuActual);
           if (this.facultadAnterior != facuActual) {
             this.cambioFacu = true;
             await this.obtenerDepartamentos();
@@ -457,7 +452,6 @@ export default {
         this.cambioDepa = false;
         this.presupuesto.facultad = this.facultadAnterior;
         this.presupuesto.departamento = this.depaAnterior;
-        console.log("puso cancelar");
       }
     },
     //FACULTAD
@@ -479,7 +473,6 @@ export default {
         this.cambioDepa = false;
         this.presupuesto.facultad = this.facultadAnterior;
         this.presupuesto.departamento = this.depaAnterior;
-        console.log("puso cancelar en facultad");
       }
     },
     validador(value) {
@@ -518,7 +511,6 @@ export default {
     },
     async actualizarPresupuesto(codUni, presupuesto) {
       try {
-        console.log("actualizo presupuesto");
         await this.$http.put(
           `spendingUnitBudget/${codUni}`,
           {
@@ -559,8 +551,6 @@ export default {
                   codigoUnidad,
                   presupuestoEditado
                 );
-              } else {
-                console.log("son iguales");
               }
             }
             this.alert("success", "Presupuesto actualizado exitosamente");
@@ -570,7 +560,7 @@ export default {
           }
         }
       } catch (error) {
-        console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
   },

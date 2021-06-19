@@ -248,7 +248,7 @@ export default {
 
         return nombreUsuario.cod_usuario;
       } catch (error) {
-        console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
     async obtenerNombrePorCod(value) {
@@ -265,7 +265,7 @@ export default {
         const nombreCompleto = nombreU + " " + apellidoU;
         return nombreCompleto;
       } catch (error) {
-        console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
     async obtenerCodFacultad() {
@@ -320,7 +320,7 @@ export default {
           this.mostrarMensaje = true;
         }
       } catch (error) {
-        console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
     forceRerender() {
@@ -331,7 +331,6 @@ export default {
     },
     forceRerender2() {
       this.historial.year = "Seleccione una opcion";
-      console.log("hola");
       this.componentKey2 += 1;
     },
   },
