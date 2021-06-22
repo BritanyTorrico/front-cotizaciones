@@ -40,6 +40,10 @@
         </table>
       </div>
   </div>
+  <div class="confirmed-companies" v-if="cot.status=='CERRADO'">
+                  <div class="confirmed-title">Puesto en obra:</div>
+                  <div class="copany-name">{{ cot.obra }}</div>
+        </div>
   <div class="options">
         <button v-if="cot.status!='CERRADO'" class="accept-button" v-on:click="editQuotation()">Actualizar</button>
     </div>
@@ -65,6 +69,7 @@ export default {
             itemList: Array,
             company: String,
             status: String,
+            obra: String
         }
     },
     methods: {

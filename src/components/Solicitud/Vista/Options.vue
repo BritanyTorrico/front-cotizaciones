@@ -172,9 +172,26 @@ export default {
                         cantidad_solicitud: j.cantidad_solicitud,
                         unidad_solicitud: j.unidad_solicitud,
                         detalle_solicitud: j.detalle_solicitud,
-                        nombre_itemgasto: idg[0].nombre_itemgasto
+                        nombre_itemgasto: idg[0].nombre_itemgasto,
+                        valor_unitario: null,
+                        precio_total: null
                     }
                     if (it.cantidad_solicitud==-1){it.cantidad_solicitud="-"}
+                    const table=(await this.$http.get(`tableData?nombre=${this.filteredInbox[i].nombre_solicitud}`,{
+                        headers:{
+                            authorization: this.token
+                        }
+                        })).data
+                        if (table.datos_tabla.length>0){
+                        for (let x of table.cotizaciones){
+                            if (x.puesto_obra=='SI'){
+                            for (let y of x.items){
+                                it.valor_unitario=y.valor_unitario
+                                it.precio_total=y.precio_total
+                            }
+                            }
+                        }
+                        }
                     currentItems.push(it)
                 }
                 this.filteredItems.push(currentItems)
