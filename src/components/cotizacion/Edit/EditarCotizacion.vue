@@ -275,7 +275,7 @@ export default {
                 valor_unitario: i.valor_unitario,
                 precio_total: i.precio_total
             }
-            if (it.cantidad==-1){it.cantidad="-"}
+            if (it.cantidad==-1){it.cantidad=1}
             this.cot.itemList.push(it)
             console.log(this.cot.itemList);
         }
