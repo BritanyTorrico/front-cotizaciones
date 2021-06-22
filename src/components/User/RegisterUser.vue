@@ -448,8 +448,8 @@ export default {
             authorization: this.token,
           },
         })
-      ).data;
-
+      ).data.datos;
+console.log(listaDepartamentos);
       for (let i = 0; i < listaDepartamentos.length; i++) {
         this.listDepartament.push(listaDepartamentos[i].nombre_departamento);
       }

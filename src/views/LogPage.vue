@@ -88,7 +88,7 @@
         <p
           class="contenido_MODAL"
           v-for="(item1, index) in selectedUser.datoNuevo"
-          :key="index"
+          :key="'A' + index"
         >
           {{ item1 }}
         </p>
@@ -173,7 +173,6 @@ export default {
             },
           })
         ).data;
-        console.log(lista);
 
         for (let i = 0; i < lista.length; i++) {
           let usuarioModifico = lista[i].usuario;

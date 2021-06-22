@@ -500,7 +500,7 @@ export default {
             authorization: this.token,
           },
         })
-      ).data;
+      ).data.datos;
 
       for (let i = 0; i < listaDepartamentos.length; i++) {
         this.listDepartament.push(listaDepartamentos[i].nombre_departamento);
@@ -577,7 +577,7 @@ export default {
               authorization: this.token,
             },
           })
-        ).data;
+        ).data.datos;
         for (let i of codep) {
           if (i.nombre_departamento == this.users.departamento) {
             nuevo_dep = i.cod_departamento;
@@ -605,6 +605,7 @@ export default {
       } catch (error) {
         //borra usario
         // await this.$http.delete("users", { data: this.users.nombre_usuario });
+        console.log(error);
         throw new Error("Error departamento");
       }
     },
