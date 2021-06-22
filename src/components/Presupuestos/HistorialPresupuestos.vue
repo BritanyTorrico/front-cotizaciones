@@ -1,6 +1,8 @@
 <template>
   <div class="contenedor-historial">
-    <h2 class="item_title">Historial de Presupuestos</h2>
+    <h2 class="item_title">
+      Historial de Presupuestos gestion {{ this.gestion }}
+    </h2>
 
     <div class="form_desc"></div>
     <div class="seccion">
@@ -168,6 +170,7 @@ export default {
       componentKey: 0,
       componentKey1: 1,
       componentKey2: 0,
+      gestion: null,
     };
   },
   validations: {
@@ -181,6 +184,9 @@ export default {
     },
   },
   mounted() {
+    this.gestion = null;
+    const today = new Date();
+    this.gestion = today.getFullYear();
     this.listaAños = [];
     this.listfacultad = [];
     this.listaAños = this.rangeYear();
@@ -212,7 +218,7 @@ export default {
             authorization: this.token,
           },
         })
-      ).data;
+      ).data.datos;
       for (let i = 0; i < listaDepartamentos.length; i++) {
         const depa = {
           nombre_departamento: listaDepartamentos[i].nombre_departamento,
@@ -330,7 +336,7 @@ export default {
         this.listaHistorialDatos = [];
         const historialAnual = (
           await this.$http.get(
-            `spendingUnitSpendingHistory?year=${this.historial.year}&codUnit=${cod_unidad}&codDepto=${cod_dep}`,
+            `spendingUnitSpendingHistory?year=${this.historial.year}&codUnit=${cod_unidad}`,
             {
               headers: {
                 authorization: this.token,

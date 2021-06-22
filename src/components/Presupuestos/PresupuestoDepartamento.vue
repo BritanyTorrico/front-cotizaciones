@@ -1,7 +1,9 @@
 <template>
   <div class="contenedor-dep">
     <form @submit.prevent="submitForm">
-      <h2 class="item_title">Presupuestos por departamento</h2>
+      <h2 class="item_title">
+        Presupuestos por departamento gestion {{ this.gestion }}
+      </h2>
       <div class="form_desc">
         Ingrese el presupuesto anual para cada departamento.
       </div>
@@ -139,6 +141,7 @@ export default {
   computed: {
     ...mapState(["token"]),
   },
+
   data() {
     return {
       presupuesto: {
@@ -154,10 +157,16 @@ export default {
       variableRecibida1: null,
       cambioFacu: false,
       presupuestoSinModificar: [],
+      gestion: null,
     };
   },
 
   mounted() {
+    this.gestion = null;
+    const today = new Date();
+    this.gestion = today.getFullYear();
+
+    console.log(this.gestion);
     this.obtenerFacultades();
   },
   validations: {
@@ -176,6 +185,11 @@ export default {
     },
   },
   methods: {
+    rangeYear() {
+      const max = new Date().getFullYear();
+
+      return max;
+    },
     async obtenerFacultades() {
       try {
         const listaFacultades = (
@@ -197,15 +211,17 @@ export default {
 
     async obtenerDepartamentos() {
       if (!this.cambioFacu) {
-        console.log("Imprimp");
         this.listDepartament = [];
         this.presupuestoSinModificar = [];
         let listaDepartamentos = (
-          await this.$http.get(`department?facu=${this.presupuesto.facultad}`, {
-            headers: {
-              authorization: this.token,
-            },
-          })
+          await this.$http.get(
+            `departmentWithBudget?facu=${this.presupuesto.facultad}&gestion=${this.gestion}`,
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          )
         ).data;
 
         for (let i = 0; i < listaDepartamentos.length; i++) {
@@ -218,7 +234,6 @@ export default {
           );
         }
 
-        console.log(this.listDepartament);
         this.presupuesto.departamento = "Seleccione una opcion";
 
         if (this.presupuesto.facultad != "Seleccione una opcion") {
@@ -231,7 +246,6 @@ export default {
     variableHijo(value) {
       this.variableRecibida = value;
       if (this.variableRecibida) {
-        console.log("puso aceptar");
         this.listDepartament = [];
         this.presupuesto.presupuestoValor = [];
         this.cambioFacu = false;
@@ -244,7 +258,6 @@ export default {
       if (this.variableRecibida1) {
         this.cambioFacu = false;
         this.presupuesto.facultad = this.facultadAnterior;
-        console.log("puso cancelar");
       }
     },
     forceRerender() {
@@ -259,10 +272,8 @@ export default {
     async cambiaFacultad() {
       this.cambioFacu = false;
       if (this.facultadAnterior != null) {
-        console.log(this.facultadAnterior);
-
         let facuActual = this.presupuesto.facultad;
-        console.log(facuActual);
+
         if (this.facultadAnterior != facuActual) {
           this.cambioFacu = true;
           await this.obtenerDepartamentos();
@@ -290,11 +301,11 @@ export default {
     },
     async actualizarPresupuesto(codDep, presupuesto) {
       try {
-        console.log("actualizo presupuesto");
         await this.$http.put(
           `departmentBudget/${codDep}`,
           {
             presupuesto_departamento: presupuesto,
+            gestion: this.gestion,
           },
           {
             headers: {
@@ -324,8 +335,6 @@ export default {
                 codigoDepartamento,
                 presupuestoEditado
               );
-            } else {
-              console.log("son iguales");
             }
           }
         }
