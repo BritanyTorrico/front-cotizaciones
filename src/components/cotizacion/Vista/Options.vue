@@ -164,6 +164,10 @@ export default {
                     
                         this.filteredInbox[i].autor_solicitud=request.nombrecompleto_solicitante
                         this.filteredInbox[i].estado_cotizacion=response[i].estado_cotizacion;
+                        this.filteredInbox[i].puestobra=''
+                        if (response[i].estado_cotizacion=='CERRADO'){
+                            this.filteredInbox[i].puestobra=response[i].puesto_obra
+                        }
                         const emp=(await this.$http.get(`companiesperrequest/${response[i].cod_solicitud}`, {
                             headers: {
                                 authorization: this.token,

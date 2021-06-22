@@ -79,6 +79,7 @@ export default {
             this.selectedCot.date=this.inboxData[i].fecha_cotizacion;
             this.selectedCot.author=this.inboxData[i].autor_solicitud;
             this.selectedCot.status=this.inboxData[i].estado_cotizacion;
+            this.selectedCot.obra=this.inboxData[i].puestobra;
             this.selectedCot.itemList=this.items[i];
             this.selectedCot.company=this.inboxData[i].empresa;
         },
