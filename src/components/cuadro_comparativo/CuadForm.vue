@@ -27,6 +27,10 @@
               <td style="border:1px solid;" class="table-detail">{{ item.descripcion }}</td>
               <td v-for="(price, index) in item.precios" :key="index" style="border:1px solid;" class="table-itemname">{{ price }}</td>
           </tr>
+          
+          <tr v-for="m in 5" :key="m">
+            <td class="empty-rows" v-for="n in (3 + request.companyList.length)" :key="n" style="border:1px solid; height:25px;"></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -233,6 +237,10 @@ h3 {
 .body-part {
   text-align: left;
   margin: 25px 0 0;
+}
+.empty-rows {
+  height: 0px !important;
+  border: none !important;
 }
 h5 {
   font-size: 18px;
