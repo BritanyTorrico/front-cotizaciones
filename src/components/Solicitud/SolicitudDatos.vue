@@ -362,7 +362,7 @@
             class="form_check-error"
             v-if="!$v.solicitud.estimado_solicitud.between"
           >
-            Ingrese valores entre (1-10000).
+            Ingrese valores entre (1-1000000).
           </div>
           <div
             class="form_check-error"
@@ -443,6 +443,10 @@ export default {
   name: "SolicitudDatos",
   store,
   mounted() {
+    //obtener gestion
+    this.gestion = null;
+    const today = new Date();
+    this.gestion = today.getFullYear();
     this.getGenCategories();
     this.getDepartamento();
   },
@@ -466,7 +470,7 @@ export default {
       },
 
       listaCategorias1: [],
-
+      gestion: "",
       listItems: [],
       listaPeticion: [], //aqui esta la lista de items que mandare
       variableRecibida: null,
@@ -498,7 +502,7 @@ export default {
       detalle_solicitud: {
         required,
         minLength: minLength(5),
-        maxLength: maxLength(1000),
+        maxLength: maxLength(1000000),
       },
 
       unidadgasto_solicitud: {
@@ -506,7 +510,7 @@ export default {
       },
       estimado_solicitud: {
         required,
-        between: between(1, 10000),
+        between: between(1, 1000000),
         validate_decimales,
         alpha2,
       },
@@ -528,6 +532,26 @@ export default {
     },
   },
   methods: {
+    async llamadaPresupuesto(codigo) {
+      try {
+        console.log("-----------");
+        console.log(codigo);
+        console.log(this.gestion);
+        const presupuestoUnidad = (
+          await this.$http.get(
+            `spendingUnitWithBudget/${codigo}?gestion=${this.gestion}`,
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          )
+        ).data[0].presupuesto_unidad;
+        return presupuestoUnidad;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async obtenerPresupuestoUnidad() {
       let presu = 0;
       for (let i = 0; i < this.listaCodigosUnidad.length; i++) {
@@ -535,7 +559,9 @@ export default {
           this.solicitud.unidadgasto_solicitud ==
           this.listaCodigosUnidad[i].nombre_unidadgasto
         ) {
-          presu = this.listaCodigosUnidad[i].presupuesto_unidad;
+          presu = await this.llamadaPresupuesto(
+            this.listaCodigosUnidad[i].cod_unidadgasto
+          );
         }
       }
       return presu;
@@ -676,7 +702,7 @@ export default {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
-        this.alert("warning", error);
+        console.log(error);
         this.alert("warning", "Algo salio mal");
       }
     },
