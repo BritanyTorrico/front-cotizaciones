@@ -73,7 +73,7 @@ export default new Vuex.Store({
                     state.permisoPresupuestoDep = true;
                     state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Gestionar unidadDeGasto") {
-                    console.log("sad");
+                    console.log("Bienvenido");
                 } else if (state.listaPermisos[i] == "Gestionar Tabla") {
                     state.permisoCuadroComparativo = true;
                     state.contador = state.contador + 1;

@@ -1,7 +1,9 @@
 <template>
   <div class="contenedor-dep">
     <form @submit.prevent="submitForm">
-      <h2 class="item_title">Presupuestos por departamento</h2>
+      <h2 class="item_title">
+        Presupuestos por departamento gestion {{ this.gestion }}
+      </h2>
       <div class="form_desc">
         Ingrese el presupuesto anual para cada departamento.
       </div>
@@ -139,6 +141,7 @@ export default {
   computed: {
     ...mapState(["token"]),
   },
+
   data() {
     return {
       presupuesto: {
@@ -154,10 +157,14 @@ export default {
       variableRecibida1: null,
       cambioFacu: false,
       presupuestoSinModificar: [],
+      gestion: null,
     };
   },
 
   mounted() {
+    this.gestion = null;
+    const today = new Date();
+    this.gestion = today.getFullYear();
     this.obtenerFacultades();
   },
   validations: {
@@ -176,6 +183,11 @@ export default {
     },
   },
   methods: {
+    rangeYear() {
+      const max = new Date().getFullYear();
+
+      return max;
+    },
     async obtenerFacultades() {
       try {
         const listaFacultades = (
@@ -199,11 +211,14 @@ export default {
         this.listDepartament = [];
         this.presupuestoSinModificar = [];
         let listaDepartamentos = (
-          await this.$http.get(`department?facu=${this.presupuesto.facultad}`, {
-            headers: {
-              authorization: this.token,
-            },
-          })
+          await this.$http.get(
+            `departmentWithBudget?facu=${this.presupuesto.facultad}&gestion=${this.gestion}`,
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          )
         ).data;
 
         for (let i = 0; i < listaDepartamentos.length; i++) {
@@ -254,8 +269,8 @@ export default {
     async cambiaFacultad() {
       this.cambioFacu = false;
       if (this.facultadAnterior != null) {
-
         let facuActual = this.presupuesto.facultad;
+
         if (this.facultadAnterior != facuActual) {
           this.cambioFacu = true;
           await this.obtenerDepartamentos();
@@ -287,6 +302,7 @@ export default {
           `departmentBudget/${codDep}`,
           {
             presupuesto_departamento: presupuesto,
+            gestion: this.gestion,
           },
           {
             headers: {

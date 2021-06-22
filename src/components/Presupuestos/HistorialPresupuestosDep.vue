@@ -190,13 +190,15 @@ export default {
     async obtenerDepartamentos() {
       this.listDepartament = [];
       this.listaCodDepartament = [];
+
       let listaDepartamentos = (
         await this.$http.get(`department?facu=${this.historial.facultad}`, {
           headers: {
             authorization: this.token,
           },
         })
-      ).data;
+      ).data.datos;
+
       for (let i = 0; i < listaDepartamentos.length; i++) {
         const depa = {
           nombre_departamento: listaDepartamentos[i].nombre_departamento,

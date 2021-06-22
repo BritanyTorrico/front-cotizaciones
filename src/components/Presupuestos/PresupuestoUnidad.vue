@@ -1,7 +1,7 @@
 <template>
   <div class="contenedor__pres">
     <form @submit.prevent="submitForm()">
-      <h2 class="item_title">Presupuesto</h2>
+      <h2 class="item_title">Presupuesto de la gestion {{ this.gestion }}</h2>
 
       <div class="form_desc">
         Ingrese el presupuesto anual para cada unidad de gasto
@@ -199,6 +199,9 @@ export default {
     Alert,
   },
   mounted() {
+    this.gestion = null;
+    const today = new Date();
+    this.gestion = today.getFullYear();
     this.obtenerFacultades();
   },
   data() {
@@ -221,6 +224,7 @@ export default {
       desabilitarTope: false,
       sumaPresu: 0,
       mostrarMensaje: false,
+      gestion: null,
     };
   },
 
@@ -271,7 +275,7 @@ export default {
               authorization: this.token,
             },
           })
-        ).data;
+        ).data.datos;
         for (let i = 0; i < listaDepartamentos.length; i++) {
           const depa = {
             nombre_departamento: listaDepartamentos[i].nombre_departamento,
@@ -297,7 +301,7 @@ export default {
               authorization: this.token,
             },
           })
-        ).data;
+        ).data.datos;
         for (let i = 0; i < listaDepartamentos.length; i++) {
           this.listDepartament.push(listaDepartamentos[i].nombre_departamento);
         }
@@ -337,12 +341,15 @@ export default {
         this.tope = null;
         let codigo = await this.obtenerCodDepto();
         const topePresupuesto = (
-          await this.$http.get(`department/${codigo}`, {
-            headers: {
-              authorization: this.token,
-            },
-          })
-        ).data.datos[0].presupuesto_departamento;
+          await this.$http.get(
+            `departmentWithBudget/${codigo}?gestion=${this.gestion}`,
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          )
+        ).data[0].presupuesto_departamento;
         this.tope = topePresupuesto;
       } catch (error) {
         this.alert("warning", "Algo salio mal");
@@ -358,7 +365,7 @@ export default {
           this.mostrarMensaje = false;
           const unidadGastoPorDepartamento = (
             await this.$http.get(
-              `spendingUnit?type=name&departamento=${this.presupuesto.departamento}`,
+              `spendingUnitWithBudget?type=name&departamento=${this.presupuesto.departamento}&gestion=${this.gestion}`,
               {
                 headers: {
                   authorization: this.token,
@@ -367,14 +374,14 @@ export default {
             )
           ).data;
 
-          for (let i = 0; i < unidadGastoPorDepartamento.datos.length; i++) {
-            this.listaUnidadesDeGasto.push(unidadGastoPorDepartamento.datos[i]);
+          for (let i = 0; i < unidadGastoPorDepartamento.length; i++) {
+            this.listaUnidadesDeGasto.push(unidadGastoPorDepartamento[i]);
 
             this.presupuesto.presupuestoValor.push(
-              unidadGastoPorDepartamento.datos[i].presupuesto_unidad
+              unidadGastoPorDepartamento[i].presupuesto_unidad
             );
             this.presupuestoSinModificar.push(
-              unidadGastoPorDepartamento.datos[i].presupuesto_unidad
+              unidadGastoPorDepartamento[i].presupuesto_unidad
             );
           }
           if (this.listaUnidadesDeGasto.length == 0) {
@@ -515,6 +522,7 @@ export default {
           `spendingUnitBudget/${codUni}`,
           {
             presupuesto_unidad: presupuesto,
+            gestion_presupuestounidad: this.gestion,
           },
           {
             headers: {

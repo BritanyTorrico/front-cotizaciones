@@ -27,6 +27,10 @@
               <td style="border:1px solid;" class="table-detail">{{ item.descripcion }}</td>
               <td v-for="(price, index) in item.precios" :key="index" style="border:1px solid;" class="table-itemname">{{ price }}</td>
           </tr>
+          
+          <tr v-for="m in 5" :key="m">
+            <td class="empty-rows" v-for="n in (3 + request.companyList.length)" :key="n" style="border:1px solid; height:25px;"></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -70,6 +74,8 @@ export default {
   },
   data() {
     return {
+      preview: false,
+      images: [],
       observations: ""
     };
   },
@@ -158,9 +164,6 @@ export default {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
-  mounted(){
-    
-  }
 };
 </script>
 <style scoped>
@@ -229,6 +232,10 @@ h3 {
 .body-part {
   text-align: left;
   margin: 25px 0 0;
+}
+.empty-rows {
+  height: 0px !important;
+  border: none !important;
 }
 h5 {
   font-size: 18px;
@@ -307,6 +314,19 @@ p {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
+.show-button {
+  margin: auto;
+  display: block;
+  background-color: #777272;
+  padding: 0.5% 2.5% 0.5% 2.5%;
+  border-radius: 22px;
+  color: #fafafa;
+  font-size: 22px;
+  font-weight: bold;
+  border: 0px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
 .reject-button {
   margin: auto;
   display: block;
@@ -334,5 +354,17 @@ p {
   display: flex;
   width: 100%;
   justify-content: space-between;
+}
+.image-show{
+  display: flex;
+  flex-direction: column;
+}
+.image-show{
+  border: 1px;
+  border-radius: 5px;
+  max-width: auto;
+  max-height: auto;
+  align-items: center;
+  padding: 0.2% 0% 1% 1.5%;
 }
 </style>

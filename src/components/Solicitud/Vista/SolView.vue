@@ -50,8 +50,8 @@
             <td style="border:1px solid;" class="table-detail">
               {{ item.detalle_solicitud }}
             </td>
-            <td style="border:1px solid;" class="table-unitprice"></td>
-            <td style="border:1px solid;" class="table-totalprice"></td>
+            <td style="border:1px solid;" class="table-unitprice">{{ item.valor_unitario }}</td>
+            <td style="border:1px solid;" class="table-totalprice">{{ item.precio_total }}</td>
           </tr>
         </tbody>
       </table>
@@ -72,9 +72,15 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
-    return {};
+    return {
+      items:[]
+    };
+  },
+    computed: {
+    ...mapState(["token"]),
   },
   props: {
     request: {

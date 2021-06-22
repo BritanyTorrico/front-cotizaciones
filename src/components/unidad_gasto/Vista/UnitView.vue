@@ -156,7 +156,7 @@ h5 {
   font-size: 18px;
   display: flex;
   justify-content: space-between;
-  width: 25%;
+  width: 35%;
   align-items: baseline;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;

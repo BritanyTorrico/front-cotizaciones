@@ -9,16 +9,26 @@
       <div class="form_desc"></div>
 
       <div class="lista">
-        <lista-desplegable-change
-          required
-          v-model="nombreTabla"
-          nombreLista="Nombre de tabla:"
-          :lista="listaTablas"
-          :value="nombreTabla"
-          v-on:change="obtenerLog()"
-        ></lista-desplegable-change>
-      </div>
+        <label class="botons">
+          <label @click="obtenerLog()" class="btn btn-primary botoncito"
+            >Ver todo</label
+          >
+        </label>
 
+        <label class="container__label">Fecha:</label>
+        <input
+          class="calendario"
+          name="fechaVencProducto"
+          type="date"
+          value="DD/MM/AA"
+          onkeydown="return false"
+          v-model="fechaRango"
+          @change="obtenerPorFecha()"
+        />
+      </div>
+      <div class="form_check-error fechaa" v-if="!$v.fechaRango.validate_date">
+        fecha invalida
+      </div>
       <div class="form__tabla" v-if="this.listaLog.length > 0">
         <table class="table table-hove table-bordered">
           <thead>
@@ -61,13 +71,8 @@
           </tbody>
         </table>
       </div>
-      <div
-        v-if="
-          this.listaLog.length == 0 && nombreTabla != 'Seleccione una opcion'
-        "
-        class=" form_check-error"
-      >
-        No existen modificaciones en esta tabla.
+      <div v-if="this.listaLog.length == 0" class=" form_check-error mensaje">
+        No existen datos.
       </div>
       <!--modal-->
       <b-modal id="myModal" ok-only>
@@ -83,7 +88,7 @@
         <p
           class="contenido_MODAL"
           v-for="(item1, index) in selectedUser.datoNuevo"
-          :key="index"
+          :key="'A' + index"
         >
           {{ item1 }}
         </p>
@@ -94,16 +99,32 @@
 
 <script>
 import { mapState } from "vuex";
-import ListaDesplegableChange from "@/components/Presupuestos/ListaDesplegableChange.vue";
+import { helpers } from "vuelidate/lib/validators";
+const validate_date = (value) => {
+  const date = new Date();
+  const dd = date.getDate();
+  const mm = date.getMonth() + 1;
+  const yyyy = date.getFullYear();
+  const yyvalue = parseInt(value.slice(0, 4));
+  const mmvalue = parseInt(value.slice(5, 7));
+  const ddvalue = parseInt(value.slice(8, 10));
+  return (
+    !helpers.req(value) ||
+    !(yyvalue > yyyy) &
+      !(yyvalue == yyyy && mmvalue > mm) &
+      !(yyyy == yyvalue && mm == mmvalue && ddvalue > dd)
+  );
+};
+//import ListaDesplegableChange from "@/components/Presupuestos/ListaDesplegableChange.vue";
 export default {
   name: "LogPage",
-  components: { ListaDesplegableChange },
+  //components: { ListaDesplegableChange },
   computed: {
     ...mapState(["token"]),
   },
   data() {
     return {
-      nombreTabla: "Seleccione una opcion",
+      fechaRango: "",
       selectedUser: "",
       listaLog: [],
       listaTablas: [
@@ -132,17 +153,70 @@ export default {
       ],
     };
   },
-
+  mounted() {
+    this.obtenerLog();
+  },
+  validations: {
+    fechaRango: {
+      validate_date,
+    },
+  },
   methods: {
+    async obtenerPorFecha() {
+      try {
+        this.listaLog = [];
+        const fecha123 = await this.transformarFecha(this.fechaRango);
+        const lista = (
+          await this.$http.get(`log?type=Date&date=${fecha123}`, {
+            headers: {
+              authorization: this.token,
+            },
+          })
+        ).data;
+
+        for (let i = 0; i < lista.length; i++) {
+          let usuarioModifico = lista[i].usuario;
+          let codUsuario = await this.transformarNombreUsuario(usuarioModifico);
+          let nombreUser = await this.obtenerNombrePorCod(codUsuario);
+          let fechaModificacion = lista[i].fecha;
+          let fechaFormato = await this.transformarFecha(fechaModificacion);
+          let datovalue = lista[i].dato_nuevo;
+          let cadena = JSON.stringify(datovalue);
+          let cadenaSin = cadena.replace(/"/g, " ");
+          let cadenaSin1 = cadenaSin.replace(/{/g, " ");
+          let cadenaSin2 = cadenaSin1.replace(/}/g, " ");
+          const parts = cadenaSin2.split(",");
+          //viejo
+          let datovalue11 = lista[i].dato_viejo;
+          let cadena1 = JSON.stringify(datovalue11);
+          let cadenaSin11 = cadena1.replace(/"/g, " ");
+          let cadenaSin111 = cadenaSin11.replace(/{/g, " ");
+          let cadenaSin21 = cadenaSin111.replace(/}/g, " ");
+          const parts1 = cadenaSin21.split(",");
+          const dato = {
+            id: lista[i].id_log,
+            tabla: lista[i].tabla_log,
+            usuario: nombreUser,
+            fecha: fechaFormato,
+            accion: lista[i].accion,
+            dato_viejo: parts1,
+            datoNuevo: parts,
+          };
+          this.listaLog.push(dato);
+        }
+      } catch (error) {
+        this.alert("warning", error);
+      }
+    },
     sendInfo(item) {
       this.selectedUser = item;
     },
     async obtenerLog() {
       try {
         this.listaLog = [];
-
+        this.fechaRango = "";
         const lista = (
-          await this.$http.get(`log?componente=${this.nombreTabla}`, {
+          await this.$http.get(`log?type=All`, {
             headers: {
               authorization: this.token,
             },
@@ -182,9 +256,7 @@ export default {
         this.alert("warning", "Algo salio mal");
       }
     },
-    VerDetalleItems(index) {
-      console.log("Index:" + index);
-    },
+
     async transformarNombreUsuario(value) {
       try {
         const nombreUsuario = (
@@ -255,7 +327,11 @@ export default {
   background: #dfe4ea;
 }
 .lista {
-  width: 70%;
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+
+  text-align: right;
 }
 .form_check-error {
   color: red;
@@ -284,5 +360,33 @@ export default {
   width: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.calendario {
+  background: transparent;
+}
+.container__label {
+  color: var(--color-name);
+  font-weight: bold;
+  margin-right: 10px;
+
+  position: relative;
+  top: 10px;
+}
+.botoncito {
+  width: 20%;
+}
+.botons {
+  width: 80%;
+  text-align: left;
+}
+.mensaje {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 16px;
+
+  margin-right: 20px;
+}
+.fechaa {
+  text-align: right;
 }
 </style>
