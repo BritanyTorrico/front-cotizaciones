@@ -81,8 +81,6 @@
           </button>
           <button
             class="accept-button"
-            :disabled="(cot.itemList.forEach(item.valor_unitario===''))"
-            :class="$v.item.$invalid ? 'button-disabled' : ''"
             @click="submitForm"
           >
             Enviar
@@ -126,12 +124,21 @@ export default {
   methods: {
       async submitForm(){
           try {
+            let valid = true
+            for (let i of this.cot.itemList){
+              if (i.detalle=='' || i.valor_unitario<0 || i.valor_unitario>9999 || i.valor_unitario==''){
+                valid=false
+              }
+            }
+            if (valid){
               await this.sendItemsData()
               await this.sendQuotData()
               await this.updateStatus()
               this.alert("success", "Cotización actualizada exitosamente");
               this.$router.push(`/cotizaciones`)
-
+            }else{
+              this.alert("warning", "Datos de items inválidos")
+            }
           } catch (error) {
               this.alert("warning", error);
           }
@@ -139,7 +146,11 @@ export default {
       async sendItemsData(){
           try {
               for (let i of this.cot.itemList){
-                  await(
+                  
+                    if (i.detalle=='' || i.valor_unitario<0 || i.valor_unitario>9999){
+                      this.alert("warning", "valores de items inválidos")
+                    }else{
+                      await(
                       this.$http.put(`itemsPerQuotation/${this.$route.params.id}?item=${i.nombre}`,{
                           cantidad: i.cantidad,
                           unidad: i.unidad,
@@ -147,11 +158,12 @@ export default {
                           valor_unitario:i.valor_unitario,
                           precio_total:i.valor_unitario*i.cantidad
                       },{
-            headers: {
-              authorization: this.token,
-            },
-          })
-                  )
+                        headers: {
+                          authorization: this.token,
+                        },
+                        })
+                      )
+                    }
               }
           } catch (error) {
               this.alert("warning", "Valores de items inválidos");
