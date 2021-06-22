@@ -30,6 +30,13 @@
         </tbody>
       </table>
     </div>
+    <button v-if="images.length>0" class="show-button" @click="preview=!preview" id="show-button">
+            <span for="show-button" v-if="preview">Ocultar Capturas</span>
+            <span for="show-button" v-if="!preview">Mostrar Capturas</span>
+    </button>
+    <div class="image-container" v-for="(image, index) in images" :key="index">
+      <img v-if="preview" :src="image" class="image-show" height="360px">
+    </div>
     <div class="body-part">
       <h5>Observaciones:</h5>
       <p>{{ request.obs }}</p>
@@ -142,6 +149,8 @@ export default {
   },
   data() {
     return {
+      preview: false,
+      images: [],
       valid: null,
       response: "",
       resState: null,
@@ -352,8 +361,21 @@ export default {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
-  mounted(){
-    
+  mounted: async function(){
+    const table=(
+                          await this.$http.get(`tableData?nombre=${this.request.name}`,{
+                              headers: {
+                                              authorization: this.token,
+                                          }})
+                      ).data.cotizaciones
+    for (let i of table){
+      if (i.imagen_cotizacion!=null){
+        let file=i.imagen_cotizacion
+        file= await fetch(file)
+        file=await file.blob()
+        this.images.push(URL.createObjectURL(file))
+      }
+    }
   }
 };
 </script>
@@ -528,5 +550,34 @@ p {
   display: flex;
   width: 100%;
   justify-content: space-between;
+}
+.image-container{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  max-width: 100%;
+}
+.image-show{
+  border: 1px;
+  border-radius: 5px;
+  max-width: 100%;
+  max-height: auto;
+  align-items: center;
+  padding: 0.2% 0% 1% 1.5%;
+  align-self: center;
+}
+.show-button {
+  margin: auto;
+  display: block;
+  background-color: #777272;
+  padding: 0.5% 2.5% 0.5% 2.5%;
+  border-radius: 22px;
+  color: #fafafa;
+  font-size: 22px;
+  font-weight: bold;
+  border: 0px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 </style>

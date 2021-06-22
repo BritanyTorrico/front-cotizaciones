@@ -74,6 +74,8 @@ export default {
   },
   data() {
     return {
+      preview: false,
+      images: [],
       observations: ""
     };
   },
@@ -166,9 +168,6 @@ export default {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
-  mounted(){
-    
-  }
 };
 </script>
 <style scoped>
@@ -319,6 +318,19 @@ p {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
+.show-button {
+  margin: auto;
+  display: block;
+  background-color: #777272;
+  padding: 0.5% 2.5% 0.5% 2.5%;
+  border-radius: 22px;
+  color: #fafafa;
+  font-size: 22px;
+  font-weight: bold;
+  border: 0px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
 .reject-button {
   margin: auto;
   display: block;
@@ -346,5 +358,17 @@ p {
   display: flex;
   width: 100%;
   justify-content: space-between;
+}
+.image-show{
+  display: flex;
+  flex-direction: column;
+}
+.image-show{
+  border: 1px;
+  border-radius: 5px;
+  max-width: auto;
+  max-height: auto;
+  align-items: center;
+  padding: 0.2% 0% 1% 1.5%;
 }
 </style>
