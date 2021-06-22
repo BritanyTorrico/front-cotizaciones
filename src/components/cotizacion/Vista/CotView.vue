@@ -42,7 +42,6 @@
   </div>
   <div class="options">
         <button v-if="cot.status!='CERRADO'" class="accept-button" v-on:click="editQuotation()">Actualizar</button>
-        <button v-if="cot.status=='CERRADO'" class="reject-button">Eliminar</button>
     </div>
   </div>
 </template>
