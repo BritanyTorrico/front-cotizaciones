@@ -703,7 +703,7 @@ export default {
         }
       } catch (error) {
         console.log(error);
-        this.alert("warning", "Algo salio mal");
+        this.alert("warning", "Ya se registro una solicitud con ese nombre,cambie de nombre porfavor");
       }
     },
 
