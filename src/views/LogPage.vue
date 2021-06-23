@@ -1,5 +1,5 @@
 <template>
-  <div class="mayor">
+  <div class="mayor" v-if="permisoBitacora">
     <div class="contenedor__log">
       <h2 class="item_title">
         Historial de modificaciones del sistema
@@ -29,8 +29,10 @@
       <div class="form_check-error fechaa" v-if="!$v.fechaRango.validate_date">
         fecha invalida
       </div>
-      <div class="mensaje" v-if="fechaRango == ''">Historial de todos los cambios </div>
-     
+      <div class="mensaje" v-if="fechaRango == ''">
+        Historial de todos los cambios
+      </div>
+
       <div class="form__tabla" v-if="this.listaLog.length > 0">
         <table class="table table-hove table-bordered">
           <thead>
@@ -122,14 +124,13 @@ export default {
   name: "LogPage",
   //components: { ListaDesplegableChange },
   computed: {
-    ...mapState(["token"]),
+    ...mapState(["token", "permisoBitacora"]),
   },
   data() {
     return {
       fechaRango: "",
       selectedUser: "",
       listaLog: [],
-    
     };
   },
   mounted() {
@@ -369,9 +370,9 @@ export default {
 .fechaa {
   text-align: right;
 }
-.mensaje{
-text-align: left;
-color: #0d58cf;
-font-weight: bold;
+.mensaje {
+  text-align: left;
+  color: #0d58cf;
+  font-weight: bold;
 }
 </style>

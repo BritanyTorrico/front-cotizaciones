@@ -68,25 +68,27 @@ export default new Vuex.Store({
                 } else if (state.listaPermisos[i] == "Vista_Filtro_Cotizaciones") {
                     state.permisoFiltroCotizacion = true;
                     state.contador = state.contador + 1;
-                } else if (state.listaPermisos[i] == "Gestionar departamento") {
-                    //registrar presupuesto
+                } else if (
+                    state.listaPermisos[i] == "Vista_Actualizar_Presupuesto_Departamento"
+                ) {
                     state.permisoPresupuestoDep = true;
                     state.contador = state.contador + 1;
-                } else if (state.listaPermisos[i] == "Gestionar unidadDeGasto") {
-                    console.log("sad");
-                } else if (state.listaPermisos[i] == "Gestionar Tabla") {
+                } else if (
+                    state.listaPermisos[i] == "Vista_Actualizar_Presupuesto_Unidad"
+                ) {
+                    state.permisoPresupuestoUnidad = true;
+                    state.contador = state.contador + 1;
+                } else if (state.listaPermisos[i] == "Vista_Ver_Tabla") {
                     state.permisoCuadroComparativo = true;
                     state.contador = state.contador + 1;
-                } else if (state.listaPermisos[i] == "Gestionar Bitacora") {
+                } else if (state.listaPermisos[i] == "Vista_Ver_Bitacora") {
                     state.permisoBitacora = true;
                     state.contador = state.contador + 1;
-                } else if (state.listaPermisos[i] == "Gestionar Backup") {
+                } else if (state.listaPermisos[i] == "Vista_Backup") {
                     state.permisoBackup = true;
                     state.contador = state.contador + 1;
                 } else if (state.listaPermisos[i] == "Vista_ReporteFinal") {
                     state.permisoInformeFinal = true;
-                    state.contador = state.contador + 1;
-                    state.permisoPresupuestoUnidad = true;
                     state.contador = state.contador + 1;
                 }
             }
