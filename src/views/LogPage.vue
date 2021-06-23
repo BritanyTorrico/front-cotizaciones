@@ -29,6 +29,8 @@
       <div class="form_check-error fechaa" v-if="!$v.fechaRango.validate_date">
         fecha invalida
       </div>
+      <div class="mensaje" v-if="fechaRango == ''">Historial de todos los cambios </div>
+     
       <div class="form__tabla" v-if="this.listaLog.length > 0">
         <table class="table table-hove table-bordered">
           <thead>
@@ -127,30 +129,7 @@ export default {
       fechaRango: "",
       selectedUser: "",
       listaLog: [],
-      listaTablas: [
-        "categoria_especifica",
-        "categoria_general",
-        "cotizacion",
-        "departamento",
-        "empresa",
-        "empresa_rubro",
-        "facultad",
-        "funcion",
-        "informe",
-        "item_cotizacion",
-        "item_de_gasto",
-        "item_solicitud",
-        "item_unidad",
-        "rol",
-        "rol_funcion",
-        "rubro",
-        "solicitud",
-        "tabla",
-        "unidad_de_gasto",
-        "user_rol",
-        "usuario",
-        "usuario_departamento",
-      ],
+    
     };
   },
   mounted() {
@@ -389,5 +368,10 @@ export default {
 }
 .fechaa {
   text-align: right;
+}
+.mensaje{
+text-align: left;
+color: #0d58cf;
+font-weight: bold;
 }
 </style>
