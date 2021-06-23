@@ -65,7 +65,6 @@
       >
         <form ref="form" @submit.stop.prevent="handleSubmit">
           <b-form-group 
-            invalid-feedback="Seleccione una empresa"
             :state="resState"
           >
           <h5>Empresa: </h5>
@@ -74,6 +73,7 @@
               :options="this.request.companyList" 
               :state="resState"
             ></b-form-select>
+            <div class="form_check-error" v-if="selectedCompany===''">Seleccione una empresa</div>
           </b-form-group>
           <b-form-group
             invalid-feedback="Justifique su respuesta"
@@ -577,6 +577,13 @@ p {
   font-size: 22px;
   font-weight: bold;
   border: 0px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.form_check-error {
+  color: #ed1c24;
+  font-size: 14px;
+  padding: 0 0 0 2%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
