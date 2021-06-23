@@ -344,7 +344,7 @@ export default {
         await this.sendReport() //actualiza reporte
         await this.updateRequest() // actualiza estado de solicitud
         await this.updateQuotations() //actualiza estados de cotizaciones y puesto_obra 
-        //window.setInterval(window.location.reload(), 10000);
+        window.setInterval(window.location.reload(), 10000);
       } catch (error) {
         throw new Error(error);
       }

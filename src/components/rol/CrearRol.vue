@@ -50,7 +50,7 @@
                 />
               </div>
 
-              <label for="gestionUsuario">Registrar Usuarios</label><br />
+              <label for="gestionUsuario">Gestionar Usuarios</label><br />
           </div>
             <div class="form-function">
               <div class="input-check">
@@ -62,7 +62,7 @@
                 />
               </div>
 
-              <label for="gestionRol">Crear Roles</label><br />
+              <label for="gestionRol">Gestionar Roles</label><br />
             </div>
             <div class="form-function">
               <div class="input-check">
@@ -74,7 +74,7 @@
                 />
               </div>
 
-              <label for="gestionUnidades">Añadir Unidades de Gasto</label
+              <label for="gestionUnidades">Gestionar Unidades de Gasto</label
               ><br />
             </div>
             <div class="form-function">
@@ -86,40 +86,7 @@
                     value="Añadir Items de Gasto"
                   />
                 </div>
-                <label for="gestionItems">Añadir Items de Gasto</label><br />
-            </div>
-            <div class="form-function">
-                <div class="input-check">
-                  <input
-                    type="checkbox"
-                    id="hacerSol"
-                    name="funcion"
-                    value="Hacer solicitud"
-                  />
-                </div>
-                <label for="hacerSol">Hacer solicitud</label><br />
-            </div>
-            <div class="form-function">
-                <div class="input-check">
-                  <input
-                    type="checkbox"
-                    id="revSol"
-                    name="funcion"
-                    value="Revisar solicitud"
-                  />
-                </div>
-                <label for="revSol">Revisar solicitud</label><br />
-            </div>
-            <div class="form-function">
-                <div class="input-check">
-                  <input
-                    type="checkbox"
-                    id="creaCot"
-                    name="funcion"
-                    value="Crear cotización"
-                  />
-                </div>
-                <label for="creaCot">Crear cotización</label><br />
+                <label for="gestionItems">Gestionar Items de Gasto</label><br />
             </div>
             <div class="form-function">
                 <div class="input-check">
@@ -130,7 +97,40 @@
                     value="Registro de empresas"
                   />
                 </div>
-                <label for="regEmp">Registro de empresas</label><br />
+                <label for="regEmp">Gestionar Empresas</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="hacerSol"
+                    name="funcion"
+                    value="Hacer solicitud"
+                  />
+                </div>
+                <label for="hacerSol">Hacer Solicitudes</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="revSol"
+                    name="funcion"
+                    value="Revisar solicitud"
+                  />
+                </div>
+                <label for="revSol">Revisar Solicitudes</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="creaCot"
+                    name="funcion"
+                    value="Crear cotización"
+                  />
+                </div>
+                <label for="creaCot">Realizar Cotizaciones</label><br />
             </div>
             <div class="form-function">
                 <div class="input-check">
@@ -141,9 +141,74 @@
                     value="Filtro cotizaciones"
                   />
                 </div>
-                <label for="filtrito">Filtro de cotizaciones</label><br />
+                <label for="filtrito">Ver Cotizaciones</label><br />
             </div>
-            
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="tablita"
+                    name="funcion"
+                    value="Crear Tabla"
+                  />
+                </div>
+                <label for="tablita">Crear Tablas Comparativas</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="bita"
+                    name="funcion"
+                    value="Ver Bitacora"
+                  />
+                </div>
+                <label for="bita">Ver Bitácora</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="backup"
+                    name="funcion"
+                    value="Hacer Backup"
+                  />
+                </div>
+                <label for="backup">Realizar Respaldos y Restauraciones</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="presunidad"
+                    name="funcion"
+                    value="Actualizar Presupuesto Unidad"
+                  />
+                </div>
+                <label for="presunidad">Actualizar Presupuestos de Unidades</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="presdep"
+                    name="funcion"
+                    value="Actualizar Presupuesto Departamento"
+                  />
+                </div>
+                <label for="presdep">Actualizar Presupuestos de Departamentos</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="repfin"
+                    name="funcion"
+                    value="Reporte Final"
+                  />
+                </div>
+                <label for="repfin">Realizar Informes Finales</label><br />
+            </div>
         </div>
       </div>
       <div class="botoncito">
