@@ -250,7 +250,7 @@ export default {
             }
         
       } catch (error) {
-        throw new Error(error);
+        this.alert("warning", error);
       }
     },
     async updateRequest(){
@@ -286,7 +286,7 @@ export default {
             await this.setCompany()
           }
       } catch (error) {
-        throw new Error(error);
+        this.alert("warning", error);
       }
     },
     async setQuotStatus(id){
@@ -304,30 +304,32 @@ export default {
     },
     async setCompany(){
       try {
-        for (let i=0;i<this.request.companyList.length;i++){
-          if (this.request.companyList[i]==this.selectedCompany){
-            const quots=(
+        const quots=(
                         await this.$http.get(`tableData?nombre=${this.request.name}`,{
                             headers: {
                                             authorization: this.token,
                                         }})
                     ).data.cotizaciones
+        for (let i=0;i<this.request.companyList.length;i++){
+          if (this.request.companyList[i]==this.selectedCompany){
             await this.$http.put(`quotation/${quots[i].cod_cotizacion}?type=Answers`,{
-              puesto_obra: 'SI'
+              total_cotizacion: quots[i].total_cotizacion,
+              tiempo_entrega: quots[i].tiempo_entrega,
+              puesto_obra: 'SI',
+              imagen_cotizacion: quots[i].imagen_cotizacion,
+              fecha_respuesta: quots[i].fecha_respuesta
             },{
               headers: {
                 authorization: this.token,
               },
             })
           }else{
-            const quots=(
-                        await this.$http.get(`tableData?nombre=${this.request.name}`,{
-                            headers: {
-                                            authorization: this.token,
-                                        }})
-                    ).data.cotizaciones
             await this.$http.put(`quotation/${quots[i].cod_cotizacion}?type=Answers`,{
-              puesto_obra: 'NO'
+              total_cotizacion: quots[i].total_cotizacion,
+              tiempo_entrega: quots[i].tiempo_entrega,
+              puesto_obra: 'NO',
+              imagen_cotizacion: quots[i].imagen_cotizacion,
+              fecha_respuesta: quots[i].fecha_respuesta
             },{
               headers: {
                 authorization: this.token,
@@ -362,6 +364,7 @@ export default {
     },
   },
   mounted: async function(){
+    console.log(this.request.companyList);
     const table=(
                           await this.$http.get(`tableData?nombre=${this.request.name}`,{
                               headers: {
