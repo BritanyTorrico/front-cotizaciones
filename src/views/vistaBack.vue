@@ -1,5 +1,5 @@
 <template>
-  <div class="contendor_mayor">
+  <div class="contendor_mayor" v-if="permisoBackup">
     <div class="backs">
       <h2 class="item_title">
         Respaldos y restauracion de la base de datos
@@ -61,7 +61,7 @@ import Alert from "@/components/User/Alert.vue";
 export default {
   name: "vistaBack",
   computed: {
-    ...mapState(["token"]),
+    ...mapState(["token", "permisoBackup"]),
   },
   components: {
     Alert,
