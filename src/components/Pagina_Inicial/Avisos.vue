@@ -11,8 +11,8 @@
         <h3 class="aviso__titulo">Politicas de Cotizaciones</h3>
         <p class="aviso__contenido">
           Para poder realizar una cotización esta debe ser previamente revisada
-          y aceptada ,cabe mencionar que tenemos como politica enviar a tres
-          empresas de manera obligatoria que participan en el proceso de
+          y aceptada ,cabe mencionar que tenemos como politica enviar minimo a
+          tres empresas de manera obligatoria que participan en el proceso de
           cotizacion y el periodo maximo de confirmacion de una cotizacion por
           empresa es de tres dias.
         </p>
@@ -21,7 +21,7 @@
         <h3 class="aviso__titulo">Inicio de Sesión</h3>
         <p class="aviso__contenido ">
           Para poder acceder al sistema de cotizacion es necesario que ingrese
-          con una cuenta proporsionada por la universidad.
+          con una cuenta proporcionada por la universidad.
         </p>
       </div>
     </div>
