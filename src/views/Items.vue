@@ -1,15 +1,26 @@
 <template>
+<div v-if="permisoItemDeGasto">
   <div class="item-container">
       <InboxItem/>
   </div>
+</div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import InboxItem from '../components/item_gasto/Vista/InboxItem.vue'
 
 export default {
   components: { InboxItem },
-  name: "Items"
+  name: "Items",
+  computed: {
+    ...mapState(["permisoItemDeGasto"])
+  },
+  mounted(){
+    if (!this.permisoItemDeGasto){
+      this.$router.push("/")
+    }
+  }
 }
 </script>
 

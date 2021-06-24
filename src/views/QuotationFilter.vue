@@ -1,4 +1,5 @@
 <template>
+<div v-if="permisoFiltroCotizacion">
   <div class="filter-container">
       <div class="quotation-filter">
           <Options @sendinboxdata="passData($event)" @senditems="passItems($event)"/>
@@ -7,14 +8,19 @@
         <InboxFiltro :inboxData="inboxData" :items="inboxItems"/>
       </div>
   </div>
+</div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import InboxFiltro from '../components/filtro_cotizacion/InboxFiltro.vue';
 import Options from '../components/filtro_cotizacion/Options.vue'
 export default {
     name: "QuotationFilter",
   components: { Options, InboxFiltro },
+  computed: {
+    ...mapState(["permisoFiltroCotizacion"])
+  },
   data(){
       return{
         inboxData: [],
@@ -27,6 +33,11 @@ export default {
     },
     passItems(items){
       this.inboxItems= items;
+    }
+  },
+  mounted(){
+    if (!this.permisoFiltroCotizacion){
+      this.$router.push("/")
     }
   }
 }

@@ -1,4 +1,5 @@
 <template>
+<div v-if="this.permisoCotizacion">
   <div class="filter-container">
       <div class="quotation-filter">
           <Options @sendinboxdata="passData($event)" @senditems="passItems($event)"/>
@@ -7,11 +8,13 @@
         <InboxCot :inboxData="inboxData" :items="inboxItems"/>
       </div>
   </div>
+</div>
 </template>
 
 <script>
 import InboxCot from '../components/cotizacion/Vista/InboxCot.vue'
 import Options from '../components/cotizacion/Vista/Options.vue'
+import mapState from "vuex"
 export default {
     name: "Cotizaciones",
   components: { Options, InboxCot },
@@ -28,7 +31,14 @@ export default {
     async passItems(items){
       this.inboxItems= items;
     }
-  }
+  },computed: {
+    ...mapState(["permisoCotizacion"]),
+  },
+  mounted() {
+    if (!this.permisoCotizacion) {
+      this.$router.push("/");
+    }
+  },
 }
 </script>
 
