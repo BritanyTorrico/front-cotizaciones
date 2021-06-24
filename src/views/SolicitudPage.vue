@@ -13,6 +13,11 @@ export default {
   computed: {
     ...mapState(["permisoSolicitud"]),
   },
+  mounted(){
+    if (!this.permisoSolicitud){
+      this.$route.push("/")
+    }
+  }
 };
 </script>
 

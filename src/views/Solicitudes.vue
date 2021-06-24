@@ -1,4 +1,5 @@
 <template>
+<div v-if="permisoSolicitud">
   <div class="soli-container">
     <div class="soli-filter">
       <Options @sendinboxdata="passData($event)" @senditems="passItems($event)"/>
@@ -7,11 +8,13 @@
       <InboxSolicitudes :inboxData="inboxData" :items="inboxItems"/>
     </div>
   </div>
+</div>
 </template>
 
 <script>
 import Options from '../components/Solicitud/Vista/Options.vue'
 import InboxSolicitudes from '../components/Solicitud/Vista/InboxSolicitudes.vue'
+import { mapState } from 'vuex';
 export default {
   components: { InboxSolicitudes, Options },
   data(){
@@ -26,6 +29,14 @@ export default {
     },
     passItems(items){
       this.inboxItems= items;
+    }
+  },
+  computed: {
+    ...mapState(["permisoSolicitud"])
+  },
+  mounted (){
+    if (!this.permisoSolicitud){
+      this.$router.push("/")
     }
   },
   name: "Solicitudes",
