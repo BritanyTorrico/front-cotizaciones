@@ -291,9 +291,9 @@ export default {
             }
             if (it.cantidad==-1){it.cantidad=1}
             this.cot.itemList.push(it)
-            this.loading=!this.loading
+            
         }
-
+    this.loading=!this.loading
   }
 }
 </script>

@@ -2,10 +2,10 @@
 <div v-if="permisoFiltroCotizacion">
   <div class="filter-container">
       <div class="quotation-filter">
-          <Options @sendinboxdata="passData($event)" @senditems="passItems($event)"/>
+          <Options @sendinboxdata="passData($event)" @senditems="passItems($event)" @sendstat="passStat($event)"/>
       </div>
       <div class="filter-inbox">
-        <InboxFiltro :inboxData="inboxData" :items="inboxItems"/>
+        <InboxFiltro :inboxData="inboxData" :items="inboxItems" :loading="loading"/>
       </div>
   </div>
 </div>
@@ -23,6 +23,7 @@ export default {
   },
   data(){
       return{
+        loading: false,
         inboxData: [],
         inboxItems: [],
       };
@@ -33,6 +34,9 @@ export default {
     },
     passItems(items){
       this.inboxItems= items;
+    },
+    passStat(stat){
+      this.loading=stat;
     }
   },
   mounted(){
