@@ -21,7 +21,7 @@
                 >
             </select>
         </div>
-        <div v-if="loading">
+    <div v-if="loading">
       <div class="loading-info">
           <div class="clock-loader"></div>
       </div>

@@ -94,6 +94,7 @@ export default {
   },
   data(){
       return{
+          loading: false,
           months: 100,
           items: ["Products", "Services"],
           status: "ALL",
@@ -108,6 +109,8 @@ export default {
   },
   methods: {
       async getCompanies(){
+          this.loading=!this.loading
+          this.$emit("sendstat", this.loading)
           this.companiesList=["Todas"]
           this.company="Todas"
           if (this.market!="Todos"){
@@ -122,6 +125,8 @@ export default {
           }
           
             await this.getData()
+            this.loading=!this.loading
+            this.$emit("sendstat", this.loading)
       }, 
       async getData(){
           this.filteredInbox=[]
