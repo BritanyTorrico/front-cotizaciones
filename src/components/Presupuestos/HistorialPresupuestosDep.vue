@@ -69,7 +69,12 @@
         campos.
       </p>
     </div>
-
+    <div v-if="loading">
+      <div class="loading-info">
+          <div class="clock-loader"></div>
+      </div>
+    </div>
+    <div v-else>
     <div v-if="this.mostrarMensaje && this.listaHistorialDatos.length == 0">
       <p
         class="form_check-error mensaje"
@@ -98,6 +103,7 @@
       >
       </b-table>
     </div>
+    </div>
   </div>
 </template>
 
@@ -122,6 +128,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       sortBy: "Unidad_gasto",
       sortDesc: false,
       historial: {
@@ -280,6 +287,7 @@ export default {
       }
     },
     async getHistorialAnual() {
+      this.loading=!this.loading
       try {
         const cod_dep = await this.obtenerCodDepartamento();
         const cod_facultad = await this.obtenerCodFacultad();
@@ -324,6 +332,7 @@ export default {
       } catch (error) {
         this.alert("warning", "Algo salio mal");
       }
+      this.loading=!this.loading
     },
     forceRerender() {
       this.componentKey += 1;
@@ -339,7 +348,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .contenedor-historial {
   background-color: #f7f6f6;
   padding: 20px 30px 20px 30px;
@@ -355,6 +364,58 @@ export default {
   font-weight: 600;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
 .form_desc {
   text-align: left;
