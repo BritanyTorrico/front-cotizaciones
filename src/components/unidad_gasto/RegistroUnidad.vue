@@ -1,8 +1,14 @@
 <template>
   <div class="reg_unit">
+    <div v-if="loading">
+      <div class="loading-info">
+          <div class="clock-loader"></div>
+      </div>
+    </div>
+    <div v-else>
     <h2 class="unit_title">Registrar Unidad de Gasto</h2>
-    <label>
-      <div class="form_desc">Ingrese los datos de la nueva unidad de gasto</div>
+    <label class="form_desc">
+      <div>Ingrese los datos de la nueva unidad de gasto</div>
     </label>
     <form class="form_unitreg" @submit.prevent="submitForm" autocomplete="off">
       <div class="form_section">
@@ -81,6 +87,7 @@
         </button>
       </div>
     </form>
+    </div>
     <Alert ref="alert"></Alert>
   </div>
 </template>
@@ -99,6 +106,7 @@ export default {
   components: { Alert, ListaDesplegable },
   data() {
     return {
+      loading:false,
       disabled: false,
       unit: {
         nombre_unidadgasto: null,
@@ -126,6 +134,7 @@ export default {
   },
   methods: {
     async getUsers() {
+      this.loading=!this.loading
       const deptUsers = (
         await this.$http.get(
           `users?criterio=departamento&nombre=${localStorage.getItem('depto')}`, {
@@ -151,8 +160,10 @@ export default {
             }
           }
         }
+        this.loading=!this.loading
     },
     async submitForm() {
+      this.loading=!this.loading
       try {
         if (!this.$v.unit.$invalid) {
           await this.sendData();
@@ -164,6 +175,7 @@ export default {
       } catch (error) {
         this.alert("warning", error);
       }
+      this.loading=!this.loading
     },
     async sendData() {
       try {
@@ -215,7 +227,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .reg_unit {
   background-color: #f7f6f6;
   padding: 20px 40px 20px 40px;
@@ -232,9 +244,61 @@ export default {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
 
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
 .form_desc {
   text-align: left;
+  
   color: #0d58cf;
   font-size: 18px;
   font-weight: 400;

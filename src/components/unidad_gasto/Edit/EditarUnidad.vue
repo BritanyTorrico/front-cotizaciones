@@ -1,8 +1,14 @@
 <template>
   <div class="edit_unit">
+    <div v-if="loading">
+      <div class="loading-info">
+          <div class="clock-loader"></div>
+      </div>
+    </div>
+    <div v-else>
     <h2 class="unit_title">Editar Unidad de Gasto</h2>
-    <label>
-      <div class="form_desc">Puede cambiar los datos de la unidad de gasto</div>
+    <label class="form_desc">
+      <div >Puede cambiar los datos de la unidad de gasto</div>
     </label>
     <form class="form_unitreg" @submit.prevent="submitForm" autocomplete="off">
       <div class="form_section">
@@ -81,6 +87,7 @@
         </button>
       </div>
     </form>
+    </div>
     <Alert ref="alert"></Alert>
   </div>
 </template>
@@ -99,6 +106,7 @@ export default {
   components: { Alert, ListaDesplegable },
   data() {
     return {
+      loading: false,
       disabled: false,
       unit: {
         nombre_unidadgasto: null,
@@ -126,6 +134,7 @@ export default {
   },
   methods: {
     async getUsers() {
+      this.loading=!this.loading
       const deptUsers = (
         await this.$http.get(
           `users?criterio=departamento&nombre=${localStorage.getItem('depto')}`, {
@@ -151,8 +160,10 @@ export default {
             }
           }
         }
+        this.loading=!this.loading
     },
     async submitForm() {
+      this.loading=!this.loading
       try {
         if (!this.$v.unit.$invalid) {
           await this.sendData();
@@ -164,6 +175,7 @@ export default {
       } catch (error) {
         this.alert("warning", error);
       }
+      this.loading=!this.loading
     },
     async sendData() {
       try {
@@ -190,6 +202,7 @@ export default {
     },
   },
   mounted: async function() {
+    this.loading=!this.loading
       const unitData = (await this.$http.get(`spendingUnit/${this.$route.params.id}`,{
                 headers:{
                   authorization:this.token,
@@ -198,8 +211,10 @@ export default {
       this.unit.nombre_unidadgasto=unitData.nombre_unidadgasto
       this.unit.encargado_unidad=unitData.jefe_unidad
       this.unit.descripcion_unidadgasto=unitData.descripcion_unidadgasto
+      
     await this.getUsers();
     await this.listaUsuarios.push(unitData.jefe_unidad)
+    this.loading=!this.loading
     var validCodesUnit = [32, 
                           48,49,50,51,52,53,54,55,56,57,
                           65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
@@ -224,7 +239,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .edit_unit {
   background-color: #f7f6f6;
   padding: 20px 40px 20px 40px;
@@ -259,7 +274,58 @@ export default {
   text-align: left;
   width: 100%;
 }
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
 
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
 .edit_unit textarea {
   resize: none;
   word-wrap: break-word;

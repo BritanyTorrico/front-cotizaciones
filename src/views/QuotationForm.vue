@@ -10,7 +10,7 @@
 
 <script>
 import CotInbox from '../components/cotizacion/CotInbox.vue'
-import mapState from "vuex"
+import {mapState} from "vuex"
 export default {
   name: "QuotationForm",
   components: { CotInbox },

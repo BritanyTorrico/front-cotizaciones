@@ -15,6 +15,12 @@
           >
         </label>
 
+        <label class="order">
+          <button @click="listaLog=listaLog.reverse()" class="btn btn-primary botonsote" :disabled="loading"
+            >Invertir orden</button
+          >
+        </label>
+
         <label class="container__label">Fecha:</label>
         <input
           class="calendario"
@@ -29,6 +35,12 @@
       <div class="form_check-error fechaa" v-if="!$v.fechaRango.validate_date">
         fecha invalida
       </div>
+      <div v-if="loading">
+            <div class="loading-info">
+                <div class="clock-loader"></div>
+            </div>
+      </div>
+      <div v-else>
       <div class="mensaje" v-if="fechaRango == ''">
         Historial de todos los cambios
       </div>
@@ -77,6 +89,7 @@
       </div>
       <div v-if="this.listaLog.length == 0" class=" form_check-error mensaje">
         No existen datos.
+      </div>
       </div>
       <!--modal-->
       <b-modal id="myModal" ok-only>
@@ -128,6 +141,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       fechaRango: "",
       selectedUser: "",
       listaLog: [],
@@ -143,6 +157,7 @@ export default {
   },
   methods: {
     async obtenerPorFecha() {
+      this.loading=!this.loading
       try {
         this.listaLog = [];
         const fecha123 = await this.transformarFecha(this.fechaRango);
@@ -187,11 +202,13 @@ export default {
       } catch (error) {
         this.alert("warning", error);
       }
+      this.loading=!this.loading
     },
     sendInfo(item) {
       this.selectedUser = item;
     },
     async obtenerLog() {
+      this.loading=!this.loading
       try {
         this.listaLog = [];
         this.fechaRango = "";
@@ -235,6 +252,7 @@ export default {
       } catch (error) {
         this.alert("warning", "Algo salio mal");
       }
+      this.loading=!this.loading
     },
 
     async transformarNombreUsuario(value) {
@@ -280,7 +298,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .mayor {
   padding: 50px 100px 50px 100px;
   background-color: #46b1c95b;
@@ -355,8 +373,15 @@ export default {
 .botoncito {
   width: 20%;
 }
+.botonsote {
+  width: 30%;
+}
 .botons {
-  width: 80%;
+  width: 50%;
+  text-align: left;
+}
+.order {
+  width: 40%;
   text-align: left;
 }
 .mensaje {
@@ -373,5 +398,57 @@ export default {
   text-align: left;
   color: #0d58cf;
   font-weight: bold;
+}
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
 </style>
