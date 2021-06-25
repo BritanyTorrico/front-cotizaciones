@@ -40,9 +40,10 @@
         <p class="delete-message">
           ¿Está seguro que desea eliminar este usuario?
         </p>
-        <Alert ref="alert"></Alert>
+        
       </b-modal>
     </div>
+    <Alert ref="alert"></Alert>
   </div>
 </template>
 
