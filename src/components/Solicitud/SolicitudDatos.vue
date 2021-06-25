@@ -384,14 +384,7 @@
           </div>
         </div>
       </div>
-      <Alert ref="alert"></Alert>
-
-      <alert-2
-        ref="alert2"
-        aceptar="Aceptar"
-        mensajeSub="(Se borrara la lista de items si presiona aceptar.)"
-        @escucharHijo="variableHijo"
-      ></alert-2>
+      
       <div class="boton-contenedor">
         <div class="boton-contenedor-izq"></div>
         <div class="boton-contenedor-der">
@@ -405,6 +398,14 @@
       </div>
     </form>
     </div>
+    <Alert ref="alert"></Alert>
+
+      <alert-2
+        ref="alert2"
+        aceptar="Aceptar"
+        mensajeSub="(Se borrara la lista de items si presiona aceptar.)"
+        @escucharHijo="variableHijo"
+      ></alert-2>
   </div>
 </template>
 
