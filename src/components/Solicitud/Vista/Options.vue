@@ -74,6 +74,7 @@ export default {
   },
   data(){
       return{
+          loading: false,
           months: 100,
           status: "ALL",
           filteredInbox: [],
@@ -83,6 +84,8 @@ export default {
   },
   methods: {
       async getData(){
+          this.loading=!this.loading
+          this.$emit("sendstat", this.loading)
           this.filteredInbox=[]
           this.filteredItems=[]
 
@@ -200,6 +203,8 @@ export default {
 
             this.$emit("sendinboxdata", this.filteredInbox)
           this.$emit("senditems", this.filteredItems)
+          this.loading=!this.loading
+          this.$emit("sendstat", this.loading)
       }
   },
   mounted(){

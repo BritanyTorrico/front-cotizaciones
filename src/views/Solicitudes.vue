@@ -2,10 +2,10 @@
 <div v-if="permisoSolicitud">
   <div class="soli-container">
     <div class="soli-filter">
-      <Options @sendinboxdata="passData($event)" @senditems="passItems($event)"/>
+      <Options @sendinboxdata="passData($event)" @senditems="passItems($event)" @sendstat="passStat($event)"/>
     </div>
     <div class="soli-inbox">
-      <InboxSolicitudes :inboxData="inboxData" :items="inboxItems"/>
+      <InboxSolicitudes :inboxData="inboxData" :items="inboxItems" :loading="loading"/>
     </div>
   </div>
 </div>
@@ -19,6 +19,7 @@ export default {
   components: { InboxSolicitudes, Options },
   data(){
       return{
+        loading: false,
         inboxData: [],
         inboxItems: [],
       };
@@ -29,6 +30,9 @@ export default {
     },
     passItems(items){
       this.inboxItems= items;
+    },
+    passStat(stat){
+      this.loading=stat;
     }
   },
   computed: {

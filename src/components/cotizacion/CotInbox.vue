@@ -1,5 +1,11 @@
 <template>
     <div class="inbox">
+        <div v-if="loading">
+      <div class="loading-info">
+          <div class="clock-loader"></div>
+      </div>
+    </div>
+    <div v-else>
         <div v-if="inboxData.length===0">
             <div class="desc">No hay solicitudes aceptadas pendientes</div>
         </div>
@@ -37,6 +43,7 @@
             </div>
         </div>
     </div>
+    </div>
 </template>
 
 <script>
@@ -51,6 +58,7 @@ export default {
     components: { CardCot, CotForm },
     data() {
         return {
+            loading: false,
             inboxData: [],
             items: [],
             changeCot: false,
@@ -66,6 +74,7 @@ export default {
     },
     methods: {
         async getData() {
+            this.loading=!this.loading
             const response = (
                 await this.$http.get(`request?type=criteria&status=EN_COTIZACION&from=depto&nombre=${localStorage.getItem('depto')}`, {
                     headers: {
@@ -114,6 +123,7 @@ export default {
             }
             this.inboxData=this.inboxData.reverse()
             this.items=this.items.reverse()
+            this.loading=!this.loading
         },
         async showRequest(i) {
             this.selectedRequest.cod = this.inboxData[i].cod_solicitud
@@ -135,7 +145,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .inbox {
     position: relative;
 }
@@ -159,6 +169,58 @@ export default {
     display: flex;
     height: 42rem;
     overflow: auto;
+}
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
 .desc {
     font-size: 29px;

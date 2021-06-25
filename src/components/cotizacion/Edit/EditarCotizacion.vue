@@ -1,5 +1,11 @@
 <template>
   <div class="cot-edit">
+    <div v-if="loading">
+      <div class="loading-info">
+          <div class="clock-loader"></div>
+      </div>
+    </div>
+    <div v-else>
       <div class="form-title">Actualizar cotización</div>
       <div class="head-part">
       <div class="head-top">
@@ -92,6 +98,7 @@
       </div>
       </div>
   </div>
+    </div>
   <Alert ref="alert"></Alert>
   </div>
 </template>
@@ -107,6 +114,7 @@ export default {
   components: { Alert },
   data(){
       return{
+        loading: false,
           cot: {
               solcod:null,
               name:'',
@@ -123,6 +131,7 @@ export default {
   },
   methods: {
       async submitForm(){
+        this.loading=!this.loading
           try {
             let valid = true
             for (let i of this.cot.itemList){
@@ -144,6 +153,7 @@ export default {
           } catch (error) {
               this.alert("warning", error);
           }
+          this.loading=!this.loading
       },
       async sendItemsData(){
           try {
@@ -234,6 +244,7 @@ export default {
     },
   },
   mounted: async function(){
+    this.loading=!this.loading
       const response=(await this.$http.get(`quotation/${this.$route.params.id}`,{
                 headers:{
                   authorization:this.token,
@@ -280,14 +291,14 @@ export default {
             }
             if (it.cantidad==-1){it.cantidad=1}
             this.cot.itemList.push(it)
-            console.log(this.cot.itemList);
+            this.loading=!this.loading
         }
 
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .cot-edit{
     background: #fff;
     margin: 40px;
@@ -315,6 +326,58 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
 h2 {
   color: #030303 !important;
