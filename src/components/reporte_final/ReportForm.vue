@@ -65,7 +65,6 @@
       >
         <form ref="form" @submit.stop.prevent="handleSubmit">
           <b-form-group 
-            invalid-feedback="Seleccione una empresa"
             :state="resState"
           >
           <h5>Empresa: </h5>
@@ -74,6 +73,7 @@
               :options="this.request.companyList" 
               :state="resState"
             ></b-form-select>
+            <div class="form_check-error" v-if="selectedCompany===''">Seleccione una empresa</div>
           </b-form-group>
           <b-form-group
             invalid-feedback="Justifique su respuesta"
@@ -250,7 +250,7 @@ export default {
             }
         
       } catch (error) {
-        throw new Error(error);
+        this.alert("warning", error);
       }
     },
     async updateRequest(){
@@ -286,7 +286,7 @@ export default {
             await this.setCompany()
           }
       } catch (error) {
-        throw new Error(error);
+        this.alert("warning", error);
       }
     },
     async setQuotStatus(id){
@@ -304,30 +304,32 @@ export default {
     },
     async setCompany(){
       try {
-        for (let i=0;i<this.request.companyList.length;i++){
-          if (this.request.companyList[i]==this.selectedCompany){
-            const quots=(
+        const quots=(
                         await this.$http.get(`tableData?nombre=${this.request.name}`,{
                             headers: {
                                             authorization: this.token,
                                         }})
                     ).data.cotizaciones
+        for (let i=0;i<this.request.companyList.length;i++){
+          if (this.request.companyList[i]==this.selectedCompany){
             await this.$http.put(`quotation/${quots[i].cod_cotizacion}?type=Answers`,{
-              puesto_obra: 'SI'
+              total_cotizacion: quots[i].total_cotizacion,
+              tiempo_entrega: quots[i].tiempo_entrega,
+              puesto_obra: 'SI',
+              imagen_cotizacion: quots[i].imagen_cotizacion,
+              fecha_respuesta: quots[i].fecha_respuesta
             },{
               headers: {
                 authorization: this.token,
               },
             })
           }else{
-            const quots=(
-                        await this.$http.get(`tableData?nombre=${this.request.name}`,{
-                            headers: {
-                                            authorization: this.token,
-                                        }})
-                    ).data.cotizaciones
             await this.$http.put(`quotation/${quots[i].cod_cotizacion}?type=Answers`,{
-              puesto_obra: 'NO'
+              total_cotizacion: quots[i].total_cotizacion,
+              tiempo_entrega: quots[i].tiempo_entrega,
+              puesto_obra: 'NO',
+              imagen_cotizacion: quots[i].imagen_cotizacion,
+              fecha_respuesta: quots[i].fecha_respuesta
             },{
               headers: {
                 authorization: this.token,
@@ -344,7 +346,7 @@ export default {
         await this.sendReport() //actualiza reporte
         await this.updateRequest() // actualiza estado de solicitud
         await this.updateQuotations() //actualiza estados de cotizaciones y puesto_obra 
-        //window.setInterval(window.location.reload(), 10000);
+        window.setInterval(window.location.reload(), 10000);
       } catch (error) {
         throw new Error(error);
       }
@@ -577,6 +579,13 @@ p {
   font-size: 22px;
   font-weight: bold;
   border: 0px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.form_check-error {
+  color: #ed1c24;
+  font-size: 14px;
+  padding: 0 0 0 2%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }

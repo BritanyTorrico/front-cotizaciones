@@ -1,5 +1,11 @@
 <template>
   <div class="container-user">
+    <div v-if="loading">
+      <div class="loading-info">
+          <div class="clock-loader"></div>
+      </div>
+    </div>
+    <div v-else>
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
@@ -295,10 +301,12 @@
           <div class="boton">
             <input type="submit" value="Confirmar" class="boton__input" />
           </div>
-          <Alert ref="alert"></Alert>
+          
         </div>
       </div>
     </form>
+    </div>
+    <Alert ref="alert"></Alert>
   </div>
 </template>
 
@@ -331,6 +339,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       requerido: true,
       users: {
         nombre_usuario: null,
@@ -413,9 +422,11 @@ export default {
       },
     },
   },
-  mounted() {
-    this.obtenerFacultades();
-    this.obtenerRoles();
+  mounted: async function() {
+    this.loading=!this.loading
+    await this.obtenerFacultades();
+    await this.obtenerRoles();
+    this.loading=!this.loading
   },
 
   methods: {
@@ -474,6 +485,7 @@ export default {
       }
     },
     async submitForm() {
+      this.loading=!this.loading
       try {
         if (!this.$v.users.$invalid) {
           await this.sendDataUsers();
@@ -498,6 +510,7 @@ export default {
       } catch (error) {
         this.alert("warning", error);
       }
+      this.loading=!this.loading
     },
     async sendUserDepartment() {
       try {
@@ -584,7 +597,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 * {
   margin: 0;
   padding: 0;
@@ -610,7 +623,58 @@ export default {
   margin-left: 40px;
   margin-right: 40px;
 }
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
 
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
 .form__input {
   width: 100%;
   padding: 6px;

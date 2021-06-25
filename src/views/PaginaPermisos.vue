@@ -1,5 +1,5 @@
 <template>
-  <div class="contenedor-permi">
+  <div class="contenedor-permi" v-if="username">
     <div class="bienvenido">
       <h2 class="datos">
         Bienvenido...

@@ -50,7 +50,7 @@
                         required
                         v-model="item.valor_unitario"
                         />
-                      <div class="form_check-error" v-if="item.valor_unitario===''">
+                      <div class="form_check-error" v-if="item.valor_unitario===null || item.valor_unitario===''">
                       Campo obligatorio
                     </div>
                     <div class="form_check-error" v-if="item.valor_unitario<0">
@@ -126,7 +126,7 @@ export default {
           try {
             let valid = true
             for (let i of this.cot.itemList){
-              if (i.detalle=='' || i.valor_unitario<0 || i.valor_unitario>9999 || i.valor_unitario==''){
+              if (i.detalle=='' || i.valor_unitario<0 || i.valor_unitario>9999 || i.valor_unitario==null || i.valor_unitario==''){
                 valid=false
               }
             }
@@ -204,6 +204,7 @@ export default {
             },
           })
               )
+              
           } catch (error) {
               this.alert("warning", "estado inválidos");
           }

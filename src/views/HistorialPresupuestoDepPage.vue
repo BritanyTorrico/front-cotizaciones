@@ -1,14 +1,18 @@
 <template>
-  <div class="contenedor-historial1">
+  <div class="contenedor-historial1" v-if="permisoPresupuestoDep">
     <historial-presupuestos-dep></historial-presupuestos-dep>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import HistorialPresupuestosDep from "../components/Presupuestos/HistorialPresupuestosDep.vue";
 export default {
   components: { HistorialPresupuestosDep },
   name: "HistorialPresupuestoDepPage",
+  computed: {
+    ...mapState(["permisoPresupuestoDep"]),
+  },
 };
 </script>
 
