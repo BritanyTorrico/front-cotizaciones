@@ -223,8 +223,9 @@
         </button>
       </div>
     </form>
-    <Alert ref="alert"></Alert>
+    
     </div>
+    <Alert ref="alert"></Alert>
   </section>
 </template>
 
