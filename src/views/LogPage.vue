@@ -200,7 +200,7 @@ export default {
           this.listaLog.push(dato);
         }
       } catch (error) {
-        this.alert("warning", error);
+        console.log(error);
       }
       this.loading=!this.loading
     },
@@ -250,7 +250,7 @@ export default {
           this.listaLog.push(dato);
         }
       } catch (error) {
-        this.alert("warning", "Algo salio mal");
+        console.log(error);
       }
       this.loading=!this.loading
     },
@@ -267,7 +267,7 @@ export default {
 
         return nombreUsuario.cod_usuario;
       } catch (error) {
-        this.alert("warning", "Algo salio mal");
+        console.log(error);
       }
     },
     async obtenerNombrePorCod(value) {
@@ -284,7 +284,7 @@ export default {
         const nombreCompleto = nombreU + " " + apellidoU;
         return nombreCompleto;
       } catch (error) {
-        this.alert("warning", "Algo salio mal");
+        console.log(error);
       }
     },
     async transformarFecha(value) {
