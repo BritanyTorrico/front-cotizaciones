@@ -147,9 +147,6 @@ export default {
       listaLog: [],
     };
   },
-  mounted() {
-    this.obtenerLog();
-  },
   validations: {
     fechaRango: {
       validate_date,
