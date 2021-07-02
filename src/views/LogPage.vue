@@ -16,7 +16,7 @@
         </label>
 
         <label class="order">
-          <button @click="listaLog=listaLog.reverse()" class="btn btn-primary botonsote" :disabled="loading"
+          <button @click="listaLog=listaLog.reverse()" class="btn btn-primary botonsote" :disabled="loading || this.listaLog.length == 0"
             >Invertir orden</button
           >
         </label>
@@ -41,7 +41,7 @@
             </div>
       </div>
       <div v-else>
-      <div class="mensaje" v-if="fechaRango == ''">
+      <div class="mensaje" v-if="fechaRango == '' && startPage==false">
         Historial de todos los cambios
       </div>
 
@@ -87,8 +87,11 @@
           </tbody>
         </table>
       </div>
-      <div v-if="this.listaLog.length == 0" class=" form_check-error mensaje">
+      <div v-if="this.listaLog.length == 0 && startPage==false" class=" form_check-error mensaje">
         No existen datos.
+      </div>
+      <div v-if="this.listaLog.length == 0 && startPage==true" class=" form_check-error mensaje">
+        Presione "Ver todo" para visualizar todos los cambios o seleccione una fecha específica
       </div>
       </div>
       <!--modal-->
@@ -145,6 +148,7 @@ export default {
       fechaRango: "",
       selectedUser: "",
       listaLog: [],
+      startPage: true,
     };
   },
   validations: {
@@ -244,6 +248,7 @@ export default {
             dato_viejo: parts1,
             datoNuevo: parts,
           };
+          this.startPage=false
           this.listaLog.push(dato);
         }
       } catch (error) {
