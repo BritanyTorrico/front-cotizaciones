@@ -1,11 +1,14 @@
 <template>
   <div class="single-item-details">
-      <div class="head-part">
+    <div class="head-part">
       <div class="head-top">
         <h2>{{ item.name }}</h2>
       </div>
       <div class="head-info">
-        <div class="head-subject"><h3>Categoría:</h3>{{ item.category }}</div>
+        <div class="head-subject">
+          <h3>Categoría:</h3>
+          {{ item.category }}
+        </div>
       </div>
     </div>
     <div class="body-part">
@@ -15,34 +18,79 @@
       <p>{{ item.justification }}</p>
     </div>
     <div class="options">
-        <button class="accept-button" v-on:click="editItem()">Editar</button>
-        <button class="reject-button">Eliminar</button>
+      <button class="accept-button" v-on:click="editItem()">Editar</button>
+      <!--<button class="reject-button">Eliminar</button>-->
+
+      <b-button class="reject-button" v-b-modal.modal-prevent-closing
+        >Eliminar</b-button
+      >
+      <b-modal
+        id="modal-prevent-closing"
+        ref="modal"
+        title="Eliminar ítem"
+        ok-title="Si"
+        cancel-title="No"
+        hide-header-close
+        @ok="handleOk"
+      >
+        <p class="delete-message">¿Está seguro que desea eliminar este item?</p>
+        <Alert ref="alert"></Alert>
+      </b-modal>
     </div>
   </div>
 </template>
 
 <script>
+import Alert from "@/components/Alert.vue";
+import { mapState } from "vuex";
+import { BButton, BModal } from "bootstrap-vue";
 export default {
-    name: "ItemView",
-  data(){
-      return{};
+  name: "ItemView",
+  data() {
+    return {};
   },
+  computed: {
+    ...mapState(["token"]),
+  },
+  components: { Alert, BButton, BModal },
   props: {
-      item: {
-        cod: Number,
-        name: String,
-        category: String,
-        description: String,
-        justification: String,
-      }
+    item: {
+      cod: Number,
+      name: String,
+      category: String,
+      description: String,
+      justification: String,
+    },
   },
   methods: {
-    editItem(){
+    editItem() {
       const id = this.item.cod;
-      this.$router.push(`/item/editar/${id}`)
-    }
-  }
-}
+      this.$router.push(`/item/editar/${id}`);
+    },
+    handleOk(bvModalEvt) {
+      bvModalEvt.preventDefault();
+      this.handleDelete();
+    },
+    async handleDelete() {
+      try {
+        const id = this.item.cod;
+        console.log(id);
+        await this.$http.delete(`expenseItem/${id}`, {
+          headers: {
+            authorization: this.token,
+          },
+        });
+        this.alert("success", "item eliminado");
+        window.setInterval(window.location.reload(), 10000);
+      } catch (error) {
+        this.alert("warning", error);
+      }
+    },
+    alert(alertType, alertMessage) {
+      this.$refs.alert.showAlert(alertType, alertMessage);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -135,12 +183,12 @@ p {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
-.head-info{
+.head-info {
   display: flex;
   width: 100%;
   justify-content: space-between;
 }
-.options{
-    display: flex;
+.options {
+  display: flex;
 }
 </style>

@@ -17,6 +17,10 @@
         <h5>Presupuesto:</h5>
         Bs. {{ request.budget }}
       </div>
+      <div class="money">
+        <h5>Presupuesto disponible en la unidad:</h5>
+        Bs. {{ unitbudget }}
+      </div>
     </div>
     <h5>Items:</h5>
     <div class="items">
@@ -57,7 +61,8 @@
         ref="modal"
         title="Justificación"
         ok-title="Enviar"
-        ok-only
+        cancel-title="Cerrar"
+        hide-header-close
         @show="resetModal"
         @hidden="resetModal"
         @ok="handleOk"
@@ -102,6 +107,7 @@ export default {
       response: "",
       resState: null,
       status: "",
+      unitbudget: null
     };
   },
   props: {
@@ -217,6 +223,27 @@ export default {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
+  mounted: async function(){
+    const today = new Date()
+    const currentYear=today.getFullYear()
+    const units=(
+      await this.$http.get(
+        `spendingUnitWithBudget?type=name&departamento=${
+            localStorage.getItem('depto')
+          }&gestion=${currentYear}`,{
+        headers: {
+              authorization: this.token,
+            },
+      })
+    ).data
+    
+    for (let i of units){
+      if (i.nombre_unidadgasto==this.request.unit){
+        this.unitbudget=i.presupuesto_unidad
+        console.log(`año: ${currentYear}, unidad: ${this.request.unit}, presupuesto: ${this.unitbudget}`);
+      }
+    }
+  }
 };
 </script>
 <style scoped>
@@ -296,7 +323,7 @@ p {
   font-size: 18px;
   display: flex;
   justify-content: space-between;
-  width: 25%;
+  width: 60%;
   align-items: baseline;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;

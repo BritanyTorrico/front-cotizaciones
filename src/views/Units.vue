@@ -1,15 +1,26 @@
 <template>
+<div v-if="permisoUnidadDeGasto">
   <div class="unit-container">
       <InboxUnidad/>
   </div>
+</div>
 </template>
 
 <script>
-import InboxUnidad from '../components/unidad_gasto/Vista/InboxUnidad.vue'
+import InboxUnidad from '../components/unidad_gasto/Vista/InboxUnidad.vue';
+import { mapState } from "vuex";
 
 export default {
   components: { InboxUnidad },
-  name: "Unidades"
+  name: "Unidades",
+  computed: {
+    ...mapState(["permisoUnidadDeGasto"])
+  },
+  mounted(){
+    if (!this.permisoUnidadDeGasto){
+      this.$router.push("/")
+    }
+  }
 }
 </script>
 

@@ -1,15 +1,48 @@
 <template>
-  <div class="mayor">
+  <div class="mayor" v-if="permisoBitacora">
     <div class="contenedor__log">
+      <h2 class="item_title">
+        Historial de modificaciones del sistema
+        <b-icon icon="check-circle-fill" aria-hidden="true"></b-icon>
+      </h2>
+
+      <div class="form_desc"></div>
+
       <div class="lista">
-        <lista-desplegable-change
-          required
-          v-model="nombreTabla"
-          nombreLista="Nombre de tabla:"
-          :lista="listaTablas"
-          :value="nombreTabla"
-          v-on:change="obtenerLog()"
-        ></lista-desplegable-change>
+        <label class="botons">
+          <label @click="obtenerLog()" class="btn btn-primary botoncito"
+            >Ver todo</label
+          >
+        </label>
+
+        <label class="order">
+          <button @click="listaLog=listaLog.reverse()" class="btn btn-primary botonsote" :disabled="loading"
+            >Invertir orden</button
+          >
+        </label>
+
+        <label class="container__label">Fecha:</label>
+        <input
+          class="calendario"
+          name="fechaVencProducto"
+          type="date"
+          value="DD/MM/AA"
+          onkeydown="return false"
+          v-model="fechaRango"
+          @change="obtenerPorFecha()"
+        />
+      </div>
+      <div class="form_check-error fechaa" v-if="!$v.fechaRango.validate_date">
+        fecha invalida
+      </div>
+      <div v-if="loading">
+            <div class="loading-info">
+                <div class="clock-loader"></div>
+            </div>
+      </div>
+      <div v-else>
+      <div class="mensaje" v-if="fechaRango == ''">
+        Historial de todos los cambios
       </div>
 
       <div class="form__tabla" v-if="this.listaLog.length > 0">
@@ -54,13 +87,9 @@
           </tbody>
         </table>
       </div>
-      <div
-        v-if="
-          this.listaLog.length == 0 && nombreTabla != 'Seleccione una opcion'
-        "
-        class=" form_check-error"
-      >
-        No existen modificaciones en esta tabla.
+      <div v-if="this.listaLog.length == 0" class=" form_check-error mensaje">
+        No existen datos.
+      </div>
       </div>
       <!--modal-->
       <b-modal id="myModal" ok-only>
@@ -76,7 +105,7 @@
         <p
           class="contenido_MODAL"
           v-for="(item1, index) in selectedUser.datoNuevo"
-          :key="index"
+          :key="'A' + index"
         >
           {{ item1 }}
         </p>
@@ -87,61 +116,59 @@
 
 <script>
 import { mapState } from "vuex";
-import ListaDesplegableChange from "@/components/Presupuestos/ListaDesplegableChange.vue";
+import { helpers } from "vuelidate/lib/validators";
+const validate_date = (value) => {
+  const date = new Date();
+  const dd = date.getDate();
+  const mm = date.getMonth() + 1;
+  const yyyy = date.getFullYear();
+  const yyvalue = parseInt(value.slice(0, 4));
+  const mmvalue = parseInt(value.slice(5, 7));
+  const ddvalue = parseInt(value.slice(8, 10));
+  return (
+    !helpers.req(value) ||
+    !(yyvalue > yyyy) &
+      !(yyvalue == yyyy && mmvalue > mm) &
+      !(yyyy == yyvalue && mm == mmvalue && ddvalue > dd)
+  );
+};
+//import ListaDesplegableChange from "@/components/Presupuestos/ListaDesplegableChange.vue";
 export default {
   name: "LogPage",
-  components: { ListaDesplegableChange },
+  //components: { ListaDesplegableChange },
   computed: {
-    ...mapState(["token"]),
+    ...mapState(["token", "permisoBitacora"]),
   },
   data() {
     return {
-      nombreTabla: "Seleccione una opcion",
+      loading: false,
+      fechaRango: "",
       selectedUser: "",
       listaLog: [],
-      listaTablas: [
-        "categoria_especifica",
-        "categoria_general",
-        "cotizacion",
-        "departamento",
-        "empresa",
-        "empresa_rubro",
-        "facultad",
-        "funcion",
-        "informe",
-        "item_cotizacion",
-        "item_de_gasto",
-        "item_solicitud",
-        "item_unidad",
-        "rol",
-        "rol_funcion",
-        "rubro",
-        "solicitud",
-        "tabla",
-        "unidad_de_gasto",
-        "user_rol",
-        "usuario",
-        "usuario_departamento",
-      ],
     };
   },
-
-  methods: {
-    sendInfo(item) {
-      this.selectedUser = item;
+  mounted() {
+    this.obtenerLog();
+  },
+  validations: {
+    fechaRango: {
+      validate_date,
     },
-    async obtenerLog() {
+  },
+  methods: {
+    async obtenerPorFecha() {
+      this.loading=!this.loading
       try {
         this.listaLog = [];
-
+        const fecha123 = await this.transformarFecha(this.fechaRango);
         const lista = (
-          await this.$http.get(`log?componente=${this.nombreTabla}`, {
+          await this.$http.get(`log?type=Date&date=${fecha123}`, {
             headers: {
               authorization: this.token,
             },
           })
         ).data;
-        console.log(lista.length);
+
         for (let i = 0; i < lista.length; i++) {
           let usuarioModifico = lista[i].usuario;
           let codUsuario = await this.transformarNombreUsuario(usuarioModifico);
@@ -171,15 +198,64 @@ export default {
             datoNuevo: parts,
           };
           this.listaLog.push(dato);
-          console.log(parts1);
         }
       } catch (error) {
         console.log(error);
       }
+      this.loading=!this.loading
     },
-    VerDetalleItems(index) {
-      console.log("Index:" + index);
+    sendInfo(item) {
+      this.selectedUser = item;
     },
+    async obtenerLog() {
+      this.loading=!this.loading
+      try {
+        this.listaLog = [];
+        this.fechaRango = "";
+        const lista = (
+          await this.$http.get(`log?type=All`, {
+            headers: {
+              authorization: this.token,
+            },
+          })
+        ).data;
+
+        for (let i = 0; i < lista.length; i++) {
+          let usuarioModifico = lista[i].usuario;
+          let codUsuario = await this.transformarNombreUsuario(usuarioModifico);
+          let nombreUser = await this.obtenerNombrePorCod(codUsuario);
+          let fechaModificacion = lista[i].fecha;
+          let fechaFormato = await this.transformarFecha(fechaModificacion);
+          let datovalue = lista[i].dato_nuevo;
+          let cadena = JSON.stringify(datovalue);
+          let cadenaSin = cadena.replace(/"/g, " ");
+          let cadenaSin1 = cadenaSin.replace(/{/g, " ");
+          let cadenaSin2 = cadenaSin1.replace(/}/g, " ");
+          const parts = cadenaSin2.split(",");
+          //viejo
+          let datovalue11 = lista[i].dato_viejo;
+          let cadena1 = JSON.stringify(datovalue11);
+          let cadenaSin11 = cadena1.replace(/"/g, " ");
+          let cadenaSin111 = cadenaSin11.replace(/{/g, " ");
+          let cadenaSin21 = cadenaSin111.replace(/}/g, " ");
+          const parts1 = cadenaSin21.split(",");
+          const dato = {
+            id: lista[i].id_log,
+            tabla: lista[i].tabla_log,
+            usuario: nombreUser,
+            fecha: fechaFormato,
+            accion: lista[i].accion,
+            dato_viejo: parts1,
+            datoNuevo: parts,
+          };
+          this.listaLog.push(dato);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      this.loading=!this.loading
+    },
+
     async transformarNombreUsuario(value) {
       try {
         const nombreUsuario = (
@@ -223,7 +299,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .mayor {
   padding: 50px 100px 50px 100px;
   background-color: #46b1c95b;
@@ -250,7 +326,11 @@ export default {
   background: #dfe4ea;
 }
 .lista {
-  width: 70%;
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+
+  text-align: right;
 }
 .form_check-error {
   color: red;
@@ -260,5 +340,116 @@ export default {
 }
 .form__tabla {
   margin-top: 30px;
+}
+.item_title {
+  text-align: left;
+  color: #3d8af7;
+  font-size: 36px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.form_desc {
+  text-align: left;
+  color: #0d58cf;
+  font-size: 18px;
+  font-weight: 400;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #0d58cf;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.calendario {
+  background: transparent;
+}
+.container__label {
+  color: var(--color-name);
+  font-weight: bold;
+  margin-right: 10px;
+
+  position: relative;
+  top: 10px;
+}
+.botoncito {
+  width: 20%;
+}
+.botonsote {
+  width: 30%;
+}
+.botons {
+  width: 50%;
+  text-align: left;
+}
+.order {
+  width: 40%;
+  text-align: left;
+}
+.mensaje {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 16px;
+
+  margin-right: 20px;
+}
+.fechaa {
+  text-align: right;
+}
+.mensaje {
+  text-align: left;
+  color: #0d58cf;
+  font-weight: bold;
+}
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
 </style>

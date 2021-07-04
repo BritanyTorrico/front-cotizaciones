@@ -17,7 +17,7 @@
                   : ''
               "
             >
-              <CardCuad
+              <CardReport
                 :name="req.nombre_solicitud"
                 :date="req.fecha_solicitud"
                 :author="req.nombrecompleto_solicitante"
@@ -35,7 +35,7 @@
             leave-active-class="animate__animated animate__fadeOutRight"
           >
             <div v-if="!changeReq">
-              <CuadForm :request="selectedRequest" />
+              <ReportForm :request="selectedRequest" />
             </div>
           </transition>
         </div>
@@ -46,15 +46,15 @@
 </template>
 
 <script>
-import CardCuad from "./CardCuad.vue";
-import CuadForm from "./CuadForm.vue";
+import CardReport from "./CardReport.vue";
+import ReportForm from "./ReportForm.vue";
 import { mapState } from "vuex";
 export default {
-  name: "CuadInbox",
+  name: "CuadReport",
   computed: {
     ...mapState(["token"]),
   },
-  components: { CuadForm, CardCuad },
+  components: { ReportForm, CardReport },
   data() {
     return {
       today: null,
@@ -67,8 +67,10 @@ export default {
         unit:"",
         incharge: "",
         boss: "",
+        quotizer:"",
         companyList: [],
         itemList: [],
+        obs:''
       },
     };
   },
@@ -92,8 +94,10 @@ export default {
       this.selectedRequest.unit = this.inboxData[i].unidadgasto_solicitud;
       this.selectedRequest.incharge = this.inboxData[i].encargado_unidad;
       this.selectedRequest.boss = this.inboxData[i].jefe_depto;
+      this.selectedRequest.quotizer = this.inboxData[i].cotizador
       this.selectedRequest.itemList = this.tableData[i]
       this.selectedRequest.companyList = this.companiesData[i]
+      this.selectedRequest.obs = this.inboxData[i].observaciones
     },
     async startTransition(i){
           this.changeReq=true;

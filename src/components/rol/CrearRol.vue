@@ -1,5 +1,11 @@
 <template>
   <section class="crear_rol">
+    <div v-if="loading">
+      <div class="loading-info">
+        <div class="clock-loader"></div>
+      </div>
+    </div>
+    <div v-else>
     <div class="titulo">
       <h2 class="item_title">Crear Rol</h2>
       <div class="form_desc"></div>
@@ -50,7 +56,7 @@
                 />
               </div>
 
-              <label for="gestionUsuario">Registrar Usuarios</label><br />
+              <label for="gestionUsuario">Gestionar Usuarios</label><br />
           </div>
             <div class="form-function">
               <div class="input-check">
@@ -62,7 +68,7 @@
                 />
               </div>
 
-              <label for="gestionRol">Crear Roles</label><br />
+              <label for="gestionRol">Gestionar Roles</label><br />
             </div>
             <div class="form-function">
               <div class="input-check">
@@ -74,7 +80,7 @@
                 />
               </div>
 
-              <label for="gestionUnidades">Añadir Unidades de Gasto</label
+              <label for="gestionUnidades">Gestionar Unidades de Gasto</label
               ><br />
             </div>
             <div class="form-function">
@@ -86,40 +92,7 @@
                     value="Añadir Items de Gasto"
                   />
                 </div>
-                <label for="gestionItems">Añadir Items de Gasto</label><br />
-            </div>
-            <div class="form-function">
-                <div class="input-check">
-                  <input
-                    type="checkbox"
-                    id="hacerSol"
-                    name="funcion"
-                    value="Hacer solicitud"
-                  />
-                </div>
-                <label for="hacerSol">Hacer solicitud</label><br />
-            </div>
-            <div class="form-function">
-                <div class="input-check">
-                  <input
-                    type="checkbox"
-                    id="revSol"
-                    name="funcion"
-                    value="Revisar solicitud"
-                  />
-                </div>
-                <label for="revSol">Revisar solicitud</label><br />
-            </div>
-            <div class="form-function">
-                <div class="input-check">
-                  <input
-                    type="checkbox"
-                    id="creaCot"
-                    name="funcion"
-                    value="Crear cotización"
-                  />
-                </div>
-                <label for="creaCot">Crear cotización</label><br />
+                <label for="gestionItems">Gestionar Items de Gasto</label><br />
             </div>
             <div class="form-function">
                 <div class="input-check">
@@ -130,7 +103,40 @@
                     value="Registro de empresas"
                   />
                 </div>
-                <label for="regEmp">Registro de empresas</label><br />
+                <label for="regEmp">Gestionar Empresas</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="hacerSol"
+                    name="funcion"
+                    value="Hacer solicitud"
+                  />
+                </div>
+                <label for="hacerSol">Hacer Solicitudes</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="revSol"
+                    name="funcion"
+                    value="Revisar solicitud"
+                  />
+                </div>
+                <label for="revSol">Revisar Solicitudes</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="creaCot"
+                    name="funcion"
+                    value="Crear cotización"
+                  />
+                </div>
+                <label for="creaCot">Realizar Cotizaciones</label><br />
             </div>
             <div class="form-function">
                 <div class="input-check">
@@ -141,9 +147,74 @@
                     value="Filtro cotizaciones"
                   />
                 </div>
-                <label for="filtrito">Filtro de cotizaciones</label><br />
+                <label for="filtrito">Ver Cotizaciones</label><br />
             </div>
-            
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="tablita"
+                    name="funcion"
+                    value="Crear Tabla"
+                  />
+                </div>
+                <label for="tablita">Crear Tablas Comparativas</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="bita"
+                    name="funcion"
+                    value="Ver Bitacora"
+                  />
+                </div>
+                <label for="bita">Ver Bitácora</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="backup"
+                    name="funcion"
+                    value="Hacer Backup"
+                  />
+                </div>
+                <label for="backup">Realizar Respaldos y Restauraciones</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="presunidad"
+                    name="funcion"
+                    value="Actualizar Presupuesto Unidad"
+                  />
+                </div>
+                <label for="presunidad">Actualizar Presupuestos de Unidades</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="presdep"
+                    name="funcion"
+                    value="Actualizar Presupuesto Departamento"
+                  />
+                </div>
+                <label for="presdep">Actualizar Presupuestos de Departamentos</label><br />
+            </div>
+            <div class="form-function">
+                <div class="input-check">
+                  <input
+                    type="checkbox"
+                    id="repfin"
+                    name="funcion"
+                    value="Reporte final"
+                  />
+                </div>
+                <label for="repfin">Realizar Informes Finales</label><br />
+            </div>
         </div>
       </div>
       <div class="botoncito">
@@ -152,7 +223,8 @@
         </button>
       </div>
     </form>
-
+    
+    </div>
     <Alert ref="alert"></Alert>
   </section>
 </template>
@@ -175,6 +247,7 @@ export default {
   components: { Alert },
   data() {
     return {
+      loading: false,
       disabled: false,
       dato: {
         nombre_rol: null,
@@ -189,7 +262,13 @@ export default {
       permiso6: '',
       permiso7: '',
       permiso8: '',
-      permiso9: ''
+      permiso9: '',
+      permiso10: '',
+      permiso11: '',
+      permiso12: '',
+      permiso13: '',
+      permiso14: '',
+      permiso15: '',
     };
   },
 
@@ -230,10 +309,17 @@ export default {
         if (i=='Crear cotización') this.permiso7=i
         if (i=='Registro de empresas') this.permiso8=i
         if (i=='Filtro cotizaciones') this.permiso9=i
+        if (i=='Crear Tabla') this.permiso10=i
+        if (i=='Ver Bitacora') this.permiso11=i
+        if (i=='Hacer Backup') this.permiso12=i
+        if (i=='Actualizar Presupuesto Unidad') this.permiso13=i
+        if (i=='Actualizar Presupuesto Departamento') this.permiso14=i
+        if (i=='Reporte final') this.permiso15=i
       }
     },
     async submitForm() {
-      this.getFunciones();
+      this.loading=!this.loading
+      await this.getFunciones();
       try {
 
         if (!this.$v.dato.$invalid && this.funciones.length > 0) {
@@ -249,6 +335,7 @@ export default {
       } catch (error) {
         this.alert("warning", error);
       }
+      this.loading=!this.loading
     },
     async sendRolData() {
       try {
@@ -281,6 +368,12 @@ export default {
             permiso7: this.permiso7,
             permiso8: this.permiso8,
             permiso9: this.permiso9,
+            permiso10: this.permiso10,
+            permiso11: this.permiso11,
+            permiso12: this.permiso12,
+            permiso13: this.permiso13,
+            permiso14: this.permiso14,
+            permiso15: this.permiso15,
             nombre_rol: this.dato.nombre_rol,
           },
           {
@@ -317,13 +410,66 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .crear_rol {
   background-color: #f1f2f6;
   padding: 20px 40px 20px 40px;
   display: flex;
   flex-direction: column;
   width: 100%;
+  
+}
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
 .rol_title {
   width: 100%;

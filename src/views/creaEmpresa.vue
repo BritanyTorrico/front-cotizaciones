@@ -17,6 +17,11 @@ export default {
   computed: {
     ...mapState(["permisoEmpresa"]),
   },
+  mounted() {
+    if (!this.permisoEmpresa) {
+      this.$router.push("/");
+    }
+  },
 };
 </script>
 

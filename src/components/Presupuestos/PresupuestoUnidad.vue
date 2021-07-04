@@ -1,7 +1,7 @@
 <template>
   <div class="contenedor__pres">
     <form @submit.prevent="submitForm()">
-      <h2 class="item_title">Presupuesto</h2>
+      <h2 class="item_title">Presupuesto de la gestion {{ this.gestion }}</h2>
 
       <div class="form_desc">
         Ingrese el presupuesto anual para cada unidad de gasto
@@ -68,7 +68,12 @@
           </div>
         </div>
       </div>
-
+      <div v-if="loading">
+      <div class="loading-info">
+          <div class="clock-loader"></div>
+      </div>
+    </div>
+    <div v-else>
       <div
         v-if="this.listaUnidadesDeGasto.length > 0"
         class="form__unidadesGasto "
@@ -137,6 +142,7 @@
           No existen unidades de gasto en este departamento.
         </p>
       </div>
+    </div>
     </form>
 
     <alert-2
@@ -199,10 +205,14 @@ export default {
     Alert,
   },
   mounted() {
+    this.gestion = null;
+    const today = new Date();
+    this.gestion = today.getFullYear();
     this.obtenerFacultades();
   },
   data() {
     return {
+      loading: false,
       presupuesto: {
         facultad: "Seleccione una opcion",
         departamento: "Seleccione una opcion",
@@ -221,6 +231,7 @@ export default {
       desabilitarTope: false,
       sumaPresu: 0,
       mostrarMensaje: false,
+      gestion: null,
     };
   },
 
@@ -272,7 +283,7 @@ export default {
               authorization: this.token,
             },
           })
-        ).data;
+        ).data.datos;
         for (let i = 0; i < listaDepartamentos.length; i++) {
           const depa = {
             nombre_departamento: listaDepartamentos[i].nombre_departamento,
@@ -298,7 +309,7 @@ export default {
               authorization: this.token,
             },
           })
-        ).data;
+        ).data.datos;
         for (let i = 0; i < listaDepartamentos.length; i++) {
           this.listDepartament.push(listaDepartamentos[i].nombre_departamento);
         }
@@ -339,19 +350,23 @@ export default {
         this.tope = null;
         let codigo = await this.obtenerCodDepto();
         const topePresupuesto = (
-          await this.$http.get(`department/${codigo}`, {
-            headers: {
-              authorization: this.token,
-            },
-          })
-        ).data.datos[0].presupuesto_departamento;
+          await this.$http.get(
+            `departmentWithBudget/${codigo}?gestion=${this.gestion}`,
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          )
+        ).data[0].presupuesto_departamento;
+        console.log(topePresupuesto);
         this.tope = topePresupuesto;
       } catch (error) {
         this.alert("warning", "Algo salio mal");
-        console.log(error);
       }
     },
     async getObtenerUnidadesDeGasto() {
+      this.loading=!this.loading
       try {
         //verificar si mi depa anterior es igual al original si es no cambio
         if (!this.cambioDepa) {
@@ -361,7 +376,7 @@ export default {
           this.mostrarMensaje = false;
           const unidadGastoPorDepartamento = (
             await this.$http.get(
-              `spendingUnit?type=name&departamento=${this.presupuesto.departamento}`,
+              `spendingUnitWithBudget?type=name&departamento=${this.presupuesto.departamento}&gestion=${this.gestion}`,
               {
                 headers: {
                   authorization: this.token,
@@ -370,14 +385,14 @@ export default {
             )
           ).data;
 
-          for (let i = 0; i < unidadGastoPorDepartamento.datos.length; i++) {
-            this.listaUnidadesDeGasto.push(unidadGastoPorDepartamento.datos[i]);
+          for (let i = 0; i < unidadGastoPorDepartamento.length; i++) {
+            this.listaUnidadesDeGasto.push(unidadGastoPorDepartamento[i]);
 
             this.presupuesto.presupuestoValor.push(
-              unidadGastoPorDepartamento.datos[i].presupuesto_unidad
+              unidadGastoPorDepartamento[i].presupuesto_unidad
             );
             this.presupuestoSinModificar.push(
-              unidadGastoPorDepartamento.datos[i].presupuesto_unidad
+              unidadGastoPorDepartamento[i].presupuesto_unidad
             );
           }
           if (this.listaUnidadesDeGasto.length == 0) {
@@ -389,8 +404,9 @@ export default {
           }
         }
       } catch (error) {
-        console.log(error);
+        this.alert("warning", error);
       }
+      this.loading=!this.loading
     },
     async cambiaFacultad() {
       this.cambioFacu = false;
@@ -457,7 +473,6 @@ export default {
         this.cambioDepa = false;
         this.presupuesto.facultad = this.facultadAnterior;
         this.presupuesto.departamento = this.depaAnterior;
-        console.log("puso cancelar");
       }
     },
     //FACULTAD
@@ -479,7 +494,6 @@ export default {
         this.cambioDepa = false;
         this.presupuesto.facultad = this.facultadAnterior;
         this.presupuesto.departamento = this.depaAnterior;
-        console.log("puso cancelar en facultad");
       }
     },
     validador(value) {
@@ -523,6 +537,7 @@ export default {
           `spendingUnitBudget/${codUni}`,
           {
             presupuesto_unidad: presupuesto,
+            gestion_presupuestounidad: this.gestion,
           },
           {
             headers: {
@@ -530,8 +545,6 @@ export default {
             },
           }
         );
-        this.alert("success", "Presupuesto actualizado exitosamente");
-        window.setInterval(window.location.reload(), 10000);
       } catch (error) {
         this.alert("warning", "Algo salio mal");
       }
@@ -544,6 +557,7 @@ export default {
       }
     },
     async submitForm() {
+      this.loading=!this.loading
       try {
         let desabilito = await this.verificarTope();
         if (!this.$v.presupuesto.$invalid) {
@@ -565,19 +579,22 @@ export default {
                 console.log("son iguales");
               }
             }
+            this.alert("success", "Presupuesto actualizado exitosamente");
+            window.setInterval(window.location.reload(), 10000);
           } else {
             this.alert("warning", "El presupuesto sobrepasa el tope.");
           }
         }
       } catch (error) {
-        console.log(error);
+        this.alert("warning", error);
       }
+      this.loading=!this.loading
     },
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .contenedor__pres {
   background-color: #f7f6f6;
   padding: 40px 60px 40px 60px;
@@ -591,6 +608,58 @@ export default {
   font-weight: 600;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
 .form_desc {
   text-align: left;
@@ -665,7 +734,7 @@ export default {
 .presupuesto__total {
   text-align: left;
   margin-top: 20px;
-  font-style: italic;
+  font-weight: bold;
   color: #003975;
 }
 .form_check-error {

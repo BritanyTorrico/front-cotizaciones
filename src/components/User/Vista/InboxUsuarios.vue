@@ -1,5 +1,6 @@
 <template>
     <div class="usrlst">
+        <div>
         <div class="btn">
             <button class="new-user" v-on:click="newUser()">Nuevo Usuario</button>
         </div>
@@ -21,6 +22,12 @@
                 >
             </select>
         </div>
+        <div v-if="loading">
+            <div class="loading-info">
+                <div class="clock-loader"></div>
+            </div>
+        </div>
+        <div v-else>
         <div v-if="inboxData.length===0">
             <div class="desc">No hay usuarios registrados en esta facultad</div>
         </div>
@@ -57,6 +64,8 @@
               </div>
             </div>
         </div>
+        </div>
+        </div>
     </div>
 </template>
 
@@ -72,6 +81,7 @@ export default {
     components: { UserCard, UserView },
     data() {
         return {
+            loading: false,
             facultad: "Seleccione una opción",
             inboxData: [],
             changeUser: false,
@@ -88,6 +98,7 @@ export default {
     },
     methods: {
         async getData() {
+            this.loading=!this.loading
             this.inboxData=[]
             const response = (
                 await this.$http.get(
@@ -116,6 +127,7 @@ export default {
                     })).data.datos[0].nombre_rol
                 this.inboxData[i].role=userRole
             }
+            this.loading=!this.loading
         },
         async startTransition(i){
           this.changeUser=true;
@@ -152,7 +164,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .usrlst {
     position: relative;
 }
@@ -171,6 +183,58 @@ export default {
     border-bottom: 1px solid #9b9b9b;
     margin-bottom: 10px;
     width: 100%;
+}
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
 .list-cards {
     display: flex;

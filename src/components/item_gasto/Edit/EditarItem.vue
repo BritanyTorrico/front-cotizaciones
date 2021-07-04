@@ -1,8 +1,14 @@
 <template>
   <section class="edit_item">
+    <div v-if="loading">
+      <div class="loading-info">
+          <div class="clock-loader"></div>
+      </div>
+    </div>
+    <div v-else>
     <h2 class="item_title">Editar Item de Gasto</h2>
-    <label>
-      <div class="form_desc">Puede cambiar los datos del item de gasto</div>
+    <label class="form_desc">
+      <div >Puede cambiar los datos del item de gasto</div>
     </label>
     <form class="form_itemreg" @submit.prevent="submitForm" autocomplete="off">
       <div class="form_section">
@@ -123,10 +129,11 @@
                 :class="$v.item.$invalid ? 'button-disabled' : ''"
                 class="form_button"
             >
-                Crear
+                Editar
             </button>
         </div>
     </form>
+    </div>
     <Alert ref="alert"></Alert>
   </section>
 </template>
@@ -144,6 +151,7 @@ export default {
     components: { Alert, ListaDesplegable },
     data(){
         return{
+          loading: false,
             disabled: false,
             item: {
                 nombre_itemgasto: null,
@@ -208,9 +216,11 @@ export default {
               this.listaCategorias.push(j.nombre_categoriaespecifica)
             }
         }
+
     },
         
         async submitForm(){
+          this.loading=!this.loading
             try {
                 if (!this.$v.item.$invalid){
                   await this.manageCat();
@@ -223,6 +233,7 @@ export default {
             } catch (error) {
                 this.alert("warning", error);
             }
+            this.loading=!this.loading
         },
         async sendItemData(){
             try {
@@ -283,6 +294,7 @@ export default {
         },
     },
     mounted: async function(){
+      this.loading=!this.loading
         const itemData=(await this.$http.get(`expenseItem/${this.$route.params.id}`,{
                 headers:{
                   authorization:this.token,
@@ -306,6 +318,7 @@ export default {
         
 
         this.getGenCategories();
+        this.loading=!this.loading
         var validCodesItem= [32, 
                             48,49,50,51,52,53,54,55,56,57,
                             65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,
@@ -341,7 +354,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .edit_item {
   background-color: #f7f6f6;
   padding: 20px 40px 20px 40px;
@@ -466,7 +479,58 @@ export default {
   outline: none;
   border-bottom: 2px solid #ed1c24;
 }
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
 
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
 .button-disabled {
   background: #999999;
   border: 0px;

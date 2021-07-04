@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+
 Vue.use(VueRouter);
 
 const routes = [{
@@ -78,7 +79,7 @@ const routes = [{
         },
     },
     {
-        path: "/cotizacion",
+        path: "/cotizacion/nueva",
         name: "QuotationForm",
         component: () =>
             import ("@/views/QuotationForm.vue"),
@@ -240,6 +241,48 @@ const routes = [{
         name: "LogPage",
         component: () =>
             import ("../views/LogPage.vue"),
+    },
+    {
+        path: "/back",
+        name: "vistaBack",
+        component: () =>
+            import ("../views/vistaBack.vue"),
+    },
+    {
+        path: "/cotizaciones",
+        name: "Cotizaciones",
+        component: () =>
+            import ("../views/Cotizaciones.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/cotizacion/respuesta/:id",
+        name: "ActualizarRespuestas",
+        component: () =>
+            import ("../views/ActualizarRespuestas.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/cuadro_comparativo",
+        name: "CuadroComparativo",
+        component: () =>
+            import ("../views/CuadroComparativo.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/informe_final",
+        name: "InformeFinal",
+        component: () =>
+            import ("../views/InformeFinal.vue"),
+        meta: {
+            rutaProtegida: true,
+        },
     },
 ];
 

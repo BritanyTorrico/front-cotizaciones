@@ -1,14 +1,18 @@
 <template>
-  <div class="contenedor-presupuestos">
+  <div class="contenedor-presupuestos" v-if="permisoPresupuestoUnidad">
     <presupuesto-unidad></presupuesto-unidad>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import PresupuestoUnidad from "../components/Presupuestos/PresupuestoUnidad.vue";
 export default {
   name: "RegistrarPresupuestos",
   components: { PresupuestoUnidad },
+  computed: {
+    ...mapState(["permisoPresupuestoUnidad"]),
+  },
 };
 </script>
 

@@ -21,6 +21,12 @@
                 >
             </select>
         </div>
+    <div v-if="loading">
+      <div class="loading-info">
+          <div class="clock-loader"></div>
+      </div>
+    </div>
+    <div v-else>
         <div v-if="inboxData.length===0">
             <div class="desc">No hay empresas registradas en este rubro</div>
         </div>
@@ -56,6 +62,7 @@
               </div>
             </div>
         </div>
+    </div>
   </div>
 </template>
 
@@ -71,7 +78,8 @@ export default {
   },
   data(){
       return{
-          rubro: "Seleccione una opción",
+          loading: false,
+          rubro: "Todos",
           inboxData: [],
           changeComp: false,
           selectedCompany: {
@@ -89,17 +97,30 @@ export default {
   },
   methods: {
       async getData(){
+          this.loading=!this.loading
           this.inboxData= []
-          const emp = (
+          let emp=[]
+          if (this.rubro=='Todos'){
+              emp = (
+            await this.$http.get(`company?rubro=All`, {
+            headers: {
+                authorization: this.token,
+            },
+            })
+        ).data;
+          }else{
+              emp = (
             await this.$http.get(`company?rubro=${this.rubro}`, {
             headers: {
                 authorization: this.token,
             },
             })
         ).data;
+          }
         for (let i of emp){
             this.inboxData.push(i)
         }
+        this.loading=!this.loading
       },
       async startTransition(i){
           this.changeComp=true;
@@ -120,6 +141,7 @@ export default {
           this.$router.push('/empresa/nueva')
       },
       async obtenerRubros() {
+          this.loading=!this.loading
       const listaRubros = (
         await this.$http.get("market", {
           headers: {
@@ -130,15 +152,18 @@ export default {
       for (let i of listaRubros) {
         this.listrubro.push(i.nombre_rubro);
       }
+      this.loading=!this.loading
     },
   },
   mounted(){
+      this.listrubro.push("Todos")
       this.obtenerRubros()
+      this.getData()
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .emplst {
     position: relative;
 }
@@ -162,6 +187,58 @@ export default {
     display: flex;
     height: 42rem;
     overflow: auto;
+}
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
 .inbox-form {
     width: 100%;

@@ -1,5 +1,11 @@
 <template>
   <div class="container-soli">
+    <div v-if="loading">
+      <div class="loading-info">
+          <div class="clock-loader"></div>
+      </div>
+    </div>
+    <div v-else>
     <form @submit.prevent="submitForm">
       <div class="form_title">
         <div class="formulario_label">Titulo:</div>
@@ -51,6 +57,7 @@
             Mensaje="Campo Obligatorio"
             :value="solicitud.unidadgasto_solicitud"
           ></lista-desplegable>
+
           <div
             class="form_check-error mensaje"
             v-if="!$v.solicitud.unidadgasto_solicitud.validate_requerido_listas"
@@ -361,7 +368,7 @@
             class="form_check-error"
             v-if="!$v.solicitud.estimado_solicitud.between"
           >
-            Ingrese valores entre (1-10000).
+            Ingrese valores entre (1-1000000).
           </div>
           <div
             class="form_check-error"
@@ -377,14 +384,7 @@
           </div>
         </div>
       </div>
-      <Alert ref="alert"></Alert>
-
-      <alert-2
-        ref="alert2"
-        aceptar="Aceptar"
-        mensajeSub="(Se borrara la lista de items si presiona aceptar.)"
-        @escucharHijo="variableHijo"
-      ></alert-2>
+      
       <div class="boton-contenedor">
         <div class="boton-contenedor-izq"></div>
         <div class="boton-contenedor-der">
@@ -397,6 +397,15 @@
         </div>
       </div>
     </form>
+    </div>
+    <Alert ref="alert"></Alert>
+
+      <alert-2
+        ref="alert2"
+        aceptar="Aceptar"
+        mensajeSub="(Se borrara la lista de items si presiona aceptar.)"
+        @escucharHijo="variableHijo"
+      ></alert-2>
   </div>
 </template>
 
@@ -442,14 +451,21 @@ export default {
   name: "SolicitudDatos",
   store,
   mounted() {
+    //obtener gestion
+    this.loading=!this.loading
+    this.gestion = null;
+    const today = new Date();
+    this.gestion = today.getFullYear();
     this.getGenCategories();
     this.getDepartamento();
+    this.loading=!this.loading
   },
   computed: {
     ...mapState(["token"]),
   },
   data() {
     return {
+      loading: false,
       solicitud: {
         nombre_solicitud: null,
         detalle_solicitud: null,
@@ -465,7 +481,7 @@ export default {
       },
 
       listaCategorias1: [],
-
+      gestion: "",
       listItems: [],
       listaPeticion: [], //aqui esta la lista de items que mandare
       variableRecibida: null,
@@ -482,6 +498,8 @@ export default {
       listaCatGen: [],
       listaCodGen: [],
       desabilitar: false,
+      listaCodigosUnidad: false,
+      presupuesto: null,
     };
   },
   validations: {
@@ -495,7 +513,7 @@ export default {
       detalle_solicitud: {
         required,
         minLength: minLength(5),
-        maxLength: maxLength(1000),
+        maxLength: maxLength(1000000),
       },
 
       unidadgasto_solicitud: {
@@ -503,7 +521,7 @@ export default {
       },
       estimado_solicitud: {
         required,
-        between: between(1, 10000),
+        between: between(1, 1000000),
         validate_decimales,
         alpha2,
       },
@@ -525,6 +543,41 @@ export default {
     },
   },
   methods: {
+    async llamadaPresupuesto(codigo) {
+      try {
+        console.log("-----------");
+        console.log(codigo);
+        console.log(this.gestion);
+        const presupuestoUnidad = (
+          await this.$http.get(
+            `spendingUnitWithBudget/${codigo}?gestion=${this.gestion}`,
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          )
+        ).data[0].presupuesto_unidad;
+        return presupuestoUnidad;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async obtenerPresupuestoUnidad() {
+      let presu = 0;
+      for (let i = 0; i < this.listaCodigosUnidad.length; i++) {
+        if (
+          this.solicitud.unidadgasto_solicitud ==
+          this.listaCodigosUnidad[i].nombre_unidadgasto
+        ) {
+          presu = await this.llamadaPresupuesto(
+            this.listaCodigosUnidad[i].cod_unidadgasto
+          );
+        }
+      }
+      return presu;
+    },
+
     variableHijo(value) {
       this.variableRecibida = value;
       if (this.variableRecibida) {
@@ -607,50 +660,64 @@ export default {
       }
     },
     async submitForm() {
+      this.loading=!this.loading
       try {
+        let presupuestoUnidad = await this.obtenerPresupuestoUnidad();
         if (!this.$v.solicitud.$invalid && this.listaPeticion.length > 0) {
-          await this.$http.post(
-            `request`,
-            {
-              nombre_solicitud: this.solicitud.nombre_solicitud,
-              detalle_solicitud: this.solicitud.detalle_solicitud,
-              estimado_solicitud: this.solicitud.estimado_solicitud,
-              unidadgasto_solicitud: this.solicitud.unidadgasto_solicitud,
-            },
-
-            {
-              headers: {
-                authorization: this.token,
+          let cantidad1 = parseFloat(this.solicitud.estimado_solicitud);
+          let cantidad2 = parseFloat(presupuestoUnidad);
+          console.log(cantidad1);
+          console.log(cantidad2);
+          if (cantidad1 > cantidad2) {
+            this.alert(
+              "warning",
+              "El presupuesto sobrepasa el tope del presupuesto de unidad de gasto"
+            );
+          } else {
+            await this.$http.post(
+              `request`,
+              {
+                nombre_solicitud: this.solicitud.nombre_solicitud,
+                detalle_solicitud: this.solicitud.detalle_solicitud,
+                estimado_solicitud: this.solicitud.estimado_solicitud,
+                unidadgasto_solicitud: this.solicitud.unidadgasto_solicitud,
               },
-            }
-          );
 
-          await this.envioItems();
+              {
+                headers: {
+                  authorization: this.token,
+                },
+              }
+            );
 
-          this.alert("success", "Solicitud enviada");
-          //borrar todos los campos del fomrulario
+            await this.envioItems();
 
-          this.solicitud.nombre_solicitud = null;
-          this.solicitud.detalle_solicitud = null;
-          this.solicitud.categoria = "Seleccione una opcion";
+            this.alert("success", "Solicitud enviada");
+            //borrar todos los campos del fomrulario
 
-          this.solicitud.categoria_general = "Seleccione una opcion";
-          this.solicitud.nombre_item = "Seleccione una opcion";
-          this.solicitud.unidadgasto_solicitud = "Seleccione una opcion";
-          this.solicitud.estimado_solicitud = null;
-          //this.$store.commit("setDelete");
-          this.listaPeticion = [];
-          this.listaUnidadesDeGasto = [];
-          this.getDepartamento();
-          await this.forceRerender();
-          await this.forceRerender2();
+            this.solicitud.nombre_solicitud = null;
+            this.solicitud.detalle_solicitud = null;
+            this.solicitud.categoria = "Seleccione una opcion";
+
+            this.solicitud.categoria_general = "Seleccione una opcion";
+            this.solicitud.nombre_item = "Seleccione una opcion";
+            this.solicitud.unidadgasto_solicitud = "Seleccione una opcion";
+            this.solicitud.estimado_solicitud = null;
+            //this.$store.commit("setDelete");
+            this.listaPeticion = [];
+            this.listaUnidadesDeGasto = [];
+            this.getDepartamento();
+            await this.forceRerender();
+            await this.forceRerender2();
+          }
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
-        this.alert("warning", error);
-        this.alert("warning", "Algo salio mal");
+        console.log(error);
+        this.alert("warning", "Ya se registro una solicitud con ese nombre,cambie de nombre porfavor");
       }
+      this.loading=!this.loading
     },
 
     async verificarCategoriaDistinta() {
@@ -828,6 +895,7 @@ export default {
       this.$refs.alert2.showAlert(alertType, alertMessage);
     },
     async getDepartamento() {
+      this.listaCodigosUnidad = [];
       const unidadGastoPorDepartamento = (
         await this.$http.get(
           `spendingUnit?type=name&departamento=${localStorage.getItem(
@@ -845,6 +913,7 @@ export default {
         this.listaUnidadesDeGasto.push(
           unidadGastoPorDepartamento.datos[i].nombre_unidadgasto
         );
+        this.listaCodigosUnidad.push(unidadGastoPorDepartamento.datos[i]);
       }
     },
     async obtenerDescripcion() {
@@ -864,7 +933,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 * {
   margin: 0;
   padding: 0;
@@ -918,6 +987,58 @@ export default {
   font-weight: bold;
   font-size: 20px;
   color: #576574;
+}
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
 .form_check-input-error {
   width: 100%;

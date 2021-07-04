@@ -1,7 +1,16 @@
 <template>
   <div class="contenedor-dep">
+    <div class="container-soli">
+    <div v-if="loading">
+      <div class="loading-info">
+          <div class="clock-loader"></div>
+      </div>
+    </div>
+    <div v-else>
     <form @submit.prevent="submitForm">
-      <h2 class="item_title">Presupuestos por departamento</h2>
+      <h2 class="item_title">
+        Presupuestos por departamento gestion {{ this.gestion }}
+      </h2>
       <div class="form_desc">
         Ingrese el presupuesto anual para cada departamento.
       </div>
@@ -86,8 +95,9 @@
         Seleccione una facultad para que se muestren los departamentos
         correspondientes.
       </div>
-
-      <alert-2
+    </form>
+    </div>
+    <alert-2
         ref="alert2"
         aceptar="Aceptar"
         mensajeSub="(Se borrara las modificaciones realizadas en presupuestos)"
@@ -95,7 +105,7 @@
         @escucharHijo1="variableHijo1"
       ></alert-2>
       <Alert ref="alert"></Alert>
-    </form>
+  </div>
   </div>
 </template>
 
@@ -139,8 +149,10 @@ export default {
   computed: {
     ...mapState(["token"]),
   },
+
   data() {
     return {
+      loading: false,
       presupuesto: {
         departamento: "Seleccione una opcion",
         presupuestoValor: [],
@@ -154,10 +166,14 @@ export default {
       variableRecibida1: null,
       cambioFacu: false,
       presupuestoSinModificar: [],
+      gestion: null,
     };
   },
 
   mounted() {
+    this.gestion = null;
+    const today = new Date();
+    this.gestion = today.getFullYear();
     this.obtenerFacultades();
   },
   validations: {
@@ -176,7 +192,13 @@ export default {
     },
   },
   methods: {
+    rangeYear() {
+      const max = new Date().getFullYear();
+
+      return max;
+    },
     async obtenerFacultades() {
+      this.loading=!this.loading
       try {
         const listaFacultades = (
           await this.$http.get("faculty", {
@@ -193,19 +215,23 @@ export default {
         this.alert("warning", "Algo salio mal");
         console.log(error);
       }
+      this.loading=!this.loading
     },
 
     async obtenerDepartamentos() {
+      this.loading=!this.loading
       if (!this.cambioFacu) {
-        console.log("Imprimp");
         this.listDepartament = [];
         this.presupuestoSinModificar = [];
         let listaDepartamentos = (
-          await this.$http.get(`department?facu=${this.presupuesto.facultad}`, {
-            headers: {
-              authorization: this.token,
-            },
-          })
+          await this.$http.get(
+            `departmentWithBudget?facu=${this.presupuesto.facultad}&gestion=${this.gestion}`,
+            {
+              headers: {
+                authorization: this.token,
+              },
+            }
+          )
         ).data;
 
         for (let i = 0; i < listaDepartamentos.length; i++) {
@@ -218,7 +244,6 @@ export default {
           );
         }
 
-        console.log(this.listDepartament);
         this.presupuesto.departamento = "Seleccione una opcion";
 
         if (this.presupuesto.facultad != "Seleccione una opcion") {
@@ -227,11 +252,11 @@ export default {
           this.facultadAnterior = this.presupuesto.facultad;
         }
       }
+      this.loading=!this.loading
     },
     variableHijo(value) {
       this.variableRecibida = value;
       if (this.variableRecibida) {
-        console.log("puso aceptar");
         this.listDepartament = [];
         this.presupuesto.presupuestoValor = [];
         this.cambioFacu = false;
@@ -244,7 +269,6 @@ export default {
       if (this.variableRecibida1) {
         this.cambioFacu = false;
         this.presupuesto.facultad = this.facultadAnterior;
-        console.log("puso cancelar");
       }
     },
     forceRerender() {
@@ -259,10 +283,8 @@ export default {
     async cambiaFacultad() {
       this.cambioFacu = false;
       if (this.facultadAnterior != null) {
-        console.log(this.facultadAnterior);
-
         let facuActual = this.presupuesto.facultad;
-        console.log(facuActual);
+
         if (this.facultadAnterior != facuActual) {
           this.cambioFacu = true;
           await this.obtenerDepartamentos();
@@ -290,11 +312,11 @@ export default {
     },
     async actualizarPresupuesto(codDep, presupuesto) {
       try {
-        console.log("actualizo presupuesto");
         await this.$http.put(
           `departmentBudget/${codDep}`,
           {
             presupuesto_departamento: presupuesto,
+            gestion: this.gestion,
           },
           {
             headers: {
@@ -309,6 +331,7 @@ export default {
       }
     },
     async submitForm() {
+      this.loading=!this.loading
       try {
         if (!this.$v.presupuesto.$invalid) {
           for (let i = 0; i < this.presupuesto.presupuestoValor.length; i++) {
@@ -324,20 +347,19 @@ export default {
                 codigoDepartamento,
                 presupuestoEditado
               );
-            } else {
-              console.log("son iguales");
             }
           }
         }
       } catch (error) {
-        console.log(error);
+        this.alert("warning", error);
       }
+      this.loading=!this.loading
     },
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .contenedor-dep {
   background-color: #f7f6f6;
   padding: 40px 60px 40px 60px;
@@ -352,7 +374,58 @@ export default {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
 
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
 .form_desc {
   text-align: left;
   color: #0d58cf;

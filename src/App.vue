@@ -35,12 +35,28 @@
             to="/revisar_solicitudes"
             >Revisar solicitudes</b-nav-item
           >
-          <b-nav-item v-if="permisoCotizacion" to="/cotizacion"
+          <b-nav-item v-if="permisoCotizacion" to="/cotizaciones"
             >Cotizaciones</b-nav-item
           >
           <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
             >Filtro de Cotizaciones</b-nav-item
           >
+          <b-nav-item v-if="permisoPresupuestoDep" to="/presupuestoDep"
+            >Presupuesto Departamento</b-nav-item
+          >
+          <b-nav-item v-if="permisoPresupuestoUnidad" to="/presupuestos"
+            >Presupuesto Unidad de gasto</b-nav-item
+          >
+          <b-nav-item v-if="permisoCuadroComparativo" to="/cuadro_comparativo"
+            >Cuadro comparativo</b-nav-item
+          >
+          <b-nav-item v-if="permisoBitacora" to="/logss">Bitacoras </b-nav-item
+          ><b-nav-item v-if="permisoBackup" to="/back"
+            >Respaldo y retauracion
+          </b-nav-item>
+          <b-nav-item v-if="permisoInformeFinal" to="/informe_final"
+            >Informe Final
+          </b-nav-item>
           <b-nav-item v-if="username" @click="cerrar()"
             >Cerrar Sesion</b-nav-item
           >
@@ -87,7 +103,7 @@
             to="/revisar_solicitudes"
             >Revisar solicitudes</b-nav-item
           >
-          <b-nav-item v-if="permisoCotizacion" to="/cotizacion"
+          <b-nav-item v-if="permisoCotizacion" to="/cotizaciones"
             >Cotizaciones</b-nav-item
           >
           <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
@@ -99,9 +115,17 @@
           <b-nav-item v-if="permisoPresupuestoUnidad" to="/presupuestos"
             >Presupuesto Unidad de gasto</b-nav-item
           >
-          <b-nav-item v-if="permisoCuadroComparativo" to="/"
+          <b-nav-item v-if="permisoCuadroComparativo" to="/cuadro_comparativo"
             >Cuadro comparativo</b-nav-item
           >
+          <b-nav-item v-if="permisoBitacora" to="/logss">Bitacoras </b-nav-item
+          ><b-nav-item v-if="permisoBackup" to="/back"
+            >Respaldo y retauracion
+          </b-nav-item>
+
+          <b-nav-item v-if="permisoInformeFinal" to="/informe_final"
+            >Informe Final
+          </b-nav-item>
           <b-nav-item v-if="username" @click="cerrar()"
             >Cerrar Sesion</b-nav-item
           >
@@ -154,6 +178,9 @@ export default {
       "permisoPresupuestoUnidad",
       "permisoHistorialPresupuestoUnidad",
       "permisoCuadroComparativo",
+      "permisoBitacora",
+      "permisoBackup",
+      "permisoInformeFinal",
     ]),
   },
   methods: {
@@ -187,6 +214,9 @@ export default {
       this.$store.commit("setPermisoPresupuestoHistorialDep", false);
       this.$store.commit("setPermisoPresupuestoHistorialUnidad", false);
       this.$store.commit("setPermisoCuadroComparativo", false);
+      this.$store.commit("setPermisoBitacora", false);
+      this.$store.commit("setPermisoBackup", false);
+      this.$store.commit("setPermisoInformeFinal", false);
       //localstorage
       sessionStorage.removeItem("my-app");
 
@@ -210,7 +240,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 * {
   padding: 0;
   margin: 0;
