@@ -218,7 +218,7 @@ export default {
   justify-content: center;
   align-items: center;
   background-color: #46b1c95b;
-  height: 550px;
+  height: 600px;
 }
 .container {
   border: 1px solid;

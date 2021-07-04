@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <b-navbar type="dark" id="barra" variant="primary">
-      <b-navbar-brand href="/" id="logotipo">UMSS</b-navbar-brand>
+      <b-navbar-brand @click="paginaPrincipal()" id="logotipo"
+        >UMSS</b-navbar-brand
+      >
 
       <b-navbar-nav class="ms-auto">
         <b-nav-item-dropdown
@@ -248,6 +250,7 @@ a.navbar-brand {
   margin-left: 45px;
   cursor: pointer;
   font-weight: bold;
+  font-family: "Times New Roman", Times, serifs;
 }
 #icono-toggle {
   margin-right: 30px;
@@ -259,122 +262,16 @@ a.navbar-brand {
 #subtitu a span {
   color: white;
 }
-#subtitu1 a {
+#subtitu a span:hover {
   color: white;
-}
-/*
-.capa {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-
-  z-index: -1;
-  top: 0;
-  left: 0;
-}
-
-.header {
-  width: 100%;
-  height: 67px;
-  position: fixed;
-  background: #007bff;
-  border: none;
-}
-.container1 {
-  width: 100%;
-}
-.container1 .btn-menu,
-.logo {
-  float: left;
-  line-height: 60px;
-  margin-left: 55px;
-}
-.container1 .btn-menu label {
-  color: white;
-  font-size: 25px;
-  cursor: pointer;
-
-}
-.container1 .menu {
-  text-align: right;
-  width: 100%;
-
-  padding-right: 20px;
-
-  line-height: 60px;
-}
-.container1 .menu a {
-  display: inline-block;
-  padding: 0;
-  line-height: normal;
-  text-decoration: none;
-  color: white;
-  transition: all 0.3s ease;
-  border-bottom: 2px solid transparent;
-  font-size: 15px;
-  margin-right: 0;
-}
-.container1 .menu a:hover {
   border-bottom: 2px solid #c7c7c7;
   padding-bottom: 5px;
 }
-
-#btn-menu {
-  display: none;
+#subtitu1 a {
+  color: white;
 }
-.container1-menu {
-  position: absolute;
-
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  transition: all 500ms ease;
-  opacity: 0;
-  visibility: hidden;
+#subtitu1 a:hover {
+  border-bottom: 2px solid #c7c7c7;
+  padding-bottom: 5px;
 }
-#btn-menu:checked ~ .container1-menu {
-  opacity: 1;
-  visibility: visible;
-}
-.cont-menu {
-  width: 100%;
-  max-width: 250px;
-
-  height: 100vh;
-  background: #1c1c1c;
-  position: fixed;
-  transition: all 500ms ease;
-  transform: translateX(-100%);
-}
-#btn-menu:checked ~ .container1-menu .cont-menu {
-  transform: translateX(0%);
-}
-.cont-menu nav {
-  transform: translateY(15%);
-}
-.cont-menu nav a {
-  display: block;
-  text-decoration: none;
-  padding: 20px;
-  color: #c7c7c7;
-  border-left: 5px solid transparent;
-  transition: all 400ms ease;
-}
-.cont-menu nav a:hover {
-  border-left: 5px solid #c7c7c7;
-  background: #1f1f1f;
-}
-.cont-menu label {
-  position: absolute;
-  right: 5px;
-  top: 10px;
-  color: #fff;
-  cursor: pointer;
-  font-size: 18px;
-}
-.papel {
-  margin-top: 5%;
-}
-*/
 </style>
