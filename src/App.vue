@@ -1,138 +1,110 @@
 <template>
   <div id="app">
-    <b-navbar
-      v-if="contador < 5"
-      type="dark"
-      class="navbar navbar-dark bg-primary ms-auto"
-    >
-      <b-navbar-brand id="logotipo" @click="paginaPrincipal()"
-        >UMSS
-      </b-navbar-brand>
-      <b-navbar-toggle target="navbar-toggle-collapse">
-        <template #default="{ expanded }">
-          <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
-          <b-icon v-else icon="chevron-bar-down"></b-icon>
-        </template>
-      </b-navbar-toggle>
+    <b-navbar type="dark" id="barra" variant="primary">
+      <b-navbar-brand href="/" id="logotipo">UMSS</b-navbar-brand>
 
-      <b-collapse id="navbar-toggle-collapse" is-nav align-rigth>
-        <b-navbar-nav id="nav" class="ms-auto">
-          <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
-          <b-nav-item v-if="permisoCrearUsuario" to="/usuarios"
-            >Usuarios</b-nav-item
+      <b-navbar-nav class="ms-auto">
+        <b-nav-item-dropdown
+          v-if="contadorGestionar > 0"
+          text="Gestionar"
+          id="subtitu"
+          right
+        >
+          <b-dropdown-item
+            href="/usuarios"
+            id="elemento"
+            v-if="permisoCrearUsuario"
+            >Usuarios</b-dropdown-item
           >
-          <b-nav-item v-if="permisoCrearRol" to="/roles">Roles</b-nav-item>
-          <b-nav-item v-if="permisoUnidadDeGasto" to="/unidades"
-            >Unidades</b-nav-item
+          <b-dropdown-item href="/roles" v-if="permisoCrearRol"
+            >Roles</b-dropdown-item
           >
-          <b-nav-item v-if="permisoItemDeGasto" to="/items">Items</b-nav-item>
-          <b-nav-item v-if="permisoEmpresa" to="/empresas">Empresas</b-nav-item>
-          <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
-            >Solicitudes</b-nav-item
+          <b-dropdown-item href="/unidades" v-if="permisoUnidadDeGasto"
+            >Unidades</b-dropdown-item
           >
-          <b-nav-item
+          <b-dropdown-item href="/items" v-if="permisoItemDeGasto"
+            >Item</b-dropdown-item
+          >
+          <b-dropdown-item href="/empresas" v-if="permisoEmpresa"
+            >Empresas</b-dropdown-item
+          >
+        </b-nav-item-dropdown>
+
+        <b-nav-item-dropdown
+          v-if="contadorSolicitudes > 0"
+          text="Solicitudes"
+          id="subtitu"
+          right
+        >
+          <b-dropdown-item href="/solicitudes" v-if="permisoSolicitud"
+            >Nueva Solicitud</b-dropdown-item
+          >
+          <b-dropdown-item
+            href="/revisar_solicitudes"
             v-if="permisoRevisionSolicitudes"
-            to="/revisar_solicitudes"
-            >Revisar solicitudes</b-nav-item
+            >Revisar Solicitudes</b-dropdown-item
           >
-          <b-nav-item v-if="permisoCotizacion" to="/cotizaciones"
-            >Cotizaciones</b-nav-item
+        </b-nav-item-dropdown>
+        <b-nav-item-dropdown
+          v-if="contadorCotizaciones > 0"
+          text="Cotizaciones"
+          id="subtitu"
+          right
+        >
+          <b-dropdown-item v-if="permisoCotizacion" href="/cotizaciones"
+            >Nueva Cotizacion</b-dropdown-item
           >
-          <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
-            >Filtro de Cotizaciones</b-nav-item
+          <b-dropdown-item
+            v-if="permisoFiltroCotizacion"
+            href="/filtro_cotizaciones"
+            >Filtro de cotizaciones</b-dropdown-item
           >
-          <b-nav-item v-if="permisoPresupuestoDep" to="/presupuestoDep"
-            >Presupuesto Departamento</b-nav-item
+          <b-dropdown-item
+            href="/cuadro_comparativo"
+            v-if="permisoCuadroComparativo"
+            >Cuadro Comparativo</b-dropdown-item
           >
-          <b-nav-item v-if="permisoPresupuestoUnidad" to="/presupuestos"
-            >Presupuesto Unidad de gasto</b-nav-item
+          <b-dropdown-item
+            v-if="permisoInformeFinal"
+            href="/informe_final"
+            id="elemento"
+            >Informe Final</b-dropdown-item
           >
-          <b-nav-item v-if="permisoCuadroComparativo" to="/cuadro_comparativo"
-            >Cuadro comparativo</b-nav-item
+        </b-nav-item-dropdown>
+        <b-nav-item-dropdown
+          v-if="contadorPresupuestos > 0"
+          text="Presupuestos"
+          id="subtitu"
+          right
+        >
+          <b-dropdown-item v-if="permisoPresupuestoDep" href="/presupuestoDep"
+            >Presupuesto Departamento</b-dropdown-item
           >
-          <b-nav-item v-if="permisoBitacora" to="/logss">Bitacoras </b-nav-item
-          ><b-nav-item v-if="permisoBackup" to="/back"
-            >Respaldo y retauracion
-          </b-nav-item>
-          <b-nav-item v-if="permisoInformeFinal" to="/informe_final"
-            >Informe Final
-          </b-nav-item>
-          <b-nav-item v-if="username" @click="cerrar()"
-            >Cerrar Sesion</b-nav-item
+          <b-dropdown-item v-if="permisoPresupuestoUnidad" href="/presupuestos"
+            >Presupuestos Unidad Gasto</b-dropdown-item
           >
-        </b-navbar-nav>
-      </b-collapse>
+        </b-nav-item-dropdown>
+        <b-nav-item-dropdown
+          v-if="contadorSistema > 0"
+          text="Sistema"
+          id="subtitu"
+          right
+        >
+          <b-dropdown-item v-if="permisoBitacora" href="/logss"
+            >Bitacoras</b-dropdown-item
+          >
+          <b-dropdown-item v-if="permisoBackup" href="/back"
+            >Respaldos</b-dropdown-item
+          >
+        </b-nav-item-dropdown>
+        <b-nav-item v-if="username" id="subtitu1" @click="cerrar()" href="/"
+          >Cerrar Sesion</b-nav-item
+        >
+        <b-nav-item href="/login" v-if="!username" id="subtitu1"
+          >Iniciar Sesion</b-nav-item
+        >
+      </b-navbar-nav>
     </b-navbar>
-    <!--otro-->
-    <b-navbar
-      v-else
-      toggleable
-      type="dark"
-      class="navbar navbar-dark bg-primary"
-    >
-      <b-navbar-brand id="logotipo" @click="paginaPrincipal()"
-        >UMSS</b-navbar-brand
-      >
-
-      <b-navbar-toggle id="icono-toggle" target="navbar-toggle-collapse">
-        <template #default="{ expanded }">
-          <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
-          <b-icon v-else icon="chevron-bar-down"></b-icon>
-        </template>
-      </b-navbar-toggle>
-
-      <b-collapse id="navbar-toggle-collapse" is-nav right>
-        <b-navbar-nav id="nav" class="ml-auto">
-          <b-nav-item v-if="!username" to="/login" id="inciio"
-            >Iniciar Sesion</b-nav-item
-          >
-          <b-nav-item v-if="permisoCrearUsuario" to="/usuarios"
-            >Usuarios</b-nav-item
-          >
-          <b-nav-item v-if="permisoCrearRol" to="/roles">Roles</b-nav-item>
-          <b-nav-item v-if="permisoUnidadDeGasto" to="/unidades"
-            >Unidades</b-nav-item
-          >
-          <b-nav-item v-if="permisoItemDeGasto" to="/items">Items</b-nav-item>
-          <b-nav-item v-if="permisoEmpresa" to="/empresas">Empresas</b-nav-item>
-          <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
-            >Solicitudes</b-nav-item
-          >
-          <b-nav-item
-            v-if="permisoRevisionSolicitudes"
-            to="/revisar_solicitudes"
-            >Revisar solicitudes</b-nav-item
-          >
-          <b-nav-item v-if="permisoCotizacion" to="/cotizaciones"
-            >Cotizaciones</b-nav-item
-          >
-          <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
-            >Filtro de Cotizaciones</b-nav-item
-          >
-          <b-nav-item v-if="permisoPresupuestoDep" to="/presupuestoDep"
-            >Presupuesto Departamento</b-nav-item
-          >
-          <b-nav-item v-if="permisoPresupuestoUnidad" to="/presupuestos"
-            >Presupuesto Unidad de gasto</b-nav-item
-          >
-          <b-nav-item v-if="permisoCuadroComparativo" to="/cuadro_comparativo"
-            >Cuadro comparativo</b-nav-item
-          >
-          <b-nav-item v-if="permisoBitacora" to="/logss">Bitacoras </b-nav-item
-          ><b-nav-item v-if="permisoBackup" to="/back"
-            >Respaldo y retauracion
-          </b-nav-item>
-
-          <b-nav-item v-if="permisoInformeFinal" to="/informe_final"
-            >Informe Final
-          </b-nav-item>
-          <b-nav-item v-if="username" @click="cerrar()"
-            >Cerrar Sesion</b-nav-item
-          >
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
-    <!--Hasta aqui-->
     <transition
       mode="out-in"
       enter-active-class="animate__animated animate__fadeIn"
@@ -140,15 +112,6 @@
     >
       <router-view />
     </transition>
-    <div class="claseFooter">
-      <footer
-        class="bg-primary text-center text-white text-lg-start footerClase"
-      >
-        <div class="text-center p-3">
-          Derechos reservados © 2021 UMSS-TH.
-        </div>
-      </footer>
-    </div>
   </div>
 </template>
 <script>
@@ -172,7 +135,11 @@ export default {
       "permisoRevisionSolicitudes",
       "permisoCotizacion",
       "permisoFiltroCotizacion",
-      "contador",
+      "contadorGestionar",
+      "contadorSolicitudes",
+      "contadorCotizaciones",
+      "contadorPresupuestos",
+      "contadorSistema",
       "permisoPresupuestoDep",
       "permisoHistorialPresupuestoDep",
       "permisoPresupuestoUnidad",
@@ -185,13 +152,21 @@ export default {
   },
   methods: {
     ...mapActions(["getPermi", "leerToken"]),
-    cerrar() {
+
+    async cerrar() {
+      console.log(this.contadorGestionar);
       this.$store.commit("setUser", false);
       localStorage.setItem("username", this.username);
 
       localStorage.removeItem("username");
+
       localStorage.removeItem("nombreUsuario");
       localStorage.removeItem("token");
+      this.$store.commit("borrarContador1");
+      this.$store.commit("borrarContador2");
+      this.$store.commit("borrarContador3");
+      this.$store.commit("borrarContador4");
+      this.$store.commit("borrarContador5");
 
       this.$store.commit("setPermisoUsuario", false);
       this.$store.commit("setPermisoItem", false);
@@ -201,7 +176,6 @@ export default {
       this.$store.commit("setPermisoEmpresa", false);
       this.$store.commit("setLista");
       this.$store.commit("setToken", null);
-      this.$store.commit("borrarContador");
 
       //nuevos
 
@@ -261,50 +235,146 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-#nav {
-}
-#nav a {
-  color: white;
-}
-#nav a.nav-link:hover {
-  background: #5591f5;
-}
-#nav a.router-link-exact-active {
-  font-weight: bold;
-  font-size: 17px;
-}
 
+:root {
+  --animate-duration: 550ms;
+}
 a.navbar-brand {
   font-weight: bold !important;
   font-size: 22px !important;
   font-family: "Times New Roman", Times, serifs;
 }
-:root {
-  --animate-duration: 550ms;
-}
 #logotipo {
   margin-left: 45px;
   cursor: pointer;
+  font-weight: bold;
 }
 #icono-toggle {
   margin-right: 30px;
   border: 1px solid;
 }
-#dereee {
-  border: 2px solid;
-  text-align: rigth;
+#subtitu {
+  padding-right: 30px;
+}
+#subtitu a span {
+  color: white;
+}
+#subtitu1 a {
+  color: white;
+}
+/*
+.capa {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  z-index: -1;
+  top: 0;
+  left: 0;
 }
 
-.footerClase {
-  position: fixed;
-  left: 0;
-  bottom: 0;
+.header {
   width: 100%;
-  background-color: red;
+  height: 67px;
+  position: fixed;
+  background: #007bff;
+  border: none;
+}
+.container1 {
+  width: 100%;
+}
+.container1 .btn-menu,
+.logo {
+  float: left;
+  line-height: 60px;
+  margin-left: 55px;
+}
+.container1 .btn-menu label {
   color: white;
-  text-align: center;
+  font-size: 25px;
+  cursor: pointer;
+
 }
-.claseFooter {
-  min-height: 56px;
+.container1 .menu {
+  text-align: right;
+  width: 100%;
+
+  padding-right: 20px;
+
+  line-height: 60px;
 }
+.container1 .menu a {
+  display: inline-block;
+  padding: 0;
+  line-height: normal;
+  text-decoration: none;
+  color: white;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+  font-size: 15px;
+  margin-right: 0;
+}
+.container1 .menu a:hover {
+  border-bottom: 2px solid #c7c7c7;
+  padding-bottom: 5px;
+}
+
+#btn-menu {
+  display: none;
+}
+.container1-menu {
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transition: all 500ms ease;
+  opacity: 0;
+  visibility: hidden;
+}
+#btn-menu:checked ~ .container1-menu {
+  opacity: 1;
+  visibility: visible;
+}
+.cont-menu {
+  width: 100%;
+  max-width: 250px;
+
+  height: 100vh;
+  background: #1c1c1c;
+  position: fixed;
+  transition: all 500ms ease;
+  transform: translateX(-100%);
+}
+#btn-menu:checked ~ .container1-menu .cont-menu {
+  transform: translateX(0%);
+}
+.cont-menu nav {
+  transform: translateY(15%);
+}
+.cont-menu nav a {
+  display: block;
+  text-decoration: none;
+  padding: 20px;
+  color: #c7c7c7;
+  border-left: 5px solid transparent;
+  transition: all 400ms ease;
+}
+.cont-menu nav a:hover {
+  border-left: 5px solid #c7c7c7;
+  background: #1f1f1f;
+}
+.cont-menu label {
+  position: absolute;
+  right: 5px;
+  top: 10px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+}
+.papel {
+  margin-top: 5%;
+}
+*/
 </style>
