@@ -366,21 +366,11 @@
             <form ref="form" @submit.stop.prevent="handleSubmit">
               <div>
                 <p class="titulo_MODAL1">{{ itemEditado.nombre }}</p>
-                <div
-                  class="form_check-error"
-                  v-if="!$v.itemEditado.nombre.required"
-                >
-                  Campo obligatorio.
-                </div>
-                <div
-                  class="form_check-error"
-                  v-if="!$v.itemEditado.nombre.maxLength"
-                >
-                  Maximo 50 caracteres.
-                </div>
               </div>
-              <div>
-                <p class="titulo_MODAL">Unidad:</p>
+              <div v-if="selectedUser.categoria_general != 'Servicios'">
+                <p class="titulo_MODAL">
+                  Unidad:
+                </p>
                 <input
                   :class="
                     $v.itemEditado.unidad.$invalid
@@ -403,7 +393,7 @@
                   No se permite esos caracteres.
                 </div>
               </div>
-              <div>
+              <div v-if="selectedUser.categoria_general != 'Servicios'">
                 <p class="titulo_MODAL">Cantidad:</p>
                 <input
                   :class="
@@ -706,13 +696,33 @@ export default {
       this.handleSubmit();
     },
     handleSubmit() {
-      if (!this.$v.itemEditado.$invalid) {
+      if (this.solicitud.categoria_general != "Servicios") {
+        if (!this.$v.itemEditado.$invalid) {
+          const item = {
+            nombre_item: this.itemEditado.nombre,
+            cantidad: this.itemEditado.cantidad,
+            categoria: this.solicitud.categoria, //especifica
+            categoria_general: this.solicitud.categoria_general,
+            unidad_solicitud: this.itemEditado.unidad,
+            detalle_solicitud: this.itemEditado.detalle,
+            nombre_itemgasto: this.itemEditado.nombre,
+          };
+          this.eliminarItems(this.itemEditado.numero);
+
+          this.listaPeticion.splice(this.itemEditado.numero, 0, item);
+          this.$nextTick(() => {
+            this.$bvModal.hide("myModal");
+          });
+        } else {
+          console.log("esta mal");
+        }
+      } else {
         const item = {
           nombre_item: this.itemEditado.nombre,
-          cantidad: this.itemEditado.cantidad,
+          cantidad: "-",
           categoria: this.solicitud.categoria, //especifica
           categoria_general: this.solicitud.categoria_general,
-          unidad_solicitud: this.itemEditado.unidad,
+          unidad_solicitud: "-",
           detalle_solicitud: this.itemEditado.detalle,
           nombre_itemgasto: this.itemEditado.nombre,
         };
@@ -970,9 +980,13 @@ export default {
     editarItems(item, index) {
       this.itemEditado.numero = 0;
       this.selectedUser = item;
+
       this.itemEditado.nombre = this.selectedUser.nombre_item;
-      this.itemEditado.cantidad = this.selectedUser.cantidad;
-      this.itemEditado.unidad = this.selectedUser.unidad_solicitud;
+      if (this.selectedUser.categoria_general != "Servicios") {
+        this.itemEditado.cantidad = this.selectedUser.cantidad;
+        this.itemEditado.unidad = this.selectedUser.unidad_solicitud;
+      }
+
       this.itemEditado.detalle = this.selectedUser.detalle_solicitud;
       this.itemEditado.numero = index;
     },

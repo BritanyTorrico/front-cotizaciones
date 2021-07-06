@@ -529,7 +529,7 @@ export default {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
-        this.alert("warning", error);
+        this.alert("warning", "Algo salio mal");
       }
       this.loading = !this.loading;
     },
@@ -550,7 +550,7 @@ export default {
       } catch (error) {
         //borra usario
         // await this.$http.delete("users", { data: this.users.nombre_usuario });
-        throw new Error("Error departamento");
+        throw new Error("Algo salio mal");
       }
     },
     async sendUsernameRol() {
@@ -569,7 +569,7 @@ export default {
         );
       } catch (error) {
         //borrar un usuario  y departamento modulo departamento
-        throw new Error("Error Roles");
+        throw new Error("Algo salio mal");
       }
     },
     async sendDataUsers() {

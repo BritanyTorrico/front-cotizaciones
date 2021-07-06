@@ -305,18 +305,23 @@ export default {
 
 <style lang="scss" scoped>
 .mayor {
-  padding: 50px 100px 50px 100px;
+  padding: 2.5% 18%;
   background-color: #46b1c95b;
   margin-top: 0;
+}
+
+@media (max-width: 950px) {
+  .mayor {
+    padding: 0%;
+  }
 }
 .contenedor__log {
   text-align: left;
   background-color: #f1f2f6;
-  padding: 40px 80px 40px 80px;
+  padding: 2.5% 8%;
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 450px;
 }
 .titulo_MODAL {
   color: #0d6efd;

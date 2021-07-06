@@ -335,7 +335,7 @@ export default {
           this.alert("warning", "Seleccione minimamente un permiso.");
         }
       } catch (error) {
-        this.alert("warning", error);
+        this.alert("warning", "El rol ya existe");
       }
       this.loading = !this.loading;
     },
