@@ -2,309 +2,329 @@
   <div class="container-user">
     <div v-if="loading">
       <div class="loading-info">
-          <div class="clock-loader"></div>
+        <div class="clock-loader"></div>
       </div>
     </div>
     <div v-else>
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
-      integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
-      crossorigin="anonymous"
-    />
-    <form @submit.prevent="submitForm">
-      <div class="flex-container">
-        <div class="form__image">
-          <img src="@/assets/edificioUMSS.jpg" alt="" />
-        </div>
-
-        <div class="form__datos">
-          <div class="titulo">
-            <div class="tii"><h2 class="item_title">Registrar Usuario</h2></div>
-
-            <div class="form_desc">
-              Ingrese los datos del usuario.
-            </div>
+      <link
+        rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+        integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
+        crossorigin="anonymous"
+      />
+      <form @submit.prevent="submitForm">
+        <div class="flex-container">
+          <div class="form__image d-none d-sm-none d-md-none d-lg-block">
+            <img src="@/assets/edificioUMSS.jpg" alt="" />
           </div>
-          <div class="form__section">
-            <div class="form__name">
-              <div class="formulario_label">Nombre:</div>
-              <div class="tam-input">
-                <input
-                  :class="
-                    $v.users.nombres.$invalid
-                      ? 'form_check-input-error'
-                      : 'form__input'
-                  "
-                  type="text"
-                  placeholder="Ingrese su nombre"
-                  v-model="users.nombres"
-                />
+
+          <div class="form__datos">
+            <div class="titulo">
+              <div class="tii">
+                <h2 class="item_title">Registrar Usuario</h2>
               </div>
 
-              <div class="form_check-error" v-if="!$v.users.nombres.required">
-                Campo obligatorio.
-              </div>
-              <div class="form_check-error" v-if="!$v.users.nombres.maxLength">
-                Máximo
-                {{ $v.users.nombres.$params.maxLength.max }} caracteres.
-              </div>
-              <div class="form_check-error" v-if="!$v.users.nombres.minLength">
-                Mínimo 3 caracteres.
-              </div>
-              <div class="form_check-error" v-if="!$v.users.nombres.alpha1">
-                No se aceptan caracteres especiales.
+              <div class="form_desc">
+                Ingrese los datos del usuario.
               </div>
             </div>
-            <div class="form__name">
-              <div class="formulario_label">Apellidos:</div>
-              <div class="tam-input">
-                <input
-                  :class="
-                    $v.users.apellidos.$invalid
-                      ? 'form_check-input-error'
-                      : 'form__input'
-                  "
-                  type="text"
-                  placeholder="Ingrese su apellido"
-                  required
-                  v-model="users.apellidos"
-                />
-              </div>
+            <div class="form__section">
+              <div class="form__name">
+                <div class="formulario_label">Nombre:</div>
+                <div class="tam-input">
+                  <input
+                    :class="
+                      $v.users.nombres.$invalid
+                        ? 'form_check-input-error'
+                        : 'form__input'
+                    "
+                    type="text"
+                    placeholder="Ingrese su nombre"
+                    v-model="users.nombres"
+                  />
+                </div>
 
-              <div class="form_check-error" v-if="!$v.users.apellidos.required">
-                Campo obligatorio.
-              </div>
-              <div
-                class="form_check-error"
-                v-if="!$v.users.apellidos.maxLength"
-              >
-                Máximo
-                {{ $v.users.apellidos.$params.maxLength.max }} caracteres.
-              </div>
-              <div
-                class="form_check-error"
-                v-if="!$v.users.apellidos.minLength"
-              >
-                Mínimo 4 caracteres.
-              </div>
-              <div class="form_check-error" v-if="!$v.users.apellidos.alpha1">
-                No se aceptan caracteres especiales.
-              </div>
-            </div>
-          </div>
-          <div class="form__section">
-            <div class="form__name">
-              <div class="formulario_label">Nombre de usuario:</div>
-              <div class="tam-input">
-                <input
-                  :class="
-                    $v.users.nombre_usuario.$invalid
-                      ? 'form_check-input-error'
-                      : 'form__input'
-                  "
-                  type="text"
-                  placeholder="Ingrese nombre de usuario"
-                  v-model="users.nombre_usuario"
-                  required
-                />
-              </div>
-
-              <div
-                class="form_check-error"
-                v-if="!$v.users.nombre_usuario.required"
-              >
-                Campo obligatorio.
-              </div>
-
-              <div
-                class="form_check-error"
-                v-if="!$v.users.nombre_usuario.maxLength"
-              >
-                Máximo
-                {{ $v.users.nombre_usuario.$params.maxLength.max }} caracteres.
-              </div>
-
-              <div
-                class="form_check-error"
-                v-if="!$v.users.nombre_usuario.alpha1"
-              >
-                No se aceptan caracteres especiales.
-              </div>
-              <div
-                class="form_check-error"
-                v-if="!$v.users.nombre_usuario.minLength"
-              >
-                Mínimo 3 caracteres.
-              </div>
-            </div>
-            <div class="form__name">
-              <div class="formulario_label">Celular:</div>
-              <div class="tam-input">
-                <input
-                  :class="
-                    $v.users.celular.$invalid
-                      ? 'form_check-input-error'
-                      : 'form__input'
-                  "
-                  type=""
-                  placeholder="Ingrese su celular"
-                  v-model="users.celular"
-                />
-              </div>
-
-              <div class="form_check-error" v-if="!$v.users.celular.integer">
-                Solo se aceptan valores numericos.
-              </div>
-              <div class="form_check-error" v-if="!$v.users.celular.required">
-                Campo obligatorio.
-              </div>
-              <div class="form_check-error" v-if="!$v.users.celular.maxLength">
-                Máximo 8 caracteres.
-              </div>
-            </div>
-          </div>
-          <div class="form__section2">
-            <div class="formulario_label">
-              Contraseña:
-            </div>
-            <div class="flex__contraseña">
-              <input
-                type="password"
-                id="password"
-                :class="
-                  $v.users.contrasena.$invalid
-                    ? 'form_check-input-error'
-                    : 'form__input'
-                "
-                placeholder="Ingrese su contraseña"
-                v-model="users.contrasena"
-              />
-              <div class="flex__contraseña__icon">
-                <i @click="mostrarContrasena()" class="fas fa-eye"></i>
-              </div>
-            </div>
-
-            <div class="form_check-error" v-if="!$v.users.contrasena.valid">
-              La contraseña debe contener al menos una mayuscula, minuscula un
-              número y un caracter especial de las siguientes opciones:
-              ?!@$%^&*-
-            </div>
-            <div class="form_check-error" v-if="!$v.users.contrasena.minLength">
-              Minimo 8 caracteres
-            </div>
-            <div class="form_check-error" v-if="!$v.users.contrasena.maxLength">
-              Contraseña muy larga máximo
-              {{ $v.users.contrasena.$params.maxLength.max }} caracteres.
-            </div>
-          </div>
-          <div class="form__section2">
-            <div class="formulario_label">Confirmar Contraseña:</div>
-            <div class="flex__contraseña">
-              <input
-                type="password"
-                id="password2"
-                :class="
-                  $v.users.confirmarContraseña.$invalid
-                    ? 'form_check-input-error'
-                    : 'form__input'
-                "
-                placeholder="Ingrese su contraseña"
-                v-model="users.confirmarContraseña"
-              />
-              <div class="flex__contraseña__icon">
-                <i @click="mostrarContrasena2()" class="fas fa-eye"></i>
-              </div>
-            </div>
-
-            <div
-              class="form_check-error"
-              v-if="!$v.users.confirmarContraseña.required"
-            >
-              Campo obligatorio.
-            </div>
-            <div
-              class="form_check-error"
-              v-if="!$v.users.confirmarContraseña.sameAsPassword"
-            >
-              Las contraseñas debe coincidir.
-            </div>
-            <div
-              class="form_check-error"
-              v-if="!$v.users.confirmarContraseña.maxLength"
-            >
-              Contraseña muy larga maximo
-              {{ $v.users.confirmarContraseña.$params.maxLength.max }}
-              caracteres.
-            </div>
-          </div>
-          <div class="form__section3">
-            <div class="fomrm__section__item">
-              <div class="container-facu">
-                <div class="container__label">Facultad:</div>
-                <select
-                  v-model="users.facultad"
-                  @change="obtenerDepartamentos()"
-                  class="container__list"
-                >
-                  <option disabled="true">{{ users.facultad }}</option>
-                  <option
-                    class="container__list__option"
-                    v-for="(item, index) in listfacultad"
-                    :key="index"
-                    :value="item"
-                  >
-                    {{ item }}</option
-                  >
-                </select>
+                <div class="form_check-error" v-if="!$v.users.nombres.required">
+                  Campo obligatorio.
+                </div>
                 <div
                   class="form_check-error"
-                  v-if="!$v.users.facultad.validate_requerido_listas"
+                  v-if="!$v.users.nombres.maxLength"
                 >
-                  1. Campo Obligatorio.
+                  Máximo
+                  {{ $v.users.nombres.$params.maxLength.max }} caracteres.
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.users.nombres.minLength"
+                >
+                  Mínimo 3 caracteres.
+                </div>
+                <div class="form_check-error" v-if="!$v.users.nombres.alpha1">
+                  No se aceptan caracteres especiales.
+                </div>
+              </div>
+              <div class="form__name">
+                <div class="formulario_label">Apellidos:</div>
+                <div class="tam-input">
+                  <input
+                    :class="
+                      $v.users.apellidos.$invalid
+                        ? 'form_check-input-error'
+                        : 'form__input'
+                    "
+                    type="text"
+                    placeholder="Ingrese su apellido"
+                    required
+                    v-model="users.apellidos"
+                  />
+                </div>
+
+                <div
+                  class="form_check-error"
+                  v-if="!$v.users.apellidos.required"
+                >
+                  Campo obligatorio.
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.users.apellidos.maxLength"
+                >
+                  Máximo
+                  {{ $v.users.apellidos.$params.maxLength.max }} caracteres.
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.users.apellidos.minLength"
+                >
+                  Mínimo 4 caracteres.
+                </div>
+                <div class="form_check-error" v-if="!$v.users.apellidos.alpha1">
+                  No se aceptan caracteres especiales.
                 </div>
               </div>
             </div>
-            <div class="fomrm__section__item">
-              <lista-desplegable
-                :key="componentKey"
-                required
-                v-model="users.departamento"
-                nombreLista="Departamento:"
-                :lista="listDepartament"
-                :value="users.departamento"
-              ></lista-desplegable>
-              <div
-                class="form_check-error"
-                v-if="!$v.users.departamento.validate_requerido_listas"
-              >
-                2. Campo Obligatorio.
-              </div>
-            </div>
+            <div class="form__section">
+              <div class="form__name">
+                <div class="formulario_label">Nombre de usuario:</div>
+                <div class="tam-input">
+                  <input
+                    :class="
+                      $v.users.nombre_usuario.$invalid
+                        ? 'form_check-input-error'
+                        : 'form__input'
+                    "
+                    type="text"
+                    placeholder="Ingrese nombre de usuario"
+                    v-model="users.nombre_usuario"
+                    required
+                  />
+                </div>
 
-            <div class="fomrm__section__item">
-              <lista-desplegable
-                :key="componentKey1"
-                v-model="users.nombre_rol"
-                nombreLista="Rol:"
-                :lista="listRoles"
-                :value="users.nombre_rol"
-              ></lista-desplegable>
-              <div
-                class="form_check-error"
-                v-if="!$v.users.nombre_rol.validate_requerido_listas"
-              >
-                3.Campo Obligatorio.
+                <div
+                  class="form_check-error"
+                  v-if="!$v.users.nombre_usuario.required"
+                >
+                  Campo obligatorio.
+                </div>
+
+                <div
+                  class="form_check-error"
+                  v-if="!$v.users.nombre_usuario.maxLength"
+                >
+                  Máximo
+                  {{ $v.users.nombre_usuario.$params.maxLength.max }}
+                  caracteres.
+                </div>
+
+                <div
+                  class="form_check-error"
+                  v-if="!$v.users.nombre_usuario.alpha1"
+                >
+                  No se aceptan caracteres especiales.
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.users.nombre_usuario.minLength"
+                >
+                  Mínimo 3 caracteres.
+                </div>
+              </div>
+              <div class="form__name">
+                <div class="formulario_label">Celular:</div>
+                <div class="tam-input">
+                  <input
+                    :class="
+                      $v.users.celular.$invalid
+                        ? 'form_check-input-error'
+                        : 'form__input'
+                    "
+                    type=""
+                    placeholder="Ingrese su celular"
+                    v-model="users.celular"
+                  />
+                </div>
+
+                <div class="form_check-error" v-if="!$v.users.celular.integer">
+                  Solo se aceptan valores numericos.
+                </div>
+                <div class="form_check-error" v-if="!$v.users.celular.required">
+                  Campo obligatorio.
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.users.celular.maxLength"
+                >
+                  Máximo 8 caracteres.
+                </div>
               </div>
             </div>
+            <div class="form__section2">
+              <div class="formulario_label">
+                Contraseña:
+              </div>
+              <div class="flex__contraseña">
+                <input
+                  type="password"
+                  id="password"
+                  :class="
+                    $v.users.contrasena.$invalid
+                      ? 'form_check-input-error'
+                      : 'form__input'
+                  "
+                  placeholder="Ingrese su contraseña"
+                  v-model="users.contrasena"
+                />
+                <div class="flex__contraseña__icon">
+                  <i @click="mostrarContrasena()" class="fas fa-eye"></i>
+                </div>
+              </div>
+
+              <div class="form_check-error" v-if="!$v.users.contrasena.valid">
+                La contraseña debe contener al menos una mayuscula, minuscula un
+                número y un caracter especial de las siguientes opciones:
+                ?!@$%^&*-
+              </div>
+              <div
+                class="form_check-error"
+                v-if="!$v.users.contrasena.minLength"
+              >
+                Minimo 8 caracteres
+              </div>
+              <div
+                class="form_check-error"
+                v-if="!$v.users.contrasena.maxLength"
+              >
+                Contraseña muy larga máximo
+                {{ $v.users.contrasena.$params.maxLength.max }} caracteres.
+              </div>
+            </div>
+            <div class="form__section2">
+              <div class="formulario_label">Confirmar Contraseña:</div>
+              <div class="flex__contraseña">
+                <input
+                  type="password"
+                  id="password2"
+                  :class="
+                    $v.users.confirmarContraseña.$invalid
+                      ? 'form_check-input-error'
+                      : 'form__input'
+                  "
+                  placeholder="Ingrese su contraseña"
+                  v-model="users.confirmarContraseña"
+                />
+                <div class="flex__contraseña__icon">
+                  <i @click="mostrarContrasena2()" class="fas fa-eye"></i>
+                </div>
+              </div>
+
+              <div
+                class="form_check-error"
+                v-if="!$v.users.confirmarContraseña.required"
+              >
+                Campo obligatorio.
+              </div>
+              <div
+                class="form_check-error"
+                v-if="!$v.users.confirmarContraseña.sameAsPassword"
+              >
+                Las contraseñas debe coincidir.
+              </div>
+              <div
+                class="form_check-error"
+                v-if="!$v.users.confirmarContraseña.maxLength"
+              >
+                Contraseña muy larga maximo
+                {{ $v.users.confirmarContraseña.$params.maxLength.max }}
+                caracteres.
+              </div>
+            </div>
+            <div class="form__section3">
+              <div class="fomrm__section__item">
+                <div class="container-facu">
+                  <div class="container__label">Facultad:</div>
+                  <select
+                    v-model="users.facultad"
+                    @change="obtenerDepartamentos()"
+                    class="container__list"
+                  >
+                    <option disabled="true">{{ users.facultad }}</option>
+                    <option
+                      class="container__list__option"
+                      v-for="(item, index) in listfacultad"
+                      :key="index"
+                      :value="item"
+                    >
+                      {{ item }}</option
+                    >
+                  </select>
+                  <div
+                    class="form_check-error"
+                    v-if="!$v.users.facultad.validate_requerido_listas"
+                  >
+                    1. Campo Obligatorio.
+                  </div>
+                </div>
+              </div>
+              <div class="fomrm__section__item">
+                <lista-desplegable
+                  :key="componentKey"
+                  required
+                  v-model="users.departamento"
+                  nombreLista="Departamento:"
+                  :lista="listDepartament"
+                  :value="users.departamento"
+                ></lista-desplegable>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.users.departamento.validate_requerido_listas"
+                >
+                  2. Campo Obligatorio.
+                </div>
+              </div>
+
+              <div class="fomrm__section__item">
+                <lista-desplegable
+                  :key="componentKey1"
+                  v-model="users.nombre_rol"
+                  nombreLista="Rol:"
+                  :lista="listRoles"
+                  :value="users.nombre_rol"
+                ></lista-desplegable>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.users.nombre_rol.validate_requerido_listas"
+                >
+                  3.Campo Obligatorio.
+                </div>
+              </div>
+            </div>
+            <div class="boton">
+              <input type="submit" value="Confirmar" class="boton__input" />
+            </div>
           </div>
-          <div class="boton">
-            <input type="submit" value="Confirmar" class="boton__input" />
-          </div>
-          
         </div>
-      </div>
-    </form>
+      </form>
     </div>
     <Alert ref="alert"></Alert>
   </div>
@@ -423,10 +443,10 @@ export default {
     },
   },
   mounted: async function() {
-    this.loading=!this.loading
+    this.loading = !this.loading;
     await this.obtenerFacultades();
     await this.obtenerRoles();
-    this.loading=!this.loading
+    this.loading = !this.loading;
   },
 
   methods: {
@@ -460,7 +480,7 @@ export default {
           },
         })
       ).data.datos;
-console.log(listaDepartamentos);
+      console.log(listaDepartamentos);
       for (let i = 0; i < listaDepartamentos.length; i++) {
         this.listDepartament.push(listaDepartamentos[i].nombre_departamento);
       }
@@ -486,7 +506,7 @@ console.log(listaDepartamentos);
       }
     },
     async submitForm() {
-      this.loading=!this.loading
+      this.loading = !this.loading;
       try {
         if (!this.$v.users.$invalid) {
           await this.sendDataUsers();
@@ -511,7 +531,7 @@ console.log(listaDepartamentos);
       } catch (error) {
         this.alert("warning", error);
       }
-      this.loading=!this.loading
+      this.loading = !this.loading;
     },
     async sendUserDepartment() {
       try {
@@ -624,7 +644,7 @@ console.log(listaDepartamentos);
   margin-left: 40px;
   margin-right: 40px;
 }
-.loading-info{
+.loading-info {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -638,7 +658,7 @@ console.log(listaDepartamentos);
   --clock-minute-length: calc(var(--clock-width) * 0.4);
   --clock-hour-length: calc(var(--clock-width) * 0.2);
   --clock-thickness: 0.2rem;
-  
+
   position: relative;
   display: flex;
   justify-content: center;

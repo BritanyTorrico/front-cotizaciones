@@ -84,10 +84,7 @@
           </a>
         </div>
 
-        <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
-          v-if="permisoSolicitud"
-        >
+        <div class="col-sm-6 col-md-4 col-xl-3 columnas" v-if="permisoSolicitud">
           <a class="redireccion" href="/solicitudes">
             <card-permiso
               colorIcono="#FFFFFF"
@@ -98,10 +95,7 @@
             ></card-permiso>
           </a>
         </div>
-        <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
-          v-if="permisoRevisionSolicitudes"
-        >
+        <div class="col-sm-6 col-md-4 col-xl-3 columnas" v-if="permisoRevisionSolicitudes">
           <a class="redireccion" href="/revisar_solicitudes">
             <card-permiso
               colorIcono="#FFFFFF"
@@ -112,10 +106,7 @@
             ></card-permiso>
           </a>
         </div>
-        <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
-          v-if="permisoCotizacion"
-        >
+        <div class="col-sm-6 col-md-4 col-xl-3 columnas" v-if="permisoCotizacion">
           <a class="redireccion" href="/cotizaciones">
             <card-permiso
               colorIcono="#FFFFFF"
@@ -126,10 +117,7 @@
             ></card-permiso>
           </a>
         </div>
-        <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
-          v-if="permisoFiltroCotizacion"
-        >
+        <div class="col-sm-6 col-md-4 col-xl-3 columnas" v-if="permisoFiltroCotizacion">
           <a class="redireccion" href="/filtro_cotizaciones">
             <card-permiso
               colorIcono="#FFFFFF"
@@ -141,10 +129,7 @@
             </card-permiso>
           </a>
         </div>
-        <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
-          v-if="permisoPresupuestoDep"
-        >
+        <div class="col-sm-6 col-md-4 col-xl-3 columnas" v-if="permisoPresupuestoDep">
           <a class="redireccion" href="/presupuestoDep">
             <card-permiso
               colorIcono="#FFFFFF"
@@ -156,10 +141,7 @@
             </card-permiso>
           </a>
         </div>
-        <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
-          v-if="permisoPresupuestoUnidad"
-        >
+        <div class="col-sm-6 col-md-4 col-xl-3 columnas" v-if="permisoPresupuestoUnidad">
           <a class="redireccion" href="/presupuestos">
             <card-permiso
               colorIcono="#FFFFFF"
@@ -171,10 +153,7 @@
             </card-permiso>
           </a>
         </div>
-        <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
-          v-if="permisoCuadroComparativo"
-        >
+        <div class="col-sm-6 col-md-4 col-xl-3 columnas" v-if="permisoCuadroComparativo">
           <a class="redireccion" href="/cuadro_comparativo">
             <card-permiso
               colorIcono="#FFFFFF"
@@ -198,10 +177,7 @@
             </card-permiso>
           </a>
         </div>
-        <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
-          v-if="permisoInformeFinal"
-        >
+        <div class="col-sm-6 col-md-4 col-xl-3 columnas" v-if="permisoInformeFinal">
           <a class="redireccion" href="/informe_final">
             <card-permiso
               colorIcono="#FFFFFF"
@@ -309,7 +285,7 @@ export default {
 .contenedor-permi {
   min-height: 600px;
   padding: 20px 60px 20px 60px;
-  min-width: ;
+  min-width: 400px;
   /*home*/
 }
 
