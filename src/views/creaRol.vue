@@ -35,7 +35,7 @@ export default {
   padding: 2.5% 22% 5% 22%;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 860px) {
   .register_container {
     padding: 0%;
   }

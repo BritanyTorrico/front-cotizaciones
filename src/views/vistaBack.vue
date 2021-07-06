@@ -222,11 +222,11 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 }
 @media (max-width: 650px) {
   .backs {
-    height: 100vh;
+    min-height: 100vh;
   }
 }
 .botoncito {

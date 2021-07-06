@@ -308,6 +308,7 @@ export default {
   padding: 2.5% 18%;
   background-color: #46b1c95b;
   margin-top: 0;
+  min-height: 90vh;
 }
 
 @media (max-width: 950px) {
@@ -322,6 +323,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-height: 80vh;
 }
 .titulo_MODAL {
   color: #0d6efd;

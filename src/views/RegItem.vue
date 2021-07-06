@@ -35,4 +35,9 @@ export default {
   display: block;
   padding: 2.5% 22% 5% 22%;
 }
+@media (max-width: 800px) {
+  .register_container {
+    padding: 0%;
+  }
+}
 </style>
