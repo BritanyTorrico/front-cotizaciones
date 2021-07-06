@@ -32,7 +32,7 @@
             <div class="desc">No hay usuarios registrados en esta facultad</div>
         </div>
         <div v-else class="inbox-container">
-            <div class="list-cards" :class="selectedUser.name === '' ? 'full-screen' : 'side-view'">
+            <div class="list-cards full-screen">
                 <div class="card-side">
                     <div class="desc">Usuarios registrados:</div>
                     <div class="card-index" v-for="(usr, i) in inboxData" :key="i">
@@ -48,21 +48,22 @@
                                 :rol="usr.role"
                             />
                         </div>
+                        <div v-if="usr.nombre_usuario==selectedUser.username" class="user-data" :class="selectedUser.cod === null ? 'no-selected' : ''">
+                            <div v-if="selectedUser.cod!=null">
+                                <transition
+                                    enter-active-class="animate__animated animate__fadeInDown"
+                                    leave-active-class="animate__animated animate__fadeOutUp"
+                                >
+                                        <div v-if="!changeUser">
+                                            <UserView :user="selectedUser"/>
+                                        </div>
+                                </transition>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="user-data" :class="selectedUser.cod === null ? 'no-selected' : ''">
-              <div v-if="selectedUser.cod!=null">
-                <transition
-                    enter-active-class="animate__animated animate__fadeInRight"
-                    leave-active-class="animate__animated animate__fadeOutRight"
-                >
-                        <div v-if="!changeUser">
-                            <UserView :user="selectedUser"/>
-                        </div>
-                </transition>
-              </div>
-            </div>
+            
         </div>
         </div>
         </div>
@@ -169,19 +170,12 @@ export default {
     position: relative;
 }
 .inbox-container {
-    padding: 0px !important;
-    gap: 2rem;
     width: 100%;
-    display: flex;
     flex-direction: row;
-    justify-content: space-between;
 }
 .card-index {
     position: relative;
-    align-items: baseline;
-    padding: 2.5% 2.5%;
     border-bottom: 1px solid #9b9b9b;
-    margin-bottom: 10px;
     width: 100%;
 }
 .loading-info{
@@ -238,7 +232,6 @@ export default {
 }
 .list-cards {
     display: flex;
-    height: 42rem;
     overflow: auto;
 }
 .user-data {

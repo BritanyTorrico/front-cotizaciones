@@ -56,8 +56,8 @@
                     <div class="form_check-error" v-if="item.valor_unitario<0">
                       No se aceptan valores negativos
                     </div>
-                    <div class="form_check-error" v-if="item.valor_unitario>9999">
-                      No se aceptan valores mayores a 9999
+                    <div class="form_check-error" v-if="item.valor_unitario>99999">
+                      No se aceptan valores mayores a 99999
                     </div>
                 </td>
                 <td style="border:1px solid;" class="table-totalprice" >{{ item.valor_unitario*item.cantidad }}</td>
@@ -149,7 +149,7 @@ export default {
           try {
               for (let i of this.cot.itemList){
                   
-                    if (i.detalle=='' || i.valor_unitario<0 || i.valor_unitario>9999){
+                    if (i.detalle=='' || i.valor_unitario<0 || i.valor_unitario>99999){
                       this.alert("warning", "valores de items inválidos")
                     }else{
                       await(

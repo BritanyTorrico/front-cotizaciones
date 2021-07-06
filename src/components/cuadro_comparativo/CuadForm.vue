@@ -116,7 +116,7 @@ export default {
                                               authorization: this.token,
                                           }})
           this.alert("success", "Cuadro enviado exitosamente");
-            window.setInterval(window .location.reload(), 10000); 
+            this.$router.push(`/cuadro_comparativo`)
         }else{
           this.alert("warning", "Ingrese observaciones");
         }

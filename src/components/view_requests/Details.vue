@@ -206,7 +206,7 @@ export default {
       try {
         await this.sendReport()
         await this.updateRequest()
-        window.setInterval(window.location.reload(), 10000);
+        this.$router.push(`/revisar_solicitudes`);
       } catch (error) {
         throw new Error(error);
       }

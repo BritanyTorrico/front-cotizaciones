@@ -326,8 +326,7 @@ export default {
           await this.sendFuncData();
           
           this.alert("success", "Rol creado exitosamente");
-          this.dato.nombre_rol = null;
-          this.forceRerender();
+          this.$router.push(`/roles`)
         } else {
           this.alert("warning", "Seleccione minimamente un permiso.");
         }

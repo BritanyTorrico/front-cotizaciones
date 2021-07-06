@@ -494,17 +494,7 @@ console.log(listaDepartamentos);
           await this.sendUsernameRol();
           this.alert("success", "Usuario creado exitosamente");
           //restablecer variables
-          this.users.nombre_usuario = null;
-          this.users.contrasena = null;
-          this.users.confirmarContraseña = null;
-          this.users.nombres = null;
-          this.users.apellidos = null;
-          this.users.celular = null;
-          this.users.facultad = "Seleccione una opcion";
-          this.users.departamento = "Seleccione una opcion";
-          this.users.nombre_rol = "Seleccione una opcion";
-          this.forceRerender();
-          this.forceRerender1();
+          this.$router.push(`/usuarios`);
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }

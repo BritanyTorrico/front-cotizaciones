@@ -66,7 +66,7 @@ export default {
           await this.sendQuotData();
           await this.updateRequest();
           this.alert("success", "Cotizacion creada exitosamente");
-            window.setInterval(window .location.reload(), 10000); 
+            this.$router.push('/cotizaciones')
         }else{
           this.alert("warning", "Seleccione por lo menos 3 empresas");
         }

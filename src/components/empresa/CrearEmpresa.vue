@@ -406,7 +406,7 @@ export default {
         await this.sendEmpData();
         // si sale bien recien puede registrar compania por rubro
         await this.sendCompMark();
-        window.setInterval(window.location.reload(), 10000);
+        this.$router.push(`/empresas`)
       } catch (error) {
         this.alert("warning", "Algo salio mal");
       }
