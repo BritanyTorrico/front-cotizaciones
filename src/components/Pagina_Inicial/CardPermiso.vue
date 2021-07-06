@@ -1,17 +1,19 @@
 <template>
-  <div class="card mb-3 " style="width:300px;  height: 160px;">
-    <div class="row g-0">
-      <div class="col-md-4" :style="styles1" style=" height: 160px;">
-        <b-icon :icon="nombreIcono" class="iconito"></b-icon>
-      </div>
+  <div class="col-sm-3 ">
+    <div class="card mb-3 " style="width:300px;  height: 160px;">
+      <div class="row g-0">
+        <div class="col-md-4" :style="styles1" style=" height: 160px;">
+          <b-icon :icon="nombreIcono" class="iconito"></b-icon>
+        </div>
 
-      <div class="col-md-8">
-        <div class="card-body" style=" height: 160px;">
-          <h5 class="card-title titulo">{{ titulo }}</h5>
-          <hr class="linea" />
-          <p class="card-text contenido">
-            {{ contenido }}
-          </p>
+        <div class="col-md-8 ">
+          <div class="card-body" style=" height: 160px;">
+            <h5 class="card-title titulo">{{ titulo }}</h5>
+            <hr class="linea" />
+            <p class="card-text contenido">
+              {{ contenido }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
