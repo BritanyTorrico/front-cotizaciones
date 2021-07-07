@@ -301,17 +301,17 @@
         </div>
 
         <div
-          class="form__lista col-sm-8 col-sm-offset-2"
+          class="form__lista col-sm-8 col-sm-offset-2 "
           v-if="this.listaPeticion.length != 0"
         >
           <div class="formulario_label">
             Lista de items:
           </div>
 
-          <div class="form__tabla">
-            <table class="table table-hove table-bordered">
+          <div class="form__tabla  ">
+            <table class="table table-hove table-bordered ">
               <thead>
-                <tr class="primera-fila">
+                <tr class="primera-fila  ">
                   <th>Cantidad</th>
                   <th>Unidad</th>
                   <th>Item</th>
@@ -640,7 +640,7 @@ export default {
       detalle_solicitud: {
         required,
         minLength: minLength(5),
-        maxLength: maxLength(1000000),
+        maxLength: maxLength(1000),
       },
 
       unidadgasto_solicitud: {
@@ -1411,5 +1411,33 @@ export default {
   font-weight: bold;
   font-size: 22px;
   text-align: center;
+}
+@media (max-width: 600px) {
+  .form__tabla {
+    padding: 0%;
+
+    width: 100%;
+    font-size: 12px;
+  }
+  .editarBoton {
+    font-size: 12px;
+  }
+  .eliminarBoton {
+    font-size: 12px;
+  }
+}
+@media (max-width: 480px) {
+  .form__tabla {
+    padding: 0%;
+
+    width: 100%;
+    font-size: 8px;
+  }
+  .editarBoton {
+    font-size: 8px;
+  }
+  .eliminarBoton {
+    font-size: 8px;
+  }
 }
 </style>

@@ -390,10 +390,19 @@ a.navbar-brand {
   float: left;
 }
 .cont-menu nav a:hover {
-  border-left: 5px solid #c7c7c7;
+  border-left: 8px solid #c7c7c7;
   opacity: 0.2;
   background-color: rgb(0, 0, 0);
   color: white;
+  svg {
+    font-weight: bold;
+    color: white;
+
+    width: 20px;
+    height: 25px;
+    padding: 0;
+    margin: 0;
+  }
 }
 .iconito {
   text-align: left;

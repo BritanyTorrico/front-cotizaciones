@@ -770,7 +770,7 @@ export default {
 }
 
 .form__datos {
-  width: 70%;
+  width: 100%;
 
   padding: 2.5% 5%;
   background-color: #ecf0f1;

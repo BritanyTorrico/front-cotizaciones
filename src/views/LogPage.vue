@@ -152,7 +152,7 @@ export default {
     };
   },
   mounted() {
-    this.obtenerLog();
+    //this.obtenerLog();
   },
   validations: {
     fechaRango: {

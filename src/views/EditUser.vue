@@ -30,8 +30,14 @@ export default {
 }
 .contenedor {
   display: block;
-  padding: 2.5% 8% 5% 8%;
+  padding: 2.5% 18% 5% 18%;
   background-color: #46b1c95b;
   margin-top: 0;
+}
+@media (max-width: 800px) {
+  .contenedor {
+    padding: 0%;
+    background: red;
+  }
 }
 </style>
