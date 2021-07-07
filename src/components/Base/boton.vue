@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 export default {
   name: "boton",
   props: {

@@ -8,7 +8,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from 'vuex';
 import Inbox from '../components/view_requests/Inbox.vue'
 export default {

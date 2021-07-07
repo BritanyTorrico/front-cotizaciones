@@ -52,7 +52,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import Card from "./Card.vue";
 import Details from "./Details.vue";
 import { mapState } from "vuex";

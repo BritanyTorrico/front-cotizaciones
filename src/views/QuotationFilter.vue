@@ -11,7 +11,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from 'vuex';
 import InboxFiltro from '../components/filtro_cotizacion/InboxFiltro.vue';
 import Options from '../components/filtro_cotizacion/Options.vue'

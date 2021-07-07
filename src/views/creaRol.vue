@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import CrearRol from "@/components/rol/CrearRol.vue";
 export default {

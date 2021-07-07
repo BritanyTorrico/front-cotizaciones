@@ -6,7 +6,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import InboxUnidad from '../components/unidad_gasto/Vista/InboxUnidad.vue';
 import { mapState } from "vuex";
 

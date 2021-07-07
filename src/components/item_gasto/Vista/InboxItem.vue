@@ -66,7 +66,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from 'vuex'
 import ItemCard from './ItemCard.vue'
 import ItemView from './ItemView.vue'

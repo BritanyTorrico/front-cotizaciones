@@ -169,7 +169,7 @@
   </section>
 </template>
 
-<script scoped>
+<script defer>
 import { mapState } from "vuex";
 import { required, maxLength, minLength } from "vuelidate/lib/validators";
 export default {

@@ -137,7 +137,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import Alert from '../Alert.vue';
 import { BButton, BModal, BFormGroup, BFormTextarea, BFormSelect } from "bootstrap-vue";

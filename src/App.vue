@@ -209,7 +209,7 @@
     </div>
   </div>
 </template>
-<script>
+<script defer>
 import { mapState, mapActions } from "vuex";
 
 const AsyncComponent = () => ({

@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import RegistroItem from "@/components/item_gasto/RegistroItem.vue";
 import { mapState } from "vuex";
 export default {

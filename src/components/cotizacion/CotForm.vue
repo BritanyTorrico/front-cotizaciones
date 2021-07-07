@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import Alert from '../Alert.vue';
 import Empresas from "./Empresas.vue";
 import { mapState } from "vuex";

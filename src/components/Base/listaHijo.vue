@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 export default {
   name: "listaPadre",

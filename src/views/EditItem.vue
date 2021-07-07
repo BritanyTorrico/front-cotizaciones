@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import EditarItem from "../components/item_gasto/Edit/EditarItem.vue";
 export default {

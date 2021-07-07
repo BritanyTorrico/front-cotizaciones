@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import PresupuestoDepartamento from "@/components/Presupuestos/PresupuestoDepartamento.vue";
 export default {

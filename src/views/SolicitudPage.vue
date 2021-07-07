@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import SolicitudDatos from "../components/Solicitud/SolicitudDatos.vue";
 export default {

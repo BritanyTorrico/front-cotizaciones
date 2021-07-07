@@ -58,7 +58,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import UnitCard from "./UnitCard.vue";
 import UnitView from "./UnitView.vue";
 import { mapState } from "vuex";

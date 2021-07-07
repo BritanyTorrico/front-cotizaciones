@@ -11,7 +11,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import Options from '../components/Solicitud/Vista/Options.vue'
 import InboxSolicitudes from '../components/Solicitud/Vista/InboxSolicitudes.vue'
 import { mapState } from 'vuex';

@@ -11,7 +11,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import InboxCot from '../components/cotizacion/Vista/InboxCot.vue'
 import Options from '../components/cotizacion/Vista/Options.vue'
 import {mapState} from "vuex"

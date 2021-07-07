@@ -42,7 +42,7 @@
     </div>
 </template>
 
-<script>
+<script defer>
 import RolCard from './RolCard.vue'
 import RolView from './RolView.vue'
 import { mapState } from 'vuex'

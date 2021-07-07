@@ -330,7 +330,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import {
   required,
   minLength,

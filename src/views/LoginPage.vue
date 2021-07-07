@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import IniciarSesion from "../components/Login/IniciarSesion.vue";
 export default {

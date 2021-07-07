@@ -11,7 +11,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from 'vuex';
 import CuadInbox from '../components/cuadro_comparativo/CuadInbox.vue'
 import Options from '../components/cuadro_comparativo/Options.vue'

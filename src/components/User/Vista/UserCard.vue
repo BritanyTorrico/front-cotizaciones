@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 export default {
   name: "UserCard",
   data() {
@@ -28,38 +28,34 @@ export default {
   color: #030303 !important;
   width: 100%;
   display: flex;
+  align-items: baseline;
 }
 .card-user {
   display: flex;
   width: 50%;
 }
 h3 {
-  font-size: 18px;
+  font-size: 2.9vh;
   text-align: left;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-size: 20px;
   padding: 0 1% 0 0;
 }
 .card-rol {
-  font-size: 16px;
+  width: 47%;
+  font-size: 2.2vh;
   align-content: flex-end;
+  text-align: right;
   color: #626262 !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .card-alias {
-  font-size: 16px;
+  padding-top: 1%;
+  font-size: 1em;
   align-self: flex-start;
   font-weight: 550;
   text-align: left;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-.card-depto {
-  align-self: flex-start;
-  font-size: 15px;
-  color: #626262 !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }

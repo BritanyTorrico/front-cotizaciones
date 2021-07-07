@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import RegistroUnidad from "@/components/unidad_gasto/RegistroUnidad.vue";
 import { mapState } from "vuex";
 export default {

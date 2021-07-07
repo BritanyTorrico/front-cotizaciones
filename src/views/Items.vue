@@ -6,7 +6,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from 'vuex'
 import InboxItem from '../components/item_gasto/Vista/InboxItem.vue'
 

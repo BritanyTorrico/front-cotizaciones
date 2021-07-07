@@ -49,7 +49,7 @@
     </div>
 </template>
 
-<script>
+<script defer>
 import SolCard from './SolCard.vue'
 import SolView from './SolView.vue'
 import { mapState } from 'vuex'

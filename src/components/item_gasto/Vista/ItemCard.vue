@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 export default {
   name: "ItemCard",
   data() {

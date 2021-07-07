@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import EditarUnidad from "../components/unidad_gasto/Edit/EditarUnidad.vue";
 export default {

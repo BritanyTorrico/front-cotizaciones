@@ -103,7 +103,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import Alert from "@/components/Alert.vue";
 export default {

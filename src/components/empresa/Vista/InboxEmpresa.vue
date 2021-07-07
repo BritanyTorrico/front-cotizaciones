@@ -66,7 +66,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import CompCard from "./CompCard.vue"
 import CompView from './CompView.vue'
 import { mapState } from 'vuex'

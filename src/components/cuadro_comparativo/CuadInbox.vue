@@ -45,7 +45,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import CardCuad from "./CardCuad.vue";
 import CuadForm from "./CuadForm.vue";
 import { mapState } from "vuex";

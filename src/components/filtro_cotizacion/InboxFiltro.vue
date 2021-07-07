@@ -42,7 +42,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import CardFiltro from "./CardFiltro.vue";
 import { mapState } from "vuex";
 import VistaCot from "./VistaCot.vue";

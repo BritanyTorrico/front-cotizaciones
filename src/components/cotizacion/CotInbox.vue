@@ -46,7 +46,7 @@
     </div>
 </template>
 
-<script>
+<script defer>
 import CardCot from './CardCot.vue'
 import CotForm from './CotForm.vue'
 import { mapState } from 'vuex'

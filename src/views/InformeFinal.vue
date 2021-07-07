@@ -11,7 +11,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import ReportInbox from '../components/reporte_final/ReportInbox.vue'
 import Options from '../components/reporte_final/Options.vue'
 import { mapState } from 'vuex';

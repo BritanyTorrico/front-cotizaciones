@@ -8,7 +8,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import CotInbox from '../components/cotizacion/CotInbox.vue'
 import {mapState} from "vuex"
 export default {

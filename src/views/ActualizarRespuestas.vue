@@ -6,7 +6,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import EditarCotizacion from '../components/cotizacion/Edit/EditarCotizacion.vue'
 export default {

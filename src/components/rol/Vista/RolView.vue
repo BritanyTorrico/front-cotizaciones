@@ -27,7 +27,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 export default {
   name: "RolView",
   data() {
