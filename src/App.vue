@@ -4,7 +4,7 @@
       type="dark"
       id="barra"
       variant="primary"
-      toggleable="lg"
+      toggleable="md"
       class="navbar-horizontal"
     >
       <b-navbar-brand @click="paginaPrincipal()" id="logotipo"
@@ -357,7 +357,12 @@ a.navbar-brand {
   border: 1px solid;
 }
 #subtitu {
-  padding-right: 30px;
+  padding-right: 5px;
+}
+@media (max-width: 795px) {
+  #subtitu {
+    padding: 0%;
+  }
 }
 #subtitu a span {
   color: white;
