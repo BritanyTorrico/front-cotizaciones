@@ -17,7 +17,7 @@
     <div>
       <div class="row filas">
         <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
+          class="col-sm-6 col-md-3 col-xl-3 columnas"
           v-if="permisoCrearUsuario"
         >
           <a class="redireccion" href="/usuarios">
@@ -32,7 +32,7 @@
           </a>
         </div>
 
-        <div class="col-sm-6 col-md-4 col-xl-3 columnas" v-if="permisoCrearRol">
+        <div class="col-sm-6 col-md-3 col-xl-3 columnas" v-if="permisoCrearRol">
           <a class="redireccion" href="/roles">
             <card-permiso
               colorIcono="#FFFFFF"
@@ -44,7 +44,7 @@
           </a>
         </div>
         <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
+          class="col-sm-6 col-md-3 col-xl-3 columnas"
           v-if="permisoUnidadDeGasto"
         >
           <a class="redireccion" href="/unidades">
@@ -58,7 +58,7 @@
           </a>
         </div>
         <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
+          class="col-sm-6 col-md-3 col-xl-3 columnas"
           v-if="permisoItemDeGasto"
         >
           <a class="redireccion" href="/items">
@@ -72,7 +72,7 @@
           </a>
         </div>
 
-        <div class="col-sm-6 col-md-4 col-xl-3 columnas" v-if="permisoEmpresa">
+        <div class="col-sm-6 col-md-3 col-xl-3 columnas" v-if="permisoEmpresa">
           <a class="redireccion" href="/empresas">
             <card-permiso
               colorIcono="#FFFFFF"
@@ -85,7 +85,7 @@
         </div>
 
         <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
+          class="col-sm-6 col-md-3 col-xl-3 columnas"
           v-if="permisoSolicitud"
         >
           <a class="redireccion" href="/solicitudes">
@@ -99,7 +99,7 @@
           </a>
         </div>
         <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
+          class="col-sm-6 col-md-3 col-xl-3 columnas"
           v-if="permisoRevisionSolicitudes"
         >
           <a class="redireccion" href="/revisar_solicitudes">
@@ -113,7 +113,7 @@
           </a>
         </div>
         <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
+          class="col-sm-6 col-md-3 col-xl-3 columnas"
           v-if="permisoCotizacion"
         >
           <a class="redireccion" href="/cotizaciones">
@@ -122,12 +122,12 @@
               colorFondo=" #f1c40f"
               nombreIcono="check2-circle"
               titulo="Realizar Cotización"
-              contenido="Usted puede realizar la correspondiente cotización de las solicitud aceptadas para 3 empresas,ya sea en formato digital o impreso"
+              contenido="Usted puede realizar cotizaciones de las solicitudes aceptadas ,ya sea en formato digital o impreso"
             ></card-permiso>
           </a>
         </div>
         <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
+          class="col-sm-6 col-md-3 col-xl-3 columnas"
           v-if="permisoFiltroCotizacion"
         >
           <a class="redireccion" href="/filtro_cotizaciones">
@@ -136,13 +136,13 @@
               colorFondo=" #84817a"
               nombreIcono="layout-split"
               titulo="Ver cotizaciones"
-              contenido="Usted puede ver todas las cotizaciones por diferentes filtros ya sea popr fechas,item/servicios , por el rubro de una empresa y mas."
+              contenido="Usted puede ver todas las cotizaciones por diferentes filtros ya sea por fechas, item/servicios , por el rubro de una empresa y mas."
             >
             </card-permiso>
           </a>
         </div>
         <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
+          class="col-sm-6 col-md-3 col-xl-3 columnas"
           v-if="permisoPresupuestoDep"
         >
           <a class="redireccion" href="/presupuestoDep">
@@ -157,7 +157,7 @@
           </a>
         </div>
         <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
+          class="col-sm-6 col-md-3 col-xl-3 columnas"
           v-if="permisoPresupuestoUnidad"
         >
           <a class="redireccion" href="/presupuestos">
@@ -172,7 +172,7 @@
           </a>
         </div>
         <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
+          class="col-sm-6 col-md-3 col-xl-3 columnas"
           v-if="permisoCuadroComparativo"
         >
           <a class="redireccion" href="/cuadro_comparativo">
@@ -186,7 +186,7 @@
             </card-permiso>
           </a>
         </div>
-        <div class="col-sm-6 col-md-4 col-xl-3 columnas" v-if="permisoBitacora">
+        <div class="col-sm-6 col-md-3 col-xl-3 columnas" v-if="permisoBitacora">
           <a class="redireccion" href="/logss">
             <card-permiso
               colorIcono="#FFFFFF"
@@ -199,7 +199,7 @@
           </a>
         </div>
         <div
-          class="col-sm-6 col-md-4 col-xl-3 columnas"
+          class="col-sm-6 col-md-3 col-xl-3 columnas"
           v-if="permisoInformeFinal"
         >
           <a class="redireccion" href="/informe_final">
@@ -213,7 +213,7 @@
             </card-permiso>
           </a>
         </div>
-        <div class="col-sm-6 col-md-4 col-xl-3 columnas" v-if="permisoBackup">
+        <div class="col-sm-6 col-md-3 col-xl-3 columnas" v-if="permisoBackup">
           <a class="redireccion" href="/back">
             <card-permiso
               colorIcono="#FFFFFF"
