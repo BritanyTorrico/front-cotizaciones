@@ -49,13 +49,8 @@ export default {
 
 <style scoped>
 .soli-container{
+  min-height: 100vh;
     margin: 2rem;
     margin-top: 0;
-}
-.soli-filter{
-  background: #46b1c969;
-}
-.soli-inbox{
-  background: #c4dee4;
 }
 </style>

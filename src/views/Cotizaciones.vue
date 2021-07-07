@@ -47,10 +47,7 @@ export default {
 </script>
 
 <style scoped>
-.quotation-filter{
-  background: #46b1c969;
-}
-.fiter-inbox{
-  background: #c4dee4;
+.filter-container{
+  min-height: 100vh;
 }
 </style>

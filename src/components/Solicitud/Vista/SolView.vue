@@ -101,10 +101,9 @@ export default {
 <style scoped>
 .single-request-details {
   background: #fff;
-  margin: 40px;
-  padding: 10px 10px 20px 10px;
-  box-shadow: 0px 0px 30px 0px rgba(0, 143, 216, 0.15);
-  width: 100%;
+  margin: 1%;
+  padding: 1.2% 1% 1.2% 1%;
+  width: 98%;
   border: 1px solid #808c8f;
   border-radius: 3px;
   display: flex;
@@ -117,32 +116,32 @@ export default {
 }
 h2 {
   color: #030303 !important;
-  font-size: 35px;
+  font-size: 3.9vh;
   font-weight: 600;
+  text-align: left;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .time {
-  font-size: 16px;
+  font-size: 1.9vh;
   color: #3f4b5b !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .head-subject {
-  font-size: 20px;
+  font-size: 3vh;
   font-weight: 500;
   color: #3a3939 !important;
-  margin-top: 12px;
   text-align: left;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   display: flex;
   align-items: baseline;
-  width: 50%;
+  width: 100%;
 }
 h3 {
   color: #030303 !important;
-  font-size: 25px;
+  font-size: 3.2vh;
   font-weight: 600;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -150,10 +149,9 @@ h3 {
 }
 .body-part {
   text-align: left;
-  margin: 25px 0 0;
 }
 h5 {
-  font-size: 18px;
+  font-size: 2.5vh;
   color: #030303 !important;
   font-weight: 600;
   text-align: left;
@@ -161,7 +159,7 @@ h5 {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 p {
-  font-size: 18px;
+  font-size: 2.5vh;
   color: #626262 !important;
   line-height: 1.8;
   margin-bottom: 30px;
@@ -171,7 +169,7 @@ p {
 .money {
   word-break: keep-all;
   color: #626262;
-  font-size: 18px;
+  font-size: 2.3vh;
   display: flex;
   justify-content: space-between;
   width: 25%;
@@ -182,8 +180,7 @@ p {
 .items {
   align-self: center;
   width: 100%;
-  padding: 0 0 1% 0;
-  font-size: 17px;
+  font-size: 2vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
@@ -196,11 +193,11 @@ p {
   text-align: center;
 }
 .items th {
-  padding: 1% 2% 1% 2%;
+  padding: 1% 1% 1% 1%;
   border: 1px solid #d1d0d0;
 }
 .items td {
-  padding: 0.5% 1% 0.5% 1%;
+  padding: 0.5% 0.5% 0.5% 0.5%;
   border: 1px solid #c0c0c0;
 }
 .empty-rows {
@@ -225,52 +222,22 @@ p {
 .table-totalprice {
   width: 9% !important;
 }
-.accept-button {
-  margin: auto;
-  display: block;
-  background-color: #003570;
-  padding: 1.2% 11.5% 1.2% 11.5%;
-  border-radius: 22px;
-  color: #fafafa;
-  font-size: 22px;
-  font-weight: bold;
-  border: 0px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-.reject-button {
-  margin: auto;
-  display: block;
-  background-color: #b70d0d;
-  padding: 1.2% 11.5% 1.2% 11.5%;
-  border-radius: 22px;
-  color: #fafafa;
-  font-size: 22px;
-  font-weight: bold;
-  border: 0px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
 .head-info {
   display: flex;
   width: 100%;
   justify-content: space-between;
 }
-.options {
-  display: flex;
-}
 .report {
   text-align: left;
-  margin: 25px 0 0;
   padding-bottom: 5%;
 }
 .report h5 {
-  font-size: 22px;
+  font-size: 2.7vh;
 }
 .reviewer {
   word-break: keep-all;
   color: #626262;
-  font-size: 18px;
+  font-size: 2.5vh;
   display: flex;
   width: 100%;
   align-items: baseline;

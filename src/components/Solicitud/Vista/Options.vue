@@ -1,6 +1,23 @@
 <template>
   <div class="sol-filters">
-      <div class="filter-title" v-on:click="showFilters = !showFilters">Filtros</div>
+      <div class="btn">
+            <button class="new-request" v-on:click="newRequest()">Nueva Solicitud</button>
+        </div>
+      <div style="display: flex;">
+        <div class="filter-title">Filtros</div>
+        <div class="arrow" style="display: inline;" v-on:click="showFilters = !showFilters" :class="showFilters ? 'rotate' : ''">
+                <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="18" 
+                    height="18" 
+                    fill="currentColor" 
+                    class="bi bi-caret-down-fill" 
+                    viewBox="0 0 16 16"
+                >
+                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+              </div>
+        </div>
       <transition class="animation"
                       enter-active-class="animate__animated animate__fadeInDown"
                       leave-active-class="animate__animated animate__fadeOutUp"
@@ -205,7 +222,10 @@ export default {
           this.$emit("senditems", this.filteredItems)
           this.loading=!this.loading
           this.$emit("sendstat", this.loading)
-      }
+      },
+      async newRequest() {
+            this.$router.push('/solicitud/nueva')
+        },
   },
   mounted(){
       this.getData();
@@ -222,10 +242,18 @@ export default {
 }
 .filter-title{
     align-self: flex-start;
-    font-size: 30px;
+    text-align: left;
+    font-size: 4vh;
     color: #3f4b5b;
     font-weight: 740;
-    padding: 2%;
+    padding: 0 1% 0 0;
+}
+.arrow{
+    align-self: center;
+}
+.rotate {
+  -webkit-transform: rotateX(180deg);
+          transform: rotateX(180deg);
 }
 .filter-categories{
     display: flex;
@@ -292,5 +320,23 @@ export default {
     color: #030303;
     padding: 2% 0 0 7px;
     font-size: 14px;
+}
+.new-request {
+    margin: auto;
+    display: block;
+    background-color: #003570;
+    width: 22vw;
+    border-radius: 22px;
+    color: #fafafa;
+    font-size: 1.5em;
+    font-weight: bold;
+    border: 0px;
+    height: 6vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.btn {
+    align-self: flex-start;
+    padding: 2%;
+    width: 100%;
 }
 </style>

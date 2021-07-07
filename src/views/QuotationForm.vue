@@ -32,5 +32,6 @@ export default {
 .quotation-form{
     margin: 2rem;
     margin-top: 0;
+    min-height: 100vh;
 }
 </style>

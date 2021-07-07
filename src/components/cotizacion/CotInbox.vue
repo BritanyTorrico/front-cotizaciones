@@ -26,20 +26,20 @@
                                 :description="req.detalle_solicitud"
                             />
                         </div>
+                        <div class="inbox-form" v-if="req.nombre_solicitud==selectedRequest.name">
+                        <div v-if="selectedRequest.name!=''">
+                        <transition
+                            enter-active-class="animate__animated animate__fadeInRight"
+                            leave-active-class="animate__animated animate__fadeOutRight"
+                        >
+                            <div v-if="!changeCot">
+                                <CotForm :request="selectedRequest" />
+                            </div>
+                        </transition>
+                        </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="inbox-form" :class="selectedRequest.name === '' ? 'no-selected' : ''">
-              <div v-if="selectedRequest.name!=''">
-              <transition
-                enter-active-class="animate__animated animate__fadeInRight"
-                leave-active-class="animate__animated animate__fadeOutRight"
-              >
-                  <div v-if="!changeCot">
-                      <CotForm :request="selectedRequest" />
-                  </div>
-              </transition>
-              </div>
             </div>
         </div>
     </div>
@@ -150,25 +150,17 @@ export default {
     position: relative;
 }
 .inbox-container {
-    padding: 0px !important;
-    gap: 2rem;
     width: 100%;
-    display: flex;
     flex-direction: row;
-    justify-content: space-between;
 }
 .card-index {
     position: relative;
-    align-items: baseline;
-    padding: 2.5% 2.5%;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
+    border-bottom: 1px solid #9b9b9b;
     width: 100%;
 }
 .inbox-cards {
     display: flex;
-    height: 42rem;
-    overflow: auto;
+    width: 100%;
 }
 .loading-info{
   display: flex;
@@ -223,20 +215,22 @@ export default {
   }
 }
 .desc {
-    font-size: 29px;
+    font-size: 3.9vh;
     text-align: left;
     font-weight: 600;
-    padding: 2.5% 1% 1% 1%;
-    background: #dddfe7;
-    border: 1px solid #dddfe7;
-    border-radius: 5%;
+    padding: 1% 1% 1% 1%;
+    background: #c9c9c9;
     width: 100%;
 }
 .inbox-form {
-    padding: 0 5% 5% 0;
-    margin: 10px;
-    background: #c4dee4;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%!important;
+    background: #97ced8;
+    border-right: 3px solid #030303;
+    border-left: 3px solid #030303;
+    border-bottom: 3px solid #030303;
+    border-radius: 0 0 10px 10px;
 }
 .single-card-container {
     align-items: center;
@@ -250,22 +244,13 @@ export default {
     width: 100%;
 }
 .selected-card {
-    background: #b4cace;
-    border: 3px solid #030303;
-    border-radius: 10px;
-}
-.no-selected {
-    padding: 0 !important;
-    margin: 0;
-    width: 0% !important;
-}
-.full-screen {
-    width: 100% !important;
-}
-.side-view {
-    width: 40% !important;
+    background: #97ced8;
+    border-right: 3px solid #030303;
+    border-left: 3px solid #030303;
+    border-top: 3px solid #030303;
+    border-radius: 10px 10px 0 0;
 }
 :root{
-  --animate-duration: 1000ms;
+  --animate-duration: 500ms;
 }
 </style>

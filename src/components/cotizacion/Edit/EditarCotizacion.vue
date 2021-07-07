@@ -301,14 +301,13 @@ export default {
 <style lang="scss" scoped>
 .cot-edit{
     background: #fff;
-    margin: 40px;
-    padding: 10px 10px 20px 10px;
-    box-shadow: 0px 0px 30px 0px rgba(0, 143, 216, 0.15);
-    width: 90%;
-    border: 1px solid #808C8F;
-    border-radius: 3px;
-    display: flex;
-    flex-direction: column;
+  margin: 1%;
+  padding: 1.2% 1% 1.2% 1%;
+  width: 98%;
+  border: 1px solid #808c8f;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
 }
 .cot-edit textarea {
   resize: none;
@@ -316,10 +315,18 @@ export default {
   overflow-y: auto;
   background-color: #f7f6f6;
   border-radius: 3px;
-  padding: 8px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   width: 100%;
+  padding: 0 1% 0 1%;
+}
+.unitario-item{
+  width: 100%;
+  border: 1px solid #6d7679;
+}
+.detalle-item{
+  width: 100%;
+  border: 1px solid #6d7679;
 }
 .head-top {
   text-align: left;
@@ -381,25 +388,12 @@ export default {
 }
 h2 {
   color: #030303 !important;
-  font-size: 30px;
+  font-size: 3.5vh;
   font-weight: 600;
-}
-.time {
-  font-size: 16px;
-  color: #3f4b5b !important;
-  text-transform: capitalize;
-}
-.head-subject {
-  font-size: 22px;
-  font-weight: 600;
-  color: #030303 !important;
-  margin-top: 12px;
-  text-align: left;
 }
 h5 {
-  font-size: 20px;
+  font-size: 2.5vh;
   color: #030303 !important;
-  line-height: 1.8;
   font-weight: 600;
   text-align: left;
 }
@@ -407,7 +401,7 @@ h5 {
   align-self: center;
   width: 100%;
   padding: 0 0 5% 0;
-  font-size: 17px;
+  font-size: 2vh;
 }
 .items thead {
   padding: 0.5% 1% 0.5% 1%;
@@ -420,31 +414,6 @@ h5 {
 .items td {
   padding: 0.5% 1% 0.5% 1%;
   border: 1px solid #c0c0c0;
-}
-.confirmed-companies {
-  display: flex;
-  align-content: flex-start;
-  align-items: flex-start;
-  align-items: baseline;
-}
-.confirmed-title {
-  color: #030303;
-  font-size: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-weight: 500;
-  padding-bottom: 1%;
-  padding-right: 1%;
-}
-.company-name{
-    color: #030303;
-    list-style-position: inside;
-    display: flex;
-    flex-direction: column;
-    font-size: 16px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: 420;
-    width: 100%;
 }
 .table-quantity{
   width: 11.5%!important;
@@ -468,39 +437,41 @@ h5 {
   margin: auto;
   display: block;
   background-color: #003570;
-  padding: 0.5% 2.5% 0.5% 2.5%;
+  height: 6vh;
+  width: 22vw;
   border-radius: 22px;
   color: #fafafa;
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 1.1em;
   border: 0px;
+  font-weight: bold;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .reject-button {
+  background-color: #777272;
   margin: auto;
   display: block;
-  background-color: #777272;
-  padding: 0.5% 2.5% 0.5% 2.5%;
+  height: 6vh;
+  width: 22vw;
   border-radius: 22px;
   color: #fafafa;
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 1.1em;
   border: 0px;
+  font-weight: bold;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .delete-button {
-  justify-self: left;
+  background-color: #ed1c24;;
   margin: auto;
   display: block;
-  background-color: #ed1c24;;
-  padding: 0.5% 2.5% 0.5% 2.5%;
+  height: 6vh;
+  width: 22vw;
   border-radius: 22px;
   color: #fafafa;
-  font-size: 17px;
-  font-weight: bold;
+  font-size: 1.1em;
   border: 0px;
+  font-weight: bold;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
@@ -538,21 +509,22 @@ h5 {
   max-width: auto;
   max-height: auto;
   align-items: center;
-  
   padding: 0.2% 0% 1% 1.5%;
 }
 label{
+  background-color: #777272;
   margin: auto;
   display: block;
-  background-color: #777272;
-  padding: 0.5% 2.5% 0.5% 2.5%;
+  height: 6vh;
+  width: 22vw;
   border-radius: 22px;
   color: #fafafa;
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 1.1em;
   border: 0px;
+  font-weight: bold;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  padding: 0.5% 0 1% 0 ;
 }
 .form_check-error {
   color: #ed1c24;

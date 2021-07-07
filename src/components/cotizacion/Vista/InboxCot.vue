@@ -13,7 +13,7 @@
             <div class="desc">No tiene cotizaciones realizadas</div>
         </div>
       <div v-else class="inbox-container">
-              <div class="inbox-cards" :class="selectedCot.name === '' ? 'full-screen' : 'side-view'">
+              <div class="inbox-cards">
                   <div class="card-side">
                       <div class="desc">Mis cotizaciones:</div>
                       <div class="card-index" v-for="(cot,i) in inboxData" :key="i">
@@ -24,20 +24,20 @@
                                 :status="cot.estado_cotizacion"
                               />
                           </div>
+                          <div class="inbox-selected" v-if="cot.nombre_cotizacion==selectedCot.name">
+                            <div v-if="selectedCot.name!=''">
+                              <transition
+                                enter-active-class="animate__animated animate__fadeInRight"
+                                leave-active-class="animate__animated animate__fadeOutRight"
+                              >
+                                <div v-if="!changeCot">
+                                  <CotView
+                                    :cot="selectedCot"/>
+                                </div>
+                              </transition>
+                            </div>
+                        </div>
                       </div>
-                  </div>
-              </div>
-              <div class="inbox-selected" :class="selectedCot.name === '' ? 'no-selected' : ''">
-                  <div v-if="selectedCot.name!=''">
-                    <transition
-                      enter-active-class="animate__animated animate__fadeInRight"
-                      leave-active-class="animate__animated animate__fadeOutRight"
-                    >
-                      <div v-if="!changeCot">
-                        <CotView
-                          :cot="selectedCot"/>
-                      </div>
-                    </transition>
                   </div>
               </div>
       </div>
@@ -103,12 +103,8 @@ export default {
     position: relative;
 }
 .inbox-container {
-    padding: 0px !important;
-    gap: 2rem;
     width: 100%;
-    display: flex;
     flex-direction: row;
-    justify-content: space-between;
 }
 .loading-info{
   display: flex;
@@ -164,16 +160,12 @@ export default {
 }
 .card-index {
     position: relative;
-    align-items: baseline;
-    padding: 2.5% 2.5%;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
+    border-bottom: 1px solid #9b9b9b;
     width: 100%;
 }
 .inbox-cards {
     display: flex;
-    height: 42rem;
-    overflow: auto;
+    width: 100%;
 }
 .single-card-container {
   align-items: center;
@@ -187,28 +179,35 @@ export default {
   width: 100%;
 }
 .selected-card{
-    background: #b4cace;
-  border: 3px solid #030303;
-  border-radius: 10px;
+   background: #97ced8;
+    border-right: 3px solid #030303;
+    border-left: 3px solid #030303;
+    border-top: 3px solid #030303;
+    border-radius: 10px 10px 0 0;
 }
 .inbox-selected {
-  width: 100%;
-    padding: 0 5rem 5rem 0;
-    margin: 10px;
+  display: flex;
+    flex-direction: column;
+    width: 100%!important;
     background: #97ced8;
+    border-right: 3px solid #030303;
+    border-left: 3px solid #030303;
+    border-bottom: 3px solid #030303;
+    border-radius: 0 0 10px 10px;
 }
 .new-quotation {
     margin: auto;
-    display: block;
-    background-color: #003570;
-    padding: 1.2% 11.5% 1.2% 11.5% !important;
-    border-radius: 22px;
-    color: #fafafa;
-    font-size: 22px;
-    font-weight: bold;
-    border: 0px;
-    height: 50px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  display: block;
+  background-color: #003570;
+  height: 6vh;
+  width: 22vw;
+  border-radius: 22px;
+  color: #fafafa;
+  font-size: 1.1em;
+  border: 0px;
+  font-weight: bold;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .btn {
     align-self: flex-start;
@@ -216,27 +215,14 @@ export default {
     width: 30%;
 }
 .desc {
-    font-size: 29px;
+    font-size: 3.9vh;
     text-align: left;
     font-weight: 600;
-    padding: 2.5% 1% 1% 1%;
-    background: #dddfe7;
-    border: 1px solid #dddfe7;
-    border-radius: 5%;
+    padding: 1% 1% 1% 1%;
+    background: #c9c9c9;
     width: 100%;
 }
 :root{
-  --animate-duration: 1000ms;
-}
-.no-selected {
-    padding: 0 !important;
-    margin: 0;
-    width: 0% !important;
-}
-.full-screen {
-    width: 100% !important;
-}
-.side-view {
-    width: 40% !important;
+  --animate-duration: 500ms;
 }
 </style>

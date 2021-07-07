@@ -245,9 +245,17 @@ const routes = [{
         },
     },
     {
-        path: "/cuadro_comparativo",
+        path: "/cuadro_comparativo/nuevo",
         name: "CuadroComparativo",
         component: lazyLoad('CuadroComparativo'),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/cuadro_comparativo",
+        name: "CuadroComparativo",
+        component: lazyLoad('TablasComparativas'),
         meta: {
             rutaProtegida: true,
         },
