@@ -27,6 +27,7 @@ export default {
 
 <style scoped>
 .company-container{
+  min-height: 100vh;
     margin: 2rem;
     margin-top: 0;
 }

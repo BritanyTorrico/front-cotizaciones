@@ -26,6 +26,7 @@ export default {
 
 <style scoped>
 .item-container{
+  min-height: 100vh;
     margin: 2rem;
     margin-top: 0;
 }

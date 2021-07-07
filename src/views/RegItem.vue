@@ -29,6 +29,7 @@ export default {
 .register {
   background-color: #46b1c95b;
   margin-top: 0;
+  min-height: 100vh;
 }
 
 .register_container {

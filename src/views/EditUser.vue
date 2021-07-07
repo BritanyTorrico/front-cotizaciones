@@ -29,6 +29,7 @@ export default {
   padding: 0;
 }
 .contenedor {
+  min-height: 100vh;
   display: block;
   padding: 2.5% 18% 5% 18%;
   background-color: #46b1c95b;

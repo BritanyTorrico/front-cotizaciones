@@ -25,6 +25,7 @@ export default {
 
 <style scoped>
 .response-register{
+  min-height: 100vh;
     background-color: #46b1c95b;
   margin-top: 0;
 }
