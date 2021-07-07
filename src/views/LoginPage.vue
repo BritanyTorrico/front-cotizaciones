@@ -26,7 +26,7 @@ export default {
   justify-content: center;
   align-items: center;
   background-color: #46b1c95b;
-  min-height: 100vh;
+  min-height: 90vh;
 }
 @media (max-width: 880px) {
   .inicio {
