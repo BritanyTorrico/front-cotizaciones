@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-
 Vue.use(VueRouter);
 
 function lazyLoad(view){
@@ -12,6 +11,12 @@ const routes = [{
         path: "/",
         name: "PaginaPrincipalPage",
         component: lazyLoad('PaginaPrincipalPage'),
+    },
+    {
+        path: "/acercaDeNosotros",
+        name: "Acerca",
+        component: () =>
+            import ("@/components/Pagina_Inicial/Acerca.vue"),
     },
     {
         path: "/principal",

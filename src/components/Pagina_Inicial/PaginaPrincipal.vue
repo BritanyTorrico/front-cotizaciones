@@ -6,11 +6,10 @@
       <p class="contenido_des">
         Bienvenido al sistema de cotizaciones de la Universidad Mayor de San
         Simon,donde usted podra manejar de manera mas practica cotizaciones de
-        toda la universidad , El sistema de cotizaciones: Es un sistema web para
-        que puedas administrar cotizaciones. Tu puedes facilmente administrar: /
-        Solicitudes / Unidades de gasto / items / servicios / usuarios /
-        Empresas / Presupuestos / Cotizaciones y hasta realizar un cuadro
-        comparativo para la cotización de manera mas sencilla y rapida.
+        toda la universidad de manera mas rapida y sencilla. El sistema permite
+        la administración y gestión de: cotizaciones, usuarios, items y unidades
+        y le permite agregar los datos de la empresa ,registrar presupuestos
+        ,realizar solicitudes , cotizaciones un cuadro comparativo entre otros.
       </p>
     </div>
     <div class="desripcion__imagenes">
@@ -49,6 +48,7 @@ export default {
   background-color: red;
   width: 70%;
 }
+
 .desripcion__imagenes {
   width: 50%;
   padding-top: 20px;
@@ -63,6 +63,6 @@ export default {
 }
 .contenido_des {
   font-size: 18px;
-  padding: 20px;
+  padding: 2%;
 }
 </style>

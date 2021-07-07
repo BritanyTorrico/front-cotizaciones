@@ -215,28 +215,28 @@ export default {
 <style scoped>
 .base {
   width: 100%;
-  height: 100%x;
   border-radius: 30px;
   background: var(--fondo-gris-claro);
   border: none;
-  padding: 15% 0% 15% 0%;
+  padding: 10% 0% 10% 0%;
+  margin-top: 0;
+
+  min-height: 80vh;
 }
 @media (max-width: 360px) {
   .base {
-    height: 100vh;
+    min-height: 100vh;
   }
-}
-.container1 {
 }
 
 .form__img {
   width: 50%;
-  height: 250px;
+  height: 200px;
   text-align: center;
 }
 .form__name {
   font-weight: bold;
-  margin-top: 10px;
+  margin-top: 8px;
   margin-bottom: 8px;
 }
 .form__section {

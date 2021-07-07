@@ -81,6 +81,10 @@
                 ><b-icon icon="arrow-return-left" class="iconito"></b-icon
                 >Cerrar Sesion</a
               >
+              <a v-if="!username" href="/acercaDeNosotros"
+                ><b-icon icon="house" class="iconito"></b-icon>Acerca de
+                nosotros</a
+              >
               <a v-if="!username" href="/login"
                 ><b-icon icon="arrow-return-left" class="iconito"></b-icon
                 >Iniciar Sesion</a
@@ -190,6 +194,9 @@
           <b-nav-item v-if="username" id="subtitu1" @click="cerrar()" href="/"
             >Cerrar Sesion</b-nav-item
           >
+          <b-nav-item v-if="!username" id="subtitu1" href="/acercaDeNosotros"
+            >Acerca de nosotros</b-nav-item
+          >
           <b-nav-item href="/login" v-if="!username" id="subtitu1"
             >Iniciar Sesion</b-nav-item
           >
@@ -204,7 +211,7 @@
       <router-view />
     </transition>
 
-    <div class="page-layout">
+    <div class="page-layout" delay="6000">
       <footerPagina />
     </div>
   </div>
@@ -214,8 +221,8 @@ import { mapState, mapActions } from "vuex";
 
 const AsyncComponent = () => ({
   component: import("@/views/FooterPagina.vue"),
-  delay: 200,
-  timeout: 3000,
+  delay: 2000,
+  timeout: 6000,
 });
 export default {
   components: { footerPagina: AsyncComponent },
