@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 // @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
 

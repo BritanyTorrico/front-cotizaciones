@@ -6,7 +6,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from 'vuex'
 import InboxRoles from '../components/rol/Vista/InboxRoles.vue'
 export default {
@@ -25,6 +25,7 @@ export default {
 
 <style scoped>
 .roles-container{
+  min-height: 100vh;
     margin: 2rem;
     margin-top: 0;
 }

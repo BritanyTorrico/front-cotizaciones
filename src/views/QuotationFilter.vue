@@ -11,7 +11,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from 'vuex';
 import InboxFiltro from '../components/filtro_cotizacion/InboxFiltro.vue';
 import Options from '../components/filtro_cotizacion/Options.vue'
@@ -48,10 +48,7 @@ export default {
 </script>
 
 <style scoped>
-.quotation-filter{
-  background: #46b1c969;
-}
-.fiter-inbox{
-  background: #c4dee4;
+.filter-container{
+  min-height: 100vh;
 }
 </style>

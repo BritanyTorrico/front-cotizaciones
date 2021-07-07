@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import RegisterUser from "@/components/User/RegisterUser.vue";
 import { mapState } from "vuex";
 export default {

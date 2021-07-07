@@ -118,7 +118,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import { helpers } from "vuelidate/lib/validators";
 const validate_date = (value) => {

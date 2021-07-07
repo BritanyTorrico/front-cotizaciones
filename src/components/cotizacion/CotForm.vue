@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import Alert from '../Alert.vue';
 import Empresas from "./Empresas.vue";
 import { mapState } from "vuex";
@@ -75,7 +75,7 @@ export default {
           await this.sendQuotData();
           await this.updateRequest();
           this.alert("success", "Cotizacion creada exitosamente");
-            window.setInterval(window .location.reload(), 10000); 
+            this.$router.push('/cotizaciones')
         }else{
           this.alert("warning", "Seleccione por lo menos 3 empresas");
         }
@@ -126,22 +126,19 @@ export default {
 
 <style lang="scss" scoped>
 .cot-form{
-  background-color: #f1f2f6;
-  margin: 40px;
-  padding: 10px 10px 20px 10px;
-  box-shadow: 0px 0px 30px 0px rgba(0, 143, 216, 0.15);
-  width: 100%;
+  background: #fff;
+  margin: 1%;
+  padding: 1.2% 1% 1.2% 1%;
+  width: 98%;
   border: 1px solid #808c8f;
   border-radius: 3px;
   display: flex;
   flex-direction: column;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .form-title {
   text-align: left;
   color: #3d8af7;
-  font-size: 36px;
+  font-size: 4vh;
   font-weight: 600;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -202,19 +199,19 @@ export default {
   }
 }
 .form_crear {
-  padding: 0 0 0 3%;
+  padding: 0 0 0 1%;
   text-align: left;
 }
 .form_label {
   color: #3f4b5b;
-  font-size: 24px;
+  font-size: 2.7vh;
   font-weight: 500;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   padding: 0 1% 0 0;
 }
 .form_section {
-  padding: 1.5% 0px 1.5% 0px;
+  padding: 1.5% 0 1.5% 0;
   display: flex;
   align-items: baseline;
 }
@@ -223,17 +220,6 @@ export default {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
-.form_button {
-  margin: auto;
-  display: block;
-  background-color: #0c59cf;
-  padding: 12px 115px 12px 115px;
-  border-radius: 22px;
-  color: #fafafa;
-  font-size: 22px;
-  font-weight: bold;
-  border: 0px;
-}
 .form_check-input {
   border-bottom: 1px;
   border-bottom-color: #999999;
@@ -241,41 +227,19 @@ export default {
 .form_check-input-error {
   border: 1px solid #ed1c24 !important;
 }
-.button-disabled {
-  background: #999999;
-  border: 0px;
-}
-.items {
-  align-self: center;
-  width: 90%;
-  padding: 0 0 5% 0;
-  font-size: 17px;
-}
-.items-list {
-  width: 100%;
-}
-.items thead {
-  background-color: #c5c4c4;
-  text-align: center;
-}
-.items th {
-  padding: 1% 2% 1% 2%;
-  border: 1px solid #d1d0d0;
-  width: 0;
-}
-.items td {
-  padding: 0.5% 1% 0.5% 1%;
-  border: 1px solid #c0c0c0;
-}
 .accept-button {
-  margin: auto;
-  background-color: #003570;
-  padding: 1.2% 11.5% 1.2% 11.5%;
+  background-color: #0c59cf;
+ margin: auto;
+  display: block;
+  height: 6vh;
+  width: 22vw;
   border-radius: 22px;
   color: #fafafa;
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 1.1em;
   border: 0px;
+  font-weight: bold;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .button-disabled {
   background: #999999;

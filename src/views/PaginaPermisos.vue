@@ -230,7 +230,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import CardPermiso from "../components/Pagina_Inicial/CardPermiso.vue";
 import { mapState } from "vuex";
 export default {

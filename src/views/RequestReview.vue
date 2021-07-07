@@ -8,7 +8,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from 'vuex';
 import Inbox from '../components/view_requests/Inbox.vue'
 export default {
@@ -29,6 +29,7 @@ export default {
 
 <style scoped>
 .review{
+  min-height: 100vh;
     margin: 2rem;
     margin-top: 0;
 }

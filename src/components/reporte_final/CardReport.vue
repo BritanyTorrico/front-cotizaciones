@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 export default {
   name: "CardReport",
   data() {

@@ -82,7 +82,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { required, maxLength, helpers } from "vuelidate/lib/validators";
 import Alert from "@/components/User/Alert.vue";
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);

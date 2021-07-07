@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import RegistroItem from "@/components/item_gasto/RegistroItem.vue";
 import { mapState } from "vuex";
 export default {
@@ -29,6 +29,7 @@ export default {
 .register {
   background-color: #46b1c95b;
   margin-top: 0;
+  min-height: 100vh;
 }
 
 .register_container {

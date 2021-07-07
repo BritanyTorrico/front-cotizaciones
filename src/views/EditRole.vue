@@ -1,24 +1,24 @@
 <template>
-  <div class="register" v-if="this.permisoUnidadDeGasto">
+  <div class="register" v-if="this.permisoCrearRol">
     <div class="register_container">
-      <RegistroUnidad class="register_unit" />
+      <EditarRol class="register_item" />
     </div>
   </div>
 </template>
 
 <script defer>
-import RegistroUnidad from "@/components/unidad_gasto/RegistroUnidad.vue";
 import { mapState } from "vuex";
+import EditarRol from "@/components/rol/Edit/EditarRol.vue";
 export default {
-  name: "RegistroUnidadGasto",
+  name: "EditRole",
   components: {
-    RegistroUnidad,
+    EditarRol,
   },
   computed: {
-    ...mapState(["permisoUnidadDeGasto"]),
+    ...mapState(["permisoCrearRol"]),
   },
   mounted() {
-    if (!this.permisoUnidadDeGasto) {
+    if (!this.permisoCrearRol) {
       this.$router.push("/");
     }
   },
@@ -31,12 +31,12 @@ export default {
   background-color: #46b1c95b;
   margin-top: 0;
 }
-
 .register_container {
   display: block;
   padding: 2.5% 22% 5% 22%;
 }
-@media (max-width: 800px) {
+
+@media (max-width: 860px) {
   .register_container {
     padding: 0%;
   }

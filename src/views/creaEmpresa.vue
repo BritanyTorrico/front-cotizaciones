@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import CrearEmpresa from "@/components/empresa/CrearEmpresa.vue";
 export default {
@@ -27,6 +27,7 @@ export default {
 
 <style scoped>
 .register {
+  min-height: 100vh;
   background-color: #46b1c95b;
   margin-top: 0;
 }

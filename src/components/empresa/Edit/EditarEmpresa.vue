@@ -258,7 +258,7 @@
   </section>
 </template>
 
-<script>
+<script defer>
 import {
   required,
   maxLength,

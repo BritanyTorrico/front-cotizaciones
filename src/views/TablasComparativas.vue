@@ -2,10 +2,10 @@
 <div v-if="this.permisoCuadroComparativo">
   <div class="review">
       <div class="filter">
-          <Options @sendinboxdata="passData($event)" @sendtabledata="passTable($event)" @sendcompaniesdata="passCompanies($event)"/>
+          <Filters @sendinboxdata="passData($event)" @sendtabledata="passTable($event)" @sendcompaniesdata="passCompanies($event)"/>
       </div>
       <div class="inbox">
-          <CuadInbox :inboxData="inboxData" :tableData="tableData" :companiesData="companiesData"/>
+          <InboxTab :inboxData="inboxData" :tableData="tableData" :companiesData="companiesData"/>
       </div>
   </div>
 </div>
@@ -13,10 +13,10 @@
 
 <script defer>
 import { mapState } from 'vuex';
-import CuadInbox from '../components/cuadro_comparativo/CuadInbox.vue'
-import Options from '../components/cuadro_comparativo/Options.vue'
+import InboxTab from '../components/cuadro_comparativo/Vista/InboxTab.vue'
+import Filters from '../components/cuadro_comparativo/Vista/Filters.vue'
 export default {
-  components: { Options, CuadInbox },
+  components: { Filters, InboxTab },
   computed:{
     ...mapState(["permisoCuadroComparativo"])
   },
@@ -43,7 +43,7 @@ data(){
       this.$router.push("/");
     }
   },
-  name: "CuadroComparativo",
+  name: "TablasComparativas",
 }
 </script>
 

@@ -527,7 +527,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import {
   required,
   maxLength,
@@ -895,8 +895,7 @@ export default {
             this.listaPeticion = [];
             this.listaUnidadesDeGasto = [];
             this.getDepartamento();
-            await this.forceRerender();
-            await this.forceRerender2();
+            this.$router.push(`/solicitudes`)
           }
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");

@@ -138,7 +138,7 @@
   </section>
 </template>
 
-<script>
+<script defer>
 import { required, maxLength } from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
 import { mapState } from "vuex";

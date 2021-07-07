@@ -7,7 +7,7 @@
     </div>
     <div v-else>
       <div class="titulo">
-        <h2 class="item_title">Crear Rol</h2>
+        <h2 class="item_title">Editar Rol</h2>
         <div class="form_desc"></div>
       </div>
 
@@ -53,6 +53,7 @@
                   id="gestionUsuario"
                   name="funcion"
                   value="Registrar Usuarios"
+                  :checked="permiso1!=''"
                 />
               </div>
 
@@ -65,6 +66,7 @@
                   id="gestionRol"
                   name="funcion"
                   value="Crear Roles"
+                  :checked="permiso2!=''"
                 />
               </div>
 
@@ -77,6 +79,7 @@
                   id="gestionUnidades"
                   name="funcion"
                   value="Añadir Unidades de Gasto"
+                  :checked="permiso3!=''"
                 />
               </div>
 
@@ -90,6 +93,7 @@
                   id="gestionItems"
                   name="funcion"
                   value="Añadir Items de Gasto"
+                  :checked="permiso4!=''"
                 />
               </div>
               <label for="gestionItems">Gestionar Items de Gasto</label><br />
@@ -101,6 +105,7 @@
                   id="regEmp"
                   name="funcion"
                   value="Registro de empresas"
+                  :checked="permiso8!=''"
                 />
               </div>
               <label for="regEmp">Gestionar Empresas</label><br />
@@ -112,6 +117,7 @@
                   id="hacerSol"
                   name="funcion"
                   value="Hacer solicitud"
+                  :checked="permiso5!=''"
                 />
               </div>
               <label for="hacerSol">Hacer Solicitudes</label><br />
@@ -123,6 +129,7 @@
                   id="revSol"
                   name="funcion"
                   value="Revisar solicitud"
+                  :checked="permiso6!=''"
                 />
               </div>
               <label for="revSol">Revisar Solicitudes</label><br />
@@ -134,6 +141,7 @@
                   id="creaCot"
                   name="funcion"
                   value="Crear cotización"
+                  :checked="permiso7!=''"
                 />
               </div>
               <label for="creaCot">Realizar Cotizaciones</label><br />
@@ -145,6 +153,7 @@
                   id="filtrito"
                   name="funcion"
                   value="Filtro cotizaciones"
+                  :checked="permiso9!=''"
                 />
               </div>
               <label for="filtrito">Ver Cotizaciones</label><br />
@@ -156,6 +165,7 @@
                   id="tablita"
                   name="funcion"
                   value="Crear Tabla"
+                  :checked="permiso10!=''"
                 />
               </div>
               <label for="tablita">Crear Tablas Comparativas</label><br />
@@ -167,6 +177,7 @@
                   id="bita"
                   name="funcion"
                   value="Ver Bitacora"
+                  :checked="permiso11!=''"
                 />
               </div>
               <label for="bita">Ver Bitácora</label><br />
@@ -178,6 +189,7 @@
                   id="backup"
                   name="funcion"
                   value="Hacer Backup"
+                  :checked="permiso12!=''"
                 />
               </div>
               <label for="backup">Realizar Respaldos y Restauraciones</label
@@ -190,6 +202,7 @@
                   id="presunidad"
                   name="funcion"
                   value="Actualizar Presupuesto Unidad"
+                  :checked="permiso13!=''"
                 />
               </div>
               <label for="presunidad">Actualizar Presupuestos de Unidades</label
@@ -202,6 +215,7 @@
                   id="presdep"
                   name="funcion"
                   value="Actualizar Presupuesto Departamento"
+                  :checked="permiso14!=''"
                 />
               </div>
               <label for="presdep"
@@ -215,6 +229,7 @@
                   id="repfin"
                   name="funcion"
                   value="Reporte final"
+                  :checked="permiso15!=''"
                 />
               </div>
               <label for="repfin">Realizar Informes Finales</label><br />
@@ -223,7 +238,7 @@
         </div>
         <div class="botoncito">
           <button class="form_button">
-            Crear
+            Editar
           </button>
         </div>
       </form>
@@ -243,7 +258,7 @@ import Alert from "@/components/Alert.vue";
 import { mapState } from "vuex";
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
 export default {
-  name: "CrearRol",
+  name: "EditarRol",
   computed: {
     ...mapState(["token"]),
   },
@@ -328,7 +343,7 @@ export default {
           await this.sendRolData();
           await this.sendFuncData();
 
-          this.alert("success", "Rol creado exitosamente");
+          this.alert("success", "Rol editado exitosamente");
           this.$router.push(`/roles`)
         } else {
           this.alert("warning", "Seleccione minimamente un permiso.");
@@ -340,8 +355,8 @@ export default {
     },
     async sendRolData() {
       try {
-        await this.$http.post(
-          "roles",
+        await this.$http.put(
+          `roles/${this.$route.params.id}`,
           {
             nombre_rol: this.dato.nombre_rol,
           },
@@ -357,8 +372,8 @@ export default {
     },
     async sendFuncData() {
       try {
-        await this.$http.post(
-          "rolePerFunctionsGroupSP2",
+        await this.$http.put(
+          `rolePerFunctions/${this.dato.nombre_rol}`,
           {
             permiso1: this.permiso1,
             permiso2: this.permiso2,
@@ -374,8 +389,7 @@ export default {
             permiso12: this.permiso12,
             permiso13: this.permiso13,
             permiso14: this.permiso14,
-            permiso15: this.permiso15,
-            nombre_rol: this.dato.nombre_rol,
+            permiso15: this.permiso15
           },
           {
             headers: {
@@ -391,7 +405,37 @@ export default {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
-  mounted() {
+  mounted: async function() {
+      this.loading=!this.loading
+        const rolname = (await this.$http.get(`roles/${this.$route.params.id}`,{
+                headers:{
+                  authorization:this.token,
+                },
+              })).data.datos[0].nombre_rol
+        this.dato.nombre_rol = rolname
+      const functions = (await this.$http.get(`rolePerFunctions?rol=${rolname}`,{
+                headers:{
+                  authorization:this.token,
+                },
+              })).data.datos
+        for (let i of functions){
+            if (i.nombre_funcion=="Vista_Registro_Usuario") this.permiso1=i.nombre_funcion
+            if (i.nombre_funcion=="Vista_Crear_Roles") this.permiso2=i.nombre_funcion
+            if (i.nombre_funcion=="Vista_Nueva_Unidad") this.permiso3=i.nombre_funcion
+            if (i.nombre_funcion=="Vista_Nuevo_Item") this.permiso4=i.nombre_funcion
+            if (i.nombre_funcion=="Vista_Solicitudes") this.permiso5=i.nombre_funcion
+            if (i.nombre_funcion=="Vista_Revisar_Solicitudes") this.permiso6=i.nombre_funcion
+            if (i.nombre_funcion=="Vista_Cotizaciones") this.permiso7=i.nombre_funcion
+            if (i.nombre_funcion=="Vista_Registro_Empresas") this.permiso8=i.nombre_funcion
+            if (i.nombre_funcion=="Vista_Filtro_Cotizaciones") this.permiso9=i.nombre_funcion
+            if (i.nombre_funcion=="Vista_Crear_Tabla") this.permiso10=i.nombre_funcion
+            if (i.nombre_funcion=="Vista_Ver_Bitacora") this.permiso11=i.nombre_funcion
+            if (i.nombre_funcion=="Vista_Backup") this.permiso12=i.nombre_funcion
+            if (i.nombre_funcion=="Vista_Actualizar_Presupuesto_Unidad") this.permiso13=i.nombre_funcion
+            if (i.nombre_funcion=="Vista_Actualizar_Presupuesto_Departamento") this.permiso14=i.nombre_funcion
+            if (i.nombre_funcion=="Vista_ReporteFinal") this.permiso15=i.nombre_funcion
+        }
+        this.loading=!this.loading
     var validCodesRole = [
       32,
       65,

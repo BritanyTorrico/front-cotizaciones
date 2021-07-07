@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import PaginaPrincipal from "@/components/Pagina_Inicial/PaginaPrincipal.vue";
 import VPortada from "../components/Pagina_Inicial/VPortada.vue";
 import Avisos from "../components/Pagina_Inicial/Avisos.vue";
