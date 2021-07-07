@@ -18,9 +18,13 @@ export default {
 
 <style scoped>
 .presu-depto {
-  padding: 50px 200px 50px 200px;
+  padding: 2.5% 14% 5% 14%;
   background-color: #46b1c95b;
   margin-top: 0;
-  min-height: 550px;
+}
+@media (max-width: 800px) {
+  .presu-depto {
+    padding: 0%;
+  }
 }
 </style>

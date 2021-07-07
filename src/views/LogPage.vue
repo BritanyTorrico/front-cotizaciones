@@ -16,9 +16,13 @@
         </label>
 
         <label class="order">
-          <button @click="listaLog=listaLog.reverse()" class="btn btn-primary botonsote" :disabled="loading"
-            >Invertir orden</button
+          <button
+            @click="listaLog = listaLog.reverse()"
+            class="btn btn-primary botonsote"
+            :disabled="loading"
           >
+            Invertir orden
+          </button>
         </label>
 
         <label class="container__label">Fecha:</label>
@@ -36,63 +40,63 @@
         fecha invalida
       </div>
       <div v-if="loading">
-            <div class="loading-info">
-                <div class="clock-loader"></div>
-            </div>
+        <div class="loading-info">
+          <div class="clock-loader"></div>
+        </div>
       </div>
       <div v-else>
-      <div class="mensaje" v-if="fechaRango == ''">
-        Historial de todos los cambios
-      </div>
+        <div class="mensaje" v-if="fechaRango == ''">
+          Historial de todos los cambios
+        </div>
 
-      <div class="form__tabla" v-if="this.listaLog.length > 0">
-        <table class="table table-hove table-bordered">
-          <thead>
-            <tr class="primera-fila">
-              <th>N# Log</th>
-              <th>Nombre tabla</th>
-              <th>Usuario</th>
-              <th>Fecha Modificación</th>
-              <th>Acción</th>
-              <th>Detalle</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in this.listaLog" :key="index">
-              <td>
-                {{ item.id }}
-              </td>
-              <td>
-                {{ item.tabla }}
-              </td>
-              <td>
-                {{ item.usuario }}
-              </td>
-              <td>
-                {{ item.fecha }}
-              </td>
-              <td>
-                {{ item.accion }}
-              </td>
-              <td>
-                <b-button
-                  size="sm"
-                  v-b-modal="'myModal'"
-                  user="'item'"
-                  @click="sendInfo(item)"
-                  >Ver detalle</b-button
-                >
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div v-if="this.listaLog.length == 0" class=" form_check-error mensaje">
-        No existen datos.
-      </div>
+        <div class="form__tabla" v-if="this.listaLog.length > 0">
+          <table class="table table-hove table-bordered">
+            <thead>
+              <tr class="primera-fila">
+                <th>N# Log</th>
+                <th>Nombre tabla</th>
+                <th>Usuario</th>
+                <th>Fecha Modificación</th>
+                <th>Acción</th>
+                <th>Detalle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in this.listaLog" :key="index">
+                <td>
+                  {{ item.id }}
+                </td>
+                <td>
+                  {{ item.tabla }}
+                </td>
+                <td>
+                  {{ item.usuario }}
+                </td>
+                <td>
+                  {{ item.fecha }}
+                </td>
+                <td>
+                  {{ item.accion }}
+                </td>
+                <td>
+                  <b-button
+                    size="sm"
+                    v-b-modal="'myModal'"
+                    user="'item'"
+                    @click="sendInfo(item)"
+                    >Ver detalle</b-button
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div v-if="this.listaLog.length == 0" class=" form_check-error mensaje">
+          No existen datos.
+        </div>
       </div>
       <!--modal-->
-      <b-modal id="myModal" ok-only>
+      <b-modal id="myModal" ok-title="Aceptar" ok-only>
         <label class="titulo_MODAL">Dato Anterior:</label>
         <p
           class="contenido_MODAL"
@@ -148,7 +152,7 @@ export default {
     };
   },
   mounted() {
-    this.obtenerLog();
+    //this.obtenerLog();
   },
   validations: {
     fechaRango: {
@@ -157,7 +161,7 @@ export default {
   },
   methods: {
     async obtenerPorFecha() {
-      this.loading=!this.loading
+      this.loading = !this.loading;
       try {
         this.listaLog = [];
         const fecha123 = await this.transformarFecha(this.fechaRango);
@@ -202,13 +206,13 @@ export default {
       } catch (error) {
         console.log(error);
       }
-      this.loading=!this.loading
+      this.loading = !this.loading;
     },
     sendInfo(item) {
       this.selectedUser = item;
     },
     async obtenerLog() {
-      this.loading=!this.loading
+      this.loading = !this.loading;
       try {
         this.listaLog = [];
         this.fechaRango = "";
@@ -253,7 +257,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
-      this.loading=!this.loading
+      this.loading = !this.loading;
     },
 
     async transformarNombreUsuario(value) {
@@ -301,18 +305,25 @@ export default {
 
 <style lang="scss" scoped>
 .mayor {
-  padding: 50px 100px 50px 100px;
+  padding: 2.5% 18%;
   background-color: #46b1c95b;
   margin-top: 0;
+  min-height: 90vh;
+}
+
+@media (max-width: 950px) {
+  .mayor {
+    padding: 0%;
+  }
 }
 .contenedor__log {
   text-align: left;
   background-color: #f1f2f6;
-  padding: 40px 80px 40px 80px;
+  padding: 2.5% 8%;
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 450px;
+  min-height: 80vh;
 }
 .titulo_MODAL {
   color: #0d6efd;
@@ -400,7 +411,7 @@ export default {
   color: #0d58cf;
   font-weight: bold;
 }
-.loading-info{
+.loading-info {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -414,7 +425,7 @@ export default {
   --clock-minute-length: calc(var(--clock-width) * 0.4);
   --clock-hour-length: calc(var(--clock-width) * 0.2);
   --clock-thickness: 0.2rem;
-  
+
   position: relative;
   display: flex;
   justify-content: center;

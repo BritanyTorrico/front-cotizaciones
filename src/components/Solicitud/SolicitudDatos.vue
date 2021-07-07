@@ -2,410 +2,528 @@
   <div class="container-soli">
     <div v-if="loading">
       <div class="loading-info">
-          <div class="clock-loader"></div>
+        <div class="clock-loader"></div>
       </div>
     </div>
     <div v-else>
-    <form @submit.prevent="submitForm">
-      <div class="form_title">
-        <div class="formulario_label">Titulo:</div>
-        <input
-          :class="
-            $v.solicitud.nombre_solicitud.$invalid
-              ? 'form_check-input-error'
-              : 'form__input'
-          "
-          type="text"
-          v-model="solicitud.nombre_solicitud"
-          name="titulo"
-        />
-
-        <div
-          class="form_check-error"
-          v-if="!$v.solicitud.nombre_solicitud.required"
-        >
-          Campo obligatorio.
-        </div>
-        <div
-          class="form_check-error"
-          v-if="!$v.solicitud.nombre_solicitud.maxLength"
-        >
-          Máximo
-          {{ $v.solicitud.nombre_solicitud.$params.maxLength.max }}caracteres.
-        </div>
-        <div
-          class="form_check-error"
-          v-if="!$v.solicitud.nombre_solicitud.minLength"
-        >
-          Minimo 5 caracteres.
-        </div>
-        <div
-          class="form_check-error"
-          v-if="!$v.solicitud.nombre_solicitud.alpha1"
-        >
-          No se aceptan caracteres especiales.
-        </div>
-      </div>
-      <div class="lista">
-        <div class="izquierda"></div>
-        <div :key="componentKey2" class="derecha" id="unidad">
-          <lista-desplegable
-            required
-            v-model="solicitud.unidadgasto_solicitud"
-            nombreLista="Unidad de gasto:"
-            :lista="listaUnidadesDeGasto"
-            Mensaje="Campo Obligatorio"
-            :value="solicitud.unidadgasto_solicitud"
-          ></lista-desplegable>
-
-          <div
-            class="form_check-error mensaje"
-            v-if="!$v.solicitud.unidadgasto_solicitud.validate_requerido_listas"
-          >
-            Campo obligatorio.
-          </div>
-        </div>
-      </div>
-
-      <div class="form__justficacion">
-        <div class="formulario_label">Detalle de solicitud:</div>
-        <textarea
-          rows="7"
-          cols="50"
-          :class="
-            $v.solicitud.detalle_solicitud.$invalid
-              ? 'form_check-input-error tamaño'
-              : 'form__input tamaño'
-          "
-          type="text"
-          v-model="solicitud.detalle_solicitud"
-          name="detalle"
-        />
-
-        <div
-          class="form_check-error"
-          v-if="!$v.solicitud.detalle_solicitud.required"
-        >
-          Campo obligatorio.
-        </div>
-        <div
-          class="form_check-error"
-          v-if="!$v.solicitud.detalle_solicitud.maxLength"
-        >
-          Máximo
-          {{ $v.solicitud.detalle_solicitud.$params.maxLength.max }}caracteres.
-        </div>
-        <div
-          class="form_check-error"
-          v-if="!$v.solicitud.detalle_solicitud.minLength"
-        >
-          Minimo 5 caracteres.
-        </div>
-      </div>
-
-      <div class="seccion2">
-        <div class="seccion__Izq">
-          <div class="formulario_label seccion__Izq-titulo">
-            Agregar un nuevo item:
-          </div>
-          <div class="seccion__Izq-fila1">
-            <div
-              :key="componentKey"
-              class="categoriaGeneral"
-              v-on:click="getSpeCategories"
-            >
-              <lista-desplegable-change
-                required
-                v-model="solicitud.categoria_general"
-                nombreLista="Categoria General:"
-                :lista="listaCatGen"
-                :value="solicitud.categoria_general"
-                v-on:change="verificarCategoriaDistinta()"
-              ></lista-desplegable-change>
-            </div>
-
-            <div class="form__categoria">
-              <div class="container__label">Categoria especifica:</div>
-              <div :key="componentKey3" class="contenedor-select">
-                <select
-                  v-model="solicitud.categoria"
-                  class="container__list"
-                  @change="
-                    obtenerItems(),
-                      forceRerender4(),
-                      verificarCategoriaEpecifica()
-                  "
-                  name="categoria"
-                >
-                  <option disabled="true">{{ solicitud.categoria }}</option>
-                  <option
-                    class="container__list__option"
-                    v-for="(item, index) in listaCategorias1"
-                    :key="index"
-                    :value="item"
-                  >
-                    {{ item }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="seccion__Izq-fila2">
-            <div
-              v-if="this.solicitud.categoria_general != 'Servicios'"
-              class="form__cantidad"
-            >
-              <div class="formulario_label">
-                Cantidad:
-              </div>
-              <div class="cantidad-input">
-                <input
-                  :class="
-                    $v.elemento.cantidad.$invalid
-                      ? 'form_check-input-error'
-                      : 'form__input'
-                  "
-                  :required="!habilitar"
-                  :disabled="!disabled"
-                  type="number"
-                  v-model="elemento.cantidad"
-                  name="cantidad"
-                />
-              </div>
-
-              <div
-                class="form_check-error"
-                v-if="!$v.elemento.cantidad.between"
-              >
-                Ingrese valores entre 1-100.
-              </div>
-              <div
-                class="form_check-error"
-                v-if="!$v.elemento.cantidad.integer"
-              >
-                Solo valores enteros.
-              </div>
-            </div>
-            <div
-              v-if="this.solicitud.categoria_general != 'Servicios'"
-              class="form__cantidad"
-            >
-              <div class="formulario_label">
-                Unidad:
-              </div>
-              <div class="cantidad-input">
-                <input
-                  :class="
-                    $v.elemento.unidad.$invalid
-                      ? 'form_check-input-error'
-                      : 'form__input'
-                  "
-                  :required="!habilitar"
-                  :disabled="!disabled"
-                  type="text"
-                  v-model="elemento.unidad"
-                  name="unidad"
-                />
-                <div class="form_check-error" v-if="!$v.elemento.unidad.alpha3">
-                  No se permite esos caracteres.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="seccion__Der">
-          <div>
-            <div class="container-nombre-item">
-              <div class="container__label">
-                Item:
-              </div>
-
-              <div :key="componentKey4" class="contenedor-select">
-                <select
-                  :key="componentKey4"
-                  required
-                  class="container__listNuevo"
-                  v-model="solicitud.nombre_item"
-                  @change="obtenerDescripcion()"
-                  name="item"
-                >
-                  <option disabled="true">{{ solicitud.nombre_item }}</option>
-
-                  <option
-                    class="container__list__option"
-                    v-for="(item, index) in listItems"
-                    :key="index"
-                    :value="item"
-                  >
-                    {{ item }}</option
-                  >
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="form__boton">
-            <a
-              v-bind:disabled="desabilitar"
-              :class="
-                desabilitar
-                  ? 'btn btn-success button-disabled'
-                  : 'btn btn-success boton-agregar'
-              "
-              @click="agregarItem()"
-              id="agregar"
-              >Agregar</a
-            >
-          </div>
-        </div>
-      </div>
-      <h4 class="form_check-error" v-if="this.listaPeticion.length == 0">
-        (*) Agregue un item
-      </h4>
-      <div class="seccion3">
-        <div
-          class="form__descripcion"
-          v-if="solicitud.nombre_item != 'Seleccione una opcion'"
-        >
-          <div class="formulario_label">
-            Descripción:
-          </div>
-          <div class="form__descripcion-contenido">
-            <textarea
-              rows="7"
-              cols="50"
-              class="form__input tamaño"
-              type="text"
-              v-model="descripcionItem"
-            />
-            <div class="form_check-error" v-if="!$v.descripcionItem.required">
-              Campo obligatorio.
-            </div>
-            <div class="form_check-error" v-if="!$v.descripcionItem.maxLength">
-              Maximo 1000 caracteres.
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="form__lista col-sm-8 col-sm-offset-2"
-        v-if="this.listaPeticion.length != 0"
-      >
-        <div class="formulario_label">
-          Lista de items:
-        </div>
-
-        <div class="form__tabla">
-          <table class="table table-hove table-bordered">
-            <thead>
-              <tr class="primera-fila">
-                <th>Cantidad</th>
-                <th>Unidad</th>
-                <th>Item</th>
-                <th>Categoria</th>
-                <th>Detalle</th>
-                <th>Eliminar</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in this.listaPeticion" :key="index">
-                <td>
-                  {{ item.cantidad }}
-                </td>
-                <td>
-                  {{ item.unidad_solicitud }}
-                </td>
-                <td>
-                  {{ item.nombre_item }}
-                </td>
-                <td v-if="solicitud.categoria_general === 'Servicios'">
-                  {{ item.categoria }}
-                </td>
-                <td v-else>
-                  {{ item.categoria_general }}
-                </td>
-
-                <td>
-                  {{ item.detalle_solicitud }}
-                </td>
-                <td>
-                  <a
-                    class="btn btn-danger eliminarBoton"
-                    @click="eliminarItems(index)"
-                    >Eliminar</a
-                  >
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="form__presupuesto">
-        <div class="aux-izquierdo"></div>
-        <div class="presupuesto">
-          <div class="formulario_label">Presupuesto:</div>
+      <form @submit.prevent="submitForm">
+        <div class="form_title">
+          <div class="formulario_label">Titulo:</div>
           <input
             :class="
-              $v.solicitud.estimado_solicitud.$invalid
+              $v.solicitud.nombre_solicitud.$invalid
                 ? 'form_check-input-error'
                 : 'form__input'
             "
             type="text"
-            v-model="solicitud.estimado_solicitud"
-            name="presupuesto"
+            v-model="solicitud.nombre_solicitud"
+            name="titulo"
           />
+
           <div
             class="form_check-error"
-            v-if="!$v.solicitud.estimado_solicitud.required"
+            v-if="!$v.solicitud.nombre_solicitud.required"
           >
-            Campo Obligatorio.
+            Campo obligatorio.
           </div>
           <div
             class="form_check-error"
-            v-if="!$v.solicitud.estimado_solicitud.between"
+            v-if="!$v.solicitud.nombre_solicitud.maxLength"
           >
-            Ingrese valores entre (1-1000000).
+            Máximo
+            {{ $v.solicitud.nombre_solicitud.$params.maxLength.max }}caracteres.
           </div>
           <div
             class="form_check-error"
-            v-if="!$v.solicitud.estimado_solicitud.validate_decimales"
+            v-if="!$v.solicitud.nombre_solicitud.minLength"
           >
-            Maximo 2 decimales.
+            Minimo 5 caracteres.
           </div>
           <div
             class="form_check-error"
-            v-if="!$v.solicitud.estimado_solicitud.alpha2"
+            v-if="!$v.solicitud.nombre_solicitud.alpha1"
           >
-            No se permite esos caracteres.
+            No se aceptan caracteres especiales.
           </div>
         </div>
-      </div>
-      
-      <div class="boton-contenedor">
-        <div class="boton-contenedor-izq"></div>
-        <div class="boton-contenedor-der">
-          <input
-            type="submit"
-            value="Enviar"
-            class="btn btn-success boton-agregar"
-            id="enviar"
-          />
+        <div class="lista">
+          <div class="izquierda"></div>
+          <div :key="componentKey2" class="derecha" id="unidad">
+            <lista-desplegable
+              required
+              v-model="solicitud.unidadgasto_solicitud"
+              nombreLista="Unidad de gasto:"
+              :lista="listaUnidadesDeGasto"
+              Mensaje="Campo Obligatorio"
+              :value="solicitud.unidadgasto_solicitud"
+            ></lista-desplegable>
+
+            <div
+              class="form_check-error mensaje"
+              v-if="
+                !$v.solicitud.unidadgasto_solicitud.validate_requerido_listas
+              "
+            >
+              Campo obligatorio.
+            </div>
+          </div>
         </div>
-      </div>
-    </form>
+
+        <div class="form__justficacion">
+          <div class="formulario_label">Detalle de solicitud:</div>
+          <textarea
+            rows="7"
+            cols="50"
+            :class="
+              $v.solicitud.detalle_solicitud.$invalid
+                ? 'form_check-input-error tamaño'
+                : 'form__input tamaño'
+            "
+            type="text"
+            v-model="solicitud.detalle_solicitud"
+            name="detalle"
+          />
+
+          <div
+            class="form_check-error"
+            v-if="!$v.solicitud.detalle_solicitud.required"
+          >
+            Campo obligatorio.
+          </div>
+          <div
+            class="form_check-error"
+            v-if="!$v.solicitud.detalle_solicitud.maxLength"
+          >
+            Máximo
+            {{
+              $v.solicitud.detalle_solicitud.$params.maxLength.max
+            }}caracteres.
+          </div>
+          <div
+            class="form_check-error"
+            v-if="!$v.solicitud.detalle_solicitud.minLength"
+          >
+            Minimo 5 caracteres.
+          </div>
+        </div>
+
+        <div class="seccion2">
+          <div class="seccion__Izq">
+            <div class="formulario_label seccion__Izq-titulo">
+              Agregar un nuevo item:
+            </div>
+            <div class="seccion__Izq-fila1">
+              <div
+                :key="componentKey"
+                class="categoriaGeneral"
+                v-on:click="getSpeCategories"
+              >
+                <lista-desplegable-change
+                  required
+                  v-model="solicitud.categoria_general"
+                  nombreLista="Categoria General:"
+                  :lista="listaCatGen"
+                  :value="solicitud.categoria_general"
+                  v-on:change="verificarCategoriaDistinta()"
+                ></lista-desplegable-change>
+              </div>
+
+              <div class="form__categoria">
+                <div class="container__label">Categoria especifica:</div>
+                <div :key="componentKey3" class="contenedor-select">
+                  <select
+                    v-model="solicitud.categoria"
+                    class="container__list"
+                    @change="
+                      obtenerItems(),
+                        forceRerender4(),
+                        verificarCategoriaEpecifica()
+                    "
+                    name="categoria"
+                  >
+                    <option disabled="true">{{ solicitud.categoria }}</option>
+                    <option
+                      class="container__list__option"
+                      v-for="(item, index) in listaCategorias1"
+                      :key="index"
+                      :value="item"
+                    >
+                      {{ item }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="seccion__Izq-fila2">
+              <div
+                v-if="this.solicitud.categoria_general != 'Servicios'"
+                class="form__cantidad"
+              >
+                <div class="formulario_label">
+                  Cantidad:
+                </div>
+                <div class="cantidad-input">
+                  <input
+                    :class="
+                      $v.elemento.cantidad.$invalid
+                        ? 'form_check-input-error'
+                        : 'form__input'
+                    "
+                    :required="!habilitar"
+                    :disabled="!disabled"
+                    type="number"
+                    v-model="elemento.cantidad"
+                    name="cantidad"
+                  />
+                </div>
+
+                <div
+                  class="form_check-error"
+                  v-if="!$v.elemento.cantidad.between"
+                >
+                  Ingrese valores entre 1-100.
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.elemento.cantidad.integer"
+                >
+                  Solo valores enteros.
+                </div>
+              </div>
+              <div
+                v-if="this.solicitud.categoria_general != 'Servicios'"
+                class="form__cantidad"
+              >
+                <div class="formulario_label">
+                  Unidad:
+                </div>
+                <div class="cantidad-input">
+                  <input
+                    :class="
+                      $v.elemento.unidad.$invalid
+                        ? 'form_check-input-error'
+                        : 'form__input'
+                    "
+                    :required="!habilitar"
+                    :disabled="!disabled"
+                    type="text"
+                    v-model="elemento.unidad"
+                    name="unidad"
+                  />
+                  <div
+                    class="form_check-error"
+                    v-if="!$v.elemento.unidad.alpha3"
+                  >
+                    No se permite esos caracteres.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="seccion__Der">
+            <div>
+              <div class="container-nombre-item">
+                <div class="container__label">
+                  Item:
+                </div>
+
+                <div :key="componentKey4" class="contenedor-select">
+                  <select
+                    :key="componentKey4"
+                    required
+                    class="container__listNuevo"
+                    v-model="solicitud.nombre_item"
+                    @change="obtenerDescripcion()"
+                    name="item"
+                  >
+                    <option disabled="true">{{ solicitud.nombre_item }}</option>
+
+                    <option
+                      class="container__list__option"
+                      v-for="(item, index) in listItems"
+                      :key="index"
+                      :value="item"
+                    >
+                      {{ item }}</option
+                    >
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form__boton">
+              <a
+                v-bind:disabled="desabilitar"
+                :class="
+                  desabilitar
+                    ? 'btn btn-success button-disabled'
+                    : 'btn btn-success boton-agregar'
+                "
+                @click="agregarItem()"
+                id="agregar"
+                >Agregar</a
+              >
+            </div>
+          </div>
+        </div>
+        <h4 class="form_check-error" v-if="this.listaPeticion.length == 0">
+          (*) Agregue un item
+        </h4>
+        <div class="seccion3">
+          <div
+            class="form__descripcion"
+            v-if="solicitud.nombre_item != 'Seleccione una opcion'"
+          >
+            <div class="formulario_label">
+              Descripción:
+            </div>
+            <div class="form__descripcion-contenido">
+              <textarea
+                rows="7"
+                cols="50"
+                class="form__input tamaño"
+                type="text"
+                v-model="descripcionItem"
+              />
+              <div class="form_check-error" v-if="!$v.descripcionItem.required">
+                Campo obligatorio.
+              </div>
+              <div
+                class="form_check-error"
+                v-if="!$v.descripcionItem.maxLength"
+              >
+                Maximo 1000 caracteres.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="form__lista col-sm-8 col-sm-offset-2 "
+          v-if="this.listaPeticion.length != 0"
+        >
+          <div class="formulario_label">
+            Lista de items:
+          </div>
+
+          <div class="form__tabla  ">
+            <table class="table table-hove table-bordered ">
+              <thead>
+                <tr class="primera-fila  ">
+                  <th>Cantidad</th>
+                  <th>Unidad</th>
+                  <th>Item</th>
+                  <th>Categoria</th>
+                  <th>Detalle</th>
+                  <th>Editar</th>
+                  <th>Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in this.listaPeticion" :key="index">
+                  <td>
+                    {{ item.cantidad }}
+                  </td>
+                  <td>
+                    {{ item.unidad_solicitud }}
+                  </td>
+                  <td>
+                    {{ item.nombre_item }}
+                  </td>
+                  <td v-if="solicitud.categoria_general === 'Servicios'">
+                    {{ item.categoria }}
+                  </td>
+                  <td v-else>
+                    {{ item.categoria_general }}
+                  </td>
+
+                  <td>
+                    {{ item.detalle_solicitud }}
+                  </td>
+                  <td>
+                    <a
+                      v-b-modal="'myModal'"
+                      user="'item'"
+                      @click="editarItems(item, index)"
+                      class="btn btn-primary editarBoton"
+                      >Editar</a
+                    >
+                  </td>
+                  <td>
+                    <a
+                      class="btn btn-danger eliminarBoton"
+                      @click="eliminarItems(index)"
+                      >Eliminar</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <b-modal id="myModal" ok-title="Aceptar" ok-only @ok="handleOk">
+            <form ref="form" @submit.stop.prevent="handleSubmit">
+              <div>
+                <p class="titulo_MODAL1">{{ itemEditado.nombre }}</p>
+              </div>
+              <div v-if="selectedUser.categoria_general != 'Servicios'">
+                <p class="titulo_MODAL">
+                  Unidad:
+                </p>
+                <input
+                  :class="
+                    $v.itemEditado.unidad.$invalid
+                      ? 'form_check-input-error'
+                      : 'form__input'
+                  "
+                  type="text"
+                  v-model="itemEditado.unidad"
+                />
+                <div
+                  class="form_check-error"
+                  v-if="!$v.itemEditado.unidad.required"
+                >
+                  Campo obligatorio.
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.itemEditado.unidad.alpha3"
+                >
+                  No se permite esos caracteres.
+                </div>
+              </div>
+              <div v-if="selectedUser.categoria_general != 'Servicios'">
+                <p class="titulo_MODAL">Cantidad:</p>
+                <input
+                  :class="
+                    $v.itemEditado.cantidad.$invalid
+                      ? 'form_check-input-error'
+                      : 'form__input'
+                  "
+                  type="text"
+                  v-model="itemEditado.cantidad"
+                />
+                <div
+                  class="form_check-error"
+                  v-if="!$v.itemEditado.cantidad.required"
+                >
+                  Campo obligatorio.
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.itemEditado.cantidad.between"
+                >
+                  Ingrese valores entre 1-100.
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.itemEditado.cantidad.integer"
+                >
+                  Solo valores enteros.
+                </div>
+              </div>
+
+              <div>
+                <p class="titulo_MODAL">Detalle:</p>
+                <textarea
+                  name=""
+                  :class="
+                    $v.itemEditado.detalle.$invalid
+                      ? 'form_check-input-error tamaño'
+                      : 'form__input tamaño'
+                  "
+                  cols="30"
+                  rows="10"
+                  class="tamaño"
+                  v-model="itemEditado.detalle"
+                >
+                </textarea>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.itemEditado.detalle.required"
+                >
+                  Campo Obligatorio.
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.itemEditado.detalle.minLength"
+                >
+                  Minimo 5 caracteres.
+                </div>
+                <div
+                  class="form_check-error"
+                  v-if="!$v.itemEditado.detalle.maxLength"
+                >
+                  Maximo 1000 caracteres.
+                </div>
+              </div>
+            </form>
+          </b-modal>
+        </div>
+
+        <div class="form__presupuesto">
+          <div class="aux-izquierdo"></div>
+          <div class="presupuesto">
+            <div class="formulario_label">Presupuesto:</div>
+            <input
+              :class="
+                $v.solicitud.estimado_solicitud.$invalid
+                  ? 'form_check-input-error'
+                  : 'form__input'
+              "
+              type="text"
+              v-model="solicitud.estimado_solicitud"
+              name="presupuesto"
+            />
+            <div
+              class="form_check-error"
+              v-if="!$v.solicitud.estimado_solicitud.required"
+            >
+              Campo Obligatorio.
+            </div>
+            <div
+              class="form_check-error"
+              v-if="!$v.solicitud.estimado_solicitud.between"
+            >
+              Ingrese valores entre (1-1000000).
+            </div>
+            <div
+              class="form_check-error"
+              v-if="!$v.solicitud.estimado_solicitud.validate_decimales"
+            >
+              Maximo 2 decimales.
+            </div>
+            <div
+              class="form_check-error"
+              v-if="!$v.solicitud.estimado_solicitud.alpha2"
+            >
+              No se permite esos caracteres.
+            </div>
+          </div>
+        </div>
+
+        <div class="boton-contenedor">
+          <div class="boton-contenedor-izq"></div>
+          <div class="boton-contenedor-der">
+            <input
+              type="submit"
+              value="Enviar"
+              class="btn btn-success boton-agregar"
+              id="enviar"
+            />
+          </div>
+        </div>
+      </form>
     </div>
     <Alert ref="alert"></Alert>
 
-      <alert-2
-        ref="alert2"
-        aceptar="Aceptar"
-        mensajeSub="(Se borrara la lista de items si presiona aceptar.)"
-        @escucharHijo="variableHijo"
-      ></alert-2>
+    <alert-2
+      ref="alert2"
+      aceptar="Aceptar"
+      mensajeSub="(Se borrara la lista de items si presiona aceptar.)"
+      @escucharHijo="variableHijo"
+    ></alert-2>
   </div>
 </template>
 
@@ -452,19 +570,21 @@ export default {
   store,
   mounted() {
     //obtener gestion
-    this.loading=!this.loading
+    this.loading = !this.loading;
     this.gestion = null;
     const today = new Date();
     this.gestion = today.getFullYear();
     this.getGenCategories();
     this.getDepartamento();
-    this.loading=!this.loading
+    this.loading = !this.loading;
   },
   computed: {
     ...mapState(["token"]),
   },
   data() {
     return {
+      modalShow: false,
+      selectedUser: "",
       loading: false,
       solicitud: {
         nombre_solicitud: null,
@@ -500,6 +620,13 @@ export default {
       desabilitar: false,
       listaCodigosUnidad: false,
       presupuesto: null,
+      itemEditado: {
+        nombre: "",
+        unidad: "",
+        cantidad: "",
+        detalle: "",
+        numero: 0,
+      },
     };
   },
   validations: {
@@ -513,7 +640,7 @@ export default {
       detalle_solicitud: {
         required,
         minLength: minLength(5),
-        maxLength: maxLength(1000000),
+        maxLength: maxLength(1000),
       },
 
       unidadgasto_solicitud: {
@@ -541,13 +668,74 @@ export default {
       required,
       maxLength: maxLength(1000),
     },
+    itemEditado: {
+      nombre: {
+        required,
+        maxLength: maxLength(50),
+      },
+      cantidad: {
+        required,
+        between: between(1, 100),
+        integer,
+      },
+      unidad: {
+        required,
+        alpha3,
+      },
+      detalle: {
+        required,
+        minLength: minLength(5),
+        maxLength: maxLength(1000),
+      },
+    },
   },
   methods: {
+    handleOk(bvModalEvt) {
+      bvModalEvt.preventDefault();
+      // Trigger submit handler
+      this.handleSubmit();
+    },
+    handleSubmit() {
+      if (this.solicitud.categoria_general != "Servicios") {
+        if (!this.$v.itemEditado.$invalid) {
+          const item = {
+            nombre_item: this.itemEditado.nombre,
+            cantidad: this.itemEditado.cantidad,
+            categoria: this.solicitud.categoria, //especifica
+            categoria_general: this.solicitud.categoria_general,
+            unidad_solicitud: this.itemEditado.unidad,
+            detalle_solicitud: this.itemEditado.detalle,
+            nombre_itemgasto: this.itemEditado.nombre,
+          };
+          this.eliminarItems(this.itemEditado.numero);
+
+          this.listaPeticion.splice(this.itemEditado.numero, 0, item);
+          this.$nextTick(() => {
+            this.$bvModal.hide("myModal");
+          });
+        } else {
+          console.log("esta mal");
+        }
+      } else {
+        const item = {
+          nombre_item: this.itemEditado.nombre,
+          cantidad: "-",
+          categoria: this.solicitud.categoria, //especifica
+          categoria_general: this.solicitud.categoria_general,
+          unidad_solicitud: "-",
+          detalle_solicitud: this.itemEditado.detalle,
+          nombre_itemgasto: this.itemEditado.nombre,
+        };
+        this.eliminarItems(this.itemEditado.numero);
+
+        this.listaPeticion.splice(this.itemEditado.numero, 0, item);
+        this.$nextTick(() => {
+          this.$bvModal.hide("myModal");
+        });
+      }
+    },
     async llamadaPresupuesto(codigo) {
       try {
-        console.log("-----------");
-        console.log(codigo);
-        console.log(this.gestion);
         const presupuestoUnidad = (
           await this.$http.get(
             `spendingUnitWithBudget/${codigo}?gestion=${this.gestion}`,
@@ -561,6 +749,7 @@ export default {
         return presupuestoUnidad;
       } catch (error) {
         console.log(error);
+        this.alert("warning", "Algo salio mal");
       }
     },
     async obtenerPresupuestoUnidad() {
@@ -660,14 +849,13 @@ export default {
       }
     },
     async submitForm() {
-      this.loading=!this.loading
+      this.loading = !this.loading;
       try {
         let presupuestoUnidad = await this.obtenerPresupuestoUnidad();
         if (!this.$v.solicitud.$invalid && this.listaPeticion.length > 0) {
           let cantidad1 = parseFloat(this.solicitud.estimado_solicitud);
           let cantidad2 = parseFloat(presupuestoUnidad);
-          console.log(cantidad1);
-          console.log(cantidad2);
+
           if (cantidad1 > cantidad2) {
             this.alert(
               "warning",
@@ -715,9 +903,12 @@ export default {
         }
       } catch (error) {
         console.log(error);
-        this.alert("warning", "Ya se registro una solicitud con ese nombre,cambie de nombre porfavor");
+        this.alert(
+          "warning",
+          "Ya se registro una solicitud con ese nombre,cambie de nombre porfavor"
+        );
       }
-      this.loading=!this.loading
+      this.loading = !this.loading;
     },
 
     async verificarCategoriaDistinta() {
@@ -786,7 +977,19 @@ export default {
         this.listItems.push(listaItems[i].nombre_itemgasto);
       }
     },
+    editarItems(item, index) {
+      this.itemEditado.numero = 0;
+      this.selectedUser = item;
 
+      this.itemEditado.nombre = this.selectedUser.nombre_item;
+      if (this.selectedUser.categoria_general != "Servicios") {
+        this.itemEditado.cantidad = this.selectedUser.cantidad;
+        this.itemEditado.unidad = this.selectedUser.unidad_solicitud;
+      }
+
+      this.itemEditado.detalle = this.selectedUser.detalle_solicitud;
+      this.itemEditado.numero = index;
+    },
     eliminarItems: function(index) {
       //this.$store.commit("setEliminar", index);
       this.listaPeticion.splice(index, 1);
@@ -941,7 +1144,7 @@ export default {
 .container-soli {
   text-align: left;
   background-color: #f1f2f6;
-  padding: 40px 80px 40px 80px;
+  padding: 40px 70px 40px 70px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -988,7 +1191,7 @@ export default {
   font-size: 20px;
   color: #576574;
 }
-.loading-info{
+.loading-info {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1002,7 +1205,7 @@ export default {
   --clock-minute-length: calc(var(--clock-width) * 0.4);
   --clock-hour-length: calc(var(--clock-width) * 0.2);
   --clock-thickness: 0.2rem;
-  
+
   position: relative;
   display: flex;
   justify-content: center;
@@ -1187,6 +1390,9 @@ export default {
 .eliminarBoton {
   padding: 5px 6px;
 }
+.editarBoton {
+  padding: 5px 14px;
+}
 .button-disabled {
   background: #dcdde1;
   margin-top: 53px;
@@ -1195,5 +1401,43 @@ export default {
   text-align: center;
   padding: 6px 6px;
   border: none;
+}
+.titulo_MODAL {
+  color: #0d6efd;
+  font-size: 18px;
+}
+.titulo_MODAL1 {
+  color: #0d6efd;
+  font-weight: bold;
+  font-size: 22px;
+  text-align: center;
+}
+@media (max-width: 600px) {
+  .form__tabla {
+    padding: 0%;
+
+    width: 100%;
+    font-size: 12px;
+  }
+  .editarBoton {
+    font-size: 12px;
+  }
+  .eliminarBoton {
+    font-size: 12px;
+  }
+}
+@media (max-width: 480px) {
+  .form__tabla {
+    padding: 0%;
+
+    width: 100%;
+    font-size: 8px;
+  }
+  .editarBoton {
+    font-size: 8px;
+  }
+  .eliminarBoton {
+    font-size: 8px;
+  }
 }
 </style>

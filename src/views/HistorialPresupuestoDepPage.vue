@@ -18,9 +18,14 @@ export default {
 
 <style scoped>
 .contenedor-historial1 {
-  padding: 50px 150px 50px 150px;
+  padding: 2.5% 14% 5% 14%;
   background-color: #46b1c95b;
   margin-top: 0;
-  min-height: 600px;
+  min-height: 90vh;
+}
+@media (max-width: 800px) {
+  .contenedor-historial1 {
+    padding: 0%;
+  }
 }
 </style>

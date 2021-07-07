@@ -36,66 +36,82 @@ export default new Vuex.Store({
         permisoBitacora: false,
         permisoBackup: false,
         permisoInformeFinal: false,
-        contador: 0,
+        contadorGestionar: 0,
+        contadorSolicitudes: 0,
+        contadorCotizaciones: 0,
+        contadorPresupuestos: 0,
+        contadorSistema: 0,
     },
     mutations: {
         async habilitar(state) {
             for (let i = 0; i < state.listaPermisos.length; i++) {
                 if (state.listaPermisos[i] == "Vista_Nuevo_Item") {
                     state.permisoItemDeGasto = true;
-                    state.contador = state.contador + 1;
+                    state.contadorGestionar = state.contadorGestionar + 1;
                 } else if (state.listaPermisos[i] == "Vista_Nueva_Unidad") {
                     state.permisoUnidadDeGasto = true;
-                    state.contador = state.contador + 1;
+                    state.contadorGestionar = state.contadorGestionar + 1;
                 } else if (state.listaPermisos[i] == "Vista_Registro_Usuario") {
                     state.permisoCrearUsuario = true;
-                    state.contador = state.contador + 1;
+                    state.contadorGestionar = state.contadorGestionar + 1;
                 } else if (state.listaPermisos[i] == "Vista_Crear_Roles") {
                     state.permisoCrearRol = true;
-                    state.contador = state.contador + 1;
+                    state.contadorGestionar = state.contadorGestionar + 1;
                 } else if (state.listaPermisos[i] == "Vista_Solicitudes") {
                     state.permisoSolicitud = true;
-                    state.contador = state.contador + 1;
+                    state.contadorSolicitudes = state.contadorSolicitudes + 1;
                 } else if (state.listaPermisos[i] == "Vista_Registro_Empresas") {
                     state.permisoEmpresa = true;
-                    state.contador = state.contador + 1;
+                    state.contadorGestionar = state.contadorGestionar + 1;
                 } else if (state.listaPermisos[i] == "Vista_Revisar_Solicitudes") {
                     state.permisoRevisionSolicitudes = true;
-                    state.contador = state.contador + 1;
+                    state.contadorSolicitudes = state.contadorSolicitudes + 1;
                 } else if (state.listaPermisos[i] == "Vista_Cotizaciones") {
                     state.permisoCotizacion = true;
-                    state.contador = state.contador + 1;
+                    state.contadorCotizaciones = state.contadorCotizaciones + 1;
                 } else if (state.listaPermisos[i] == "Vista_Filtro_Cotizaciones") {
                     state.permisoFiltroCotizacion = true;
-                    state.contador = state.contador + 1;
+                    state.contadorCotizaciones = state.contadorCotizaciones + 1;
                 } else if (
                     state.listaPermisos[i] == "Vista_Actualizar_Presupuesto_Departamento"
                 ) {
                     state.permisoPresupuestoDep = true;
-                    state.contador = state.contador + 1;
+                    state.contadorPresupuestos = state.contadorPresupuestos + 1;
                 } else if (
                     state.listaPermisos[i] == "Vista_Actualizar_Presupuesto_Unidad"
                 ) {
                     state.permisoPresupuestoUnidad = true;
-                    state.contador = state.contador + 1;
+                    state.contadorPresupuestos = state.contadorPresupuestos + 1;
                 } else if (state.listaPermisos[i] == "Vista_Ver_Tabla") {
                     state.permisoCuadroComparativo = true;
-                    state.contador = state.contador + 1;
+                    state.contadorCotizaciones = state.contadorCotizaciones + 1;
                 } else if (state.listaPermisos[i] == "Vista_Ver_Bitacora") {
                     state.permisoBitacora = true;
-                    state.contador = state.contador + 1;
+                    state.contadorSistema = state.contadorSistema + 1;
                 } else if (state.listaPermisos[i] == "Vista_Backup") {
                     state.permisoBackup = true;
-                    state.contador = state.contador + 1;
+                    state.contadorSistema = state.contadorSistema + 1;
                 } else if (state.listaPermisos[i] == "Vista_ReporteFinal") {
                     state.permisoInformeFinal = true;
-                    state.contador = state.contador + 1;
+                    state.contadorCotizaciones = state.contadorCotizaciones + 1;
                 }
             }
         },
 
-        borrarContador(state) {
-            state.contador = 0;
+        borrarContador1(state) {
+            state.contadorGestionar = 0;
+        },
+        borrarContador2(state) {
+            state.contadorSolicitudes = 0;
+        },
+        borrarContador3(state) {
+            state.contadorCotizaciones = 0;
+        },
+        borrarContador4(state) {
+            state.contadorPresupuestos = 0;
+        },
+        borrarContador5(state) {
+            state.contadorSistema = 0;
         },
         addCustomer(state, customer) {
             // mutate state
