@@ -25,6 +25,7 @@ export default {
 
 <style scoped>
 .roles-container{
+  min-height: 100vh;
     margin: 2rem;
     margin-top: 0;
 }

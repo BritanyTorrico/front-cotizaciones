@@ -108,9 +108,9 @@ export default {
 <style scoped>
 .single-user-details {
   background: #fff;
-  margin: 2%;
-  padding: 2% 1% 2% 1%;
-  width: 95%;
+  margin: 1%;
+  padding: 1.2% 1% 1.2% 1%;
+  width: 98%;
   border: 1px solid #808c8f;
   border-radius: 3px;
   display: flex;

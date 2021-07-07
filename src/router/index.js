@@ -187,6 +187,14 @@ const routes = [{
         },
     },
     {
+        path: "/roles/editar/:id",
+        name: "EditRole",
+        component: lazyLoad('EditRole'),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
         path: "/presupuestoDep",
         name: "RegistrarPresupuestoDepto",
         component: lazyLoad('RegistrarPresupuestoDepto'),
