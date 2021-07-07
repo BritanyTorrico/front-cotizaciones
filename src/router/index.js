@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-
 Vue.use(VueRouter);
 
 const routes = [{
@@ -9,6 +8,12 @@ const routes = [{
         name: "PaginaPrincipalPage",
         component: () =>
             import ("@/views/PaginaPrincipalPage.vue"),
+    },
+    {
+        path: "/acercaDeNosotros",
+        name: "Acerca",
+        component: () =>
+            import ("@/components/Pagina_Inicial/Acerca.vue"),
     },
     {
         path: "/principal",
