@@ -3,8 +3,12 @@
         <div class="btn">
             <button class="new-role" v-on:click="newRole()">Nuevo Rol</button>
         </div>
-        
-        <div class="inbox-container">
+        <div v-if="loading">
+            <div class="loading-info">
+                <div class="clock-loader"></div>
+            </div>
+        </div>
+        <div v-else class="inbox-container">
             <div class="list-cards" :class="selectedRole.name === '' ? 'full-screen' : 'side-view'">
                 <div class="card-side">
                     <div class="desc">Roles registrados:</div>
@@ -50,6 +54,7 @@ export default {
   components: { RolCard, RolView },
     data(){
         return{
+            loading: false,
             inboxData: [],
             changeRole: false,
             selectedRole: {
@@ -62,6 +67,7 @@ export default {
     },
     methods: {
         async getData(){
+            this.loading=!this.loading
             const resp= (
                 await this.$http.get(
                     `roles`,
@@ -117,6 +123,7 @@ export default {
                     this.inboxData[i].usuarios=usrs
                     this.inboxData[i].cantidad=usrs.length
             }
+            this.loading=!this.loading
         },
         async startTransition(i){
           this.changeRole=true;
@@ -139,7 +146,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .rolst {
     position: relative;
 }
@@ -150,6 +157,58 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
 .card-index {
     position: relative;

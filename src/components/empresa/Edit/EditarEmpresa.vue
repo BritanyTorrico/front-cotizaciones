@@ -1,5 +1,11 @@
 <template>
   <section class="crear_empresa">
+    <div v-if="loading">
+      <div class="loading-info">
+          <div class="clock-loader"></div>
+      </div>
+    </div>
+    <div v-else>
     <h2 class="empresa_title">Editar empresa</h2>
 
     <div class="form_desc">
@@ -247,6 +253,7 @@
         </button>
       </div>
     </form>
+    </div>
     <Alert ref="alert"></Alert>
   </section>
 </template>
@@ -271,6 +278,7 @@ export default {
   components: { Alert },
   data() {
     return {
+      loading: false,
       disable: false,
       dato: {
         nombre_empresa: null,
@@ -369,6 +377,7 @@ export default {
       
     },
     async submitForm() {
+      this.loading=!this.loading
       try {
         if (!this.$v.dato.$invalid) {
           await this.manageMark();
@@ -379,6 +388,7 @@ export default {
       } catch (error) {
         this.alert("warning", error);
       }
+      this.loading=!this.loading
     },
     async sendData() {
       try {
@@ -516,6 +526,7 @@ export default {
     },
   },
   mounted: async function(){
+    this.loading=!this.loading
     const response = (await this.$http.get(`company/${this.$route.params.id}`,{
                 headers:{
                   authorization:this.token,
@@ -548,7 +559,7 @@ export default {
     }
     this.dato.rubro_empresa=rubro.nombre_rubro
     this.rubro_empresa_original=rubro.nombre_rubro
-
+    this.loading=!this.loading
     var validCodesName = [
       32,
       48,
@@ -865,7 +876,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .crear_empresa {
   background-color: #f1f6f6;
   padding: 20px 40px 20px 40px;
@@ -892,6 +903,58 @@ export default {
   width: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
 .form_crear {
   padding: 8px;

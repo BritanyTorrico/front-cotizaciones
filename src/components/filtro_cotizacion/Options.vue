@@ -75,6 +75,7 @@ export default {
   },
   data(){
       return{
+          loading: false,
           months: 100,
           items: ["Products", "Services"],
           market: "Todos",
@@ -104,6 +105,8 @@ export default {
             this.getData()
       }, 
       async getData(){
+          this.loading=!this.loading
+          this.$emit("sendstat", this.loading)
           this.filteredInbox=[]
           this.filteredItems=[]
 
@@ -184,7 +187,8 @@ export default {
                 }
             }
           }
-          
+          this.loading=!this.loading
+          this.$emit("sendstat", this.loading)
           this.$emit("sendinboxdata", this.filteredInbox,)
           this.$emit("senditems", this.filteredItems)
       }, 

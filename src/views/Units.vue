@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import InboxUnidad from '../components/unidad_gasto/Vista/InboxUnidad.vue'
-import mapState from "vuex"
+import InboxUnidad from '../components/unidad_gasto/Vista/InboxUnidad.vue';
+import { mapState } from "vuex";
 
 export default {
   components: { InboxUnidad },
@@ -16,8 +16,10 @@ export default {
   computed: {
     ...mapState(["permisoUnidadDeGasto"])
   },
-  mounted (){
-    this.router.$push("/")
+  mounted(){
+    if (!this.permisoUnidadDeGasto){
+      this.$router.push("/")
+    }
   }
 }
 </script>

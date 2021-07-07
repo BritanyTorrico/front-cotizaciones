@@ -1,94 +1,104 @@
 <template>
   <div class="contenedor-dep">
-    <form @submit.prevent="submitForm">
-      <h2 class="item_title">
-        Presupuestos por departamento gestion {{ this.gestion }}
-      </h2>
-      <div class="form_desc">
-        Ingrese el presupuesto anual para cada departamento.
-      </div>
-      <div class="historial">
-        <a href="/historial_presupuestos_dep" class="btn btn-primary"
-          >Ver Historial</a
-        >
-      </div>
-      <div>
-        <div class="container__label">Facultad:</div>
-        <select
-          required
-          :disabled="this.cambioFacu"
-          :class="this.cambioFacu ? 'desabilitarLista' : 'container__list'"
-          v-model="presupuesto.facultad"
-          @change="cambiaFacultad(), obtenerDepartamentos()"
-        >
-          <option disabled="true">{{ presupuesto.facultad }}</option>
-          <option
-            v-for="(item, index) in listfacultad"
-            :key="index"
-            :value="item"
-          >
-            {{ item }}</option
-          >
-        </select>
-        <div
-          class="form_check-error"
-          v-if="!$v.presupuesto.facultad.validate_requerido_listas"
-        >
-          Campo Obligatorio.
+    <div class="container-soli">
+      <div v-if="loading">
+        <div class="loading-info">
+          <div class="clock-loader"></div>
         </div>
       </div>
+      <div v-else>
+        <form @submit.prevent="submitForm">
+          <h2 class="item_title">
+            Presupuestos por departamento gestion {{ this.gestion }}
+          </h2>
+          <div class="form_desc">
+            Ingrese el presupuesto anual para cada departamento.
+          </div>
+          <div class="historial">
+            <a href="/historial_presupuestos_dep" class="btn btn-primary"
+              >Ver Historial</a
+            >
+          </div>
+          <div>
+            <div class="container__label">Facultad:</div>
+            <select
+              required
+              :disabled="this.cambioFacu"
+              :class="this.cambioFacu ? 'desabilitarLista' : 'container__list'"
+              v-model="presupuesto.facultad"
+              @change="cambiaFacultad(), obtenerDepartamentos()"
+            >
+              <option disabled="true">{{ presupuesto.facultad }}</option>
+              <option
+                v-for="(item, index) in listfacultad"
+                :key="index"
+                :value="item"
+              >
+                {{ item }}</option
+              >
+            </select>
+            <div
+              class="form_check-error"
+              v-if="!$v.presupuesto.facultad.validate_requerido_listas"
+            >
+              Campo Obligatorio.
+            </div>
+          </div>
 
-      <div
-        class="tablaDepartamentos"
-        v-if="presupuesto.facultad != 'Seleccione una opcion'"
-      >
-        <table class="table table-hove table-bordered">
-          <thead>
-            <tr class="primera-fila ">
-              <th colspan="2">Departamento</th>
-              <th>Presupuesto (Bs.)</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr v-for="(item, index) in listDepartament" :key="index">
-              <td colspan="2">
-                {{ item.nombre_departamento }}
-              </td>
-
-              <td>
-                <div>
-                  <input
-                    required
-                    class="input-tables"
-                    type="number"
-                    step="0.01"
-                    placeholder="Ingrese valor"
-                    v-model="presupuesto.presupuestoValor[index]"
-                    @change="validador(presupuesto.presupuestoValor[index])"
-                  />
-                </div>
-                <div class="form_check-error">
-                  {{ validador(presupuesto.presupuestoValor[index]) }}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="botoncito">
-          <button
-            :disabled="$v.presupuesto.$invalid"
-            :class="$v.presupuesto.$invalid ? 'button-disabled' : 'form_button'"
+          <div
+            class="tablaDepartamentos"
+            v-if="presupuesto.facultad != 'Seleccione una opcion'"
           >
-            Confirmar
-          </button>
-        </div>
-      </div>
-      <div class="form_check-error mensaje" v-else>
-        Seleccione una facultad para que se muestren los departamentos
-        correspondientes.
-      </div>
+            <table class="table table-hove table-bordered">
+              <thead>
+                <tr class="primera-fila ">
+                  <th colspan="2">Departamento</th>
+                  <th>Presupuesto (Bs.)</th>
+                </tr>
+              </thead>
 
+              <tbody>
+                <tr v-for="(item, index) in listDepartament" :key="index">
+                  <td colspan="2">
+                    {{ item.nombre_departamento }}
+                  </td>
+
+                  <td>
+                    <div>
+                      <input
+                        required
+                        class="input-tables"
+                        type="number"
+                        step="0.01"
+                        placeholder="Ingrese valor"
+                        v-model="presupuesto.presupuestoValor[index]"
+                        @change="validador(presupuesto.presupuestoValor[index])"
+                      />
+                    </div>
+                    <div class="form_check-error">
+                      {{ validador(presupuesto.presupuestoValor[index]) }}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="botoncito">
+              <button
+                :disabled="$v.presupuesto.$invalid"
+                :class="
+                  $v.presupuesto.$invalid ? 'button-disabled' : 'form_button'
+                "
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+          <div class="form_check-error mensaje" v-else>
+            Seleccione una facultad para que se muestren los departamentos
+            correspondientes.
+          </div>
+        </form>
+      </div>
       <alert-2
         ref="alert2"
         aceptar="Aceptar"
@@ -97,7 +107,7 @@
         @escucharHijo1="variableHijo1"
       ></alert-2>
       <Alert ref="alert"></Alert>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -144,6 +154,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       presupuesto: {
         departamento: "Seleccione una opcion",
         presupuestoValor: [],
@@ -165,8 +176,6 @@ export default {
     this.gestion = null;
     const today = new Date();
     this.gestion = today.getFullYear();
-
-    console.log(this.gestion);
     this.obtenerFacultades();
   },
   validations: {
@@ -191,6 +200,7 @@ export default {
       return max;
     },
     async obtenerFacultades() {
+      this.loading = !this.loading;
       try {
         const listaFacultades = (
           await this.$http.get("faculty", {
@@ -207,9 +217,11 @@ export default {
         this.alert("warning", "Algo salio mal");
         console.log(error);
       }
+      this.loading = !this.loading;
     },
 
     async obtenerDepartamentos() {
+      this.loading = !this.loading;
       if (!this.cambioFacu) {
         this.listDepartament = [];
         this.presupuestoSinModificar = [];
@@ -242,6 +254,7 @@ export default {
           this.facultadAnterior = this.presupuesto.facultad;
         }
       }
+      this.loading = !this.loading;
     },
     variableHijo(value) {
       this.variableRecibida = value;
@@ -320,6 +333,7 @@ export default {
       }
     },
     async submitForm() {
+      this.loading = !this.loading;
       try {
         if (!this.$v.presupuesto.$invalid) {
           for (let i = 0; i < this.presupuesto.presupuestoValor.length; i++) {
@@ -339,19 +353,20 @@ export default {
           }
         }
       } catch (error) {
-        console.log(error);
+        this.alert("warning", error);
       }
+      this.loading = !this.loading;
     },
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .contenedor-dep {
   background-color: #f7f6f6;
-  padding: 40px 60px 40px 60px;
+  padding: 2.5% 8% 2.5% 8%;
   width: 100%;
-  min-height: 500px;
+  min-height: 100vh;
 }
 .item_title {
   text-align: left;
@@ -361,7 +376,58 @@ export default {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
+.loading-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
 
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
 .form_desc {
   text-align: left;
   color: #0d58cf;

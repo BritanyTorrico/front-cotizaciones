@@ -1,5 +1,11 @@
 <template>
     <div class="cot-form">
+      <div v-if="loading">
+      <div class="loading-info">
+          <div class="clock-loader"></div>
+      </div>
+    </div>
+    <div v-else>
     <div class="form-title">Formulario de cotizacion</div>
     <div class="form_crear">
       <div class="form_section">
@@ -18,6 +24,7 @@
         >Crear</button>
       </div>
     </div>
+    </div>
     <Alert ref="alert"></Alert>
   </div>
 </template>
@@ -34,6 +41,7 @@ export default {
   components: { Empresas, Alert },
     data(){
       return {
+        loading: false,
         disabled: false,
         rubro: "",
         nombreCotizacion: "",
@@ -61,6 +69,7 @@ export default {
       this.companies=compList;
     },
     async submitForm(){
+      this.loading=!this.loading
       try {
         if(this.companies.length>=3){
           await this.sendQuotData();
@@ -73,6 +82,7 @@ export default {
       } catch (error) {
         this.alert("warning", error)
       }
+      this.loading=!this.loading
     },
     async sendQuotData(){
       try {
@@ -114,7 +124,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .cot-form{
   background-color: #f1f2f6;
   margin: 40px;
@@ -138,6 +148,58 @@ export default {
   border-bottom: 3px solid #0d58cf;
   width: 90%;
   padding: 0 0 1.5% 0;
+}
+.loading-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+  
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
 .form_crear {
   padding: 0 0 0 3%;

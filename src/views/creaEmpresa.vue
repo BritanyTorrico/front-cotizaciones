@@ -32,6 +32,11 @@ export default {
 }
 .register_container {
   display: block;
-  padding: 50px 300px 50px 300px;
+  padding: 2.5% 22% 5% 22%;
+}
+@media (max-width: 800px) {
+  .register_container {
+    padding: 0%;
+  }
 }
 </style>

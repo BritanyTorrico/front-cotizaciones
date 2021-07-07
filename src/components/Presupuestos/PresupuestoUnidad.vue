@@ -68,88 +68,103 @@
           </div>
         </div>
       </div>
-
-      <div
-        v-if="this.listaUnidadesDeGasto.length > 0"
-        class="form__unidadesGasto "
-      >
-        <table class="table table-hove table-bordered">
-          <thead>
-            <tr class="primera-fila ">
-              <th>Nombre de unidad</th>
-              <th colspan="2">Descripción</th>
-              <th>Jefe de unidad</th>
-              <th>Presupuesto</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr v-for="(item, index) in this.listaUnidadesDeGasto" :key="index">
-              <div class="col-8">
-                <td>
-                  {{ item.nombre_unidadgasto }}
-                </td>
-              </div>
-
-              <td colspan="2">
-                {{ item.descripcion_unidadgasto }}
-              </td>
-
-              <td>
-                {{ item.jefe_unidad }}
-              </td>
-
-              <td>
-                <div>
-                  <input
-                    required
-                    class="input-tables"
-                    type="number"
-                    step="0.01"
-                    placeholder="Ingrese valor"
-                    v-model="presupuesto.presupuestoValor[index]"
-                    @change="validador(presupuesto.presupuestoValor[index])"
-                  />
-                </div>
-                <div class="form_check-error">
-                  {{ validador(presupuesto.presupuestoValor[index]) }}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="botoncito">
-          <button
-            :disabled="$v.presupuesto.$invalid"
-            :class="$v.presupuesto.$invalid ? 'button-disabled' : 'form_button'"
-          >
-            Confirmar
-          </button>
+      <div v-if="loading">
+        <div class="loading-info">
+          <div class="clock-loader"></div>
         </div>
       </div>
-      <div v-if="this.listaUnidadesDeGasto.length == 0 && !this.mostrarMensaje">
-        <p class="form_check-error mensaje">
-          (*) Seleccione un departamento por facultad.
-        </p>
-      </div>
-      <div v-if="this.listaUnidadesDeGasto.length == 0 && this.mostrarMensaje">
-        <p class="form_check-error mensaje">
-          No existen unidades de gasto en este departamento.
-        </p>
+      <div v-else>
+        <div
+          v-if="this.listaUnidadesDeGasto.length > 0"
+          class="form__unidadesGasto "
+        >
+          <table class="table table-hove table-bordered">
+            <thead>
+              <tr class="primera-fila ">
+                <th>Nombre de unidad</th>
+                <th colspan="2">Descripción</th>
+                <th>Jefe de unidad</th>
+                <th>Presupuesto</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr
+                v-for="(item, index) in this.listaUnidadesDeGasto"
+                :key="index"
+              >
+                <div class="col-8">
+                  <td>
+                    {{ item.nombre_unidadgasto }}
+                  </td>
+                </div>
+
+                <td colspan="2">
+                  {{ item.descripcion_unidadgasto }}
+                </td>
+
+                <td>
+                  {{ item.jefe_unidad }}
+                </td>
+
+                <td>
+                  <div>
+                    <input
+                      required
+                      class="input-tables"
+                      type="number"
+                      step="0.01"
+                      placeholder="Ingrese valor"
+                      v-model="presupuesto.presupuestoValor[index]"
+                      @change="validador(presupuesto.presupuestoValor[index])"
+                    />
+                  </div>
+                  <div class="form_check-error">
+                    {{ validador(presupuesto.presupuestoValor[index]) }}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="botoncito">
+            <button
+              :disabled="$v.presupuesto.$invalid"
+              :class="
+                $v.presupuesto.$invalid ? 'button-disabled' : 'form_button'
+              "
+            >
+              Confirmar
+            </button>
+          </div>
+        </div>
+        <div
+          v-if="this.listaUnidadesDeGasto.length == 0 && !this.mostrarMensaje"
+        >
+          <p class="form_check-error mensaje">
+            (*) Seleccione un departamento por facultad.
+          </p>
+        </div>
+        <div
+          v-if="this.listaUnidadesDeGasto.length == 0 && this.mostrarMensaje"
+        >
+          <p class="form_check-error mensaje">
+            No existen unidades de gasto en este departamento.
+          </p>
+        </div>
       </div>
     </form>
 
     <alert-2
       ref="alert2"
       aceptar="Aceptar"
-      mensajeSub="(Se borrara la lista de presupuestos si presiona aceptar.)"
+      mensajeSub="(Se borrara las modificaciones si presiona aceptar.)"
       @escucharHijo="variableHijo"
       @escucharHijo1="variableHijo1"
     ></alert-2>
     <alert-2
       ref="alert22"
       aceptar="Aceptar"
-      mensajeSub="(Se borrara la lista de presupuestos si presiona aceptar.)"
+      mensajeSub="(Se borrara las modificaciones si presiona aceptar.)"
       @escucharHijo="variableHijo_otro"
       @escucharHijo1="variableHijo1_otro"
     ></alert-2>
@@ -206,6 +221,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       presupuesto: {
         facultad: "Seleccione una opcion",
         departamento: "Seleccione una opcion",
@@ -356,10 +372,10 @@ export default {
         this.tope = topePresupuesto;
       } catch (error) {
         this.alert("warning", "Algo salio mal");
-        console.log(error);
       }
     },
     async getObtenerUnidadesDeGasto() {
+      this.loading = !this.loading;
       try {
         //verificar si mi depa anterior es igual al original si es no cambio
         if (!this.cambioDepa) {
@@ -397,8 +413,9 @@ export default {
           }
         }
       } catch (error) {
-        console.log(error);
+        this.alert("warning", error);
       }
+      this.loading = !this.loading;
     },
     async cambiaFacultad() {
       this.cambioFacu = false;
@@ -465,7 +482,6 @@ export default {
         this.cambioDepa = false;
         this.presupuesto.facultad = this.facultadAnterior;
         this.presupuesto.departamento = this.depaAnterior;
-        console.log("puso cancelar");
       }
     },
     //FACULTAD
@@ -487,7 +503,6 @@ export default {
         this.cambioDepa = false;
         this.presupuesto.facultad = this.facultadAnterior;
         this.presupuesto.departamento = this.depaAnterior;
-        console.log("puso cancelar en facultad");
       }
     },
     validador(value) {
@@ -551,6 +566,7 @@ export default {
       }
     },
     async submitForm() {
+      this.loading = !this.loading;
       try {
         let desabilito = await this.verificarTope();
         if (!this.$v.presupuesto.$invalid) {
@@ -579,19 +595,19 @@ export default {
           }
         }
       } catch (error) {
-        console.log(error);
+        this.alert("warning", error);
       }
+      this.loading = !this.loading;
     },
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .contenedor__pres {
   background-color: #f7f6f6;
   padding: 40px 60px 40px 60px;
   width: 100%;
-  min-height: 500px;
 }
 .item_title {
   text-align: left;
@@ -600,6 +616,58 @@ export default {
   font-weight: 600;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.loading-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  margin: 0;
+}
+.clock-loader {
+  --clock-color: #000000;
+  --clock-width: 4rem;
+  --clock-radius: calc(var(--clock-width) / 2);
+  --clock-minute-length: calc(var(--clock-width) * 0.4);
+  --clock-hour-length: calc(var(--clock-width) * 0.2);
+  --clock-thickness: 0.2rem;
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-width);
+  height: var(--clock-width);
+  border: 3px solid var(--clock-color);
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+  }
+
+  &::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+  }
+
+  &::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
 }
 .form_desc {
   text-align: left;
