@@ -81,44 +81,97 @@
       <b-navbar-brand id="logotipo" @click="paginaPrincipal()"
         >UMSS</b-navbar-brand
       >
-      <b-navbar-brand id="logotipito" @click="contacto()"
-        >Contactos</b-navbar-brand
-      >
-      <b-navbar-brand id="logotipit" @click="acercade()"
-        >Acerca de</b-navbar-brand
-      >
-
-      <b-navbar-toggle id="icono-toggle" target="navbar-toggle-collapse">
-        <template #default="{ expanded }">
-          <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
-          <b-icon v-else icon="chevron-bar-down"></b-icon>
-        </template>
-      </b-navbar-toggle>
-
-      <b-collapse id="navbar-toggle-collapse" is-nav right>
-        <b-navbar-nav id="nav" class="ml-auto">
-          <b-nav-item v-if="!username" to="/login" id="inciio"
-            >Iniciar Sesion</b-nav-item
-          >
-          <b-nav-item v-if="permisoCrearUsuario" to="/usuarios"
-            >Usuarios</b-nav-item
-          >
-          <b-nav-item v-if="permisoCrearRol" to="/roles">Roles</b-nav-item>
-          <b-nav-item v-if="permisoUnidadDeGasto" to="/unidades"
-            >Unidades</b-nav-item
-          >
-          <b-nav-item v-if="permisoItemDeGasto" to="/items">Items</b-nav-item>
-          <b-nav-item v-if="permisoEmpresa" to="/empresas">Empresas</b-nav-item>
-          <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
-            >Solicitudes</b-nav-item
-          >
-          <b-nav-item
-            v-if="permisoRevisionSolicitudes"
-            to="/revisar_solicitudes"
-            >Revisar solicitudes</b-nav-item
-          >
-          <b-nav-item v-if="permisoCotizacion" to="/cotizaciones"
-            >Cotizaciones</b-nav-item
+      <b-navbar-toggle
+        target="nav-collapse"
+        v-b-toggle.sidebar-1
+      ></b-navbar-toggle>
+      <b-sidebar id="sidebar-1" title="UMSS" shadow>
+        <div class="px-3 py-2">
+          <div class="cont-menu">
+            <nav>
+              <a v-if="permisoCrearUsuario" href="/usuarios"
+                ><b-icon
+                  icon="person"
+                  class="iconito"
+                  variant="outline-primary"
+                ></b-icon
+                >Usuarios</a
+              >
+              <a v-if="permisoCrearRol" href="/roles"
+                ><b-icon icon="bag" class="iconito"></b-icon>Roles</a
+              >
+              <a v-if="permisoUnidadDeGasto" href="/unidades"
+                ><b-icon icon="file-text" class="iconito"></b-icon>Unidades</a
+              >
+              <a v-if="permisoItemDeGasto" href="/items"
+                ><b-icon icon="cart" class="iconito"></b-icon>items</a
+              >
+              <a v-if="permisoEmpresa" href="/empresas"
+                ><b-icon icon="house-door" class="iconito"></b-icon>Empresas</a
+              >
+              <a v-if="permisoSolicitud" href="/solicitudes"
+                ><b-icon icon="envelope" class="iconito"></b-icon>Nueva
+                Solicitudes</a
+              >
+              <a v-if="permisoRevisionSolicitudes" href="/revisar_solicitudes"
+                ><b-icon icon="envelope-open" class="iconito"></b-icon>Revisas
+                Solicitudes</a
+              >
+              <a v-if="permisoCotizacion" href="/cotizaciones"
+                ><b-icon icon="check2-circle" class="iconito"></b-icon>Nueva
+                cotizacion</a
+              >
+              <a v-if="permisoFiltroCotizacion" href="/filtro_cotizaciones"
+                ><b-icon icon="layout-split" class="iconito"></b-icon>Filtro de
+                cotizaciones</a
+              >
+              <a v-if="permisoCuadroComparativo" href="/cuadro_comparativo"
+                ><b-icon icon="receipt" class="iconito"></b-icon>Cuadro
+                comparativo</a
+              >
+              <a v-if="permisoInformeFinal" href="/informe_final"
+                ><b-icon icon="card-list" class="iconito"></b-icon>Informe
+                final</a
+              >
+              <a v-if="permisoPresupuestoDep" href="/presupuestoDep"
+                ><b-icon icon="graph-up" class="iconito"></b-icon>Presupuesto
+                Departamento</a
+              >
+              <a v-if="permisoPresupuestoUnidad" href="/presupuestos"
+                ><b-icon icon="pencil" class="iconito"> </b-icon>Presupuestos
+                Unidades</a
+              >
+              <a v-if="permisoBitacora" href="/logss"
+                ><b-icon icon="cloud-check" class="iconito"></b-icon
+                >Bitacoras</a
+              >
+              <a v-if="permisoBackup" href="/back"
+                ><b-icon icon="check" class="iconito"></b-icon>Respaldos</a
+              >
+              <a v-if="username" href="/" @click="cerrar()"
+                ><b-icon icon="arrow-return-left" class="iconito"></b-icon
+                >Cerrar Sesion</a
+              >
+              <a v-if="!username" href="/acercaDeNosotros"
+                ><b-icon icon="house" class="iconito"></b-icon>Acerca de
+                nosotros</a
+              >
+              <a v-if="!username" href="/login"
+                ><b-icon icon="arrow-return-left" class="iconito"></b-icon
+                >Iniciar Sesion</a
+              >
+            </nav>
+          </div>
+        </div>
+      </b-sidebar>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav class="ms-auto">
+          <b-nav-item-dropdown
+            class="nav-link-inner--text"
+            v-if="contadorGestionar > 0"
+            text="Gestionar"
+            id="subtitu"
+            right
           >
             <b-dropdown-item
               href="/usuarios"
@@ -212,6 +265,9 @@
           <b-nav-item v-if="username" id="subtitu1" @click="cerrar()" href="/"
             >Cerrar Sesion</b-nav-item
           >
+          <b-nav-item v-if="!username" id="subtitu1" href="/acercaDeNosotros"
+            >Acerca de nosotros</b-nav-item
+          >
           <b-nav-item href="/login" v-if="!username" id="subtitu1"
             >Iniciar Sesion</b-nav-item
           >
@@ -226,7 +282,7 @@
       <router-view />
     </transition>
 
-    <div class="page-layout">
+    <div class="page-layout" delay="6000">
       <footerPagina />
     </div>
   </div>
@@ -236,8 +292,8 @@ import { mapState, mapActions } from "vuex";
 
 const AsyncComponent = () => ({
   component: import("@/views/FooterPagina.vue"),
-  delay: 200,
-  timeout: 3000,
+  delay: 2000,
+  timeout: 6000,
 });
 export default {
   components: { footerPagina: AsyncComponent },

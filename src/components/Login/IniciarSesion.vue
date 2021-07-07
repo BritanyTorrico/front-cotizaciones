@@ -228,8 +228,6 @@ export default {
     min-height: 100vh;
   }
 }
-.container1 {
-}
 
 .form__img {
   width: 50%;
