@@ -1,18 +1,20 @@
 <template>
-  <div class="col-sm-3 ">
-    <div class="card mb-3 " style="width:300px;  height: 160px;">
+  <div class=" ">
+    <div class="card mb-3 carta ">
       <div class="row g-0">
-        <div class="col-md-4" :style="styles1" style=" height: 160px;">
+        <div class="col-md-4 iconooo" :style="styles1">
           <b-icon :icon="nombreIcono" class="iconito"></b-icon>
         </div>
 
         <div class="col-md-8 ">
-          <div class="card-body" style=" height: 160px;">
+          <div class="card-body coooon">
             <h5 class="card-title titulo">{{ titulo }}</h5>
-            <hr class="linea" />
-            <p class="card-text contenido">
-              {{ contenido }}
-            </p>
+            <div class="d-none d-sm-block">
+              <hr class="linea" />
+              <p class="card-text contenido ">
+                {{ contenido }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -44,6 +46,15 @@ export default {
 </script>
 
 <style scoped>
+.carta {
+  width: 100%;
+}
+.iconooo {
+  min-height: 27vh;
+}
+.coooon {
+  word-wrap: break-word;
+}
 .iconito {
   height: 100%;
   border: 1px solid;

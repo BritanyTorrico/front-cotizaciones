@@ -203,11 +203,22 @@
     >
       <router-view />
     </transition>
+
+    <div class="page-layout">
+      <footerPagina />
+    </div>
   </div>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
+
+const AsyncComponent = () => ({
+  component: import("@/views/FooterPagina.vue"),
+  delay: 200,
+  timeout: 3000,
+});
 export default {
+  components: { footerPagina: AsyncComponent },
   name: "App",
   created() {
     this.leerToken();
@@ -294,11 +305,11 @@ export default {
       localStorage.removeItem("presupuestoLista");
       this.$router.push("/login");
     },
-    paginaPrincipal() {
+    async paginaPrincipal() {
       if (this.username) {
-        this.$router.push("/principal");
+        await this.$router.push("/principal");
       } else {
-        this.$router.push("/");
+        await this.$router.push("/");
       }
     },
   },
@@ -324,6 +335,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   width: 100%;
+  min-height: 100vh;
 }
 
 :root {

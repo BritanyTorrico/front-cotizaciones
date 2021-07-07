@@ -120,7 +120,7 @@
                     required
                   />
                 </div>
-
+                {{ users.nombre_usuario }}
                 <div
                   class="form_check-error"
                   v-if="!$v.users.nombre_usuario.required"
@@ -139,9 +139,9 @@
 
                 <div
                   class="form_check-error"
-                  v-if="!$v.users.nombre_usuario.alpha1"
+                  v-if="!$v.users.nombre_usuario.alpha4"
                 >
-                  No se aceptan caracteres especiales.
+                  No se aceptan caracteres especiales ni espacios.
                 </div>
                 <div
                   class="form_check-error"
@@ -259,9 +259,9 @@
                 caracteres.
               </div>
             </div>
-            <div class="form__section3">
+            <div class=" form__section3 ">
               <div class="fomrm__section__item">
-                <div class="container-facu">
+                <div class="container-facu ">
                   <div class="container__label">Facultad:</div>
                   <select
                     v-model="users.facultad"
@@ -303,7 +303,7 @@
                 </div>
               </div>
 
-              <div class="fomrm__section__item">
+              <div class="fomrm__section__item ">
                 <lista-desplegable
                   :key="componentKey1"
                   v-model="users.nombre_rol"
@@ -342,7 +342,8 @@ import {
 import ListaDesplegable from "./ListaDesplegable.vue";
 import { mapState, mapActions } from "vuex";
 import Alert from "@/components/User/Alert.vue";
-const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]*$/);
+const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ.\s]+$/);
+const alpha4 = helpers.regex("alpha4", /^[a-zA-Z0-9ñáéíóúÁÉÍÓÚ.]+$/);
 const validate_requerido_listas = (value) => {
   const datovalue = String(value);
   if (datovalue === "Seleccione una opcion") {
@@ -398,7 +399,7 @@ export default {
         required,
         minLength: minLength(3),
         maxLength: maxLength(20),
-        alpha1,
+        alpha4,
       },
       contrasena: {
         required,
@@ -529,7 +530,7 @@ export default {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
-        this.alert("warning", "Algo salio mal");
+        this.alert("warning", "El usuario ya existe");
       }
       this.loading = !this.loading;
     },
