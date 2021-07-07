@@ -4,7 +4,7 @@
       type="dark"
       id="barra"
       variant="primary"
-      toggleable="lg"
+      toggleable="md"
       class="navbar-horizontal"
     >
       <b-navbar-brand @click="paginaPrincipal()" id="logotipo"
@@ -204,7 +204,7 @@
       <router-view />
     </transition>
 
-    <div class="page-layout">
+    <div class="page-layout" delay="6000">
       <footerPagina />
     </div>
   </div>
@@ -214,8 +214,8 @@ import { mapState, mapActions } from "vuex";
 
 const AsyncComponent = () => ({
   component: import("@/views/FooterPagina.vue"),
-  delay: 200,
-  timeout: 3000,
+  delay: 2000,
+  timeout: 6000,
 });
 export default {
   components: { footerPagina: AsyncComponent },
@@ -357,7 +357,12 @@ a.navbar-brand {
   border: 1px solid;
 }
 #subtitu {
-  padding-right: 30px;
+  padding-right: 5px;
+}
+@media (max-width: 795px) {
+  #subtitu {
+    padding: 0%;
+  }
 }
 #subtitu a span {
   color: white;

@@ -50,10 +50,18 @@ export default {
   width: 100%;
 }
 .iconooo {
-  min-height: 27vh;
+  min-height: 29vh;
 }
 .coooon {
-  word-wrap: break-word;
+  max-height: 29vh;
+  width: 100%;
+  display: block;
+  display: -webkit-box;
+
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .iconito {
   height: 100%;
