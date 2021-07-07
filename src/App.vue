@@ -7,78 +7,7 @@
       toggleable="md"
       class="navbar-horizontal"
     >
-      <b-navbar-brand id="logotipo" @click="paginaPrincipal()"
-        >UMSS
-      </b-navbar-brand>
-      <b-navbar-brand id="logotipito" @click="contacto()"
-        >Contactos
-      </b-navbar-brand>
-      <b-navbar-brand id="logotipit" @click="acercade()"
-        >Acerca de
-      </b-navbar-brand>
-
-      <b-navbar-toggle target="navbar-toggle-collapse">
-        <template #default="{ expanded }">
-          <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
-          <b-icon v-else icon="chevron-bar-down"></b-icon>
-        </template>
-      </b-navbar-toggle>
-
-      <b-collapse id="navbar-toggle-collapse" is-nav align-rigth>
-        <b-navbar-nav id="nav" class="ms-auto">
-          <b-nav-item v-if="!username" to="/login">Iniciar Sesion</b-nav-item>
-          <b-nav-item v-if="permisoCrearUsuario" to="/usuarios"
-            >Usuarios</b-nav-item
-          >
-          <b-nav-item v-if="permisoCrearRol" to="/roles">Roles</b-nav-item>
-          <b-nav-item v-if="permisoUnidadDeGasto" to="/unidades"
-            >Unidades</b-nav-item
-          >
-          <b-nav-item v-if="permisoItemDeGasto" to="/items">Items</b-nav-item>
-          <b-nav-item v-if="permisoEmpresa" to="/empresas">Empresas</b-nav-item>
-          <b-nav-item v-if="permisoSolicitud" to="/solicitudes"
-            >Solicitudes</b-nav-item
-          >
-          <b-nav-item
-            v-if="permisoRevisionSolicitudes"
-            to="/revisar_solicitudes"
-            >Revisar solicitudes</b-nav-item
-          >
-          <b-nav-item v-if="permisoCotizacion" to="/cotizaciones"
-            >Cotizaciones</b-nav-item
-          >
-          <b-nav-item v-if="permisoFiltroCotizacion" to="/filtro_cotizaciones"
-            >Filtro de Cotizaciones</b-nav-item
-          >
-          <b-nav-item v-if="permisoPresupuestoDep" to="/presupuestoDep"
-            >Presupuesto Departamento</b-nav-item
-          >
-          <b-nav-item v-if="permisoPresupuestoUnidad" to="/presupuestos"
-            >Presupuesto Unidad de gasto</b-nav-item
-          >
-          <b-nav-item v-if="permisoCuadroComparativo" to="/cuadro_comparativo"
-            >Cuadro comparativo</b-nav-item
-          >
-          <b-nav-item v-if="permisoBitacora" to="/logss">Bitacoras </b-nav-item
-          ><b-nav-item v-if="permisoBackup" to="/back"
-            >Respaldo y retauracion
-          </b-nav-item>
-          <b-nav-item v-if="permisoInformeFinal" to="/informe_final"
-            >Informe Final
-          </b-nav-item>
-          <b-nav-item v-if="username" @click="cerrar()"
-            >Cerrar Sesion</b-nav-item
-          >
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
-    <!--otro-->
-    <b-navbar
-      toggleable
-      type="dark"
-      class="navbar navbar-dark bg-primary"
-    >
-      <b-navbar-brand id="logotipo" @click="paginaPrincipal()"
+      <b-navbar-brand @click="paginaPrincipal()" id="logotipo"
         >UMSS</b-navbar-brand
       >
       <b-navbar-toggle
@@ -191,7 +120,7 @@
             <b-dropdown-item href="/empresas" v-if="permisoEmpresa"
               >Empresas</b-dropdown-item
             >
-
+          </b-nav-item-dropdown>
 
           <b-nav-item-dropdown
             v-if="contadorSolicitudes > 0"
@@ -390,20 +319,6 @@ export default {
         await this.$router.push("/");
       }
     },
-    contacto(){
-      if(this.username){
-        this.$router.push("/contacto");
-      }else{
-        this.$router.push("/contacto");
-      }
-    },
-    acercade(){
-      if(this.username){
-        this.$router.push("/acercade");
-      }else{
-        this.$router.push("/acercade");
-      }
-    }
   },
 };
 </script>
@@ -443,14 +358,6 @@ a.navbar-brand {
   cursor: pointer;
   font-weight: bold;
   font-family: "Times New Roman", Times, serifs;
-}
-#logotipito{
-  margin-left: 45px;
-  cursor: pointer;
-}
-#logotipit{
-   margin-left: 45px;
-  cursor: pointer;
 }
 #icono-toggle {
   margin-right: 30px;
