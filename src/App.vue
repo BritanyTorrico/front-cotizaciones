@@ -8,6 +8,13 @@
       <b-navbar-brand id="logotipo" @click="paginaPrincipal()"
         >UMSS
       </b-navbar-brand>
+      <b-navbar-brand id="logotipito" @click="contacto()"
+        >Contactos
+      </b-navbar-brand>
+      <b-navbar-brand id="logotipit" @click="acercade()"
+        >Acerca de
+      </b-navbar-brand>
+
       <b-navbar-toggle target="navbar-toggle-collapse">
         <template #default="{ expanded }">
           <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
@@ -72,6 +79,12 @@
     >
       <b-navbar-brand id="logotipo" @click="paginaPrincipal()"
         >UMSS</b-navbar-brand
+      >
+      <b-navbar-brand id="logotipito" @click="contacto()"
+        >Contactos</b-navbar-brand
+      >
+      <b-navbar-brand id="logotipit" @click="acercade()"
+        >Acerca de</b-navbar-brand
       >
 
       <b-navbar-toggle id="icono-toggle" target="navbar-toggle-collapse">
@@ -236,6 +249,20 @@ export default {
         this.$router.push("/");
       }
     },
+    contacto(){
+      if(this.username){
+        this.$router.push("/contacto");
+      }else{
+        this.$router.push("/contacto");
+      }
+    },
+    acercade(){
+      if(this.username){
+        this.$router.push("/acercade");
+      }else{
+        this.$router.push("/acercade");
+      }
+    }
   },
 };
 </script>
@@ -261,8 +288,7 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-#nav {
-}
+
 #nav a {
   color: white;
 }
@@ -284,6 +310,14 @@ a.navbar-brand {
 }
 #logotipo {
   margin-left: 45px;
+  cursor: pointer;
+}
+#logotipito{
+  margin-left: 45px;
+  cursor: pointer;
+}
+#logotipit{
+   margin-left: 45px;
   cursor: pointer;
 }
 #icono-toggle {

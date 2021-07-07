@@ -11,7 +11,7 @@
 import PaginaPrincipal from "@/components/Pagina_Inicial/PaginaPrincipal.vue";
 import VPortada from "../components/Pagina_Inicial/VPortada.vue";
 import Avisos from "../components/Pagina_Inicial/Avisos.vue";
-import Contacto from "../components/Pagina_Inicial/Contacto.vue";
+import Contacto from "../components/Pagina_Inicial/Contacto.vue"; 
 export default {
   components: { PaginaPrincipal, VPortada, Avisos, Contacto },
   name: "PaginaPrincipalPage",

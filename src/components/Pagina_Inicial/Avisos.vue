@@ -59,7 +59,7 @@ export default {
 }
 .titulo1 {
   text-align: left;
-  padding-top: 20px;
+  padding-top: 200px;
   padding-left: 40px;
   font-size: 32px;
   font-weight: bold;
@@ -68,6 +68,7 @@ export default {
   width: 90px;
   height: 40px;
   margin-top: 15px;
+  padding-top: 200px;
 }
 .aviso__contenido {
   font-size: 18px;

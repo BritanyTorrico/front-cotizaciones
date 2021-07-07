@@ -11,6 +11,18 @@ const routes = [{
             import ("@/views/PaginaPrincipalPage.vue"),
     },
     {
+        path: "/contacto",
+        name: "Contacto",
+        component:()=>
+            import ("@/views/contactoPage.vue"),
+    },
+    {
+        path: "/acercade",
+        name: "Acercade",
+        component:()=>
+            import("@/views/acercadePage.vue"),
+    },
+    {
         path: "/principal",
         name: "PaginaPermisos",
         component: () =>
