@@ -1,14 +1,14 @@
 <template>
   <div class="register" v-if="this.permisoUnidadDeGasto">
     <div class="register_container">
-        <EditarUnidad/>
+      <EditarUnidad />
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import EditarUnidad from '../components/unidad_gasto/Edit/EditarUnidad.vue';
+import EditarUnidad from "../components/unidad_gasto/Edit/EditarUnidad.vue";
 export default {
   components: { EditarUnidad },
   name: "EditarUnidadGasto",
@@ -20,7 +20,7 @@ export default {
       this.$router.push("/");
     }
   },
-}
+};
 </script>
 
 <style scoped>
@@ -32,5 +32,10 @@ export default {
 .register_container {
   display: block;
   padding: 2.5% 22% 5% 22%;
+}
+@media (max-width: 800px) {
+  .register_container {
+    padding: 0%;
+  }
 }
 </style>

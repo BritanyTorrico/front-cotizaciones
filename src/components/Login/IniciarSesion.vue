@@ -11,7 +11,7 @@
       integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="
       crossorigin="anonymous"
     />
-    <div class="container">
+    <div class="container1">
       <form class="form" @submit.prevent="submitForm">
         <img class="form__img" src="@/assets/umss.png" alt="" />
 
@@ -196,7 +196,7 @@ export default {
           this.$store.commit("setUser", true);
           localStorage.setItem("username", this.username);
           await this.storeLocalData();
-          this.$router.push("/principal");
+          await this.$router.push("/principal");
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
@@ -214,34 +214,36 @@ export default {
 
 <style scoped>
 .base {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #46b1c95b;
-  height: 550px;
-}
-.container {
-  border: 1px solid;
-  width: 390px;
-  padding: 20px;
+  width: 100%;
   border-radius: 30px;
   background: var(--fondo-gris-claro);
   border: none;
+  padding: 10% 0% 10% 0%;
+  margin-top: 0;
+
+  min-height: 80vh;
+}
+@media (max-width: 360px) {
+  .base {
+    min-height: 100vh;
+  }
+}
+.container1 {
 }
 
 .form__img {
-  width: 210px;
-  height: 250px;
+  width: 50%;
+  height: 200px;
   text-align: center;
 }
 .form__name {
   font-weight: bold;
-  margin-top: 10px;
+  margin-top: 8px;
   margin-bottom: 8px;
 }
 .form__section {
   text-align: center;
-  width: 400px;
+  width: 100%;
 }
 .form__section__boton {
   padding: 8px;
@@ -250,7 +252,6 @@ export default {
   font-weight: bold;
   border: none;
   width: 41%;
-  margin-right: 50px;
 }
 .form__caja {
   padding: 5px;
