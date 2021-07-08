@@ -221,6 +221,7 @@ export default {
                 }
             }
             for (let i = 0; i < response.length; i++) {
+                console.log(response[i].cod_usuario);
                 const roleId= (await this.$http.get(`usersPerRole/${response[i].cod_usuario}`,
                     {
                         headers: {
