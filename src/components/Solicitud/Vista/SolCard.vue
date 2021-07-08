@@ -35,7 +35,7 @@ export default {
 }
 .card-head {
   display: flex;
-  width: 90%;
+  width: 80%;
 }
 h3 {
   font-size: 2.5vh;
@@ -45,7 +45,7 @@ h3 {
   width: 50%;
 }
 .card-end{
-  width: 10%;
+  width: 20%;
 }
 .card-date {
   font-size: 1.7vh;
@@ -70,7 +70,7 @@ h3 {
   font-size: 1.9vh;
   color: #626262 !important;
   line-height: 1.5em;
-  height: 4.5em;
+  height: 3em;
   word-wrap: break-word;
   overflow: hidden;
   text-align: left;

@@ -165,6 +165,7 @@ p {
   margin-bottom: 30px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    word-wrap: break-word;
 }
 .money {
   word-break: keep-all;
