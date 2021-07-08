@@ -35,12 +35,9 @@
                 :description="un.descripcion_unidadgasto"
               />
             </div>
-          </div>
-        </div>
-      </div>
-      <div
+            <div
         class="inbox-form"
-        :class="selectedUnit.name === '' ? 'no-selected' : ''"
+        v-if="un.nombre_unidadgasto==selectedUnit.name"
       >
         <div v-if="selectedUnit.name != ''">
           <transition
@@ -51,6 +48,9 @@
               <UnitView :unit="selectedUnit" />
             </div>
           </transition>
+        </div>
+      </div>
+          </div>
         </div>
       </div>
     </div>
@@ -153,20 +153,13 @@ export default {
   position: relative;
 }
 .inbox-container {
-  padding: 0px !important;
-  gap: 2rem;
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+    flex-direction: row;
 }
 .card-index {
   position: relative;
-  align-items: baseline;
-  padding: 2.5% 2.5%;
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 10px;
-  width: 100%;
+    border-bottom: 1px solid #9b9b9b;
+    width: 100%;
 }
 .loading-info{
   display: flex;
@@ -222,72 +215,64 @@ export default {
 }
 .inbox-cards {
   display: flex;
-  height: 42rem;
   overflow: auto;
 }
 .inbox-form {
-  width: 100%;
-  padding: 0 5rem 5rem 0;
-  margin: 10px;
-  background: #97ced8;
+  display: flex;
+    flex-direction: column;
+    width: 100%!important;
+    background: #97ced8;
+    border-right: 3px solid #030303;
+    border-left: 3px solid #030303;
+    border-bottom: 3px solid #030303;
+    border-radius: 0 0 10px 10px;
 }
 .single-card-container {
   align-items: center;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  padding: 1% 1% 1% 1%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 1% 1% 1% 1%;
 }
 .card-side {
   width: 100%;
 }
 .selected-card {
   background: #97ced8;
-  border: 3px solid #030303;
-  border-radius: 10px;
+    border-right: 3px solid #030303;
+    border-left: 3px solid #030303;
+    border-top: 3px solid #030303;
+    border-radius: 10px 10px 0 0;
 }
 .new-unit {
   margin: auto;
-  display: block;
-  background-color: #003570;
-  padding: 1.2% 11.5% 1.2% 11.5% !important;
-  border-radius: 22px;
-  color: #fafafa;
-  font-size: 22px;
-  font-weight: bold;
-  border: 0px;
-  height: 50px;
+    display: block;
+    background-color: #003570;
+    width: 22vw;
+    border-radius: 22px;
+    color: #fafafa;
+    font-size: 1.5em;
+    font-weight: bold;
+    border: 0px;
+    height: 6vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .btn {
   align-self: flex-start;
-  padding: 2%;
-  width: 30%;
+    padding: 2%;
+    width: 40%;
 }
 .desc {
-  font-size: 29px;
-  text-align: left;
-  font-weight: 600;
-  padding: 2.5% 1% 1% 1%;
-  background: #dddfe7;
-  border: 1px solid #dddfe7;
-  border-radius: 5%;
-  width: 100%;
+  font-size: 3.9vh;
+    text-align: left;
+    font-weight: 600;
+    padding: 1% 1% 1% 1%;
+    background: #c9c9c9;
+    width: 100%;
 }
 :root {
-  --animate-duration: 1000ms;
-}
-.no-selected {
-  padding: 0 !important;
-  margin: 0;
-  width: 0% !important;
-}
-.full-screen {
-  width: 100% !important;
-}
-.side-view {
-  width: 40% !important;
+  --animate-duration: 500ms;
 }
 </style>
