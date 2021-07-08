@@ -1,12 +1,12 @@
 <template>
   <div class="inbox">
     <div v-if="inboxData.length===0">
-            <div class="desc">No hay solicitudes pendientes</div>
+            <div class="desc">No hay cuadros comparativos creados</div>
         </div>
     <div v-else class="inbox-container">
       <div class="inbox-cards" :class="selectedRequest.name === '' ? 'full-screen' : 'side-view'" >
         <div class="card-side">
-          <div class="desc">Solicitudes entrantes:</div>
+          <div class="desc">Solicitudes cotizadas:</div>
           <div class="card-index" v-for="(req, i) in inboxData" :key="i">
             <div
               class="single-card-container "
