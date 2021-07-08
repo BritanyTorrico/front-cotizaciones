@@ -169,7 +169,7 @@
   </section>
 </template>
 
-<script scoped>
+<script defer>
 import { mapState } from "vuex";
 import { required, maxLength, minLength } from "vuelidate/lib/validators";
 export default {
@@ -345,11 +345,10 @@ export default {
 .filter-head {
   display: flex;
   width: 75%;
-  padding: 3% 0 0 2%;
   align-self: flex-start;
 }
 .filter-title {
-  font-size: 24px;
+  font-size: 2.7vh;
   padding: 0 2% 0 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -358,21 +357,20 @@ export default {
 .company-cat {
   width: 80%;
   color: #3a3a3a;
-  padding: 6px 6px 6px 0;
   background: #f7f6f6;
-  font-size: 17px;
+  font-size: 2vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   border: 1px solid #c0c0c0;
   border-radius: 3px;
-  height: 35px;
+  height: 4vh;
 }
 .selected {
   display: flex;
   width: 100%;
   align-content: center;
   justify-content: space-between;
-  padding: 2% 2% 2% 2%;
+  padding: 1%;
 }
 .selected-data {
   width: 100%;
@@ -382,10 +380,9 @@ export default {
 }
 .data-line {
   display: flex;
-  font-size: 18px;
+  font-size: 2vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  padding: 1% 0 1% 0;
   color: #3f4b5b;
 }
 .data-label {
@@ -407,7 +404,7 @@ export default {
   padding: 1.2% 1.5% 1.2% 1.5%;
   border-radius: 22px;
   color: #fafafa;
-  font-size: 18px;
+  font-size: 2.2vh;
   font-weight: bold;
   border: 0px;
 }
@@ -416,11 +413,11 @@ export default {
 }
 .confirmed-title {
   color: #3f4b5b;
-  font-size: 20px;
+  font-size: 2.2vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: 500;
-  padding-bottom: 4%;
+  padding-bottom: 2%;
 }
 .company-list {
   color: #030303;
@@ -430,8 +427,8 @@ export default {
   align-items: flex-start;
 }
 .list-item {
-  padding: 0 0 3% 15%;
-  font-size: 16px;
+  padding: 0 0 1% 5%;
+  font-size: 2vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: 420;
@@ -448,7 +445,7 @@ export default {
 }
 .form_label {
   color: #3f4b5b;
-  font-size: 24px;
+  font-size: 2.8vh;
   font-weight: 500;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -457,8 +454,7 @@ export default {
 .items {
   align-self: center;
   width: 100%;
-  padding: 0 0 5% 0;
-  font-size: 17px;
+  font-size: 1.9vh;
 }
 .items-list {
   width: 100%;
@@ -469,11 +465,11 @@ export default {
   text-align: center;
 }
 .items th {
-  padding: 1% 2% 1% 2%;
+  padding: 1% 1% 1% 1%;
   border: 1px solid #d1d0d0;
 }
 .items td {
-  padding: 0.5% 1% 0.5% 1%;
+  padding: 0.5% 0.5% 0.5% 0.5%;
   border: 1px solid #c0c0c0;
 }
 .button-disabled {

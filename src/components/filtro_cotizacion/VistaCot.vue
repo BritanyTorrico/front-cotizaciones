@@ -43,7 +43,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 export default {
   name: "VistaCot",
@@ -70,61 +70,53 @@ export default {
 <style scoped>
 .single-quotation-details{
     background: #fff;
-    margin: 40px;
-    padding: 10px 10px 20px 10px;
-    box-shadow: 0px 0px 30px 0px rgba(0, 143, 216, 0.15);
-    width: 100%;
-    border: 1px solid #808C8F;
-    border-radius: 3px;
-    display: flex;
-    flex-direction: column;
+  margin: 1%;
+  padding: 1.2% 1% 1.2% 1%;
+  width: 98%;
+  border: 1px solid #808c8f;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
 }
 .head-top {
-  text-align: left;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 h2 {
   color: #030303 !important;
-  font-size: 30px;
+  font-size: 3.9vh;
   font-weight: 600;
-}
-.time {
-  font-size: 16px;
-  color: #3f4b5b !important;
-  text-transform: capitalize;
-}
-.head-subject {
-  font-size: 22px;
-  font-weight: 600;
-  color: #030303 !important;
-  margin-top: 12px;
   text-align: left;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 h5 {
-  font-size: 20px;
+  font-size: 2.5vh;
   color: #030303 !important;
-  line-height: 1.8;
   font-weight: 600;
   text-align: left;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .items {
   align-self: center;
   width: 100%;
-  padding: 0 0 5% 0;
-  font-size: 17px;
+  font-size: 2vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  padding-bottom: 1%;
 }
 .items thead {
-  padding: 0.5% 1% 0.5% 1%;
-  background-color: #f1f2f6;
+  background-color: #c5c4c4;
+  text-align: center;
 }
 .items th {
-  padding: 1% 1% 1% 1%;
-  border: 1px solid #c0c0c0;
+ padding: 1% 1% 1% 1%;
+  border: 1px solid #d1d0d0;
 }
 .items td {
-  padding: 0.5% 1% 0.5% 1%;
+  padding: 0.5% 0.5% 0.5% 0.5%;
   border: 1px solid #c0c0c0;
 }
 .confirmed-companies {
@@ -135,19 +127,19 @@ h5 {
 }
 .confirmed-title {
   color: #030303;
-  font-size: 20px;
+  font-size: 2.3vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: 500;
-  padding-bottom: 1%;
-  padding-right: 1%;
+  padding-bottom: 0.7%;
+  padding-right: 0.7%;
 }
 .company-name{
     color: #030303;
     list-style-position: inside;
     display: flex;
     flex-direction: column;
-    font-size: 16px;
+    font-size: 1.9vh;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: 420;
     width: 100%;

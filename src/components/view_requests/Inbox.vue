@@ -30,10 +30,7 @@
                 :description="req.detalle_solicitud"
               />
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="inbox-details" :class="selectedRequest.name === '' ? 'no-selected' :''">
+            <div class="inbox-details" v-if="selectedRequest.name==req.nombre_solicitud">
         <transition name="slide-fade">
         <div v-if="selectedRequest.name != ''">
           <transition
@@ -47,12 +44,15 @@
         </div>
         </transition>
       </div>
+          </div>
+        </div>
+      </div>
     </div>
     </div>
   </div>
 </template>
 
-<script>
+<script defer>
 import Card from "./Card.vue";
 import Details from "./Details.vue";
 import { mapState } from "vuex";
@@ -165,20 +165,13 @@ export default {
   position: relative;
 }
 .inbox-container {
-  padding: 0px !important;
-  gap: 2rem;
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+    flex-direction: row;
 }
 .card-index {
   position: relative;
-  align-items: baseline;
-  padding: 2.5% 2.5%;
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 10px;
-  width: 100%;
+    border-bottom: 1px solid #9b9b9b;
+    width: 100%;
 }
 .loading-info{
   display: flex;
@@ -234,54 +227,43 @@ export default {
 }
 .inbox-cards {
   display: flex;
-  height: 42rem;
-  overflow: auto;
-}
-.full-screen{
-  width: 100%!important;
-}
-.side-view{
-  width: 40%!important;
+    width: 100%;
 }
 .inbox-details {
-  padding: 0 5% 5% 0;
-  margin: 10px;
-  background: #a7c8ee;
-  width: 100%;
-}
-.no-selected{
-  padding: 0!important;
-  margin:0;
-  width: 0%!important;
-}
-.selected-enable{
-  width: 100%!important;
+  display: flex;
+    flex-direction: column;
+    width: 100%!important;
+    background: #97ced8;
+    border-right: 3px solid #030303;
+    border-left: 3px solid #030303;
+    border-bottom: 3px solid #030303;
+    border-radius: 0 0 10px 10px;
 }
 .single-card-container {
   align-items: center;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  padding: 1% 1% 1% 1%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 1% 1% 1% 1%;
 }
 .card-side {
   width: 100%;
 }
 .selected-card {
-  background: #a7c8ee;
-  border: 3px solid #030303;
-  border-radius: 10px;
+  background: #97ced8;
+    border-right: 3px solid #030303;
+    border-left: 3px solid #030303;
+    border-top: 3px solid #030303;
+    border-radius: 10px 10px 0 0;
 }
 .desc{
-  font-size: 29px;
-  text-align: left;
-  font-weight: 600;
-  padding: 2.5% 1% 1% 1%;
-  background: #dddfe7;
-  border: 1px solid #dddfe7;
-  border-radius: 0 0 10% 10%;
-  width: 75%;
+  font-size: 3.9vh;
+    text-align: left;
+    font-weight: 600;
+    padding: 1% 1% 1% 1%;
+    background: #c9c9c9;
+    width: 100%;
 }
 .slide-fade-enter-active {
   transition: all .8s ease;
@@ -291,6 +273,6 @@ export default {
   opacity: 0;
 }
 :root{
-  --animate-duration: 1000ms;
+  --animate-duration: 500ms;
 }
 </style>

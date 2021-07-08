@@ -1,15 +1,14 @@
 <template>
   <div class="card-container">
-    <div class="card-head">
+    <div class="card-user">
       <h3>{{ name }}</h3>
-      <div class="card-date">{{ rol }}</div>
+      <div class="card-alias">({{ username }})</div>
     </div>
-    <div class="card-status">{{ username }}</div>
-    <div class="card-description">{{ depto }}</div>
+    <div class="card-rol">{{ rol }} en {{ depto }}</div>
   </div>
 </template>
 
-<script>
+<script defer>
 export default {
   name: "UserCard",
   data() {
@@ -26,57 +25,36 @@ export default {
 
 <style scoped>
 .card-container {
-  margin: 5px 0 5px 0;
-  padding: 2px 0 0 0;
   color: #030303 !important;
   width: 100%;
   display: flex;
-  flex-direction: column;
+  align-items: baseline;
 }
-.card-head {
-  margin: 0 0 0 0;
-  padding: 0 0 2px 0;
-  align-items: stretch;
+.card-user {
   display: flex;
-  width: 100%;
-  justify-content: space-between;
+  width: 50%;
 }
 h3 {
-  font-size: 18px;
-  margin: 0%;
+  font-size: 2.9vh;
   text-align: left;
-  width: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-size: 20px;
+  padding: 0 1% 0 0;
 }
-.card-date {
-  font-size: 16px;
-  text-transform: uppercase;
-  margin: 0 0 0 20px;
+.card-rol {
+  width: 47%;
+  font-size: 2.2vh;
   align-content: flex-end;
-  width: 50%;
+  text-align: right;
+  color: #626262 !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
-.card-status {
-  font-size: 16px;
+.card-alias {
+  padding-top: 1%;
+  font-size: 1em;
   align-self: flex-start;
   font-weight: 550;
-  text-align: left;
-  margin: 5px 0 10px 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-.card-description {
-  align-self: flex-start;
-  font-size: 15px;
-  color: #626262 !important;
-  margin: 10px 0 0 0;
-  line-height: 1.5em;
-  height: 4.5em;
-  word-wrap: break-word;
-  overflow: hidden;
   text-align: left;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;

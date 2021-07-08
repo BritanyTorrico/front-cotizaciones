@@ -6,7 +6,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import InboxUnidad from '../components/unidad_gasto/Vista/InboxUnidad.vue';
 import { mapState } from "vuex";
 
@@ -26,6 +26,7 @@ export default {
 
 <style scoped>
 .unit-container{
+  min-height: 100vh;
     margin: 2rem;
     margin-top: 0;
 }

@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { store } from "@/store/index.js";
 export default {
   name: "AlertConfirmation",

@@ -11,7 +11,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import ReportInbox from '../components/reporte_final/ReportInbox.vue'
 import Options from '../components/reporte_final/Options.vue'
 import { mapState } from 'vuex';
@@ -49,6 +49,7 @@ data(){
 
 <style scoped>
 .review{
+  min-height: 100vh;
     margin: 2rem;
     margin-top: 0;
 }

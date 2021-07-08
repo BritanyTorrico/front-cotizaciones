@@ -47,7 +47,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 export default {
   name: "Options",
@@ -148,6 +148,8 @@ export default {
                         this.filteredInbox[i].nombre_solicitud=response[i].nombre_solicitud
                         this.filteredInbox[i].nombrecompleto_solicitante=response[i].nombrecompleto_solicitante
                         this.filteredInbox[i].unidadgasto_solicitud=response[i].unidadgasto_solicitud
+                        const date = response[i].fecha_solicitud
+                        this.filteredInbox[i].fecha_solicitud = `${date.substr(8, 2)}/${date.substr(5, 2)}/${date.substr(0, 4)}`
                         this.filteredInbox[i].encargado_unidad=''
                         this.filteredInbox[i].jefe_depto=''
                         const uns=(

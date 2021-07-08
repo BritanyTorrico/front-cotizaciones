@@ -137,7 +137,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import Alert from '../Alert.vue';
 import { BButton, BModal, BFormGroup, BFormTextarea, BFormSelect } from "bootstrap-vue";
@@ -346,7 +346,7 @@ export default {
         await this.sendReport() //actualiza reporte
         await this.updateRequest() // actualiza estado de solicitud
         await this.updateQuotations() //actualiza estados de cotizaciones y puesto_obra 
-        window.setInterval(window.location.reload(), 10000);
+        this.$router.push(`/informe_final`)
       } catch (error) {
         throw new Error(error);
       }

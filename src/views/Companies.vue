@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import InboxEmpresa from '../components/empresa/Vista/InboxEmpresa.vue'
 import { mapState } from "vuex";
 
@@ -27,6 +27,7 @@ export default {
 
 <style scoped>
 .company-container{
+  min-height: 100vh;
     margin: 2rem;
     margin-top: 0;
 }

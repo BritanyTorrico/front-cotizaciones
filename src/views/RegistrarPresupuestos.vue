@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import PresupuestoUnidad from "../components/Presupuestos/PresupuestoUnidad.vue";
 export default {
@@ -18,8 +18,14 @@ export default {
 
 <style scoped>
 .contenedor-presupuestos {
-  padding: 50px 100px 50px 100px;
+  padding: 2.5% 14% 5% 14%;
   background-color: #46b1c95b;
   margin-top: 0;
+  min-height: 100vh;
+}
+@media (max-width: 800px) {
+  .contenedor-presupuestos {
+    padding: 0%;
+  }
 }
 </style>

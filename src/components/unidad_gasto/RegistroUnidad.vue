@@ -92,7 +92,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { required, maxLength } from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
 import ListaDesplegable from "./ListaDesplegable.vue";
@@ -168,7 +168,7 @@ export default {
         if (!this.$v.unit.$invalid) {
           await this.sendData();
           this.alert("success", "Unidad creada exitosamente");
-          window.setInterval(window.location.reload(), 10000);
+          this.$router.push(`/unidades`)
         } else {
           this.alert("warning", "Rellene todos los datos correctamente");
         }

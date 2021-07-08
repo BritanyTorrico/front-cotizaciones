@@ -128,7 +128,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import ListaDesplegableChange from "./ListaDesplegableChange.vue";
 import { helpers } from "vuelidate/lib/validators";

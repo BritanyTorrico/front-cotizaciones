@@ -60,7 +60,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import Alert from "@/components/User/Alert.vue";
 export default {
@@ -92,7 +92,7 @@ export default {
       } catch (error) {
         this.alert("warning", error);
       }
-      this.loading=!this.loading
+      this.loading = !this.loading;
     },
     hideModal() {
       this.$refs["my-modal"].hide();
@@ -118,14 +118,14 @@ export default {
       }
     },
     async crearBack() {
-      this.loading=!this.loading
+      this.loading = !this.loading;
       try {
         this.alert("success", "Backup creado");
         window.setInterval(window.location.reload(), 10000);
       } catch (error) {
         this.alert("warning", error);
       }
-      this.loading=!this.loading
+      this.loading = !this.loading;
     },
   },
 };
@@ -133,11 +133,17 @@ export default {
 
 <style lang="scss" scoped>
 .contendor_mayor {
-  padding: 50px 100px 50px 100px;
+  padding: 2.5% 10%;
   background-color: #46b1c95b;
   margin-top: 0;
 }
-.loading-info{
+
+@media (max-width: 650px) {
+  .contendor_mayor {
+    padding: 0%;
+  }
+}
+.loading-info {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -151,7 +157,7 @@ export default {
   --clock-minute-length: calc(var(--clock-width) * 0.4);
   --clock-hour-length: calc(var(--clock-width) * 0.2);
   --clock-thickness: 0.2rem;
-  
+
   position: relative;
   display: flex;
   justify-content: center;
@@ -192,11 +198,16 @@ export default {
 .backs {
   text-align: left;
   background-color: #f1f2f6;
-  padding: 40px 80px 40px 80px;
+  padding: 5% 12% 5% 12%;
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 450px;
+  min-height: 100vh;
+}
+@media (max-width: 650px) {
+  .backs {
+    min-height: 100vh;
+  }
 }
 .botoncito {
   width: 50%;

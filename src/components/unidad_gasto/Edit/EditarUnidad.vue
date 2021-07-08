@@ -92,7 +92,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { required, maxLength } from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
 import ListaDesplegable from "../ListaDesplegable.vue";

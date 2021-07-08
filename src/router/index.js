@@ -1,26 +1,32 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-
 Vue.use(VueRouter);
+
+function lazyLoad(view){
+    return() => import (`@/views/${view}.vue`)
+}
 
 const routes = [{
         path: "/",
         name: "PaginaPrincipalPage",
+        component: lazyLoad('PaginaPrincipalPage'),
+    },
+    {
+        path: "/acercaDeNosotros",
+        name: "Acerca",
         component: () =>
-            import ("@/views/PaginaPrincipalPage.vue"),
+            import ("@/components/Pagina_Inicial/Acerca.vue"),
     },
     {
         path: "/principal",
         name: "PaginaPermisos",
-        component: () =>
-            import ("@/views/PaginaPermisos.vue"),
+        component: lazyLoad('PaginaPermisos'),
     },
     {
         path: "/item/nuevo",
         name: "RegistroItemGasto",
-        component: () =>
-            import ("@/views/RegItem.vue"),
+        component: lazyLoad('RegItem'),
 
         meta: {
             rutaProtegida: true,
@@ -29,8 +35,7 @@ const routes = [{
     {
         path: "/unidad/nueva",
         name: "RegistroUnidadGasto",
-        component: () =>
-            import ("@/views/RegUnidad.vue"),
+        component: lazyLoad('RegUnidad'),
 
         meta: {
             rutaProtegida: true,
@@ -39,8 +44,7 @@ const routes = [{
     {
         path: "/register",
         name: "RegisterUserPage",
-        component: () =>
-            import ("../views/RegisterUserPage.vue"),
+        component: lazyLoad('RegisterUserPage'),
         meta: {
             rutaProtegida: true,
         },
@@ -48,14 +52,12 @@ const routes = [{
     {
         path: "/login",
         name: "LoginPage",
-        component: () =>
-            import ("../views/LoginPage.vue"),
+        component: lazyLoad('LoginPage'),
     },
     {
         path: "/creaRol",
         name: "CreaRol",
-        component: () =>
-            import ("../views/creaRol.vue"),
+        component: lazyLoad('creaRol'),
         meta: {
             rutaProtegida: true,
         },
@@ -63,8 +65,7 @@ const routes = [{
     {
         path: "/solicitud/nueva",
         name: "SolicitudPage",
-        component: () =>
-            import ("../views/SolicitudPage.vue"),
+        component: lazyLoad('SolicitudPage'),
         meta: {
             rutaProtegida: true,
         },
@@ -72,8 +73,7 @@ const routes = [{
     {
         path: "/revisar_solicitudes",
         name: "RequestReview",
-        component: () =>
-            import ("@/views/RequestReview.vue"),
+        component: lazyLoad('RequestReview'),
         meta: {
             rutaProtegida: true,
         },
@@ -81,8 +81,7 @@ const routes = [{
     {
         path: "/cotizacion/nueva",
         name: "QuotationForm",
-        component: () =>
-            import ("@/views/QuotationForm.vue"),
+        component: lazyLoad('QuotationForm'),
         meta: {
             rutaProtegida: true,
         },
@@ -91,8 +90,7 @@ const routes = [{
     {
         path: "/empresa/nueva",
         name: "creaEmpresa",
-        component: () =>
-            import ("../views/creaEmpresa.vue"),
+        component: lazyLoad('creaEmpresa'),
         meta: {
             rutaProtegida: true,
         },
@@ -100,8 +98,7 @@ const routes = [{
     {
         path: "/filtro_cotizaciones",
         name: "QuotationFilter",
-        component: () =>
-            import ("../views/QuotationFilter.vue"),
+        component: lazyLoad('QuotationFilter'),
         meta: {
             rutaProtegida: true,
         },
@@ -109,8 +106,7 @@ const routes = [{
     {
         path: "/solicitudes",
         name: "Solicitudes",
-        component: () =>
-            import ("../views/Solicitudes.vue"),
+        component: lazyLoad('Solicitudes'),
         meta: {
             rutaProtegida: true,
         },
@@ -118,8 +114,7 @@ const routes = [{
     {
         path: "/usuarios",
         name: "Usuarios",
-        component: () =>
-            import ("../views/Users.vue"),
+        component: lazyLoad('Users'),
         meta: {
             rutaProtegida: true,
         },
@@ -127,8 +122,7 @@ const routes = [{
     {
         path: "/roles",
         name: "Roles",
-        component: () =>
-            import ("../views/Roles.vue"),
+        component: lazyLoad('Roles'),
         meta: {
             rutaProtegida: true,
         },
@@ -136,8 +130,7 @@ const routes = [{
     {
         path: "/unidades",
         name: "Unidades",
-        component: () =>
-            import ("../views/Units.vue"),
+        component: lazyLoad('Units'),
         meta: {
             rutaProtegida: true,
         },
@@ -145,8 +138,7 @@ const routes = [{
     {
         path: "/items",
         name: "Items",
-        component: () =>
-            import ("../views/Items.vue"),
+        component: lazyLoad('Items'),
         meta: {
             rutaProtegida: true,
         },
@@ -154,8 +146,7 @@ const routes = [{
     {
         path: "/empresas",
         name: "Empresas",
-        component: () =>
-            import ("../views/Companies.vue"),
+        component: lazyLoad('Companies'),
         meta: {
             rutaProtegida: true,
         },
@@ -163,8 +154,7 @@ const routes = [{
     {
         path: "/presupuestos",
         name: "RegistrarPresupuestos",
-        component: () =>
-            import ("../views/RegistrarPresupuestos.vue"),
+        component: lazyLoad('RegistrarPresupuestos'),
         meta: {
             rutaProtegida: true,
         },
@@ -172,9 +162,7 @@ const routes = [{
     {
         path: "/item/editar/:id",
         name: "EditarItemGasto",
-        component: () =>
-            import ("@/views/EditItem.vue"),
-
+        component: lazyLoad('EditItem'),
         meta: {
             rutaProtegida: true,
         },
@@ -182,9 +170,7 @@ const routes = [{
     {
         path: "/unidad/editar/:id",
         name: "EditarUnidadGasto",
-        component: () =>
-            import ("@/views/EditUnit.vue"),
-
+        component: lazyLoad('EditUnit'),
         meta: {
             rutaProtegida: true,
         },
@@ -192,9 +178,7 @@ const routes = [{
     {
         path: "/empresa/editar/:id",
         name: "EditarEmpresas",
-        component: () =>
-            import ("@/views/EditCompany.vue"),
-
+        component: lazyLoad('EditCompany'),
         meta: {
             rutaProtegida: true,
         },
@@ -202,9 +186,15 @@ const routes = [{
     {
         path: "/usuario/editar/:id",
         name: "EditarUsuarios",
-        component: () =>
-            import ("@/views/EditUser.vue"),
-
+        component: lazyLoad('EditUser'),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/roles/editar/:id",
+        name: "EditRole",
+        component: lazyLoad('EditRole'),
         meta: {
             rutaProtegida: true,
         },
@@ -212,8 +202,7 @@ const routes = [{
     {
         path: "/presupuestoDep",
         name: "RegistrarPresupuestoDepto",
-        component: () =>
-            import ("../views/RegistrarPresupuestoDepto.vue"),
+        component: lazyLoad('RegistrarPresupuestoDepto'),
         meta: {
             rutaProtegida: true,
         },
@@ -221,8 +210,7 @@ const routes = [{
     {
         path: "/historial_presupuestos",
         name: "HistorialPresupuestosPage",
-        component: () =>
-            import ("../views/HistorialPresupuestosPage.vue"),
+        component: lazyLoad('HistorialPresupuestosPage'),
         meta: {
             rutaProtegida: true,
         },
@@ -230,8 +218,7 @@ const routes = [{
     {
         path: "/historial_presupuestos_dep",
         name: "HistorialPresupuestoDepPage",
-        component: () =>
-            import ("../views/HistorialPresupuestoDepPage.vue"),
+        component: lazyLoad('HistorialPresupuestoDepPage'),
         meta: {
             rutaProtegida: true,
         },
@@ -239,20 +226,17 @@ const routes = [{
     {
         path: "/logss",
         name: "LogPage",
-        component: () =>
-            import ("../views/LogPage.vue"),
+        component: lazyLoad('LogPage'),
     },
     {
         path: "/back",
         name: "vistaBack",
-        component: () =>
-            import ("../views/vistaBack.vue"),
+        component: lazyLoad('vistaBack'),
     },
     {
         path: "/cotizaciones",
         name: "Cotizaciones",
-        component: () =>
-            import ("../views/Cotizaciones.vue"),
+        component: lazyLoad('Cotizaciones'),
         meta: {
             rutaProtegida: true,
         },
@@ -260,8 +244,15 @@ const routes = [{
     {
         path: "/cotizacion/respuesta/:id",
         name: "ActualizarRespuestas",
-        component: () =>
-            import ("../views/ActualizarRespuestas.vue"),
+        component: lazyLoad('ActualizarRespuestas'),
+        meta: {
+            rutaProtegida: true,
+        },
+    },
+    {
+        path: "/cuadro_comparativo/nuevo",
+        name: "CuadroComparativo",
+        component: lazyLoad('CuadroComparativo'),
         meta: {
             rutaProtegida: true,
         },
@@ -269,8 +260,7 @@ const routes = [{
     {
         path: "/cuadro_comparativo",
         name: "CuadroComparativo",
-        component: () =>
-            import ("../views/CuadroComparativo.vue"),
+        component: lazyLoad('TablasComparativas'),
         meta: {
             rutaProtegida: true,
         },
@@ -278,8 +268,7 @@ const routes = [{
     {
         path: "/informe_final",
         name: "InformeFinal",
-        component: () =>
-            import ("../views/InformeFinal.vue"),
+        component: lazyLoad('InformeFinal'),
         meta: {
             rutaProtegida: true,
         },

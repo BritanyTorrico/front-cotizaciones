@@ -23,7 +23,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { required } from "vuelidate/lib/validators";
 
 export default {

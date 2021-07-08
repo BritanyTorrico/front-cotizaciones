@@ -1,24 +1,28 @@
 <template>
-  <div class="card mb-3 " style="width:300px;  height: 160px;">
-    <div class="row g-0">
-      <div class="col-md-4" :style="styles1" style=" height: 160px;">
-        <b-icon :icon="nombreIcono" class="iconito"></b-icon>
-      </div>
+  <div>
+    <div class="card mb-3 carta ">
+      <div class="row g-0">
+        <div class="col-md-4 iconooo" :style="styles1">
+          <b-icon :icon="nombreIcono" class="iconito"></b-icon>
+        </div>
 
-      <div class="col-md-8">
-        <div class="card-body" style=" height: 160px;">
-          <h5 class="card-title titulo">{{ titulo }}</h5>
-          <hr class="linea" />
-          <p class="card-text contenido">
-            {{ contenido }}
-          </p>
+        <div class="col-md-8 ">
+          <div class="card-body coooon">
+            <h5 class="card-title titulo">{{ titulo }}</h5>
+            <div class="d-none d-sm-block">
+              <hr class="linea" />
+              <p class="card-text contenido ">
+                {{ contenido }}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script defer>
 export default {
   name: "CardPermiso",
   props: {
@@ -42,6 +46,23 @@ export default {
 </script>
 
 <style scoped>
+.carta {
+  width: 100%;
+}
+.iconooo {
+  min-height: 29vh;
+}
+.coooon {
+  max-height: 29vh;
+  width: 100%;
+  display: block;
+  display: -webkit-box;
+
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .iconito {
   height: 100%;
   border: 1px solid;

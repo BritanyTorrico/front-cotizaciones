@@ -7,7 +7,7 @@
       </div>
       <div class="head-info">
         <div class="head-subject">
-          <h3>Nombre de usuario:</h3>
+          <h3>Usuario:</h3>
           {{ user.username }}
         </div>
       </div>
@@ -16,6 +16,10 @@
       <div class="body-detail">
         <h5>Celular:</h5>
         {{ user.cell }}
+      </div>
+      <div class="body-detail">
+        <h5>Facultad:</h5>
+        {{ user.facu }}
       </div>
       <div class="body-detail">
         <h5>Departamento:</h5>
@@ -47,7 +51,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import Alert from "@/components/Alert.vue";
 import { mapState } from "vuex";
 import { BButton, BModal } from "bootstrap-vue";
@@ -67,6 +71,7 @@ export default {
       rol: String,
       username: String,
       depto: String,
+      facu: String,
       cell: Number,
     },
   },
@@ -103,10 +108,9 @@ export default {
 <style scoped>
 .single-user-details {
   background: #fff;
-  margin: 40px;
-  padding: 1% 1% 2% 1%;
-  box-shadow: 0px 0px 30px 0px rgba(0, 143, 216, 0.15);
-  width: 100%;
+  margin: 1%;
+  padding: 1.2% 1% 1.2% 1%;
+  width: 98%;
   border: 1px solid #808c8f;
   border-radius: 3px;
   display: flex;
@@ -119,20 +123,22 @@ export default {
 }
 h2 {
   color: #030303 !important;
-  font-size: 35px;
+  font-size: 3.9vh;
   font-weight: 600;
+  text-align: left;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .head-role {
-  font-size: 27px;
+  font-size: 3.3vh;
+  text-align: right;
   font-weight: 500;
   color: #3f4b5b !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .head-subject {
-  font-size: 20px;
+  font-size: 3vh;
   font-weight: 500;
   color: #555252 !important;
   text-align: left;
@@ -140,11 +146,11 @@ h2 {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   display: flex;
   align-items: baseline;
-  width: 50%;
+  width: 100%;
 }
 h3 {
   color: #030303 !important;
-  font-size: 20px;
+  font-size: 3vh;
   font-weight: 600;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -154,18 +160,18 @@ h3 {
   text-align: left;
 }
 h5 {
-  font-size: 18px;
+  font-size: 2.7vh;
   color: #030303 !important;
   font-weight: 600;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  padding-right: 2%;
+  padding-right: 2.2%;
 }
 .body-detail {
   color: #626262;
-  font-size: 18px;
+  font-size: 2.7vh;
   display: flex;
-  width: 50%;
+  width: 100%;
   align-items: baseline;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -174,12 +180,13 @@ h5 {
   margin: auto;
   display: block;
   background-color: #003570;
-  padding: 1.2% 11.5% 1.2% 11.5%;
+  height: 6vh;
+  width: 22vw;
   border-radius: 22px;
   color: #fafafa;
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 1.1em;
   border: 0px;
+  font-weight: bold;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
@@ -187,10 +194,11 @@ h5 {
   margin: auto;
   display: block;
   background-color: #b70d0d;
-  padding: 1.2% 11.5% 1.2% 11.5%;
+  height: 6vh;
+  width: 22vw;
   border-radius: 22px;
   color: #fafafa;
-  font-size: 22px;
+  font-size: 1.1em;
   font-weight: bold;
   border: 0px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,

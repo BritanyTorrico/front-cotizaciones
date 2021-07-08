@@ -1,8 +1,5 @@
 <template>
     <div class="inbox">
-        <div class="btn">
-            <button class="new-request" v-on:click="newRequest()">Nueva Solicitud</button>
-        </div>
     <div v-if="loading">
       <div class="loading-info">
           <div class="clock-loader"></div>
@@ -28,28 +25,29 @@
                                 :status="req.estado_solicitud"
                                 :description="req.detalle_solicitud"
                             />
+                            <div class="inbox-form" v-if="req.nombre_solicitud==selectedRequest.name">
+                                <div v-if="selectedRequest.name!=''">
+                                    <transition
+                                        enter-active-class="animate__animated animate__fadeInDown"
+                                        leave-active-class="animate__animated animate__fadeOutUp"
+                                    >
+                                            <div v-if="!changeReq">
+                                                <SolView :request="selectedRequest"/>
+                                            </div>
+                                    </transition>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="inbox-form" :class="selectedRequest.name === '' ? 'no-selected' : ''">
-              <div v-if="selectedRequest.name!=''">
-                <transition
-                    enter-active-class="animate__animated animate__fadeInRight"
-                    leave-active-class="animate__animated animate__fadeOutRight"
-                >
-                        <div v-if="!changeReq">
-                            <SolView :request="selectedRequest"/>
-                        </div>
-                </transition>
-              </div>
-            </div>
+            
         </div>
     </div>
     </div>
 </template>
 
-<script>
+<script defer>
 import SolCard from './SolCard.vue'
 import SolView from './SolView.vue'
 import { mapState } from 'vuex'
@@ -96,9 +94,6 @@ export default {
             this.selectedRequest.report = this.inboxData[i].informe
             this.selectedRequest.reviewer = this.inboxData[i].revisado
             this.selectedRequest.itemList = this.items[i]
-        },
-        async newRequest() {
-            this.$router.push('/solicitud/nueva')
         },
     },
 }
@@ -161,30 +156,22 @@ export default {
   }
 }
 .inbox-container {
-    padding: 0px !important;
-    gap: 2rem;
     width: 100%;
-    display: flex;
     flex-direction: row;
-    justify-content: space-between;
 }
 .card-index {
     position: relative;
-    align-items: baseline;
-    padding: 2.5% 2.5%;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
+    border-bottom: 1px solid #9b9b9b;
     width: 100%;
 }
 .inbox-cards {
     display: flex;
-    height: 42rem;
-    overflow: auto;
+    width: 100%;
 }
 .inbox-form {
-    width: 100%;
-    padding: 0 5rem 5rem 0;
-    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%!important;
     background: #97ced8;
 }
 .single-card-container {
@@ -200,49 +187,22 @@ export default {
 }
 .selected-card {
     background: #97ced8;
-    border: 3px solid #030303;
-    border-radius: 10px;
+    border-right: 3px solid #030303;
+    border-left: 3px solid #030303;
+    border-top: 3px solid #030303;
+    border-bottom: 3px solid #030303;
+    border-radius: 10px 10px 10px 10px;
 }
-.new-request {
-    margin: auto;
-    display: block;
-    background-color: #003570;
-    padding: 1.2% 11.5% 1.2% 11.5% !important;
-    border-radius: 22px;
-    color: #fafafa;
-    font-size: 22px;
-    font-weight: bold;
-    border: 0px;
-    height: 50px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-.btn {
-    align-self: flex-start;
-    padding: 2%;
-    width: 30%;
-}
+
 .desc {
-    font-size: 29px;
+    font-size: 3.9vh;
     text-align: left;
     font-weight: 600;
-    padding: 2.5% 1% 1% 1%;
-    background: #dddfe7;
-    border: 1px solid #dddfe7;
-    border-radius: 5%;
+    padding: 1% 1% 1% 1%;
+    background: #c9c9c9;
     width: 100%;
 }
 :root{
-  --animate-duration: 1000ms;
-}
-.no-selected {
-    padding: 0 !important;
-    margin: 0;
-    width: 0% !important;
-}
-.full-screen {
-    width: 100% !important;
-}
-.side-view {
-    width: 40% !important;
+  --animate-duration: 500ms;
 }
 </style>

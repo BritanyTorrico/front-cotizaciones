@@ -6,7 +6,7 @@
 </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from 'vuex'
 import InboxUsuarios from '../components/User/Vista/InboxUsuarios.vue'
 export default {
@@ -27,5 +27,6 @@ export default {
 .user-container{
     margin: 2rem;
     margin-top: 0;
+    min-height: 100vh;
 }
 </style>

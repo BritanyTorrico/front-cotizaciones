@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import CrearEmpresa from "@/components/empresa/CrearEmpresa.vue";
 export default {
@@ -27,11 +27,17 @@ export default {
 
 <style scoped>
 .register {
+  min-height: 100vh;
   background-color: #46b1c95b;
   margin-top: 0;
 }
 .register_container {
   display: block;
-  padding: 50px 300px 50px 300px;
+  padding: 2.5% 22% 5% 22%;
+}
+@media (max-width: 800px) {
+  .register_container {
+    padding: 0%;
+  }
 }
 </style>

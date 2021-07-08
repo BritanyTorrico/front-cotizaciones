@@ -2,13 +2,13 @@
   <div class="card-container">
     <div class="card-head">
       <h3>{{ name }}</h3>
+      <div class="card-description">{{ description }}</div>
+      <div class="card-status">{{ attendant }}</div>
     </div>
-    <div class="card-status">{{ attendant }}</div>
-    <div class="card-description">{{ description }}</div>
   </div>
 </template>
 
-<script>
+<script defer>
 export default {
   name: "UnitCard",
   data() {
@@ -24,55 +24,41 @@ export default {
 
 <style scoped>
 .card-container {
-  margin: 5px 0 5px 0;
-  padding: 2px 0 0 0;
   color: #030303 !important;
   width: 100%;
   display: flex;
-  flex-direction: column;
+  align-items: baseline;
 }
 .card-head {
-  margin: 0 0 0 0;
-  padding: 0 0 2px 0;
-  align-items: stretch;
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: baseline;
 }
 h3 {
-  font-size: 18px;
-  margin: 0%;
+  font-size: 2.9vh;
   text-align: left;
-  width: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-size: 20px;
-}
-.card-date {
-  font-size: 16px;
-  text-transform: uppercase;
-  margin: 0 0 0 20px;
-  align-content: flex-end;
-  width: 50%;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  padding: 0 1% 0 0;
+  width: 40%;
 }
 .card-status {
-  font-size: 16px;
-  align-self: flex-start;
+  font-size: 2vh;
   font-weight: 550;
-  text-align: left;
-  margin: 5px 0 10px 0;
+  align-self: flex-start;
+  text-align: right;
+  width: 20%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 .card-description {
   align-self: flex-start;
-  font-size: 15px;
+  width: 40%;
+  font-size: 1.9vh;
   color: #626262 !important;
-  margin: 10px 0 0 0;
-  line-height: 1.5em;
-  height: 4.5em;
+  line-height: 1em;
+  height: 2em;
   word-wrap: break-word;
   overflow: hidden;
   text-align: left;

@@ -138,7 +138,7 @@
   </section>
 </template>
 
-<script>
+<script defer>
 import { required, maxLength } from "vuelidate/lib/validators";
 import Alert from "@/components/Alert.vue";
 import { mapState } from "vuex";
@@ -227,7 +227,7 @@ export default {
                     await this.sendItemData();
                     await this.sendItemUnitData();
                     this.alert("success", "Item creado exitosamente");
-                    window.setInterval(window .location.reload(), 10000); 
+                    this.$router.push(`/items`)
                 } else {
                     this.alert("warning", "Rellene todos los datos correctamente");
                 }

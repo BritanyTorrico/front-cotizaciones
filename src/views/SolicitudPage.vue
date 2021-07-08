@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import { mapState } from "vuex";
 import SolicitudDatos from "../components/Solicitud/SolicitudDatos.vue";
 export default {
@@ -13,18 +13,23 @@ export default {
   computed: {
     ...mapState(["permisoSolicitud"]),
   },
-  mounted(){
-    if (!this.permisoSolicitud){
-      this.$route.push("/")
+  mounted() {
+    if (!this.permisoSolicitud) {
+      this.$route.push("/");
     }
-  }
+  },
 };
 </script>
 
 <style scoped>
 .soli_container {
-  padding: 50px 200px 50px 200px;
+  padding: 2.5% 15% 5% 15%;
   background-color: #46b1c95b;
   margin-top: 0;
+}
+@media (max-width: 860px) {
+  .soli_container {
+    padding: 0%;
+  }
 }
 </style>

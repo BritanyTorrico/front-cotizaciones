@@ -45,7 +45,7 @@
   </div>
 </template>
 
-<script>
+<script defer>
 import CardReport from "./CardReport.vue";
 import ReportForm from "./ReportForm.vue";
 import { mapState } from "vuex";
