@@ -197,9 +197,7 @@
           <b-nav-item v-if="username" id="subtitu1" @click="cerrar()" href="/"
             >Cerrar Sesion</b-nav-item
           >
-          <a v-if="!username" href="/contacto"
-            ><b-icon icon="house" class="iconito"></b-icon>Contacto</a
-          >
+
           <b-nav-item v-if="!username" id="subtitu1" href="/contacto"
             >Contactos</b-nav-item
           >
