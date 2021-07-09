@@ -64,6 +64,8 @@ h3 {
   width: 40%;
   font-size: 1.9vh;
   color: #626262 !important;
+  line-height: 1.5em;
+  height: 3em;
   word-wrap: break-word;
   overflow: hidden;
   text-align: left;

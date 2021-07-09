@@ -49,5 +49,7 @@ export default {
 <style scoped>
 .filter-container{
   min-height: 100vh;
+  margin: 2rem;
+    margin-top: 0;
 }
 </style>

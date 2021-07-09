@@ -385,10 +385,9 @@ export default {
 <style scoped>
 .single-request-details {
   background: #fff;
-  margin: 40px;
-  padding: 10px 10px 20px 10px;
-  box-shadow: 0px 0px 30px 0px rgba(0, 143, 216, 0.15);
-  width: 100%;
+  margin: 1%;
+  padding: 1.2% 1% 1.2% 1%;
+  width: 98%;
   border: 1px solid #808c8f;
   border-radius: 3px;
   display: flex;
@@ -517,12 +516,13 @@ p {
   margin: auto;
   display: block;
   background-color: #003570;
-  padding: 1.2% 11.5% 1.2% 11.5%;
+  height: 6vh;
+  width: 22vw;
   border-radius: 22px;
   color: #fafafa;
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 1.1em;
   border: 0px;
+  font-weight: bold;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
@@ -530,10 +530,11 @@ p {
   margin: auto;
   display: block;
   background-color: #b70d0d;
-  padding: 1.2% 11.5% 1.2% 11.5%;
+  height: 6vh;
+  width: 22vw;
   border-radius: 22px;
   color: #fafafa;
-  font-size: 22px;
+  font-size: 1.1em;
   font-weight: bold;
   border: 0px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,

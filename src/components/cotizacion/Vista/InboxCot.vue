@@ -1,8 +1,5 @@
 <template>
   <div class="inbox">
-      <div class="btn">
-            <button class="new-quotation" v-on:click="newQuotation()">Nueva Cotización</button>
-        </div>
         <div v-if="loading">
       <div class="loading-info">
           <div class="clock-loader"></div>
@@ -91,9 +88,7 @@ export default {
             this.selectedCot.itemList=this.items[i];
             this.selectedCot.company=this.inboxData[i].empresa;
         },
-        async newQuotation(){
-            this.$router.push('/cotizacion/nueva')
-        }
+        
     },
 };
 </script>
@@ -195,25 +190,7 @@ export default {
     border-bottom: 3px solid #030303;
     border-radius: 0 0 10px 10px;
 }
-.new-quotation {
-    margin: auto;
-  display: block;
-  background-color: #003570;
-  height: 6vh;
-  width: 22vw;
-  border-radius: 22px;
-  color: #fafafa;
-  font-size: 1.1em;
-  border: 0px;
-  font-weight: bold;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-.btn {
-    align-self: flex-start;
-    padding: 2%;
-    width: 30%;
-}
+
 .desc {
     font-size: 3.9vh;
     text-align: left;

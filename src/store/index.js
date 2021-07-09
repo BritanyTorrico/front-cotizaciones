@@ -82,7 +82,7 @@ export default new Vuex.Store({
                 ) {
                     state.permisoPresupuestoUnidad = true;
                     state.contadorPresupuestos = state.contadorPresupuestos + 1;
-                } else if (state.listaPermisos[i] == "Vista_Ver_Tabla") {
+                } else if (state.listaPermisos[i] == "Vista_Crear_Tabla") {
                     state.permisoCuadroComparativo = true;
                     state.contadorCotizaciones = state.contadorCotizaciones + 1;
                 } else if (state.listaPermisos[i] == "Vista_Ver_Bitacora") {
