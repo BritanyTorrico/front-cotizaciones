@@ -81,6 +81,9 @@
                 ><b-icon icon="arrow-return-left" class="iconito"></b-icon
                 >Cerrar Sesion</a
               >
+              <a v-if="!username" href="/contacto"
+                ><b-icon icon="house" class="iconito"></b-icon>Contactos</a
+              >
               <a v-if="!username" href="/acercaDeNosotros"
                 ><b-icon icon="house" class="iconito"></b-icon>Acerca de
                 nosotros</a
@@ -193,6 +196,12 @@
           </b-nav-item-dropdown>
           <b-nav-item v-if="username" id="subtitu1" @click="cerrar()" href="/"
             >Cerrar Sesion</b-nav-item
+          >
+          <a v-if="!username" href="/contacto"
+            ><b-icon icon="house" class="iconito"></b-icon>Contacto</a
+          >
+          <b-nav-item v-if="!username" id="subtitu1" href="/contacto"
+            >Contactos</b-nav-item
           >
           <b-nav-item v-if="!username" id="subtitu1" href="/acercaDeNosotros"
             >Acerca de nosotros</b-nav-item

@@ -50,7 +50,6 @@
           <a class="redireccion" href="/unidades">
             <card-permiso
               colorIcono="#FFFFFF"
-              colorFondo=" #fed330"
               nombreIcono="file-text"
               titulo="Gestionar Unidades"
               contenido="Usted puede crear nuevas unidades de gasto ,editar y ver las unidades de gasto creados anteriormente."
