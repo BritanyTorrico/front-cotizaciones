@@ -329,12 +329,12 @@ export default {
           await this.sendFuncData();
 
           this.alert("success", "Rol creado exitosamente");
-          this.$router.push(`/roles`)
+          this.$router.push(`/roles`);
         } else {
           this.alert("warning", "Seleccione minimamente un permiso.");
         }
       } catch (error) {
-        this.alert("warning", "El rol ya existe");
+        this.alert("warning", "El nombre rol ya existe");
       }
       this.loading = !this.loading;
     },
