@@ -225,6 +225,7 @@
 </template>
 <script defer>
 import { mapState, mapActions } from "vuex";
+import store from './store'
 
 const AsyncComponent = () => ({
   component: import("@/views/FooterPagina.vue"),
@@ -232,6 +233,7 @@ const AsyncComponent = () => ({
   timeout: 6000,
 });
 export default {
+  store,
   components: { footerPagina: AsyncComponent },
   name: "App",
   created() {
